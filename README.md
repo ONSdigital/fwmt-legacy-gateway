@@ -1,4 +1,6 @@
-# fwmt-csv-uploader
+# fwmt-legacy-gateway
+
+DO NOT USE THE KEYSTORE FILE IN src/main/resources/keystore.p12 FOR ANYTHING BUT TRIVIAL TESTS
 
 To start docker on local machine:
 
