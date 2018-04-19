@@ -1,10 +1,10 @@
 applications:
-- name: fwmt-csv-uploader
+- name: fwmt-legacy-gateway
   instances: 1
   timeout: 180
-  host: fwmt-csv-uploader
+  host: fwmt-legacy-gateway
   memory: 1024M
-  path: target/fwmt-csv-uploader-0.0.1-SNAPSHOT-exec.jar
+  path: target/fwmt-legacy-gateway-0.0.1-SNAPSHOT-exec.jar
   services:
   - fwmt-db
 
