@@ -165,7 +165,7 @@ public class DebugController {
             String getMessageResponseContent = getMessageResponse.getValue().getContent();
             getMessageResponseContent = getMessageResponseContent.replaceAll("&lt;", "<");
             getMessageResponseContent = getMessageResponseContent.replaceAll("&gt;", ">");
-            ObjectFactory objectFactory = new ObjectFactory();
+            
             JAXBElement<ForceRecallVisitResponse> forceRecallVisitResponse = (JAXBElement<ForceRecallVisitResponse>) u
                     .unmarshal(new StringReader(getMessageResponseContent));
             allJobIds.add(forceRecallVisitResponse.getValue().getIdentity().getReference());
