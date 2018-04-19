@@ -4,13 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>uk.gov.ons.fwmt</groupId>
-    <artifactId>fwmt-csv-uploader</artifactId>
+    <artifactId>fwmt-legacy-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>fwmt-csv-uploader</name>
-    <description>A web-app designed to allow the upload of CSV files to a TotalMobile server</description>
-    <url>https://github.com/ONSdigital/fwmt-csv-uploader</url>
+    <name>fwmt-legacy-gateway</name>
+    <description>The Fieldwork Management Tool Gateway for interfacing between the Social Survey legacy system and the Fieldwork Management Tool</description>
+    <url>https://github.com/ONSdigital/fwmt-legacy-gateway</url>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
