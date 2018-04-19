@@ -1,5 +1,10 @@
 server:
-  port: 9091
+  port: 443
+  ssl:
+    key-store: keystore.p12
+    key-store-password: password
+    keyStoreType: PKCS12
+    keyAlias: fwmt
 
 project:
   basedir: ${basedir}
