@@ -1,0 +1,41 @@
+server:
+  port: 9091
+
+project:
+  basedir: ${basedir}
+
+totalmobile:
+  url: "https://ons.totalmobile.co.uk"
+  message-queue-service: "/Live/Services/TM/v20/Messaging/MessageQueueWs.asmx"
+  username: ""
+  password: ""
+
+security.user:
+  name: user
+  password: user
+
+spring.http.multipart:
+  max-file-size: 12800MB
+  max-request-size: 12800MB
+
+logging:
+  level:
+    root: WARN
+    uk.gov.ons.fwmt: DEBUG
+    org.springframework.security: ERROR
+    org.springframework.web: ERROR
+    org.hibernate: ERROR
+    org.apache.commons.dbcp2: ERROR
+  file: target/SpringErrors/spring.log
+  pattern:
+    console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
+    file: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
+
+spring.datasource:
+  url: jdbc:postgresql://localhost:5433/postgres
+  driver-class-name: org.postgresql.Driver
+  username: postgres
+  password: postgres
+
+docker.skip: true
+docker.imagePullPolicy: Never

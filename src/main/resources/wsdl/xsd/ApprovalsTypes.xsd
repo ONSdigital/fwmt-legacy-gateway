@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ApprovalsTypes" elementFormDefault="qualified"
+           targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2012/11/ApprovalsTypes.xsd"
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2012/11/ApprovalsTypes.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+           xmlns:tmcm="http://schemas.consiliumtechnologies.com/mobile/2009/09/CompositeMessages.xsd"
+           xmlns:tmcmm="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonMessages.xsd"
+           xmlns:tmvt="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd"
+           xmlns:tmvm="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsMessages.xsd"
+           xmlns:tmmt="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsTypes.xsd"
+           xmlns:tmmm="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsMessages.xsd"
+           xmlns:tmft="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd"
+           xmlns:tmfm="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsMessages.xsd"
+           xmlns:tmtsm="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetMessages.xsd"
+           xmlns:tmtst="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetTypes.xsd"
+           >
+  <xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             schemaLocation="CommonTypes.xsd"/>
+  <xs:import id="tmcm" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/09/CompositeMessages.xsd"
+           schemaLocation="CompositeMessages.xsd"/>
+  <xs:import id="tmcmm" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonMessages.xsd"
+           schemaLocation="CommonMessages.xsd"/>
+  <xs:import id="tmvm" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsMessages.xsd"
+         schemaLocation="VisitsMessages.xsd" />
+  <xs:import id="tmvt" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd"
+             schemaLocation="VisitsTypes.xsd" />
+  <xs:import id="tmmm" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsMessages.xsd"
+         schemaLocation="MaterialsMessages.xsd" />
+  <xs:import id="tmmt" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsTypes.xsd"
+             schemaLocation="MaterialsTypes.xsd" />
+  <xs:import id="tmfm" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsMessages.xsd"
+         schemaLocation="FormsMessages.xsd" />
+  <xs:import id="tmft" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd"
+             schemaLocation="FormsTypes.xsd" />
+  <xs:import id="tmtsm" namespace="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetMessages.xsd"
+           schemaLocation="TimesheetMessages.xsd" />
+  <xs:import id="tmtst" namespace="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetTypes.xsd"
+         schemaLocation="TimesheetTypes.xsd" />
+
+  <xs:element name="TriggerMessage" type="TriggerMessageType"/>
+  <xs:complexType name="TriggerMessageType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the message which triggered an Approval for authorisation
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Id" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the Message
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CorrelationId" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Identifier used to relate messages to each other.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ApplicationKey" type="xs:string" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The application specific key given to the Message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="QueueName" type="xs:string" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The Queue the message was sent to.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="MessageBody" type="TriggerMessageBodyType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Triggering message content
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="TriggerMessageBody" type="TriggerMessageBodyType"/>
+  <xs:complexType name="TriggerMessageBodyType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a choice of message body types
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="1" maxOccurs="1">
+      <xs:element name="CompositeVisitRequestBody" type="tmcm:CompositeVisitRequest"/>
+      <xs:element name="SubmitFormResultRequestBody" type="tmfm:SubmitFormResultRequest">
+        <xs:annotation>
+          <xs:documentation>
+            Not currently supported - for future implementation.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!--extend with other message types as required--> 
+      <!--Note: when extending or making types supported, add to supportedTriggerMessageTypes list in ApprovalsMessageBuilder, and potentially to unit tests for service and message-->
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="NoteCollection" type="NoteCollectionType"/>
+  <xs:complexType name="NoteCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of Approval transaction notes
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Note" type="NoteType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of Notes
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Note" type="NoteType"/>
+  <xs:complexType name ="NoteType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an Approval transaction note
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="UserName" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            UserName of the user who added the note
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="64"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Date" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date the note was added
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Detail" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The added note
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Authorisation" type="AuthorisationType"/>
+  <xs:complexType name="AuthorisationType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an Approvals authorisation
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="State" type="TransactionStateType" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Authorised state of the Approval
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AuthorisingUserName" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            UserName of the person authorising the Approval
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="64"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Date" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date of authorisation of the Approval
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="TransactionState" type="TransactionStateType"/>
+  <xs:simpleType name ="TransactionStateType">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies the State of an Approval
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="New" />
+      <xs:enumeration value="Approved"/>
+      <xs:enumeration value="Rejected"/>
+      <xs:enumeration value="Deleted"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

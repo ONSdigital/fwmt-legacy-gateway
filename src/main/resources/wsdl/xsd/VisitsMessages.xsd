@@ -1,0 +1,712 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="VisitsMessages" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsMessages.xsd" elementFormDefault="qualified" 
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsMessages.xsd" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:tmvt="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd" 
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+           xmlns:tmft="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd">
+	<xs:import id="tmvt" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd" 
+             schemaLocation="VisitsTypes.xsd" />
+  <xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             schemaLocation="CommonTypes.xsd"/>
+  <xs:import id="tmft" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd"
+          schemaLocation="FormsTypes.xsd"/>
+
+  <xs:complexType name="CompleteVisitRequestCollectionType">
+    <xs:sequence>
+      <xs:element name="Completion" type="CompleteVisitRequest" minOccurs="0" maxOccurs="unbounded">
+        
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="UpdateVisitRequestCollectionType">
+    <xs:sequence>
+      <xs:element name="Update" type="UpdateVisitRequest" minOccurs="0" maxOccurs="unbounded">
+
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="UpdateVisitStatusRequestCollectionType">
+    <xs:sequence>
+      <xs:element name="UpdateStatus" type="UpdateVisitStatusRequest" minOccurs="0" maxOccurs="unbounded">
+
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>  
+
+  <xs:element name="CreateVisitRequest" type="CreateVisitRequest"/>
+  <xs:complexType name="CreateVisitRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Used to create a Visit.  Note: this method of updating visit has been deprecated, please use UpdateVisitRequest message instead.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Visit" type="tmvt:VisitType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Visit which is to be created.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="CreateVisitResponse" type="CreateVisitResponse"/>
+  <xs:complexType name="CreateVisitResponse">
+    <xs:annotation>
+      <xs:documentation>
+        Response to a CreateVisitRequest
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="MessageId" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            This is the MessageID of the message created in response to a CreateVisitRequest. It can be used to track the progress of the
+            Message through the Messaging System.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="UpdateVisitRequest" type="UpdateVisitRequest"/>
+  <xs:complexType name="UpdateVisitRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates that the Visit has been updated. The Server generated message is now depreciated so this message will only be generated on the client. Please use the UpdateVisitScheduleRequest or the UpdateVisitHeaderRequest message from the server. Note: Assets are not supplied in the updated Visit contact information. It will only update what is being provided in the message and no update will be carried out for any completed visit.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Visit" type="tmvt:VisitType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Visit current state.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="UpdateVisitStatusRequest" type="UpdateVisitStatusRequest"/>
+  <xs:complexType name="UpdateVisitStatusRequest" >
+    <xs:annotation>
+      <xs:documentation>
+        Sent to indicate a status change of a visit.  E.g. Visit could have changed from onway to arrived
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="UpdateVisitStatusBase">
+        <xs:sequence>
+          <xs:element name="Lines" type="xs:int" maxOccurs="unbounded" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                The number of each line upon which the status update applies
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="CompleteVisitRequest" type="CompleteVisitRequest"/>
+  <xs:complexType name="CompleteVisitRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates that a Visit has been completed.  The updated state of the Visit is contained within.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="UpdateVisitStatusBase">
+      <xs:sequence>
+        <xs:element name="SystemDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Date the Visit was actually completed.  This is the date recorded by the system and not the user selected date.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IsFullyComplete" type="xs:boolean" minOccurs="1" maxOccurs="1" default="false">
+          <xs:annotation>
+            <xs:documentation>
+              Indicates whether the Visit has been fully completed.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Lines" type="tmvt:LineCollectionType" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Lines of the Visit which are being completed.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Appointment" type="tmvt:AppointmentType" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Supplies information about the appointment for the Visit.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Tasks" type="tmvt:TaskCollectionType" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Tasks of the Visit which have been completed.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="RecallVisitRequestBase" type="RecallVisitRequestBase"/>
+  <xs:complexType name="RecallVisitRequestBase" abstract="true">
+    <xs:annotation>
+      <xs:documentation>
+        Requests that the visit with the specified reference is recalled from the specified user.  
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity"  minOccurs="1" maxOccurs="1" type="tmvt:VisitIdentityType">
+        <xs:annotation>
+          <xs:documentation>
+            Identity for the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Lines">
+        <xs:complexType>
+          <xs:annotation>
+            <xs:documentation>
+              Collection of Line numbers which are to be recalled
+            </xs:documentation>
+          </xs:annotation>
+          <xs:sequence>
+            <xs:element name="Line" type="xs:int" minOccurs="0" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>
+                  Indicates the line number of each line to be recalled.
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="RecallVisitResponseBase" type="RecallVisitResponseBase"/>
+  <xs:complexType name="RecallVisitResponseBase" abstract="true">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates the response to a RecallVisitRequest.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity"  minOccurs="1" maxOccurs="1" type="tmvt:VisitIdentityType">
+        <xs:annotation>
+          <xs:documentation>
+            Identity for the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Success" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates whether the recall was successful
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Date" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The DateTime that the recall was processed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Notes" minOccurs="0" maxOccurs="1" type="tmct:ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Notes associated with the recall process.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Lines" type="tmvt:LineNumberCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The number of each line upon which the recall applies.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ForceRecallVisitRequest" type="ForceRecallVisitRequest"/>
+  <xs:complexType name="ForceRecallVisitRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Requests the recall of the Visit with the specified reference.  The Visit is recalled irrespective of its current status.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="RecallVisitRequestBase">
+        <xs:sequence>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="ForceRecallVisitResponse" type="ForceRecallVisitResponse"/>
+  <xs:complexType name="ForceRecallVisitResponse">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates the response for a ForceRecallVisitRequest
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="RecallVisitResponseBase">
+        <xs:sequence>
+          <xs:element name="RecallType" type="tmvt:VisitRecallType"  minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The type of recall performed e.g. Full/Partial
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="RequestVisitRequest" type="RequestVisitRequest"/>
+  <xs:complexType name="RequestVisitRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Request for a new visit from the specified user
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Date" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            DateTime that the request was made
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="User" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            User that requested the Visit
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Associated WorkType for the Requested Visit.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="RequestVisitResponse" type="RequestVisitResponse"/>
+  <xs:complexType name="RequestVisitResponse">
+    <xs:annotation>
+      <xs:documentation>
+        Response to a request for a new visit
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Response" type="tmvt:RequestVisitResponseType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Response information
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="UpdateVisitStatusBase" type="UpdateVisitStatusBase"/>
+  <xs:complexType name="UpdateVisitStatusBase" abstract="true">
+    <xs:sequence>
+      <xs:element name="Identity" type="tmvt:VisitIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Identity for the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Date" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date the Visit's status was changed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ProcessReference" minOccurs="1" maxOccurs="1" type="tmct:ShortReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            The reference of the process used by the status change.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ReasonCode" minOccurs="0" maxOccurs="1" type="tmct:ShortReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            The reference of the reason code for the status change.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ReasonDescription" minOccurs="0" maxOccurs="1" type="tmct:ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            The description of the reason code for the status change.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>      
+      <xs:element name="Notes" minOccurs="0" maxOccurs="1" type="tmct:ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Notes associated with the status change.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="FromStatus" minOccurs="1" maxOccurs="1" type="tmct:ShortReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            The code of the from status for the status change.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ToStatus" minOccurs="1" maxOccurs="1" type="tmct:ShortReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            The code of the to status for the status change.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Actual" type="tmct:DateTimeRangeType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The actual start and end time for the Visit as captured by the user.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Action" type="tmvt:StatusActionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The status action for the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ReadVisitRequest" type="ReadVisitRequest"/>
+  <xs:complexType name="ReadVisitRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Sent when a Visit is read on a device.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Visit" type="tmvt:VisitIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Identity for the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ReadDate" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date time on device when visit was marked as read.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AddVisitTasksRequest" type="AddVisitTasksRequest"/>
+  <xs:complexType name="AddVisitTasksRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Used to add tasks to a Visit.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="tmvt:VisitIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Identity for the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Tasks" type="tmvt:TaskCollectionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Tasks added to the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="HasPendingTasks" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates whether visit has any pending tasks.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>      
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="UpdateVisitScheduleBase" type="UpdateVisitScheduleBase"/>
+  <xs:complexType name="UpdateVisitScheduleBase" abstract="true">
+    <xs:sequence>
+      <xs:element name="Identity"  minOccurs="1" maxOccurs="1" type="tmvt:VisitIdentityType">
+        <xs:annotation>
+          <xs:documentation>
+            Identity for the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Schedule" type="tmct:DateTimeRangeType" minOccurs="0" maxOccurs="1" nillable="true">
+        <xs:annotation>
+          <xs:documentation>
+            Updated schedule details associated with the Visit. Not supplying a Schedule will remove the scheduled dates from a visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="UpdateVisitScheduleRequest" type="UpdateVisitScheduleRequest"/>
+  <xs:complexType name="UpdateVisitScheduleRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Request to update the scheduled start and end time of a Visit.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="UpdateVisitScheduleBase">
+        <xs:sequence>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:element name="ServerUpdateVisitScheduleNotification" type="ServerUpdateVisitScheduleNotification"/>
+  <xs:complexType name="ServerUpdateVisitScheduleNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notification to indicate that the scheduled start and end time of a Visit has been changed by the server.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="UpdateVisitScheduleBase">
+        <xs:sequence>
+          <xs:element name="Timestamp" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The date when the schedule was applied on the server.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="ClientUpdateVisitScheduleNotification" type="ClientUpdateVisitScheduleNotification"/>
+  <xs:complexType name="ClientUpdateVisitScheduleNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notification to indicate that the scheduled start and end time of a Visit has been changed by a user.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ServerUpdateVisitScheduleNotification">
+        <xs:sequence>
+          <xs:element name="ClientTimestamp" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The date when the schedule was updated on the user's device.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="UpdateVisitHeaderBase" type="UpdateVisitHeaderBase"/>
+  <xs:complexType name="UpdateVisitHeaderBase" abstract="true">
+    <xs:annotation>
+      <xs:documentation>
+        Base Visit Header update message containing the VisitType fields which may be amended, and the Visit Identity.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity"  minOccurs="1" maxOccurs="1" type="tmvt:VisitIdentityType">
+        <xs:annotation>
+          <xs:documentation>
+            Identity for the Visit. This is intended only to identify the Visit, not to request or indicate amendment of any Identity fields.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ClientReference" minOccurs="0" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Updated additional reference for the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" minOccurs="0" maxOccurs="1" type="tmct:LongTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Updated text description for the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Property" type="tmct:ContactUpdateType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated contact information for the property associated with the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PrintedDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated date on which the Visit was printed in an external system.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ReceivedDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated date on which the Visit was received in an external system.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ResponseDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated value of response date for the Visit provided by an external system.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="RequiredDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated value of required date for the Visit provided by an external system.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Appointment" type="tmvt:AppointmentUpdateType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated Appointment details associated with the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>    
+      <xs:element name="Schedule" type="tmct:DateTimeRangeType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated schedule details associated with the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Priority" minOccurs="0" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Updated priority of the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Origin" minOccurs="0" maxOccurs="1" type="tmct:ShortReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Updated value indicating the external system from which the Visit originates.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SpecialInstructions" minOccurs="0" maxOccurs="1" type="tmct:LongTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Updated additional text associated with the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CatalogueReference" minOccurs="0" maxOccurs="1" type="tmct:ShortReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Updated identifier for the catalogue for any coded items associated with the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AdditionalProperties" type="tmvt:AdditionalPropertyCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated version of additional properties associated with the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Duration" type="xs:int" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Expected duration of the Visit in minutes.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="UpdateVisitHeaderRequest" type="UpdateVisitHeaderRequest"/>
+  <xs:complexType name="UpdateVisitHeaderRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Request to update selected Visit header information and/or Visit Additional Properties. It will only update what is being provided in the message, if other information is not provided it will not replace these with nulls. However, please note: If any Visit Additional Properties are to updated, all the current Visit Additional Properties must be supplied. Similarly, if any Property Address lines are to be updated, all current lines should be provided. Also, no update will be carried out for any completed visit.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="UpdateVisitHeaderBase">
+        <xs:sequence>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="UpdateVisitHeaderNotification" type="UpdateVisitHeaderNotification"/>
+  <xs:complexType name="UpdateVisitHeaderNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notification to indicate that selected Visit header information and/or Visit Additional Properties have been updated.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="UpdateVisitHeaderBase">
+        <xs:sequence>
+          <xs:element name="Timestamp" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The date when the update was applied on the server.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+</xs:schema>

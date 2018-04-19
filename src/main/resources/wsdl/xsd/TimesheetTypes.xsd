@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema id="TimesheetTypes"
+           targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetTypes.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetTypes.xsd"
+           xmlns:mstns="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetTypes.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd">
+  <xs:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             schemaLocation="CommonTypes.xsd" id="tmct" />
+
+  <xs:complexType name="TimesheetEntryType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a timesheet entry.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="StartTime" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Start time of the timesheet entry.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="EndTime" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            End time of the timesheet entry.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="JobReference" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Job reference of the timesheet entry.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Notes" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Notes for the timesheet entry.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ActualStartTime" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Actual start time of the timesheet entry.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ActualEndTime" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Actual end time of the timesheet entry.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="IsOvertime" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if this timesheet entry is overtime.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Guid" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier of the timesheet entry.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ParentElementGuid" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Identifier of the parent element.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TimeType" type="TimeTypeType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Time type of the timesheet entry.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Timesheet" type="TimesheetType" />
+  <xs:complexType name="TimesheetType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a timesheet.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Guid" type="xs:string" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier of the timesheet.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="User" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            User identity of the user who this timesheet is for.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Submitted" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if this timesheet is submitted or not.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SubmittedDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date timesheet was submitted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Entries">
+        <xs:annotation>
+          <xs:documentation>
+            The timesheet entries.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Item" type="TimesheetEntryType" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="TimeTypeType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a time type.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Code" type="xs:string" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Code to identify the time type.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Description of the time type.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

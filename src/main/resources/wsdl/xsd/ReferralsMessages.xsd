@@ -1,0 +1,330 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema id="Referrals"
+           targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2013/07/ReferralsMessages.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2013/07/ReferralsMessages.xsd"
+           xmlns:tmrt="http://schemas.consiliumtechnologies.com/mobile/2013/07/ReferralsTypes.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:import id="tmrt" namespace="http://schemas.consiliumtechnologies.com/mobile/2013/07/ReferralsTypes.xsd"
+             schemaLocation="ReferralsTypes.xsd" />
+
+  <xs:element name="CreateReferralRequest" type="CreateReferralRequest" />
+  <xs:complexType name="CreateReferralRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Used to Create a new Referral.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Referral" type="tmrt:ReferralType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The referral to be created.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Appointments" type="tmrt:AppointmentCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Appointments to be created attached to this referral.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="CreatePatientRequest" type="CreatePatientRequest" />
+  <xs:complexType name="CreatePatientRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Used to Create a new Patient.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Patient" type="tmrt:PatientType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The patient to be created.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>      
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="UpdatePatientRequest" type="UpdatePatientRequest" />
+  <xs:complexType name="UpdatePatientRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Used to update the details of an existing Patient. Updating of additional properties will not be supported.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Patient" type="tmrt:PatientType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The patient to be updated.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:element name="UpdateReferralRequest" type="UpdateReferralRequest" />
+  <xs:complexType name="UpdateReferralRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Used to Update a Referral.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Referral" type="tmrt:ReferralType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The referral to be updated and the values to update to.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SaveReferralNotification" type="SaveReferralNotification" />
+  <xs:complexType name="SaveReferralNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Created when a Referral is changed except in the case of a discard.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Referral" type="tmrt:ReferralType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The identity of the referral that has changed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SavedBy" type="tmrt:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who updated the referral.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="SavePatientNotification" type="SavePatientNotification" />
+  <xs:complexType name="SavePatientNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Created when a Patient is changed.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Patient" type="tmrt:PatientType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The identity of the patient that has changed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SavedBy" type="tmrt:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who updated the patient.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="UpdatePatientNotification" type="UpdatePatientNotification" />
+  <xs:complexType name="UpdatePatientNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Created when a Patient has been changed.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="tmrt:PatientIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The identity of the patient that has changed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UpdatedBy" type="tmrt:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who updated the patient.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="UpdatePatientIdentityNotification" type="UpdatePatientIdentityNotification" />
+  <xs:complexType name="UpdatePatientIdentityNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Created when a Patient's NHS Number or Client ID is changed.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="OldIdentity" type="tmrt:PatientIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The old identity of the patient.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="NewIdentity" type="tmrt:PatientIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The new identity of the patient.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UpdatedBy" type="tmrt:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who updated the patient.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DischargeReferralRequest" type="DischargeReferralRequest" />
+  <xs:complexType name="DischargeReferralRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Used to Discharge a Referral.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="tmrt:ReferralIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The identity of the referral whose status has changed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DischargeReferralNotification" type="DischargeReferralNotification" />
+  <xs:complexType name="DischargeReferralNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Created when a Referral is Discharged.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="tmrt:ReferralIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The identity of the referral whose status has changed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StatusChange" type="tmrt:StatusType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The status change that has occurred.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ChangedBy" type="tmrt:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who changed the status.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType> 
+
+  <xs:element name="CreateAppointmentRequest" type="CreateAppointmentRequest" />
+  <xs:complexType name="CreateAppointmentRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Used to Create a new Appointment against an existing Referral.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Appointment" type="tmrt:ReferralAppointmentType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The appointment to be created.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="SaveAppointmentNotification" type="SaveAppointmentNotification" />
+  <xs:complexType name="SaveAppointmentNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Created when an Appointment is changed.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Appointment" type="tmrt:ReferralAppointmentType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The appointment that has been changed with its current values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SavedBy" type="tmrt:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who made the changes.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DeleteAppointmentNotification" type="DeleteAppointmentNotification" />
+  <xs:complexType name="DeleteAppointmentNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Created when an Appointment is Deleted.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="tmrt:AppointmentIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The identity of the appointment that has been deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletedBy" type="tmrt:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who deleted the Appointment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletionReason" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reference indicating the reason the Appointment was deleted, mandatory if Appointment Deletion Reason Codes exist.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletionNotes" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Additional notes indicating the reason the Appointment was deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+  <xs:schema id="ShellMessages" 
+             targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/ShellMessages.xsd" 
+             elementFormDefault="qualified" 
+             xmlns="http://schemas.consiliumtechnologies.com/mobile/2009/03/ShellMessages.xsd" 
+             xmlns:mstns="http://schemas.consiliumtechnologies.com/mobile/2009/01/ShellMessages.xsd" 
+             xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+                schemaLocation="CommonTypes.xsd"/>
+    
+    <xs:complexType name="DataExportRequest">
+      <xs:annotation>
+        <xs:documentation>
+          Request sent when a user chooses to export a device database. This message is sent to indicate that a user is exporting.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Username" type="xs:string" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              User who did the export.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Time" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Date and time of the export.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PIN" type="xs:string" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              The PIN that was used to encrypt the exported data.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Filename" type="xs:string" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              The filename that was used when exporting the data.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Text" type="xs:string" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Additional Text about the data export.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:element name="SigninUserRequest" type="SigninUserRequest"/>
+    <xs:complexType name="SigninUserRequest">
+      <xs:annotation>
+        <xs:documentation>
+          Defines a message to indicate when a user has signed in.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="User"  minOccurs="1" maxOccurs="1" type="tmct:UserType" >
+          <xs:annotation>
+            <xs:documentation>
+              User who signed in.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Date" minOccurs="1" maxOccurs="1" type="xs:dateTime">
+          <xs:annotation>
+            <xs:documentation>
+              Date and Time the user signed in.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>        
+      </xs:sequence>
+    </xs:complexType>
+
+  </xs:schema>

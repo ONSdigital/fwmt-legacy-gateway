@@ -1,0 +1,1922 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema id="CommonTypes"
+           targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:element name="Criteria" type="CriteriaType" />
+  <xs:complexType name="CriteriaType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines search criteria.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Property" maxOccurs="1" minOccurs="1" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Property that the criteria relates to.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Value" type="xs:string" maxOccurs="1" minOccurs="1">
+        <xs:annotation>
+          <xs:appinfo source="maml">
+            <table>
+              <tableHeader>
+                <row>
+                  <entry>Wildcard</entry>
+                  <entry>Example</entry>
+                  <entry>Explaination</entry>
+                </row>
+              </tableHeader>
+              <row>
+                <entry>"*","%"</entry>
+                <entry>John*</entry>
+                <entry>Finds any string beginning with the letters “John”.</entry>
+              </row>
+              <row>
+                <entry></entry>
+                <entry>*Smith</entry>
+                <entry>Finds any string ending with the letters “Smith”.</entry>
+              </row>
+              <row>
+                <entry></entry>
+                <entry>*Sm*</entry>
+                <entry>Finds any string containing the letters “Sm”.</entry>
+              </row>
+              <row>
+                <entry>“?”</entry>
+                <entry>?BC</entry>
+                <entry>Finds any string three characters long that has “B” and “C” as the second and third characters respectively.</entry>
+              </row>
+              <row>
+                <entry>X:Y</entry>
+                <entry>10:56</entry>
+                <entry>The “range” wildcard finds any value between 10 and 56 inclusive. This wildcard can also be used with dates and to a lesser extent strings.</entry>
+              </row>
+              <row>
+                <entry>=</entry>
+                <entry>10</entry>
+                <entry>Finds any value equal to 10.</entry>
+              </row>
+              <row>
+                <entry>=</entry>
+                <entry>=</entry>
+                <entry>Finds NULL values i.e. blank fields.</entry>
+              </row>
+              <row>
+                <entry>!=</entry>
+                <entry>!=</entry>
+                <entry>Finds any value that is not NULL i.e. non-blank fields.</entry>
+              </row>
+              <row>
+                <entry>></entry>
+                <entry>>10</entry>
+                <entry>Finds any value greater than 10.</entry>
+              </row>
+              <row>
+                <entry>&lt;</entry>
+                <entry>&lt;10</entry>
+                <entry>Finds any value less than 10.</entry>
+              </row>
+              <row>
+                <entry>>=</entry>
+                <entry>>=10</entry>
+                <entry>Finds that is greater than or equal to 10.</entry>
+              </row>
+              <row>
+                <entry>&lt;=</entry>
+                <entry>&lt;=10</entry>
+                <entry>Finds any value that is less than, or equal to, 10.</entry>
+              </row>
+              <row>
+                <entry>&lt;></entry>
+                <entry>&lt;>10 or !=10</entry>
+                <entry>Finds any value not equal to 10.</entry>
+              </row>
+              <row>
+                <entry>|</entry>
+                <entry>1|2|3</entry>
+                <entry>Finds values 1, 2 or 6.</entry>
+              </row>
+            </table>
+          </xs:appinfo>
+          <xs:documentation>
+            Value to search for. This value can include wild cards - maybe include detail on what is accepted here e.g. range etc
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ParseAs" type="ParseAsType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Type of the Property.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ParseAs" type="ParseAsType" />
+  <xs:simpleType name="ParseAsType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the property types for search Criteria.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="String">
+        <xs:annotation>
+          <xs:documentation>
+            String.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Numeric">
+        <xs:annotation>
+          <xs:documentation>
+            Numeric
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Date">
+        <xs:annotation>
+          <xs:documentation>
+            Date
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DateTime">
+        <xs:annotation>
+          <xs:documentation>
+            DateTime
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="Document" type="DocumentType" />
+  <xs:complexType name="DocumentType">
+    <xs:annotation>
+      <xs:documentation>
+        Holds the location of a document its thumbnail
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Location" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Location of the document.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ThumbnailLocation" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Location of the thumbnail for the document.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Address" type="AddressType" />
+  <xs:complexType name="AddressType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an Address.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Name" maxOccurs="1" minOccurs="0" type="ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Name of the Address.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Lines">
+        <xs:annotation>
+          <xs:documentation>
+            List of address lines that make up the address.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="AddressLine" maxOccurs="5" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation>
+                  Represents a line of the address.
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:maxLength value="50" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="HouseNo" type="ShortReferenceType" maxOccurs="1" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            House Number for the address. (Reserved for future use)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PostCode" maxOccurs="1" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            PostCode for the address.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="10" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="GeoX" type="xs:float" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            X mapping co-ordinate for the Address. (Equivalent of latitude)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="GeoY" type="xs:float" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Y mapping co-ordinate for the Address. (Equivalent of longitude)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="URL" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            URL associated with the Address. (Reserved for future use. If the address is part of a ContactType, use ContactType.URL property instead)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="User" type="UserType" />
+  <xs:complexType name="UserType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the identity of a User. You must supply at least one of the available properties to identify the User.
+        Any attributes (information held as name / value pairs) associated with the user may also be included.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ID" type="xs:int" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identity of a user.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Name" minOccurs="0" maxOccurs="1" type="LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Username.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeviceID" minOccurs="0" maxOccurs="1" type="LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            ID of the device that the user is assigned to.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Attributes" type="AttributeCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of Attributes (name / value pairs) associated with the user.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:element name="UserTypeCollection" type="UserTypeCollectionType" />
+  <xs:complexType name="UserTypeCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Collection of users.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="User" type="UserType" maxOccurs="unbounded" minOccurs="1">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DateTimeRange" type="DateTimeRangeType" />
+  <xs:complexType name="DateTimeRangeType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a DateTime Range.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="StartDate" type="xs:dateTime" maxOccurs="1" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The start of the DateTime range.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="EndDate" type="xs:dateTime" maxOccurs="1" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The end of the DateTime range.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Message" type="MessageType" />
+  <xs:complexType name="MessageType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Message.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Severity" type="SeverityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Severity of the message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Time" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Time that the message was created.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Source" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Source of the message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Text" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Text description of the message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="More" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            More information on the message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Severity" type="SeverityType" />
+  <xs:simpleType name="SeverityType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the available levels of Severity
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Information">
+        <xs:annotation>
+          <xs:documentation>
+            Information
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Warning">
+        <xs:annotation>
+          <xs:documentation>
+            Warning
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Error">
+        <xs:annotation>
+          <xs:documentation>
+            Error
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="OperationResult" type="OperationResultType" />
+  <xs:simpleType name="OperationResultType">
+    <xs:annotation>
+      <xs:documentation>
+        Indcates the current state of a Message based operation.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Pending">
+        <xs:annotation>
+          <xs:documentation>
+            Pending
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Complete">
+        <xs:annotation>
+          <xs:documentation>
+            Complete
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Deleted">
+        <xs:annotation>
+          <xs:documentation>
+            Deleted
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Error">
+        <xs:annotation>
+          <xs:documentation>
+            Error
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="Contact" type="ContactType" />
+  <xs:complexType name="ContactType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Contact.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Guid" type="GuidType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Internal unique identifier for the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Type" type="LongReferenceType" default="JM_PROPERTY" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Classification for the Contact
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Reference" type="LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            External unique identifier for the Contact
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ParentReference" type="LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            External unique identifier for the parent Contact for this Contact
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Name" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Name of the Contact
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Title" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Title for the Contact
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Address" type="AddressType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Address of the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Phone" type="PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Phone number of the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkPhone" type="PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Work Phone number of the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="MobilePhone" type="PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Mobile Phone number of the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Email" type="ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Email address of the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="URL" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            URL of the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Assets" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Now obsolete, use AssetTasks if Assets are required for a Visit.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Asset" type="AssetType" maxOccurs="unbounded" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation>
+                  Description and identification details of an Asset.
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ExtendedProperties" type="ContactExtensionType" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Extended information about the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ContactExtension" type="ContactExtensionType" />
+  <xs:complexType name="ContactExtensionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Contact Extension Type for holding additonal infomation about a contact.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="PreferredName" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A preferred name for the contact that could be different to their legal name.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      <xs:element name="ID" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            An ID that is used to identify the contact in an external system.
+          </xs:documentation>
+        </xs:annotation>
+      <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="IDLabel" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A label used to identify the purpose of the ID value supplied. 
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="DateOfBirth" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The date of birth of the contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DateOfDeath" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The date of death of the contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Gender" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The gender of the contact.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="NameValuePair" type="NameValuePairType" />
+  <xs:complexType name="NameValuePairType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a type that consists of a Name and a Value.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Name of the pair.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Value" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Value of the pair.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="NameValuePairCollection" type="NameValuePairCollectionType" />
+  <xs:complexType name="NameValuePairCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Collection of name value pair items.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Item" type="NameValuePairType" maxOccurs="unbounded" minOccurs="0">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AttributeCollection" type="AttributeCollectionType" />
+  <xs:complexType name="AttributeCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Collection of attributes (name / value pairs).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Attribute" type="NameValuePairType" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="UserInfo" type="UserInfoType" />
+  <xs:complexType name="UserInfoType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a type used to represent the information about a user.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="UserType" maxOccurs="1" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Identity of a user.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Forename" type="LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Forename for the user.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Surname" type="LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Surname for the user.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PhoneNo" type="LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Phone Number for the user.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Email" type="ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Email address for the user.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="JobTitle" type="LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Job title for the user.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Guid" type="GuidType" />
+  <xs:simpleType name="GuidType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Global Unique Identifier.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:length fixed="true" value="36" />
+      <!--TODO : Check this Guid regex is correct -->
+      <!--
+      <xs:pattern value="^[A-Fa-f0-9]{32}$|^({|\\()?[A-Fa-f0-9]{8}-([A-Fa-f0-9]{4}-){3}[A-Fa-f0-9]{12}(}|\\))?$|^({)?[0xA-Fa-f0-9]{3,10}(, {0,1}[0xA-Fa-f0-9]{3,6}){2},{0,1}({)([0xA-Fa-f0-9]{3,4}, {0,1}){7}[0xA-Fa-f0-9]{3,4}(}})$"/>-->
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <xs:element name="AssetTypeCollection" type="AssetTypeCollectionType" />
+  <xs:complexType name="AssetTypeCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        A collection of AssetType objects
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Asset" type="AssetType" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Asset" type="AssetType" />
+  <xs:complexType name="AssetType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Asset.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="DefinitionReference" minOccurs="1" maxOccurs="1" type="LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Each Asset is an instance of a an Asset Definition. The Asset Definition defines the details which can be held against an Asset.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Reference" minOccurs="1" maxOccurs="1" type="LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            The reference of the Asset.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" minOccurs="1" maxOccurs="1" type="ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            The description of the Asset.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Details" type="AssetDetailCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Details of the Asset.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AssetContext" type="AssetContextType" />
+  <xs:complexType name="AssetContextType">
+    <xs:sequence>
+      <xs:element name="Reference" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reference to the context in which the asset is used
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Text" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Description of the context in which the asset is used
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AssetDetail" type="AssetDetailType" />
+  <xs:complexType name="AssetDetailType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an Asset Detail.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="NameValuePairType">
+        <xs:sequence>
+          <xs:element name="Reference" minOccurs="1" maxOccurs="1" type="LongReferenceType">
+            <xs:annotation>
+              <xs:documentation>
+                Unique Asset Detail reference.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="AssetDetailCollection" type="AssetDetailCollectionType" />
+  <xs:complexType name="AssetDetailCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Collection of Asset Detail items.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Item" type="AssetDetailType" maxOccurs="unbounded" minOccurs="0">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ShortReference" type="ShortReferenceType" />
+  <xs:simpleType name="ShortReferenceType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Short Reference.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="10" />
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <xs:element name="LongReference" type="LongReferenceType" />
+  <xs:simpleType name="LongReferenceType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Long Reference.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="50" />
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <xs:element name="LongReferenceCollection" type="LongReferenceCollectionType" />
+  <xs:complexType name="LongReferenceCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        A collection of LongReferenceType objects
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Ref" type="LongReferenceType" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:element name="ExtraLongReference" type="ExtraLongReferenceType" />
+  <xs:simpleType name="ExtraLongReferenceType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an extra Long Reference of 100 chars.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="100" />
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <xs:element name="ExtraLongReferenceCollection" type="ExtraLongReferenceCollectionType" />
+  <xs:complexType name="ExtraLongReferenceCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        A collection of LongReferenceType objects
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Ref" type="ExtraLongReferenceType" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:element name="ShortText" type="ShortTextType" />
+  <xs:simpleType name="ShortTextType">
+    <xs:annotation>
+      <xs:documentation>
+        Define Short Text.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="255" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="LongText" type="LongTextType" />
+  <xs:simpleType name="LongTextType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines Long Text.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="2048" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="PhoneNumber" type="PhoneNumberType" />
+  <xs:simpleType name="PhoneNumberType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Phone Number.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="20" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="WorkTypeReference" type="WorkTypeReferenceType" />
+  <xs:simpleType name="WorkTypeReferenceType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a WorkType Reference.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="20" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="WorkTypeReferenceCollection" type="WorkTypeReferenceTypeCollectionType" />
+  <xs:complexType name="WorkTypeReferenceTypeCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        A collection of WorkType references
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Ref" type="WorkTypeReferenceType" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="BinaryContent" type="BinaryContentType" />
+  <xs:complexType name="BinaryContentType">
+    <xs:annotation>
+      <xs:documentation>
+        Container for binary content.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Content" type="xs:base64Binary" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Binary contents.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="MimeType" type="MimeType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            MimeType of the binary contents.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Attachment" type="AttachmentType" />
+  <xs:complexType name="AttachmentType">
+    <xs:annotation>
+      <xs:documentation>
+        Container for binary content.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Content" type="xs:base64Binary" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Binary contents of the attachment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AttachmentName" type="xs:string" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Name of the attachment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+   <xs:element name="AttachmentCollection" type="AttachmentCollectionType" />
+  <xs:complexType name="AttachmentCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        A collection of AttachmentType objects
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Attachment" type="AttachmentType" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="BinaryContentCollection" type="BinaryContentCollectionType" />
+  <xs:complexType name="BinaryContentCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        A collection of BinaryContentType objects
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Item" type="BinaryContentType" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="MimeType" type="MimeType" />
+  <xs:simpleType name="MimeType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the mime-type of Binary Content.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="List" type="ListType" />
+  <xs:complexType name="ListType">
+    <xs:annotation>
+      <xs:documentation>
+        A List of items
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Guid" type="GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for a list.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Reference" type="LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reference of the list.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" type="ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Description of the list.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Active" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Active status of the list.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Offline" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates whether client should cache the list for offline use.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ShowReference" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates whether the client should show the reference for the items within the list.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ListCollection" type="ListCollectionType" />
+  <xs:complexType name="ListCollectionType">
+    <xs:sequence>
+      <xs:element name="List" type="ListType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ListItem" type="ListItemType" />
+  <xs:complexType name="ListItemType">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a ListItem.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Guid" type="GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for a list item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Reference" type="LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reference of the list.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" type="LongTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Description of the list.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Active" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Active status of the list.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Score" type="xs:decimal" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Optional Score value of the ListItem
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="HasChildren" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the ListItem has child items.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ListItemCollection" type="ListItemCollectionType" />
+  <xs:complexType name="ListItemCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        A collection of ListItems
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Item" type="ListItemType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ListItemState" type="ListItemStateType" />
+  <xs:simpleType name="ListItemStateType">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies the state of the list item
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="New" />
+      <xs:enumeration value="Deleted" />
+      <xs:enumeration value="Updated" />
+      <xs:enumeration value="Duplicate" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="ListItemUpdate" type="ListItemUpdateType" />
+  <xs:complexType name="ListItemUpdateType">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a list item and the update needed for the item
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ListItem" type="ListItemType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            List Item to be updated
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="OldListItemRef" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            List Item to be updated
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="State" type="ListItemStateType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Current state of the list item
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ParentReference" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Immediate parent List Item of the current item
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ListItemUpdateCollection" type="ListItemUpdateCollectionType" />
+  <xs:complexType name="ListItemUpdateCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        A collection of ListItemUpdates
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ItemUpdate" type="ListItemUpdateType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of List Items with corresponding action/state
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ReasonCode" type="ReasonCodeType" />
+  <xs:complexType name="ReasonCodeType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Reason Code.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Code" type="ShortReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reason Code
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Description
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Reason" type="ReasonType" />
+  <xs:complexType name="ReasonType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Reason.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ReasonCode" type="ReasonCodeType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reason Code
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Notes" type="ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Additional Notes
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Signatory" type="SignatoryType" />
+  <xs:complexType name="SignatoryType">
+    <xs:annotation>
+      <xs:documentation>
+        Identification data for person providing a signature.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Name" type="LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Signatory's name.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Role" type="LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Signatory's role or authority to provide signature.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ApplicationType" type="ApplicationType" />
+  <xs:complexType name="ApplicationType">
+    <xs:annotation>
+      <xs:documentation>
+        A TotalMobile application.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ID" type="xs:int" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The application's ID.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Reference" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The application's reference.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Name" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The name of the application.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Mandatory" type="xs:boolean" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Whether or not the application is mandatory.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AppType" type="AppTypeType" />
+  <xs:simpleType name="AppTypeType">
+    <xs:annotation>
+      <xs:documentation>
+        The type of app.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TM">
+        <xs:annotation>
+          <xs:documentation>
+            TM
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Compliance">
+        <xs:annotation>
+          <xs:documentation>
+            Compliance
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Form">
+        <xs:annotation>
+          <xs:documentation>
+            Form
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Incident">
+        <xs:annotation>
+          <xs:documentation>
+            Incident
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="AdditionalPropertyDefinitionTypes" type="AdditionalPropertyDefinitionTypesType" />
+  <xs:simpleType name="AdditionalPropertyDefinitionTypesType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the types of an additional property definition type.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="String">
+        <xs:annotation>
+          <xs:documentation>
+            String
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="List">
+        <xs:annotation>
+          <xs:documentation>
+            List
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="AdditionalPropertyDefinition" type="AdditionalPropertyDefinitionType" />
+  <xs:complexType name="AdditionalPropertyDefinitionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the elements of a TotalMobile Additional Property Definition.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Guid" type="GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for a Additional Property Definition.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Id" type="xs:int" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            An integer indentifier of the Additional Property Definition.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ParentId" type="xs:int" nillable="true">
+        <xs:annotation>
+          <xs:documentation>
+            An integer indentifier of the property that this Additional Property Definition belongs to.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Name" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Name for the Additional Property.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="MappingPath" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Mapping Path for the Additional Property.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Type" minOccurs="1" maxOccurs="1" type="AdditionalPropertyDefinitionTypesType">
+        <xs:annotation>
+          <xs:documentation>
+            Type of the Additional Property Definition.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SubProperties" type="AdditionalPropertyDefinitionCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Sub-properties of the Additional Property Definition.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Active" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the Additional Property Definition is active or not.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AdditionalPropertyDefinitionCollection" type="AdditionalPropertyDefinitionCollectionType" />
+  <xs:complexType name="AdditionalPropertyDefinitionCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of Additional Properties Definitions.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="AdditionalPropertyDefinition" type="AdditionalPropertyDefinitionType" minOccurs="0"
+                  maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of Additional Property Definitions.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:element name="ReasonCodeItem" type="ReasonCodeItemType" />
+  <xs:complexType name="ReasonCodeItemType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the elements of a ReasonCode.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Guid" type="GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for a ReasonCode.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Code" minOccurs="1" maxOccurs="1" type="ShortReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Code for the ReasonCode.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" minOccurs="0" maxOccurs="1" type="LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Description of the ReasonCode.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Type" minOccurs="0" maxOccurs="1" type="LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Type of the ReasonCode.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ReasonCodeItemCollection" type="ReasonCodeItemCollectionType" />
+  <xs:complexType name="ReasonCodeItemCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of ReasonCodes.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ReasonCodeItem" type="ReasonCodeItemType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of ReasonCodes.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:element name="Bulletin" type="BulletinType" />
+  <xs:complexType name="BulletinType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the elements of a bulletin.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" type="LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique reference for a bulletin. If not provided a reference will be generated for you. When a bulletin is created, if a bulletin with the same reference exists for the users specified it will be updated or created if the users specified do not already have this bulletin.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Category" minOccurs="0" maxOccurs="1" type="LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Category for the bulletin.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Subject" minOccurs="1" maxOccurs="1" type="LongTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Subject of the bulletin.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Action" minOccurs="0" maxOccurs="1" type="LongTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Action of the bulletin, can be any URL. For example a form can be launched by id or form name using the following URL structure: totalmobile://forms/capture/{id} or totalmobile://forms/capture/?formname={test%20form%20name}.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ActionText" type="LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Text to describe the action.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Body" minOccurs="1" maxOccurs="1" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Body of the bulletin in plain text or Markdown format. Html will be rejected.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Payload" minOccurs="0" maxOccurs="1" type="BulletinPayloadItemCollectionType">
+        <xs:annotation>
+          <xs:documentation>
+            Payload of the bulletin. When an action is provided this payload is made available to the action, for example if the action is to fill in a form the payload will be mapped into the form.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Recipients" minOccurs="1" maxOccurs="1" type="UserTypeCollectionType">
+        <xs:annotation>
+          <xs:documentation>
+            Recipients of the bulletin.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="BulletinPayloadItemCollection" type="BulletinPayloadItemCollectionType" />
+  <xs:complexType name="BulletinPayloadItemCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of bulletin payload items.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="BulletinPayloadItem" type="BulletinPayloadItemType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of bulletin payload items.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:element name="BulletinPayloadItem" type="BulletinPayloadItemType" />
+  <xs:complexType name="BulletinPayloadItemType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a bulletin payload item. A payload item can have either a value or a collection of child items.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Name of the item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Value" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Value of the item, not required when items are provided.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Items" minOccurs="0" maxOccurs="1" type="BulletinPayloadItemCollectionType">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of payload items belonging to this item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ContactUpdate" type="ContactUpdateType" />
+  <xs:complexType name="ContactUpdateType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines optional updated details for a Contact.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" type="LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated external unique identifier for the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ParentReference" type="LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated external unique identifier for the parent Contact for this Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Name" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated name of the Contact.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Title" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated title for the Contact.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Address" type="AddressUpdateType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated Address details of the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Phone" type="PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated phone number of the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkPhone" type="PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated Work phone number of the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="MobilePhone" type="PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated mobile phone number of the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Email" type="ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated email address of the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="URL" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated URL of the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    <xs:element name="ExtendedProperties" type="ContactExtensionType" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Extended information about the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AddressUpdate" type="AddressUpdateType" />
+  <xs:complexType name="AddressUpdateType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines optional updated details of an Address.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Name" maxOccurs="1" minOccurs="0" type="ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Updated name of the Address.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Lines">
+        <xs:annotation>
+          <xs:documentation>
+            Updated list of Address lines.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="AddressLine" maxOccurs="5" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation>
+                  A single line of the Address.
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:maxLength value="50" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="PostCode" maxOccurs="1" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            Updated postcode for the Address.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="10" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="GeoX" type="xs:float" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated X mapping co-ordinate for the Address. (Equivalent of latitude)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="GeoY" type="xs:float" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated Y mapping co-ordinate for the Address. (Equivalent of longitude)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+</xs:schema>

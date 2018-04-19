@@ -1,0 +1,10 @@
+applications:
+- name: fwmt-csv-uploader
+  instances: 1
+  timeout: 180
+  host: fwmt-csv-uploader
+  memory: 1024M
+  path: target/fwmt-csv-uploader-0.0.1-SNAPSHOT-exec.jar
+  services:
+  - fwmt-db
+

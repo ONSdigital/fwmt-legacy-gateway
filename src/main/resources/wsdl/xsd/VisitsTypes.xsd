@@ -1,0 +1,1652 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="VisitsTypes" elementFormDefault="qualified"
+           targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd" 
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+           xmlns:tmft="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd">
+  <xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             schemaLocation="CommonTypes.xsd"/>
+  <xs:import id="tmft" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd"
+            schemaLocation="FormsTypes.xsd"/>
+
+  <xs:element name="Visit" type="VisitType"/>
+  <xs:complexType name="VisitType">
+    <xs:annotation>
+      <xs:documentation>        
+        Defines a Visit.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="VisitIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+           Identity of the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ClientReference" minOccurs="0" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            An additional reference for the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" minOccurs="1" maxOccurs="1" type="tmct:LongTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Text description for the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Property" type="tmct:ContactType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Contact information for the property associated with the Visit. (When requesting creation of a visit
+            ParentReference is ignored)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Supervisor" type="tmct:ContactType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Now deprecated. Contact information for the supervisor associated with the Visit. (When requesting creation of a visit
+            ParentReference is ignored). *Note that extended contact for the supervisor will not be stored in DataMart.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Status" minOccurs="0" maxOccurs="1" type="tmct:ShortReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            The current status of the Visit.  This is required for creating a new visit (CreateVisitRequest message).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StatusChangeDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date of the last status change recorded against the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CreatedDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date the Visit was created within TotalMobile.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Retrieved" type="xs:boolean" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the Visit has been retrieved by the TotalMobile client.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="RetrievedDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date the Visit was retrieved by the TotalMobile client.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PrintedDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date on which the Visit was printed in an external system.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ReceivedDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date on which the Visit was received in an external system.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ResponseDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Response date for the Visit provided by an external system.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="RequiredDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Required date for the Visit provided by an external system.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Complete" type="xs:boolean" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the Visit is fully complete.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CompletedDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date on which the Visit was completed in the TotalMobile system.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Appointment" type="AppointmentType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Appointment details associated with the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Schedule" type="tmct:DateTimeRangeType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Schedule details associated with the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Priority" minOccurs="0" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Priority of the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Origin" minOccurs="0" maxOccurs="1" type="tmct:ShortReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates the external system from which the Visit originates and it will defaulted to "UNKNOWN" if it is not supplied.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SpecialInstructions" minOccurs="0" maxOccurs="1" type="tmct:LongTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Additional text associated with the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AdditionalProperties" type="AdditionalPropertyCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Additional properties associated with the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CatalogueReference" minOccurs="0" maxOccurs="1" type="tmct:ShortReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Identifies the catalogue for any coded items associated with the visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Lines" type="LineCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Now obsolete, use Tasks instead.
+          </xs:documentation>
+        </xs:annotation>  
+      </xs:element>
+      <xs:element name="Tasks" type="TaskCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Tasks associated with the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="HasPendingTasks" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates whether visit has any pending tasks.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Actual" type="tmct:DateTimeRangeType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The actual start and end time for the Visit as captured by the user. This is only populated in messages coming from a device.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Duration" type="xs:int" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Expected duration of the Visit in minutes.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Appointment" type="AppointmentType"/>
+  <xs:complexType name="AppointmentType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an appointment for a TotalMobile Visit.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Date" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date of the appointment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Slot" minOccurs="1" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>          
+          <xs:documentation>
+            A reference to the appointment slot.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Schedule" type="tmct:DateTimeRangeType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Defines the start and end of the appointment slot.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Kept" type="xs:boolean" minOccurs="0" maxOccurs="1" nillable="true">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the appointment was kept.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ReasonCode" minOccurs="0" maxOccurs="1" type="tmct:ShortReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Code indicating why the appointment was not kept.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Narrative" minOccurs="0" maxOccurs="1" type="tmct:ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Additional text describing why the appointment was not kept.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AdditionalProperty" type="AdditionalPropertyType"/>
+  <xs:complexType name="AdditionalPropertyType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an additional property which can be associated with a Visit.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Name" minOccurs="1" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Identifies the additional property as defined against a WorkType.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Value" type="tmct:LongTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Value held against the additional property.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AdditionalProperties" type="AdditionalPropertyCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Sub properties of the additional property.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AdditionalPropertyCollection" type="AdditionalPropertyCollectionType"/>
+  <xs:complexType name="AdditionalPropertyCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of additional properties.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="AdditionalProperty" type="AdditionalPropertyType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of additional properties.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="VisitReference" type="VisitReferenceType"/>
+  <xs:simpleType name="VisitReferenceType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Visit Reference.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="50"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="Item" type="ItemType"/>
+  <xs:simpleType name ="ItemType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the item types which can be added to a TotalMobile visit line.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Coded">
+        <xs:annotation>
+          <xs:documentation>
+            Coded item type such as an SOR (Schedule of Rates).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Text">
+        <xs:annotation>
+          <xs:documentation>
+            Text item type.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>      
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="Line" type="LineType"/>
+  <xs:complexType name ="LineType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a TotalMobile Visit line.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="LineNo" type="xs:int" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Line sequence identifier.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Trade" minOccurs="0" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Trade associated with the line.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Type" type="ItemType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Item type of the line.
+          </xs:documentation>
+        </xs:annotation>        
+      </xs:element>
+      <xs:element name="Code" minOccurs="0" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Item code associated with the line.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" minOccurs="0" maxOccurs="1" type="tmct:ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Text description of the line.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Quantity" type="xs:float" minOccurs="1" maxOccurs="1" default="0">
+        <xs:annotation>
+          <xs:documentation>
+            Item quantity specified against the line.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CompletedQuantity" type="xs:float" minOccurs="0" maxOccurs="1" default="0">
+        <xs:annotation>
+          <xs:documentation>
+           Completed quantity recorded against the line.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Smv" type="xs:float" minOccurs="0" maxOccurs="1" default="0">
+        <xs:annotation>
+          <xs:documentation>
+            Item SMV (Standard Minute Value).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Price" type="xs:float" minOccurs="0" maxOccurs="1" default="0">
+        <xs:annotation>
+          <xs:documentation>
+            Item price.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Cash" type="xs:float" minOccurs="0" maxOccurs="1" default="0">
+        <xs:annotation>
+          <xs:documentation>
+            Item cash value.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Complete" type="xs:boolean" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the line has been completed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Notes" minOccurs="0" maxOccurs="1" type="tmct:ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Additional notes recorded against the line.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Location" minOccurs="0" maxOccurs="1" type="tmct:ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Location to which line refers.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="LineCollection" type="LineCollectionType"/>
+  <xs:complexType name="LineCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of TotalMobile Visit lines.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Line" type="LineType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of Visit lines.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="LineNumberCollection" type="LineNumberCollectionType"/>
+  <xs:complexType name="LineNumberCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of TotalMobile Visit line numbers.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Line" type="xs:int" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of Visit line numbers.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="VisitTask" type="VisitTaskType"/>
+  <xs:complexType name ="VisitTaskType" abstract="true">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a TotalMobile Visit Task Base Type.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="LineNo" type="xs:int" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Task sequence identifier.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Type" type="TaskItemType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The type of task.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Text description of the task.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Complete" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" >
+        <xs:annotation>
+          <xs:documentation>
+            Now obsolete, use Status for a better indication of the state of the task.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Notes" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Additional notes recorded against the task.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Location"  type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Location to which task refers.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Status"  type="TaskStatusType" minOccurs="1" maxOccurs="1" default="New">
+        <xs:annotation>
+          <xs:documentation>
+            Status of the task. When tasks are supplied when a visit is created, this status will be ignored and a status of New will be used.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AdditionalProperties"  type="AdditionalPropertyCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Additional properties associated with this task e.g. Details of the asset for an asset task. If the task involves a form these are mapped into the form where the mapping is setup in the form design.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="TaskItem" type="TaskItemType"/>
+  <xs:simpleType name ="TaskItemType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the types of visit task you can create
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Form">
+        <xs:annotation>
+          <xs:documentation>
+            Form task type used to launch into form capture.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Coded">
+        <xs:annotation>
+          <xs:documentation>
+            Coded task type such as a SOR (Schedule of Rates).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Asset">
+        <xs:annotation>
+          <xs:documentation>
+            Asset task is for tasks relating to an asset.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Image">
+        <xs:annotation>
+          <xs:documentation>
+            Image task type is used to capture an image.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Signature">
+        <xs:annotation>
+          <xs:documentation>
+            Signature task is used to capture a signature.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Text">
+        <xs:annotation>
+          <xs:documentation>
+            Text task is used to capture a some text.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="TaskStatus" type="TaskStatusType"/>
+  <xs:simpleType name ="TaskStatusType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the status of visit task
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="New">
+        <xs:annotation>
+          <xs:documentation>
+            The task has not been started.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="InProgress">
+        <xs:annotation>
+          <xs:documentation>
+            The task has been started.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Completed">
+        <xs:annotation>
+          <xs:documentation>
+            The task is complete.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Deleted">
+        <xs:annotation>
+          <xs:documentation>
+            The task has been marked for deletion.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Omitted">
+        <xs:annotation>
+          <xs:documentation>
+            The task has been omitted from the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="TaskCollection" type="TaskCollectionType"/>
+  <xs:complexType name="TaskCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of TotalMobile Visit tasks.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Task" type="VisitTaskType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of Visit tasks.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="QuantifiedTask" type="QuantifiedTaskType"/>
+  <xs:complexType name="QuantifiedTaskType" abstract="true">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a quantified Task.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="VisitTaskType">
+        <xs:sequence>
+          <xs:element name="Quantity" type="xs:float" minOccurs="1" maxOccurs="1" default="0">
+            <xs:annotation>
+              <xs:documentation>
+                Item quantity specified against the task.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="CompletedQuantity" type="xs:float" minOccurs="0" maxOccurs="1" default="0">
+            <xs:annotation>
+              <xs:documentation>
+                Completed quantity recorded against the task.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="FormBasedTask" type="FormBasedTaskType"/>
+  <xs:complexType name ="FormBasedTaskType" abstract="true">
+    <xs:annotation>
+      <xs:documentation>
+        Base class for a form based task.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="VisitTaskType">
+        <xs:sequence>
+          <xs:element name="FormIdentity" type="tmft:FormIdentityType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The Identity of the form completed. The form version is only relevant to submitted forms. Set to 0 for incoming messages.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="FormResultGuid" type="tmct:GuidType" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The Guid of the form result.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="FormTask" type="FormTaskType"/>
+  <xs:complexType name ="FormTaskType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Form Task.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="FormBasedTaskType">
+        <xs:sequence></xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="AssetTask" type="AssetTaskType"/>
+  <xs:complexType name ="AssetTaskType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an Asset Task.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="FormBasedTaskType">
+        <xs:sequence></xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="CodedTask" type="CodedTaskType"/>
+  <xs:complexType name ="CodedTaskType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Coded Task.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="QuantifiedTaskType">
+        <xs:sequence>
+          <xs:element name="Trade" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Trade associated with the task.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Code" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Item code associated with the task.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Smv" type="xs:float" minOccurs="0" maxOccurs="1" default="0">
+            <xs:annotation>
+              <xs:documentation>
+                Item SMV (Standard Minute Value).
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Price" type="xs:float" minOccurs="0" maxOccurs="1" default="0">
+            <xs:annotation>
+              <xs:documentation>
+                Item price.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Cash" type="xs:float" minOccurs="0" maxOccurs="1" default="0">
+            <xs:annotation>
+              <xs:documentation>
+                Item cash value.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="TextTask" type="TextTaskType"/>
+  <xs:complexType name="TextTaskType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Text Task.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="QuantifiedTaskType">
+        <xs:sequence></xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:element name="VisitIdentity" type="VisitIdentityType"/>
+  <xs:complexType name="VisitIdentityType">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          Identifier for a Visit.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="Guid" type="tmct:GuidType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for a Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Associated WorkType for the Visit.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="User" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            TotalMobile user which identifies the owner of the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Company" minOccurs="0" maxOccurs="1" default="NA" type ="tmct:ShortReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Company to which the Visit belongs.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Reference" minOccurs="1" maxOccurs="1" type="VisitReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Reference for the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="RequestVisitResponse" type="RequestVisitResponseType"/>
+  <xs:simpleType name="RequestVisitResponseType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value = "JobRequested">
+        <xs:annotation>
+          <xs:documentation>
+            A visit has been successfully requested.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value = "NoJobsAvailable">
+        <xs:annotation>
+          <xs:documentation>
+            No visits are currently availble.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value = "NoNewJobsAvailable">
+        <xs:annotation>
+          <xs:documentation>
+            No new visits are available.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value = "JobPending">
+        <xs:annotation>
+          <xs:documentation>
+            A visit has been requested. The visit will be dispatched once the request has been successfully processed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="CodedItem" type="CodedItemType"/>
+  <xs:complexType name="CodedItemType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the elements of a TotalMobile Visit predefined (coded) item.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Guid" type="tmct:GuidType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for an item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CatalogueId" type="xs:int" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Item catalogue reference.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Code" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Item reference code.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Description" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Text description of the item.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Trade" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Trade associated with the item.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Uom" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Item Unit Of Measurement - may be e.g. 'each'.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="10"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Smv" type="xs:float" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Item Standard Minute Value.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Price" type="xs:float" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Item price.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Cash" type="xs:float" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Item cash value.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Active" type="xs:boolean" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the item is currently in active use.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!--newly added types - start -->
+
+  <xs:element name="DisplayAs" type="DisplayAsType"/>
+  <xs:simpleType name="DisplayAsType">
+    <xs:annotation>
+      <xs:documentation>
+        Enumeration of how visits is displayed on the mobile device.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Outstanding">
+        <xs:annotation>
+          <xs:documentation>
+            Outstanding
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="History">
+        <xs:annotation>
+          <xs:documentation>
+            History
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="New">
+        <xs:annotation>
+          <xs:documentation>
+            New
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>      
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="ConfirmationTypes" type="ConfirmationTypesType"/>
+  <xs:simpleType name="ConfirmationTypesType">
+    <xs:annotation>
+      <xs:documentation>
+        Enumeration of confirmation types for each status change in the mobile device.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Yes">
+        <xs:annotation>
+          <xs:documentation>
+            Yes
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="No">
+        <xs:annotation>
+          <xs:documentation>
+            No
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Required">
+        <xs:annotation>
+          <xs:documentation>
+            Required
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Form">
+        <xs:annotation>
+          <xs:documentation>
+            Form
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="Status" type="StatusType"/>
+  <xs:complexType name="StatusType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the elements of a Status.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Guid" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for a Status.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkTypeGuid" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the WorkType this Status belongs to.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Code" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Code for the Status.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="10"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Description" minOccurs="0" maxOccurs="1" type="tmct:ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Description of the Status.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Action" type="StatusActionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates the action of the Status.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DisplayAs" type="DisplayAsType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            How the Visit should be displayed as in the mobile device.
+          </xs:documentation>
+        </xs:annotation>        
+      </xs:element>
+      <xs:element name="Editable" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the Status is editable or not.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Active" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the Status is active or not.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="StatusCollection" type="StatusCollectionType"/>
+  <xs:complexType name="StatusCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of Statuses.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Status" type="StatusType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of Statuses.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="WorkFlow" type="WorkFlowType"/>
+  <xs:complexType name="WorkFlowType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a WorkFlow as a collection of Statuses and a collection of StatusFlows for a WorkType.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="WorkTypeGuid" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates what WorkType this StatusFlow belongs to.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Statuses" type="StatusCollectionType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of Statuses.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StatusFlows" type="StatusFlowCollectionType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of StatusFlows.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="StatusFlow" type="StatusFlowType"/>
+  <xs:complexType name="StatusFlowType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the elements of a StatusFlow.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Guid" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for a StatusFlow.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkTypeGuid" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates what WorkType this StatusFlow belongs to.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ProcessReference" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Process Reference for this StatusFlow.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="10"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="FromStatusGuid" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates what status the StatusFlow was previously from.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ToStatusGuid" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates what status the StatusFlow was changed to.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" minOccurs="0" maxOccurs="1" type="tmct:ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Description of the StatusFlow.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Order" type="xs:int" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The ordinal position of the StatusFlow within a Process.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Confirmation" type="ConfirmationTypesType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Confirmation modes of the Status.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Sync" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the StatusFlow initiates a sync or not.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TrackLocation" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the StatusFlow tracks location or not.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Active" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the StatusFlow is active or not.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TimeTypeGuid" type="tmct:GuidType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates what Time Type the StatusFlow is linked to.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="FormId" type="xs:int" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Form identifier of the form to be triggered on status change.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="FormAddAsTask" type="xs:boolean" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Flag to indicate whether the completed form is to be added as a task.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="StatusFlowCollection" type="StatusFlowCollectionType"/>
+  <xs:complexType name="StatusFlowCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of StatusFlows.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="StatusFlow" type="StatusFlowType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of StatusFlows.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="PropertyTypes" type="PropertyTypesType"/>
+  <xs:simpleType name="PropertyTypesType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the types of a property type.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="String">
+        <xs:annotation>
+          <xs:documentation>
+            String
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="List">
+        <xs:annotation>
+          <xs:documentation>
+            List
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>     
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="WorkType" type="WorkTypeType"/>
+  <xs:complexType name="WorkTypeType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the elements of a TotalMobile Worktype.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Guid" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for a Worktype.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Reference" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reference for the Worktype.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Description" minOccurs="0" maxOccurs="1" type="tmct:ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Description of the Worktype.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Queue" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Message queue for the Worktype.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ContactEditable" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the Worktype's contact is editable or not.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="IssueToVisitLine" type="xs:boolean" minOccurs="1" maxOccurs="1" default="false">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if Materials can be issued to a Visit line.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ConfirmationRequired" type="xs:boolean" minOccurs="1" maxOccurs="1" default="true">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if each Materials transaction (i.e. an Issue, Order or Return) requires confirmation.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DisplayItemValue" type="DisplayItemValueType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates the type of value to display for a visit item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AllowCompleteAll" type="xs:boolean" minOccurs="1" maxOccurs="1" default="true">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the operative is given the option to complete all visit items together.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CompletionDateEditable" type="xs:boolean" minOccurs="1" maxOccurs="1" default="false">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the operative is given the option to edit the completion date for a visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Active" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the Worktype is active or not.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ReportName" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Attached report name for the Worktype.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="AppointmentKeptConfirmation" type="xs:boolean" minOccurs="1" maxOccurs="1" default="false">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the appointment kept confirmation is needed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DisplayItemValue" type="DisplayItemValueType"/>
+  <xs:simpleType name ="DisplayItemValueType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the display value types which can be selected for viewing a visit.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Minute">
+        <xs:annotation>
+          <xs:documentation>
+            The standard minute value for the visit will be displayed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Cash">
+        <xs:annotation>
+          <xs:documentation>
+            The cash value for the visit will be displayed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Estimate">
+        <xs:annotation>
+          <xs:documentation>
+            The estimated value for the visit will be displayed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:documentation>
+            The no value for the visit will be displayed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="VisitRecall" type="VisitRecallType"/>
+  <xs:simpleType name ="VisitRecallType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the type of Visit Recall.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Unknown">
+        <xs:annotation>
+          <xs:documentation>
+            Recall type unknown.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Full">
+        <xs:annotation>
+          <xs:documentation>
+            Full recall - whole visit including all lines recalled.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Partial">
+        <xs:annotation>
+          <xs:documentation>
+            Partial recall - only a subset of lines recalled.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:element name="AppointmentUpdate" type="AppointmentUpdateType"/>
+  <xs:complexType name="AppointmentUpdateType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines optional updated appointment details for a TotalMobile Visit.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Date" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated date of the appointment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Slot" minOccurs="0" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>          
+          <xs:documentation>
+            Updated reference to the appointment slot.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Schedule" type="tmct:DateTimeRangeType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Updated times for the start and end of the appointment slot.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="StatusAction" type="StatusActionType"/>
+  <xs:simpleType name="StatusActionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the action types for a status.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:documentation>
+            None
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Started">
+        <xs:annotation>
+          <xs:documentation>
+            Started
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NotStarted">
+        <xs:annotation>
+          <xs:documentation>
+            NotStarted
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Held">
+        <xs:annotation>
+          <xs:documentation>
+            Held
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Complete">
+        <xs:annotation>
+          <xs:documentation>
+            Complete
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Cancelled">
+        <xs:annotation>
+          <xs:documentation>
+            Cancelled
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Travelling">
+        <xs:annotation>
+          <xs:documentation>
+            Travelling
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema>

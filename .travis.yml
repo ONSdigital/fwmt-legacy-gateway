@@ -1,0 +1,39 @@
+language: java
+sudo: required
+
+services:
+  - docker
+
+#cache:
+#  directories:
+#  - $HOME/.cache
+#
+
+before_install:
+  - docker build -t postgres_test src/test/docker/postgres
+  - docker run --name postgres -p 5433:5432 -d postgres_test
+  - docker ps
+
+after_script:
+  - docker stop $(docker ps -a -q)
+  - docker rm $(docker ps -a -q)
+
+
+jobs:
+  include:
+    stage: test
+#    script: mvn clean test -Dcucumber.options="srs/test/resources/uk.gov.ons.fwmt.csvuploader.testing"
+    script: mvn -Dtest=RunnerTest testing
+    stage: deploy
+    deploy:
+    provider: script
+    script: mvn clean install
+    skip_cleanup: true
+    on:
+      tags: true
+
+branches:
+  only:
+    - master
+    - TravisTesting
+    - ThomasMergeAttempt_FromWillGriggs

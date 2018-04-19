@@ -1,0 +1,46 @@
+databaseChangeLog:
+ - changeSet:
+    id: v1
+    author: William Grigg
+    comment: Create sample table
+    changes:
+      - sqlFile:
+          path: 1_Setup_Sample.sql
+          relativeToChangelogFile: true
+          splitStatements: false
+ - changeSet:
+    id: v2
+    author: William Grigg
+    comment: Create staff table
+    changes:
+      - sqlFile:
+          path: 2_Setup_Staff.sql
+          relativeToChangelogFile: true
+          splitStatements: false
+ - changeSet:
+    id: v3
+    author: William Grigg
+    comment: Create leavers table
+    changes:
+      - sqlFile:
+          path: 3_Setup_Leavers.sql
+          relativeToChangelogFile: true
+          splitStatements: false
+ - changeSet:
+    id: v4
+    author: William Grigg
+    comment: Create jobs table
+    changes:
+      - sqlFile:
+          path: 4_Setup_Jobs.sql
+          relativeToChangelogFile: true
+          splitStatements: false
+ - changeSet:
+    id: v5
+    author: William Grigg
+    comment: Create users table
+    changes:
+      - sqlFile:
+          path: 5_Setup_Users.sql
+          relativeToChangelogFile: true
+          splitStatements: false

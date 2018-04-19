@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="FolioMessages" 
+           targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/04/FolioMessages.xsd" 
+           elementFormDefault="qualified"
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2009/04/FolioMessages.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd">
+  
+  <xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             schemaLocation="CommonTypes.xsd"/>
+
+  <xs:element name="GenerateFolioContentRequest" type="GenerateFolioContentRequest"/>
+  <xs:complexType name="GenerateFolioContentRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a request to generate a folio item's content.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ContentRequestBase">
+        <xs:sequence>
+          <xs:element name="Reference" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Reference to the content for the provider.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Provider" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Defines the provider that will obtain the content.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Parameters" type="tmct:NameValuePairCollectionType" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Optional parameters to be used by the provider to obtain the content.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+    
+  </xs:complexType>
+
+  <xs:element name="AddFolioContentRequest" type="AddFolioContentRequest"/>
+  <xs:complexType name="AddFolioContentRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the adding of an item to a user's folio.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ContentRequestBase">
+        <xs:sequence>
+          <xs:element name="Content" type="tmct:BinaryContentType"  minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Folio content.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>   
+  </xs:complexType>
+
+  <xs:element name="ContentRequestBase" type="ContentRequestBase"/>
+  <xs:complexType name="ContentRequestBase" abstract="true"> 
+    <xs:annotation>
+      <xs:documentation>
+        Defines the base message for Folio content.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Guid" type="tmct:GuidType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Optional TotalMobile unique identity of the folio item to update. Only populate if there is a folio item to be updated by this request.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="User" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            User to receive the folio item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Name" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Name of the folio item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Metadata" type="tmct:NameValuePairCollectionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Metadata about the folio.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>     
+      <xs:element name="Push" type="xs:boolean" minOccurs="1" maxOccurs="1" default="false">
+        <xs:annotation>
+          <xs:documentation>
+            Determines if a request to push is issued when the folio item is added or updated. It is best to only set this to true for the last folio item to be added or updated to ensure they are all pushed together.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+<xs:element name="RefreshFolioRequest" type="RefreshFolioRequest"/>
+  <xs:complexType name="RefreshFolioRequest"> 
+    <xs:annotation>
+      <xs:documentation>
+        Used to refresh folio for a specified Property Reference.
+      </xs:documentation>
+    </xs:annotation>
+      <xs:sequence>
+        <xs:element name="PropertyReference" type="xs:string" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Property reference of the folio item.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Metadata" type="tmct:NameValuePairCollectionType" minOccurs="1" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>
+              Metadata about the folio.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

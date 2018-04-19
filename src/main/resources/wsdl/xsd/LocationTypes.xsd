@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="LocationTypes"
+    targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2008/10/LocationTypes.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://schemas.consiliumtechnologies.com/mobile/2008/10/LocationTypes.xsd"
+    xmlns:mstns="http://schemas.consiliumtechnologies.com/mobile/2008/10/LocationTypes.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+   xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd">
+  <xs:import id="tmct" schemaLocation="CommonTypes.xsd" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd" />
+
+  <xs:element name="Association" type="AssociationType"/>
+  <xs:complexType name="AssociationType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a base Transaction Association.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="TransactionType" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1" >
+            <xs:annotation>
+              <xs:documentation>
+                Details of the transaction type.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+      <xs:element name="TransactionText" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Transaction notes.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TransactionTime" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date and time of the transaction.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="VisitAssociation" type="VisitAssociationType"/>
+  <xs:complexType name="VisitAssociationType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Transaction Visit Association.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="AssociationType">
+        <xs:sequence>
+          <xs:element name="WorkType" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                WorkType.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Reference" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Reference.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Company" type="tmct:ShortReferenceType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Company name.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Process" type="tmct:ShortReferenceType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Process reference.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="LocationInfo" type="LocationInfoType"/>
+  <xs:complexType name="LocationInfoType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the location type.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Provider" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Location provider.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Latitude" type="xs:double" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Location latitude.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Longitude" type="xs:double" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Location longitude.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Altitude" type="xs:double" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Location altitude.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Accuracy" type="xs:int" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Accuracy of the location.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Timestamp" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date and time of reading from device sensor.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+</xs:schema>

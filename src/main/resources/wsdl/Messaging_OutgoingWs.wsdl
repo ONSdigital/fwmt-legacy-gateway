@@ -1,0 +1,1016 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s2="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging" xmlns:s5="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonMessages.xsd" xmlns:s9="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsMessages.xsd" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s6="http://schemas.consiliumtechnologies.com/mobile/2009/09/CompositeMessages.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s0="http://schemas.consiliumtechnologies.com/services/mobile/2009/03/messaging" xmlns:s11="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetTypes.xsd" xmlns:s12="http://schemas.consiliumtechnologies.com/mobile/2008/10/LocationMessages.xsd" xmlns:s3="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:s10="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetMessages.xsd" xmlns:s4="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd" xmlns:s7="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsMessages.xsd" xmlns:s13="http://schemas.consiliumtechnologies.com/mobile/2008/10/LocationTypes.xsd" xmlns:s1="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsMessages.xsd" xmlns:s8="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsTypes.xsd" targetNamespace="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://schemas.consiliumtechnologies.com/services/mobile/2009/03/messaging">
+      <s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsMessages.xsd" schemaLocation="xsd/VisitsMessages.xsd" />
+      <s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonMessages.xsd" schemaLocation="xsd/CommonMessages.xsd" />
+      <s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/09/CompositeMessages.xsd" schemaLocation="xsd/CompositeMessages.xsd" />
+      <s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsMessages.xsd" schemaLocation="xsd/FormsMessages.xsd" />
+      <s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2008/10/LocationMessages.xsd" schemaLocation="xsd/LocationMessages.xsd" />
+      <s:element name="updateVisitStatusRequest" type="s1:UpdateVisitStatusRequest" />
+      <s:element name="completeVisitRequest" type="s1:CompleteVisitRequest" />
+      <s:element name="requestVisitRequest" type="s1:RequestVisitRequest" />
+      <s:element name="submitDocumentRequest" type="s5:SubmitDocumentRequest" />
+      <s:element name="compositeVisitRequest" type="s6:CompositeVisitRequest" />
+      <s:element name="submitFormResultRequest" type="s9:SubmitFormResultRequest" />
+      <s:element name="submitLocationRequest" type="s12:SubmitLocationRequest" />
+    </s:schema>
+    <!--<s:schema elementFormDefault="qualified" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsMessages.xsd">-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd" />-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd" />-->
+      <!--<s:complexType name="UpdateVisitStatusRequest">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s1:UpdateVisitStatusBase">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Lines" type="s:int" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="UpdateVisitStatusBase" abstract="true">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Identity" type="s2:VisitIdentityType" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Date" type="s:dateTime" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="ProcessReference" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="ReasonCode" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="ReasonDescription" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Notes" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="FromStatus" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="ToStatus" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Actual" type="s3:DateTimeRangeType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Action" type="s2:StatusActionType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="CompleteVisitRequest">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s1:UpdateVisitStatusBase">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="SystemDate" type="s:dateTime" />-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="IsFullyComplete" type="s:boolean" />-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="Lines" type="s2:ArrayOfLineType" />-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="Appointment" type="s2:AppointmentType" />-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="Tasks" type="s2:ArrayOfVisitTaskType" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="RequestVisitRequest">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Date" type="s:dateTime" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="User" type="s3:UserType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="WorkType" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfCompleteVisitRequest">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Completion" type="s1:CompleteVisitRequest" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfUpdateVisitRequest">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Update" type="s1:UpdateVisitRequest" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="UpdateVisitRequest">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Visit" type="s2:VisitType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfUpdateVisitStatusRequest">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="UpdateStatus" type="s1:UpdateVisitStatusRequest" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+    <!--</s:schema>-->
+    <!--<s:schema elementFormDefault="qualified" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd">-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd" />-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd" />-->
+      <!--<s:complexType name="VisitIdentityType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Guid" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="WorkType" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="User" type="s3:UserType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Company" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Reference" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:simpleType name="StatusActionType">-->
+        <!--<s:restriction base="s:string">-->
+          <!--<s:enumeration value="None" />-->
+          <!--<s:enumeration value="Started" />-->
+          <!--<s:enumeration value="NotStarted" />-->
+          <!--<s:enumeration value="Held" />-->
+          <!--<s:enumeration value="Complete" />-->
+          <!--<s:enumeration value="Cancelled" />-->
+          <!--<s:enumeration value="Travelling" />-->
+        <!--</s:restriction>-->
+      <!--</s:simpleType>-->
+      <!--<s:complexType name="ArrayOfLineType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Line" type="s2:LineType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="LineType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="LineNo" type="s:int" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Trade" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Type" type="s2:ItemType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Quantity" type="s:float" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="CompletedQuantity" type="s:float" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Smv" type="s:float" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Price" type="s:float" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Cash" type="s:float" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Complete" type="s:boolean" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Notes" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Location" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:simpleType name="ItemType">-->
+        <!--<s:restriction base="s:string">-->
+          <!--<s:enumeration value="Coded" />-->
+          <!--<s:enumeration value="Text" />-->
+        <!--</s:restriction>-->
+      <!--</s:simpleType>-->
+      <!--<s:complexType name="AppointmentType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Date" type="s:dateTime" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Slot" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Schedule" type="s3:DateTimeRangeType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Kept" nillable="true" type="s:boolean" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="ReasonCode" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Narrative" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfVisitTaskType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Task" type="s2:VisitTaskType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="VisitTaskType" abstract="true">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="LineNo" type="s:int" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Type" type="s2:TaskItemType" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Description" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Complete" type="s:boolean" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Notes" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Location" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Status" type="s2:TaskStatusType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="AdditionalProperties" type="s2:ArrayOfAdditionalPropertyType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:simpleType name="TaskItemType">-->
+        <!--<s:restriction base="s:string">-->
+          <!--<s:enumeration value="Form" />-->
+          <!--<s:enumeration value="Coded" />-->
+          <!--<s:enumeration value="Asset" />-->
+          <!--<s:enumeration value="Image" />-->
+          <!--<s:enumeration value="Signature" />-->
+          <!--<s:enumeration value="Text" />-->
+        <!--</s:restriction>-->
+      <!--</s:simpleType>-->
+      <!--<s:simpleType name="TaskStatusType">-->
+        <!--<s:restriction base="s:string">-->
+          <!--<s:enumeration value="New" />-->
+          <!--<s:enumeration value="InProgress" />-->
+          <!--<s:enumeration value="Completed" />-->
+          <!--<s:enumeration value="Deleted" />-->
+          <!--<s:enumeration value="Omitted" />-->
+        <!--</s:restriction>-->
+      <!--</s:simpleType>-->
+      <!--<s:complexType name="ArrayOfAdditionalPropertyType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="AdditionalProperty" type="s2:AdditionalPropertyType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="AdditionalPropertyType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Name" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Value" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="AdditionalProperties" type="s2:ArrayOfAdditionalPropertyType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="QuantifiedTaskType" abstract="true">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s2:VisitTaskType">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="Quantity" type="s:float" />-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="CompletedQuantity" type="s:float" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="CodedTaskType">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s2:QuantifiedTaskType">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="Trade" type="s:string" />-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="Smv" type="s:float" />-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="Price" type="s:float" />-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="Cash" type="s:float" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="TextTaskType">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s2:QuantifiedTaskType" />-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="FormBasedTaskType" abstract="true">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s2:VisitTaskType">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="FormIdentity" type="s4:FormIdentityType" />-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="FormResultGuid" type="s:string" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="AssetTaskType">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s2:FormBasedTaskType" />-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="FormTaskType">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s2:FormBasedTaskType" />-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="VisitType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Identity" type="s2:VisitIdentityType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="ClientReference" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Description" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Property" type="s3:ContactType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Supervisor" type="s3:ContactType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="StatusChangeDate" type="s:dateTime" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="CreatedDate" type="s:dateTime" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Retrieved" type="s:boolean" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="RetrievedDate" type="s:dateTime" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="PrintedDate" type="s:dateTime" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="ReceivedDate" type="s:dateTime" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="ResponseDate" type="s:dateTime" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="RequiredDate" type="s:dateTime" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Complete" type="s:boolean" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="CompletedDate" type="s:dateTime" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Appointment" type="s2:AppointmentType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Schedule" type="s3:DateTimeRangeType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Priority" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Origin" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="SpecialInstructions" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="AdditionalProperties" type="s2:ArrayOfAdditionalPropertyType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="CatalogueReference" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Lines" type="s2:ArrayOfLineType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Tasks" type="s2:ArrayOfVisitTaskType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="HasPendingTasks" type="s:boolean" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Actual" type="s3:DateTimeRangeType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Duration" type="s:int" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+    <!--</s:schema>-->
+    <!--<s:schema elementFormDefault="qualified" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd">-->
+      <!--<s:complexType name="UserType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Attributes" type="s3:ArrayOfNameValuePairType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="ID" type="s:int" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="DeviceID" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfNameValuePairType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Attribute" type="s3:NameValuePairType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="NameValuePairType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="AssetDetailType">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s3:NameValuePairType">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="Reference" type="s:string" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="DateTimeRangeType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="EndDate" type="s:dateTime" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="BinaryContentType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Content" type="s:base64Binary" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="MimeType" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfNameValuePairType1">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Item" type="s3:NameValuePairType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="SignatoryType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Name" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Role" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ContactType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Guid" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Type" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Reference" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="ParentReference" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Name" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Address" type="s3:AddressType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Phone" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="WorkPhone" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="MobilePhone" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="URL" type="s:anyURI" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Assets" type="s3:ArrayOfAssetType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="ExtendedProperties" nillable="true" type="s3:ContactExtensionType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="AddressType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Lines" type="s3:ArrayOfString" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="HouseNo" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="PostCode" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="GeoX" nillable="true" type="s:float" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="GeoY" nillable="true" type="s:float" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="URL" type="s:anyURI" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfString">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="AddressLine" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfAssetType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Asset" type="s3:AssetType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="AssetType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="DefinitionReference" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Reference" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Description" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Details" type="s3:ArrayOfAssetDetailType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfAssetDetailType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Item" type="s3:AssetDetailType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ContactExtensionType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="PreferredName" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="ID" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="IDLabel" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="DateOfBirth" type="s:dateTime" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="DateOfDeath" type="s:dateTime" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Gender" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ReasonType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="ReasonCode" type="s3:ReasonCodeType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Notes" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ReasonCodeType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Code" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Description" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfBinaryContentType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Item" type="s3:BinaryContentType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+    <!--</s:schema>-->
+    <!--<s:schema elementFormDefault="qualified" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd">-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd" />-->
+      <!--<s:complexType name="FormIdentityType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Reference" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Version" type="s:int" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="FormResultType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="User" type="s3:UserType" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Date" type="s:dateTime" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Form" type="s4:FormIdentityType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Association" type="s4:AssociationType" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Responses" type="s4:ArrayOfResponseBaseType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="ResultGuid" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="AssociationType" />-->
+      <!--<s:complexType name="VisitAssociationType">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s4:AssociationType">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="WorkType" type="s:string" />-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="Reference" type="s:string" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfResponseBaseType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Response" type="s4:ResponseBaseType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ResponseBaseType" abstract="true">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Element" type="s4:ElementType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ElementType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Reference" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Text" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ElementResponseBaseType" abstract="true">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s4:ResponseBaseType" />-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="BinaryResponseType">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s4:ElementResponseBaseType">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="Value" type="s3:BinaryContentType" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="LocationResponseType">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s4:ElementResponseBaseType">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="DeviceLocation" type="s4:DeviceLocationValueType" />-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="MarkedLocations" type="s4:MarkedLocationTypeCollection" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="DeviceLocationValueType">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s4:LocationValueType">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="Provider" type="s:string" />-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="Accuracy" type="s:double" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="LocationValueType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Latitude" type="s:double" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Longitude" type="s:double" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="MarkedLocationType">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s4:LocationValueType">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="Address" type="s:string" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="MarkedLocationTypeCollection">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="MarkedLocation" type="s4:MarkedLocationType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="GroupResponseType">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s4:ElementResponseBaseType">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="Instance" type="s:int" />-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="Responses" type="s4:ArrayOfElementResponseBaseType" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfElementResponseBaseType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Response" type="s4:ElementResponseBaseType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="OptionsElementResponseType">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s4:ElementResponseBaseType">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="Answers" type="s4:ArrayOfAnswerOptionType" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfAnswerOptionType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="AnswerOption" type="s4:AnswerOptionType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="AnswerOptionType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Code" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Description" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Score" type="s:decimal" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ElementResponseType">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s4:ElementResponseBaseType">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="Value" type="s:string" />-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+    <!--</s:schema>-->
+    <!--<s:schema elementFormDefault="qualified" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonMessages.xsd">-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd" />-->
+      <!--<s:complexType name="SubmitDocumentRequest">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s5:DocumentRequestBase" />-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="DocumentRequestBase">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Content" type="s3:BinaryContentType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Metadata" type="s3:ArrayOfNameValuePairType1" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Date" type="s:dateTime" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="SubmitSignatureRequest">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s5:DocumentRequestBase">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="Signatory" type="s3:SignatoryType" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfSubmitImagesRequest">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Images" type="s5:SubmitImagesRequest" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="SubmitImagesRequest">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Images" type="s3:ArrayOfBinaryContentType" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Metadata" type="s3:ArrayOfNameValuePairType1" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Date" type="s:dateTime" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfSubmitSignatureRequest">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Signature" type="s5:SubmitSignatureRequest" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+    <!--</s:schema>-->
+    <!--<s:schema elementFormDefault="qualified" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/09/CompositeMessages.xsd">-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd" />-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsMessages.xsd" />-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsMessages.xsd" />-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonMessages.xsd" />-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsMessages.xsd" />-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetMessages.xsd" />-->
+      <!--<s:complexType name="CompositeVisitRequest">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Identity" type="s2:VisitIdentityType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Completions" type="s1:ArrayOfCompleteVisitRequest" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Updates" type="s1:ArrayOfUpdateVisitRequest" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="UpdateStatus" type="s1:ArrayOfUpdateVisitStatusRequest" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Materials" type="s7:ArrayOfStockRequestBase" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Images" type="s5:ArrayOfSubmitImagesRequest" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Signatures" type="s5:ArrayOfSubmitSignatureRequest" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Forms" type="s9:ArrayOfSubmitFormResultRequest" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="TimesheetEntries" type="s10:ArrayOfUpdateTimesheetStatusRequest" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+    <!--</s:schema>-->
+    <!--<s:schema elementFormDefault="qualified" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsMessages.xsd">-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd" />-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsTypes.xsd" />-->
+      <!--<s:complexType name="ArrayOfStockRequestBase">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Material" type="s7:StockRequestBase" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="StockRequestBase">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="User" type="s3:UserType" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Store" type="s8:StoreType" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Date" type="s:dateTime" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Reason" type="s3:ReasonType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Signature" type="s3:BinaryContentType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Association" type="s8:AssociationType" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Transactions" type="s8:ArrayOfTransactionType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="StockIssueRequest">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s7:StockRequestBase" />-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="StockReturnRequest">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s7:StockRequestBase" />-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="SupplierRequestBase">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s7:StockRequestBase">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="Supplier" nillable="true" type="s8:SupplierType" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="OrderFromSupplierRequest">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s7:SupplierRequestBase" />-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ReturnToSupplierRequest">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s7:SupplierRequestBase" />-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+    <!--</s:schema>-->
+    <!--<s:schema elementFormDefault="qualified" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsTypes.xsd">-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd" />-->
+      <!--<s:complexType name="StoreType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Reference" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="StoreID" type="s:int" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Description" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="VirtualWarehouse" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="MainWarehouse" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="AssociationType" />-->
+      <!--<s:complexType name="VisitAssociationType">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s8:AssociationType">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="WorkType" type="s:string" />-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="Reference" type="s:string" />-->
+              <!--<s:element minOccurs="0" maxOccurs="1" name="LineNo" type="s:int" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfTransactionType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Transaction" type="s8:TransactionType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="TransactionType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Items" type="s8:ArrayOfItemType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ArrayOfItemType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Item" type="s8:ItemType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ItemType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Product" type="s8:ProductType" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Quantity" type="s:double" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="ProductType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Code" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Description" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="SupplierType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Reference" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Description" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Address" type="s3:AddressType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+    <!--</s:schema>-->
+    <!--<s:schema elementFormDefault="qualified" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsMessages.xsd">-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd" />-->
+      <!--<s:complexType name="ArrayOfSubmitFormResultRequest">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Form" type="s9:SubmitFormResultRequest" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="SubmitFormResultRequest">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Result" type="s4:FormResultType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+    <!--</s:schema>-->
+    <!--<s:schema elementFormDefault="qualified" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetMessages.xsd">-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd" />-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetTypes.xsd" />-->
+      <!--<s:complexType name="ArrayOfUpdateTimesheetStatusRequest">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="unbounded" name="Entries" type="s10:UpdateTimesheetStatusRequest" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="UpdateTimesheetStatusRequest">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Reference" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Worktype" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="User" type="s3:UserType" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="StartTime" type="s:dateTime" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="EndTime" type="s:dateTime" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="TimeType" type="s11:TimeTypeType" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+    <!--</s:schema>-->
+    <!--<s:schema elementFormDefault="qualified" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetTypes.xsd">-->
+      <!--<s:complexType name="TimeTypeType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Code" type="s:string" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+    <!--</s:schema>-->
+    <!--<s:schema elementFormDefault="qualified" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2008/10/LocationMessages.xsd">-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2008/10/LocationTypes.xsd" />-->
+      <!--<s:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd" />-->
+      <!--<s:complexType name="SubmitLocationRequest">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Location" type="s13:LocationInfoType" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="DeviceLocation" type="s13:LocationInfoType" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Association" type="s13:AssociationType" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="User" type="s3:UserType" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="RequestTime" type="s:dateTime" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="ResponseTime" type="s:dateTime" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Text" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="ValidLocation" type="s:boolean" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+    <!--</s:schema>-->
+    <!--<s:schema elementFormDefault="qualified" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2008/10/LocationTypes.xsd">-->
+      <!--<s:complexType name="LocationInfoType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Provider" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:double" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:double" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Altitude" type="s:double" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="Accuracy" type="s:int" />-->
+          <!--<s:element minOccurs="0" maxOccurs="1" name="Timestamp" type="s:dateTime" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="AssociationType">-->
+        <!--<s:sequence>-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="TransactionType" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="TransactionText" type="s:string" />-->
+          <!--<s:element minOccurs="1" maxOccurs="1" name="TransactionTime" type="s:dateTime" />-->
+        <!--</s:sequence>-->
+      <!--</s:complexType>-->
+      <!--<s:complexType name="VisitAssociationType">-->
+        <!--<s:complexContent mixed="false">-->
+          <!--<s:extension base="s13:AssociationType">-->
+            <!--<s:sequence>-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="WorkType" type="s:string" />-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="Reference" type="s:string" />-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="Company" type="s:string" />-->
+              <!--<s:element minOccurs="1" maxOccurs="1" name="Process" type="s:string" />-->
+            <!--</s:sequence>-->
+          <!--</s:extension>-->
+        <!--</s:complexContent>-->
+      <!--</s:complexType>-->
+    <!--</s:schema>-->
+  </wsdl:types>
+  <wsdl:message name="SendUpdateVisitStatusRequestOutputSoapIn">
+    <wsdl:part name="updateVisitStatusRequest" element="s0:updateVisitStatusRequest" />
+  </wsdl:message>
+  <wsdl:message name="SendUpdateVisitStatusRequestOutputSoapOut" />
+  <wsdl:message name="SendCompleteVisitRequestOutputSoapIn">
+    <wsdl:part name="completeVisitRequest" element="s0:completeVisitRequest" />
+  </wsdl:message>
+  <wsdl:message name="SendCompleteVisitRequestOutputSoapOut" />
+  <wsdl:message name="SendRequestVisitRequestOutputSoapIn">
+    <wsdl:part name="requestVisitRequest" element="s0:requestVisitRequest" />
+  </wsdl:message>
+  <wsdl:message name="SendRequestVisitRequestOutputSoapOut" />
+  <wsdl:message name="SendSubmitDocumentRequestOutputSoapIn">
+    <wsdl:part name="submitDocumentRequest" element="s0:submitDocumentRequest" />
+  </wsdl:message>
+  <wsdl:message name="SendSubmitDocumentRequestOutputSoapOut" />
+  <wsdl:message name="SendCompositeVisitRequestOutputSoapIn">
+    <wsdl:part name="compositeVisitRequest" element="s0:compositeVisitRequest" />
+  </wsdl:message>
+  <wsdl:message name="SendCompositeVisitRequestOutputSoapOut" />
+  <wsdl:message name="SendSubmitFormResultRequestOutputSoapIn">
+    <wsdl:part name="submitFormResultRequest" element="s0:submitFormResultRequest" />
+  </wsdl:message>
+  <wsdl:message name="SendSubmitFormResultRequestOutputSoapOut" />
+  <wsdl:message name="SendSubmitLocationRequestOutputSoapIn">
+    <wsdl:part name="submitLocationRequest" element="s0:submitLocationRequest" />
+  </wsdl:message>
+  <wsdl:message name="SendSubmitLocationRequestOutputSoapOut" />
+  <wsdl:portType name="OutgoingWsSoap">
+    <wsdl:operation name="SendUpdateVisitStatusRequestOutput">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">WebService method that sends a UpdateVisitStatusRequest output message</wsdl:documentation>
+      <wsdl:input message="tns:SendUpdateVisitStatusRequestOutputSoapIn" />
+      <wsdl:output message="tns:SendUpdateVisitStatusRequestOutputSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendCompleteVisitRequestOutput">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">WebService method that sends a CompleteVisitRequest output message</wsdl:documentation>
+      <wsdl:input message="tns:SendCompleteVisitRequestOutputSoapIn" />
+      <wsdl:output message="tns:SendCompleteVisitRequestOutputSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendRequestVisitRequestOutput">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">WebService method that sends a RequestVisitRequest output message</wsdl:documentation>
+      <wsdl:input message="tns:SendRequestVisitRequestOutputSoapIn" />
+      <wsdl:output message="tns:SendRequestVisitRequestOutputSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendSubmitDocumentRequestOutput">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">WebService method that sends a SubmitDocumentRequest output message</wsdl:documentation>
+      <wsdl:input message="tns:SendSubmitDocumentRequestOutputSoapIn" />
+      <wsdl:output message="tns:SendSubmitDocumentRequestOutputSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendCompositeVisitRequestOutput">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">WebService method that sends a CompositeVisitRequest output message</wsdl:documentation>
+      <wsdl:input message="tns:SendCompositeVisitRequestOutputSoapIn" />
+      <wsdl:output message="tns:SendCompositeVisitRequestOutputSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendSubmitFormResultRequestOutput">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">WebService method that sends a SubmitFormResultRequest output message</wsdl:documentation>
+      <wsdl:input message="tns:SendSubmitFormResultRequestOutputSoapIn" />
+      <wsdl:output message="tns:SendSubmitFormResultRequestOutputSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendSubmitLocationRequestOutput">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">WebService method that sends a SubmitLocationRequest output message</wsdl:documentation>
+      <wsdl:input message="tns:SendSubmitLocationRequestOutputSoapIn" />
+      <wsdl:output message="tns:SendSubmitLocationRequestOutputSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="OutgoingWsSoap" type="tns:OutgoingWsSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SendUpdateVisitStatusRequestOutput">
+      <soap:operation soapAction="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/SendUpdateVisitStatusRequestOutput" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendCompleteVisitRequestOutput">
+      <soap:operation soapAction="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/SendCompleteVisitRequestOutput" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendRequestVisitRequestOutput">
+      <soap:operation soapAction="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/SendRequestVisitRequestOutput" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendSubmitDocumentRequestOutput">
+      <soap:operation soapAction="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/SendSubmitDocumentRequestOutput" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendCompositeVisitRequestOutput">
+      <soap:operation soapAction="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/SendCompositeVisitRequestOutput" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendSubmitFormResultRequestOutput">
+      <soap:operation soapAction="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/SendSubmitFormResultRequestOutput" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendSubmitLocationRequestOutput">
+      <soap:operation soapAction="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/SendSubmitLocationRequestOutput" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="OutgoingWsSoap12" type="tns:OutgoingWsSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SendUpdateVisitStatusRequestOutput">
+      <soap12:operation soapAction="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/SendUpdateVisitStatusRequestOutput" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendCompleteVisitRequestOutput">
+      <soap12:operation soapAction="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/SendCompleteVisitRequestOutput" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendRequestVisitRequestOutput">
+      <soap12:operation soapAction="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/SendRequestVisitRequestOutput" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendSubmitDocumentRequestOutput">
+      <soap12:operation soapAction="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/SendSubmitDocumentRequestOutput" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendCompositeVisitRequestOutput">
+      <soap12:operation soapAction="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/SendCompositeVisitRequestOutput" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendSubmitFormResultRequestOutput">
+      <soap12:operation soapAction="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/SendSubmitFormResultRequestOutput" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendSubmitLocationRequestOutput">
+      <soap12:operation soapAction="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/SendSubmitLocationRequestOutput" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OutgoingWs">
+    <wsdl:port name="OutgoingWsSoap" binding="tns:OutgoingWsSoap">
+      <soap:address location="http://localhost/live/Services/taskmobileserver/v20/messaging/outgoingws.asmx" />
+    </wsdl:port>
+    <wsdl:port name="OutgoingWsSoap12" binding="tns:OutgoingWsSoap12">
+      <soap12:address location="http://localhost/live/Services/taskmobileserver/v20/messaging/outgoingws.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

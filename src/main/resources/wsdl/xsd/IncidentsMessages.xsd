@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="IncidentsMessages"
+    targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/11/IncidentsMessages.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://schemas.consiliumtechnologies.com/mobile/2009/11/IncidentsMessages.xsd"
+    xmlns:mstns="http://schemas.consiliumtechnologies.com/mobile/2009/11/IncidentsMessages.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:tmit="http://schemas.consiliumtechnologies.com/mobile/2009/11/IncidentsTypes.xsd"
+    xmlns:tmft="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd"
+>
+
+  <xs:import id="tmit" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/11/IncidentsTypes.xsd" schemaLocation="IncidentsTypes.xsd" />
+  <xs:import id="tmft" schemaLocation="FormsTypes.xsd" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd" />
+  
+  <xs:element name="SubmitIncidentRequest" type="SubmitIncidentRequest"/>
+  <xs:complexType name="SubmitIncidentRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates an incident has been recorded.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Incident" type="tmit:IncidentType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reference details of the recorded incident (identification references, locations etc.).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="FormResult" type="tmft:FormResultType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Result of a form submitted providing details of the recorded incident.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Images" type="tmit:ImageCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of Images associated with the incident.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

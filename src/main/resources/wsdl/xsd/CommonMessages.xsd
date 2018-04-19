@@ -1,0 +1,527 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="CommonMessages" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonMessages.xsd" elementFormDefault="qualified" xmlns="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonMessages.xsd" xmlns:mstns="http://schemas.consiliumtechnologies.com/mobile/2009/01/CommonMessages.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd">
+  <xs:import id="tmct" schemaLocation="CommonTypes.xsd" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd" />
+
+  <xs:element name="MaintainAssetRequestBase" type="MaintainAssetRequestBase"/>
+  <xs:complexType name="MaintainAssetRequestBase" abstract="true">
+    <xs:annotation>
+      <xs:documentation>
+        A message to maintain an Asset.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="User" type="tmct:UserType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            User responsible for maintaining the Assets.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PropertyRef" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The Property Reference at which the Assets are located.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Assets" type="tmct:AssetTypeCollectionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A list of Assets to be maintained.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Context" type="tmct:AssetContextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The context in which the Asset(s) were maintained.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name ="CreateAssetRequest" type="CreateAssetRequest"/>
+  <xs:complexType name="CreateAssetRequest">
+    <xs:annotation>
+      <xs:documentation>
+        A message to create an Asset(s).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="MaintainAssetRequestBase">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="UpdateAssetRequest" type="UpdateAssetRequest"/>
+  <xs:complexType name="UpdateAssetRequest">
+    <xs:annotation>
+      <xs:documentation>
+        A message to update an Asset(s).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="MaintainAssetRequestBase">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="DeleteAssetRequest" type="DeleteAssetRequest"/>
+  <xs:complexType name="DeleteAssetRequest">
+    <xs:annotation>
+      <xs:documentation>
+        A message to delete an Asset(s).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="User" type="tmct:UserType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            User responsible for deleting the Asset(s).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PropertyRef" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The Property Reference at which the Assets are located.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AssetRefs" type="tmct:LongReferenceCollectionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A list of references of the Assets to be deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Context" type="tmct:AssetContextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The context in which the Asset(s) were deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:element name="NotificationRequest" type="NotificationRequest"/>
+  <xs:complexType name="NotificationRequest">
+    <xs:annotation>
+      <xs:documentation>
+        A message to send information about an event e.g. an error
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Message" type="tmct:MessageType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Information of the  notification.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name ="UpdateContactRequest" type="UpdateContactRequest"/>
+  <xs:complexType name="UpdateContactRequest">
+    <xs:annotation>
+      <xs:documentation>
+        A message to update a contact.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Contact" type="tmct:ContactType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Contact to be updated.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DocumentRequestBase" type="DocumentRequestBase"/>
+  <xs:complexType name="DocumentRequestBase">
+    <xs:annotation>
+      <xs:documentation>
+        Base message to submit a document and associated metadata.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Content" type="tmct:BinaryContentType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Document contents.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Metadata" type="tmct:NameValuePairCollectionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Metadata about the document.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Date" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Timestamp.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name ="SubmitDocumentRequest" type="SubmitDocumentRequest"/>
+  <xs:complexType name="SubmitDocumentRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Message to submit a document with its associated metadata.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="DocumentRequestBase">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name ="SubmitSignatureRequest" type="SubmitSignatureRequest"/>
+  <xs:complexType name="SubmitSignatureRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Message to submit a signature with its associated information and metadata.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="DocumentRequestBase">
+        <xs:sequence>
+          <xs:element name="Signatory" type="tmct:SignatoryType" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Reference.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="SubmitImagesRequest" type="SubmitImagesRequest"/>
+  <xs:complexType name="SubmitImagesRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Message to submit a collection of images associated with a single set of metadata.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Images" type="tmct:BinaryContentCollectionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of images.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Metadata" type="tmct:NameValuePairCollectionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Metadata about the image collection.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Date" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Timestamp for submission of the collection.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SubmitImagesRequestCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Collection of SubmitImagesRequest Messages
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Images" type="SubmitImagesRequest" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of SubmitImagesRequest Messages
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SubmitSignatureRequestCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Collection of SubmitSignatureRequest Messages
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Signature" type="SubmitSignatureRequest" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of SubmitSignatureRequest Messages
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name ="CreateBulletinRequest" type="CreateBulletinRequest"/>
+  <xs:complexType name="CreateBulletinRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Message to create a Bulletin to send to one or more users
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Bulletin" type="tmct:BulletinType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Bulletin to create
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:element name="DeleteBulletinRequest" type="DeleteBulletinRequest"/>
+  <xs:complexType name="DeleteBulletinRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Message to delete a Bulletin sent to one or more users
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="BulletinRef" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The reference of the Bulletin to be deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Recipients" type="tmct:UserTypeCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A list of Recipients of the bulletin to be deleted.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="UserNotificationBase" type="UserNotificationBase"/>
+  <xs:complexType name="UserNotificationBase" abstract="true">
+    <xs:annotation>
+      <xs:documentation>
+        Base user notification message containing user, device and attribute details.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="User" type="tmct:UserInfoType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            User details for the user.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="CreateUserNotification" type="CreateUserNotification"/>
+  <xs:complexType name="CreateUserNotification">
+    <xs:annotation>
+      <xs:documentation>
+        A message containing user, device and attribute details for a new user.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="UserNotificationBase">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="UpdateUserNotification" type="UpdateUserNotification"/>
+  <xs:complexType name="UpdateUserNotification">
+    <xs:annotation>
+      <xs:documentation>
+        A message containing user, device and attribute details for an existing user.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="UserNotificationBase">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:element name="DeleteUserNotification" type="DeleteUserNotification"/>
+  <xs:complexType name="DeleteUserNotification">
+    <xs:annotation>
+      <xs:documentation>
+        A message containing user, device and attribute details for the deleted user.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="UserNotificationBase">
+
+        <xs:sequence>
+          <xs:element name="DeleteBy" minOccurs="1" maxOccurs="1" type="tmct:LongReferenceType">
+            <xs:annotation>
+              <xs:documentation>
+                Deleted By Username.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        
+          <xs:element name="Timestamp" minOccurs="1" maxOccurs="1" type="xs:dateTime">
+            <xs:annotation>
+              <xs:documentation>
+                Date Time that the user was deleted.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        
+          <xs:element name="UpdatedName" minOccurs="1" maxOccurs="1" type="tmct:LongReferenceType">
+            <xs:annotation>
+              <xs:documentation>
+                The updated Username to allow the original username to be used again for another user.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="SyncListsRequest" type="SyncListsRequest"/>
+  <xs:complexType name="SyncListsRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Message used in conjunction with TotalMobile integration to sync lists and list items from a sync source.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ListReferences" type="tmct:LongReferenceCollectionType" minOccurs="1" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            The list references to be synced / processed by TotalMobile integration.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="SyncUserListsRequest" type="SyncUserListsRequest"/>
+  <xs:complexType name="SyncUserListsRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Message used in conjunction with TotalMobile integration to sync lists and list items from a sync source.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="SyncListsRequest">
+        <xs:sequence>
+          <xs:element name="TotalMobileUserName" type="xs:string" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The totalmobile username
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="ExternalUserId" type="xs:string" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The External UserId
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+      </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="SendMessageRequestBase" type="SendMessageRequestBase"/>
+  <xs:complexType name="SendMessageRequestBase">
+    <xs:annotation>
+      <xs:documentation>
+        Base used to send a message.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="From" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The sender of the message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="To" type="tmct:LongReferenceCollectionType" minOccurs="1" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            The list of message recipients.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="MessageContent" type="xs:string" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The Content of the message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="SendEmailRequest" type="SendEmailRequest"/>
+  <xs:complexType name="SendEmailRequest">
+        <xs:annotation>
+      <xs:documentation>
+        Message used to send an email.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+    <xs:extension base="SendMessageRequestBase">
+    <xs:sequence>
+    <xs:element name="Subject" type="xs:string" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The subject of the email.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    <xs:element name="IsHtml" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A flag indicatiing whether or not the email is in html or not.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="FromAlias" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The displayed name of an email sender.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Attachments" type="tmct:AttachmentCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A list of Attachments.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+</xs:schema>

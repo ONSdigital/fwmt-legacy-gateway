@@ -1,0 +1,602 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema id="OptimiseMessages"
+           targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2015/05/OptimiseMessages.xsd" elementFormDefault="qualified"
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2015/05/OptimiseMessages.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tmot="http://schemas.consiliumtechnologies.com/mobile/2015/05/OptimiseTypes.xsd"
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+           xmlns:tmvt="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd"
+           xmlns:tmrt="http://schemas.consiliumtechnologies.com/mobile/2013/07/ReferralsTypes.xsd">
+  <xs:import id="tmot" namespace="http://schemas.consiliumtechnologies.com/mobile/2015/05/OptimiseTypes.xsd"
+             schemaLocation="OptimiseTypes.xsd"/>
+  <xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+           schemaLocation="CommonTypes.xsd"/>
+  <xs:import id="tmvt" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd"
+         schemaLocation="VisitsTypes.xsd"/>
+  <xs:import id="tmrt" namespace="http://schemas.consiliumtechnologies.com/mobile/2013/07/ReferralsTypes.xsd"
+            schemaLocation="ReferralsTypes.xsd" />
+
+  <xs:element name="CreateProjectRequest" type="CreateProjectRequest" />
+  <xs:complexType name="CreateProjectRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Request to create a Project.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Project" type="tmot:ProjectType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Project which is to be created.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="UpdateProjectRequest" type="UpdateProjectRequest" />
+  <xs:complexType name="UpdateProjectRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Request to update Project information and Jobs. Note: If any Jobs are to be updated, all current Jobs must be supplied.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Project" type="tmot:ProjectType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Project to be updated.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="SaveProjectNotification" type="SaveProjectNotification" />
+  <xs:complexType name="SaveProjectNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notifies that a Project has been saved.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Project" type="tmot:ProjectType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Project which has been saved.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SavedBy" type="tmot:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who saved the Project.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DeleteProjectRequest" type="DeleteProjectRequest" />
+  <xs:complexType name="DeleteProjectRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Request to delete a Project.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="tmot:ProjectIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The unique Identity for the Project to be deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>      
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DeleteProjectNotification" type="DeleteProjectNotification" />
+  <xs:complexType name="DeleteProjectNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notifies that a Project has been deleted.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="tmot:ProjectIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The unique Identity for Project which has been deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletedBy" type="tmot:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who deleted the Project.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="CreateJobRequest" type="CreateJobRequest" />
+  <xs:complexType name="CreateJobRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Request to create a Job.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Job" type="tmot:JobType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Job which is to be created.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="HasPendingTasks" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates whether work item has any pending tasks. If true AddJobTasksRequest(s) should follow.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="HasPendingRelations" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates whether Job has any pending related Jobs.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DeleteJobRequest" type="DeleteJobRequest" />
+  <xs:complexType name="DeleteJobRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Request to delete a Job.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="tmot:JobIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The unique Identity for the Job to be deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletionReason" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reference indicating the reason the job was deleted, mandatory if Job Deletion Reason Codes exist.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletionNotes" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Additional notes indicating the reason the job was deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletedBy" type="tmot:AuditType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who deleted the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="SaveJobNotification" type="SaveJobNotification" />
+  <xs:complexType name="SaveJobNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notifies that a Job has been saved.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Job" type="tmot:JobType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Job which has been saved.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SavedBy" type="tmot:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who saved the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DeleteJobNotification" type="DeleteJobNotification" />
+  <xs:complexType name="DeleteJobNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notifies that a job has been deleted.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="tmot:JobIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The unique Identity for Job which has been deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletedBy" type="tmot:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who deleted the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletionReason" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reference indicating the reason the job was deleted, mandatory if Job Deletion Reason Codes exist.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletionNotes" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Additional notes indicating the reason the job was deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DeleteScheduleNotification" type="DeleteScheduleNotification" />
+  <xs:complexType name="DeleteScheduleNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notifies that a Job's schedule has been deleted.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="tmot:JobIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The unique Identity for Job which has been deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletedBy" type="tmot:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who deleted the Job's schedule.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AddJobTasksRequest" type="AddJobTasksRequest"/>
+  <xs:complexType name="AddJobTasksRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Used to add tasks to a job.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" minOccurs="1" maxOccurs="1" type="tmot:JobIdentityType">
+        <xs:annotation>
+          <xs:documentation>
+            A unique Identity for the Job to add Tasks to.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Tasks" type="tmvt:TaskCollectionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Tasks added to the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="HasPendingTasks" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates whether work item has any pending tasks. If true AddJobTasksRequest(s) should follow.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ScheduleJobNotification" type="ScheduleJobNotification" />
+  <xs:complexType name="ScheduleJobNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notification containing allocation, schedule and dispatch information about a job.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" minOccurs="1" maxOccurs="1" type="tmot:JobIdentityType">
+        <xs:annotation>
+          <xs:documentation>
+            A unique Identity for the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AllocatedTo" type="tmot:ResourceIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The Resource the work item has been scheduled for.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Schedule" type="tmct:DateTimeRangeType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The schedule (start and end date / time) used for this work item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Dispatched" type="xs:boolean" default="false" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates whether the job has been dispatched to a device.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DispatchDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When the job was dispatched.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="SaveAvailabilityRequest" type="SaveAvailabilityRequest" />
+  <xs:complexType name="SaveAvailabilityRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Request to create availability for resource(s).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ResourceAvailability" type="tmot:ResourceAvailabilityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Resource availability which is to be created.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+     </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="SaveAvailabilityNotification" type="SaveAvailabilityNotification" />
+  <xs:complexType name="SaveAvailabilityNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notifies that availability/unavailability has been created/updated for resource(s).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ResourceAvailability" type="tmot:ResourceAvailabilityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Resource availability/unavailability which is to be created/updated.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SavedBy" type="tmot:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Who created/updated the availability and when.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+   </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DeleteAvailabilityNotification" type="DeleteAvailabilityNotification" />
+  <xs:complexType name="DeleteAvailabilityNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notifies that availability has been deleted.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="tmot:ResourceAvailabilityIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique Identity of availability which is to be deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletedBy" type="tmot:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who deleted the availability.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletionReason" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reference indicating the reason the availability was deleted, mandatory if Availability Deletion Reason Codes exist.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletionNotes" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Additional notes indicating the reason the availability was deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="SaveRosterNotification" type="SaveRosterNotification"/>
+  <xs:complexType name="SaveRosterNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notifies that a roster has been saved.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Roster" minOccurs="1" maxOccurs="1" type="tmot:RosterType">
+        <xs:annotation>
+          <xs:documentation>
+            Roster to be saved.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SavedBy" type="tmot:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who updated the roster.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DeleteRosterNotification" type="DeleteRosterNotification"/>
+  <xs:complexType name="DeleteRosterNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notifies that a roster has been deleted.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" minOccurs="1" maxOccurs="1" type="tmot:RosterIdentityType">
+        <xs:annotation>
+          <xs:documentation>
+            The Unique Identity of the roster to be deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletedBy" type="tmot:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who deleted the roster.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="SaveResourceNotification" type="SaveResourceNotification" />
+  <xs:complexType name="SaveResourceNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notifies that a resource has been saved.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Resource" type="tmot:ResourceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Resource which has been saved.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SavedBy" type="tmot:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who saved the resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+    
+  <xs:element name="UpdateJobHeaderRequest" type="UpdateJobHeaderRequest" />
+  <xs:complexType name="UpdateJobHeaderRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Request to update selected Job header information and/or selected detail information such as Job Attributes, Skills, Additional Properties, Preferred Resources and Prohibited Resources.
+        Note: If any Job detail information is to be updated, all the current values for the collection must be supplied. For example, if any Skills are to be updated then all Skills must be provided.
+        Similarly, if any Attributes are to be updated, all Attributes should be provided.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="JobHeader" type="tmot:JobHeaderType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Job which is to be updated.            
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="RequestJobRequest" type="RequestJobRequest" />
+  <xs:complexType name="RequestJobRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Request to request a Job from another system.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="tmot:JobIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The unique Identity for the Job to be requested.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Origin" type="tmct:ShortReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Optional origin indicating from where the job should be requested.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>      
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="SaveJobAppointmentNotification" type="SaveJobAppointmentNotification" />
+  <xs:complexType name="SaveJobAppointmentNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notifies that a Job has had an appointment booked against it.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="tmot:JobIdentityType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The unique Identity for the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PreviousAppointmentDate" type="tmct:DateTimeRangeType" minOccurs="0" maxOccurs="1" nillable="true">
+        <xs:annotation>
+          <xs:documentation>
+            The previously held appointment details for this job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AppointmentDate" type="tmct:DateTimeRangeType" minOccurs="0" maxOccurs="1" nillable="true">
+        <xs:annotation>
+          <xs:documentation>
+            An appointment is a commitment to arrive at a specified location between a specified appointment slot's start and end time. A job can have a single appointment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SavedBy" type="tmot:AuditType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who booked the appointment against the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

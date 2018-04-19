@@ -1,0 +1,1329 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema id="ReferralsTypes"
+           targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2013/07/ReferralsTypes.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2013/07/ReferralsTypes.xsd"
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+           xmlns:tmvt="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd"
+           xmlns:tmot="http://schemas.consiliumtechnologies.com/mobile/2015/05/OptimiseTypes.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             schemaLocation="CommonTypes.xsd" />
+  <xs:import id="tmvt" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd"
+             schemaLocation="VisitsTypes.xsd" />
+  <xs:import id="tmot" namespace="http://schemas.consiliumtechnologies.com/mobile/2015/05/OptimiseTypes.xsd"
+             schemaLocation="OptimiseTypes.xsd" />
+
+  <xs:element name="ReferralIdentity" type="ReferralIdentityType" />
+
+  <xs:complexType name="ReferralIdentityType">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          Identifier for a Referral.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="Reference" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A unique identifier for the referral. Auto generated if not supplied for creation, required for updates.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AppointmentIdentity" type="AppointmentIdentityType" />
+
+  <xs:complexType name="AppointmentIdentityType">
+    <xs:complexContent>
+      <xs:extension base="ReferralIdentityType">
+        <xs:sequence>
+          <xs:annotation>
+            <xs:documentation>
+              Identifier for an Appointment.  Auto generated if not supplied for creation, required for updates.
+            </xs:documentation>
+          </xs:annotation>
+          <xs:element name="Referral" type="ReferralIdentityType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Identifier for the Referral to which this appointment belongs.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="PatientIdentity" type="PatientIdentityType" />
+
+  <xs:complexType name="PatientIdentityType">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          Identifier for a Patient.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="NhsNumber" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            NHS number or identifying number of the patient. For example the CHI number is the replacement number for NHS patients in Scotland. In the REP. of Ireland there are no standard identifying numbers used in Healthcare related to a patient. However in certain circumstances the patient’s PPS number can be used.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="15" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ClientId" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            This field is different to the patient’s NHS number, and will be the number, allocated by the customer, to the patient. This number will vary from customer to customer.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="15" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Practitioner" type="PractitionerType" />
+
+  <xs:complexType name="PractitionerType">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          Health worker that provides preventive, curative, promotional or rehabilitative healthcare services in a systematic way to individuals, families or communities.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="Code" type="tmct:ShortReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The registered code for the GP.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Name" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The name of the GP.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="80" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="PracticeCode" type="tmct:ShortReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Practice Code for the GP’s registered practice.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PracticeName" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The practice name for the GP.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="80" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Address" type="AddressType" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The address of the GP's practice.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Phone" type="tmct:PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The GP's phone number.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Email" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The recorded contact email address for the GP.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="80" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Contact" type="ContactType" />
+  <xs:complexType name="ContactType">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          Contact details for Patient, Related Contact or Referrer.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="Title" type="tmct:ShortReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Title for the contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Surname" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Surname for the contact.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="40" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Forename" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Forename for the contact.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Address" type="AddressType" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The home or registered address.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Phone" type="PhoneType" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The registered telephone numbers.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Email" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The recorded contact email address.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="80" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ContactCollection" type="ContactCollectionType" />
+  <xs:complexType name="ContactCollectionType">
+    <xs:sequence>
+      <xs:element name="Item" type="ContactType" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="RelatedContact" type="RelatedContactType" />
+  <xs:complexType name="RelatedContactType">
+    <xs:complexContent>
+      <xs:extension base="ContactType">
+        <xs:sequence>
+          <xs:annotation>
+            <xs:documentation>
+              The patients related contacts.
+            </xs:documentation>
+          </xs:annotation>
+          <xs:element name="Type" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The type of the contact, this could be a social worker, next of kin or carer.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Relationship" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The way in which two people are connected.
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="80" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="RelatedContactCollection" type="RelatedContactCollectionType" />
+  <xs:complexType name="RelatedContactCollectionType">
+    <xs:sequence>
+      <xs:element name="Item" type="RelatedContactType" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Phone" type="PhoneType" />
+  <xs:complexType name="PhoneType">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          Selection of phone numbers.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="Daytime" type="tmct:PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The phone number for the contact during the day. Generally a work phone number.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Evening" type="tmct:PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The phone number for the contact during the evening. Generally a home phone number.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Mobile" type="tmct:PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A mobile phone number for the contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Address" type="AddressType" />
+  <xs:complexType name="AddressType">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          An Address
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="Name" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The location name
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Line1" minOccurs="0" maxOccurs="1">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Line2" minOccurs="0" maxOccurs="1">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Line3" minOccurs="0" maxOccurs="1">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Line4" minOccurs="0" maxOccurs="1">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Line5" minOccurs="0" maxOccurs="1">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="PostCode" type="tmct:ShortReferenceType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="KeySafe" type="tmct:ShortReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Code for Key Safe.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Allergy" type="AllergyType" />
+  <xs:complexType name="AllergyType">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          Describes an allergy
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="Name" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The name of the allergy.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="80" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Reaction" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Free text to describe the allergic reaction associated with the allergy.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Comments" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Any comments on the allergy.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AllergyCollection" type="AllergyCollectionType" />
+  <xs:complexType name="AllergyCollectionType">
+    <xs:sequence>
+      <xs:element name="Item" type="AllergyType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Patient" type="PatientType" />
+  <xs:complexType name="PatientType">
+    <xs:complexContent>
+      <xs:extension base="ContactType">
+        <xs:sequence>
+          <xs:element name="Identity" type="PatientIdentityType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The patient identity
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="TemporaryNHSNumber" type="xs:boolean" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Indicates whether the NHS Number is temporary.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="KnownAs" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The name that the patient likes to be called. For example Jonathan may also be known as John, or Jack.
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="20" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="AddressFrom" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Date and time representative of when the patient began living at their current address.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="CurrentlyResiding" type="AddressType" nillable="true" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The current address for the patient, may be different from their registered address.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="MaritalStatus" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Situation with regard to whether one is single, married, separated, divorced, or widowed etc.
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="80" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="Gender" type="tmct:ShortReferenceType" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Gender of the patient, this may be different than the original birth sex of the patient
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="DateOfBirth" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Date of Birth of the patient.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="DateOfDeath" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Date of Death of the patient.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Religion" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Religion of the patient.
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="80" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="Ethnicity" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Ethnic origin of the patient.
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="80" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="FirstLanguage" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                First Language of the patient.
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="40" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="LivesAlone" type="xs:boolean" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Indicates whether the patient lives alone.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Practitioner" type="PractitionerType" nillable="true" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The details of the GP with whom the patient is registered.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Nationality" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The registered nationality of the patient.
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="80" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="Interpreter" type="xs:boolean" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                This is to indicate whether the patient has requested or requires an interpreter to attend at the visit.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="SmsConsent" type="xs:boolean" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                This identifies whether the patient has consented to contact by the Trust via SMS.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Allergies" type="AllergyCollectionType" nillable="true" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                A list of all allergies attached to the patient, to be sent down with the visit instructions.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Contacts" type="RelatedContactCollectionType" nillable="true" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Any other contacts relevant to the patient’s care. This can be a social worker, next of kin or if the patient is released from the Acute sector, possibly their consulting doctor or surgeon.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="HomeCareConsent" type="xs:boolean" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                This is to indicate whether the patient has consented to Care in their home.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="MultipleResources" type="xs:boolean" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                This is to indicate whether the patient require additional resources
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>          
+          <xs:element name="Notes" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Free text field for additional information.
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="512" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="AdditionalProperties" type="tmvt:AdditionalPropertyCollectionType" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Holds additional properties associated with the patient that are not directly linked to the referral. These will  be created if provided in the CreatePatientRequest and will not be updated by the UpdatePatientRequest.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="Referrer" type="ReferrerType" />
+  <xs:complexType name="ReferrerType">
+    <xs:complexContent>
+      <xs:extension base="ContactType">
+        <xs:sequence>
+          <xs:annotation>
+            <xs:documentation>
+              Information about the person making the referral.
+            </xs:documentation>
+          </xs:annotation>
+          <xs:element name="JobTitle" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The Referrers Job Title
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Practitioner" type="PractitionerType" nillable="true" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                If the referrer is a GP then this is used to indicate their GP and practice details. This may not be the same as the GP with whom the patient is registered.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Source" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The method that the referral has been raised /received. This may be via telephone contact, email, formal letter, etc.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Reason" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The primary reason that the patient has been referred on to the customer’s service.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="Skill" type="SkillType" />
+  <xs:complexType name="SkillType">
+    <xs:sequence>
+      <xs:element name="Code" type="tmct:ShortReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The code of the skill
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="SkillCollection" type="SkillCollectionType" />
+  <xs:complexType name="SkillCollectionType">
+    <xs:sequence>
+      <xs:element name="Item" type="SkillType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Activity" type="ActivityType" />
+  <xs:complexType name="ActivityType">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          Represents a TotalMobile task on the visit that will eventually be created
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="LineNo" type="xs:int" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Activity sequence identifier.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Type" type="tmct:ShortReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The type of task, One of Coded, Text or Form.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Code" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The code of the task if the type is Coded.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Text description of the task.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="FormReference" type="tmct:ExtraLongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The form reference for the task if the type is Form.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ActivityCollection" type="ActivityCollectionType" />
+  <xs:complexType name="ActivityCollectionType">
+    <xs:sequence>
+      <xs:element name="Item" type="ActivityType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Status" type="StatusType" />
+  <xs:complexType name="StatusType">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          Represents the status of a referral.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="Code" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A user defined status code for the status.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A user defined description for the status.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="State" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The associated state of the status, determines validation to be used and viability for scheduling
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="Reason" type="ReasonType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Required if a reason is required by the status change
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Notes" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Free text field for additional information.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Reason" type="ReasonType" />
+  <xs:complexType name="ReasonType">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          Describes a reason given for a status change from a set of user defined reasons.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="Code" type="tmct:ShortReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The code for reason
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The description for the reason
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Referral" type="ReferralType" />
+  <xs:complexType name="ReferralType">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          An NHS referral is considered as paid-for work that has been issued by a GP or commissioning group to another organisation for completion e.g. a GP may refer a patient into a particular service to be seen by a specialist.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="Identity" type="ReferralIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Identifier of the referral.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Service" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            This may be set by the original referral information or by the customer organisation. This is the service unto which the patient is to be seen.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Patient" type="PatientType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The patient for whom this referral has been raised.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="RiskFactors" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Any risk factors attached to the patient that the Trust or HCP needs to be aware of.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="512" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="CommunicationIssues" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Any communication issues attached to the patient.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="512" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="AccessIssues" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Any access issues attached to the patients location.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="512" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Referrer" type="ReferrerType" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The person making the referral
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Diagnosis" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The clinical diagnosis that has been outlined on the original referral documentation or information.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="512" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="MedicalProblem" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The medical problems attached to the patient as outlined on the original referral documentation or information.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="512" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="MedicalHistory" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The relevant medical history for the patient.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="512" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="CareNeeds" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Any particular care needs attached to the patient as outlined on the original referral documentation or information.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="512" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Team" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            This is a customer specific field that outlines the specific team that the customer’s organisation would like to perform the visit. This may be for a number of reasons, including location, skill set availability, etc.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Status" type="StatusType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The status of the referral.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="InitiatedDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            This is the date and time at which the referral has been actioned.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ReceivedDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            This is the date and time at which the referral has been received by the system.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CreatedBy" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The username of the user that created the referral.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CreatedDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date and time at the point of creation.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="RelatedReferralAppointmentTypeRelationType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SINGLERESOURCE">
+        <xs:annotation>
+          <xs:documentation>A single resource must complete all SINGLERESOURCE related appointments at the same time</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MULTIPLERESOURCE">
+        <xs:annotation>
+          <xs:documentation>Different resources must complete all MULTIPLERESOURCE related appointments at the same time</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:element name="Appointment" type="ReferralAppointmentType" />
+  <xs:complexType name="ReferralAppointmentType">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          An appointment is a commitment to arrive at a specified location
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="Identity" type="AppointmentIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The appointment identifier.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="RelationType" type="RelatedReferralAppointmentTypeRelationType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            If this appointment is related to another appointment this property will be populated as to the nature of that relationship.            
+          </xs:documentation>
+        </xs:annotation>      
+      </xs:element>
+      <xs:element name="Description" type="tmct:LongTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The description for the appointment, overrides the default description which combines fields from the referral.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Associated WorkType for the Visit that will be created from this appointment.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Address" type="AddressType" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The location where the visit is to take place. This may be different to the patient’s address or patients currently residing address.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Priority" type="xs:int" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Priority is commonly used by customers to define SLA conditions in back office systems. i.e. Priority 1 = do in 24hrs, 2 = 48hrs.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Duration" type="xs:int" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The length of time required for the appointment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkItemGuid" type="tmct:GuidType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Populated in notification only if the referral has a live link to a work item in resource manager.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SpecialInstructions" type="tmct:LongTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Special instructions for the appointment, overrides the default special instructions which combines fields from the referral.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Phone" type="PhoneType" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            An alternative set of phone numbers for this appointment only.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Email" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            An alternative email address for this appointment only.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="80" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="HasLocation" type="xs:boolean" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates whether this appointment has a location or not. i.e. Physical visit versus Telephone check up.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DueDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The due date for the appointment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Booking" type="tmct:DateTimeRangeType" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The booking is a commitment to arrive at a specified location between a specified appointment slot's  start and end time.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Skills" type="SkillCollectionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The required skills for this appointment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Activities" type="ActivityCollectionType" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The activities associated with this appointment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="MandatoryResource" type="tmot:ResourceIdentityType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The resource which must complete this appointment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ConcurrentAppointments" type="ConcurrentAppointmentCollectionType" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            OBSOLETE but kept for backward compatibility. Avoid use, will be removed in a later release.
+            Equivalent to a RelatedAppointment with a RelatedType of Single
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="RelatedAppointments" type="RelatedReferralAppointmentCollectionType" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A list for appointments related to this appointment
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletedBy" type="AuditType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When and who deleted the Appointment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletionReason" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reference indicating the reason the Appointment was deleted, mandatory if Appointment Deletion Reason Codes exist.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletionNotes" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Additional notes indicating the reason the Appointment was deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AppointmentCollection" type="AppointmentCollectionType" />
+  <xs:complexType name="AppointmentCollectionType">
+    <xs:sequence>
+      <xs:element name="Appointment" type="ReferralAppointmentType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ConcurrentReferralAppointment" type="ConcurrentReferralAppointmentType" />
+  <xs:complexType name="ConcurrentReferralAppointmentType">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          A concurrent appointment is a commitment to arrive at a specified location at the same time as the master appointment
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="Identity" type="AppointmentIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The appointment identifier.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Associated WorkType for the Visit that will be created from this appointment, overrides the default description which is taken from the master appointment.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Description" type="tmct:LongTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The description for the appointment, overrides the default description which is taken from the master appointment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SpecialInstructions" type="tmct:LongTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Special instructions for the appointment, overrides the default special instructions which are taken from the master appointment
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="RelatedReferralAppointment" type="RelatedReferralAppointmentType" />
+  <xs:complexType name="RelatedReferralAppointmentType">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          A related appointment is an appointment that must be completed in relation to another appointment based on its type.          
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="Identity" type="AppointmentIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The appointment identifier.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="RelationType" type="RelatedReferralAppointmentTypeRelationType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The type of relation this appointment has to the master appointment.
+          </xs:documentation>
+        </xs:annotation>      
+      </xs:element>
+      <xs:element name="WorkType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Associated WorkType for the Visit that will be created from this appointment, overrides the default description which is taken from the master appointment.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Description" type="tmct:LongTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The description for the appointment, overrides the default description which is taken from the master appointment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SpecialInstructions" type="tmct:LongTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Special instructions for the appointment, overrides the default special instructions which are taken from the master appointment
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+       <xs:element name="Skills" type="SkillCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The required skills for this appointment, overrides the default skills which are taken from the master appointment
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ConcurrentAppointmentCollection" type="ConcurrentAppointmentCollectionType" />
+  <xs:complexType name="ConcurrentAppointmentCollectionType">
+    <xs:sequence>
+      <xs:element name="Appointment" type="ConcurrentReferralAppointmentType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="RelatedReferralAppointmentCollection" type="RelatedReferralAppointmentCollectionType" />
+  <xs:complexType name="RelatedReferralAppointmentCollectionType">
+    <xs:sequence>
+      <xs:element name="Appointment" type="RelatedReferralAppointmentType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+
+
+  <xs:element name="AuditType" type="AuditType" />
+  <xs:complexType name="AuditType">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          Records the who made and when a change occurred.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="Username" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The username of the user who made the change.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Date" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The date and time on which the change was made.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

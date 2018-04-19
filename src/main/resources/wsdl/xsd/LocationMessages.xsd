@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="LocationMessages"
+    targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2008/10/LocationMessages.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://schemas.consiliumtechnologies.com/mobile/2008/10/LocationMessages.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+    xmlns:tmloc="http://schemas.consiliumtechnologies.com/mobile/2008/10/LocationTypes.xsd"
+>
+  <xs:import id="tmloc" namespace="http://schemas.consiliumtechnologies.com/mobile/2008/10/LocationTypes.xsd" schemaLocation="LocationTypes.xsd" />
+  <xs:import id="tmct" schemaLocation="CommonTypes.xsd" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd" />
+
+  <xs:element name="LocateRequest" type="LocateRequest"/>
+  <xs:complexType name="LocateRequest">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Request to log location. Contains time and requesting user. Used in conjunction with LocateUsersRequest - LocateRequest sent to each UserType specified.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="RequestingUser" type="tmct:UserType" maxOccurs="1" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            User who made the request.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="RequestTime" type="xs:dateTime" maxOccurs="1" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Time the location request was made.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="SubmitLocationRequest" type="SubmitLocationRequest"/>
+    <xs:complexType name="SubmitLocationRequest">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          Is used when the device is submitting location information. Location status information can be found in the 'Text' element.
+          Location is valid when Location status equals OK.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Location" type="tmloc:LocationInfoType" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Location details.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DeviceLocation" type="tmloc:LocationInfoType" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Device location details.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Association" type="tmloc:AssociationType" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Association information for the location.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="User" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              User information.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RequestTime" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Request time for the location request.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ResponseTime" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Response time for the location request.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Text" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Description of location status (OK, Timeout, Disabled, Failed)
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ValidLocation" type="xs:boolean" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Valid location indicator.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+</xs:schema>

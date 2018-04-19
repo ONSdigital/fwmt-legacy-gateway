@@ -1,0 +1,434 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema id="SchedulerTypes"
+           targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/SchedulerTypes.xsd" elementFormDefault="qualified"
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2009/03/SchedulerTypes.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+           xmlns:tmvt="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd">
+  
+	<xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             schemaLocation="CommonTypes.xsd"/>
+  <xs:import id="tmvt" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd"
+          schemaLocation="VisitsTypes.xsd"/>
+	
+  <xs:element name="Contact" type="ContactInfoType" />
+  <xs:complexType name="ContactInfoType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines contact information.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Title" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The title for the contact.
+          </xs:documentation>
+        </xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100" />
+					</xs:restriction>
+				</xs:simpleType>
+      </xs:element>
+      <xs:element name="Name" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The name for the contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="HomePhone" type="tmct:PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The home phone number for the contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkPhone" type="tmct:PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The work phone number for the contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="MobilePhone" type="tmct:PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The mobile phone number for the contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Email" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The email address for the contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="URL" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The URL for the contact.
+          </xs:documentation>
+        </xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:anyURI">
+						<xs:maxLength value="255" />
+					</xs:restriction>
+				</xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="WorkItem" type="WorkItemType" />
+  <xs:complexType name="WorkItemType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Work Item.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" minOccurs="0" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            A reference for the Work Item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Origin" type="tmct:ShortReferenceType" minOccurs="0" maxOccurs="1" default="UNKNOWN">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates the external system from which the Work Item originates.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" minOccurs="1" maxOccurs="1" type="tmct:LongTextType">
+        <xs:annotation>
+          <xs:documentation>
+            A description for the Work Item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AllocatedTo" type="tmct:UserType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            TotalMobile user which identifies the owner of the Visit/Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SpecialInstructions" type="tmct:LongTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Additional text associated with the Work Item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Skills" type="SkillCollectionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+           Skill(s) required to carry out the Work Item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Location" type="LocationType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Location for the Work Item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Contact" type="ContactInfoType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Contact information for the Work Item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Attributes" type="NameValueAttributeCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Attributes (name / value pairs) used to provide additional information for the Work Item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Duration" type="xs:int" nillable="false" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Expected duration for the Work Item in minutes.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StartDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The date after which the work item should be scheduled, the start of the schedule window
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DueByDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The date before which the work item should be scheduled, the end of the schedule window
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Appointment" type="tmvt:AppointmentType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Appointment details associated with the Work Item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Tasks" type="tmvt:TaskCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Tasks associated with the Work Item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AdditionalProperties" type="tmvt:AdditionalPropertyCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Additional properties associated with the Work Item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Priority" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Priority of the Visit/Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>    
+      <xs:element name="CatalogueReference" type="tmct:ShortReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Identifies the catalogue for any coded items associated with the Work Item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ClientReference" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            An additional reference for the Work Item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Emergency" type="xs:boolean" default="false" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the Work Item is an emergency.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Associated WorkType for the Work Item.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="WorkItemIdentity" type="WorkItemIdentityType" />
+  <xs:complexType name="WorkItemIdentityType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a reference to a single Work Item.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" minOccurs="1" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            A reference for the Work Item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Origin" type="tmct:ShortReferenceType" minOccurs="0" maxOccurs="1" default="UNKNOWN">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates the external system from which the Work Item originates.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>     
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:element name="NameValueAttribute" type="NameValueAttributeType"/>
+	<xs:complexType name="NameValueAttributeType">
+		<xs:annotation>
+			<xs:documentation>
+				Defines an attribute (name / value pair).
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" minOccurs="1" maxOccurs="1" type="tmct:LongReferenceType">
+				<xs:annotation>
+					<xs:documentation>
+						Attribute name.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Value" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						Attribute value.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="NameValueAttributeCollection" type="NameValueAttributeCollectionType"/>
+	<xs:complexType name="NameValueAttributeCollectionType">
+		<xs:annotation>
+			<xs:documentation>
+				Defines a collection of attributes.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NameValueAttribute" type="NameValueAttributeType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>
+            Defines an attribute (name / value pair).
+          </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+  
+  <xs:element name="SkillCollection" type="SkillCollectionType"/>
+  <xs:complexType name="SkillCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of skills.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Skill" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Skill.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Location" type="LocationType" />
+  <xs:complexType name="LocationType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a location.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Address" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Address for the location. If no specific address lines are provided in optional AddressDetail then when generating a CreateVisitRequest an attempt to split the address via commas is made.
+            Note that in cases where there are more than 5 comma separated address lines or if any of the lines exceeds 50 characters then data may be lost.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>      
+      <xs:element name="Reference" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reference for the location
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>           
+      <xs:element name="AddressDetail" type="AddressDetailType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Optionally provide extra address detail.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>    
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name ="AddressDetail" type="AddressDetailType"/>
+  <xs:complexType name="AddressDetailType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an Address.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Name" maxOccurs="1" minOccurs="0" type="tmct:ShortTextType" >
+        <xs:annotation>
+          <xs:documentation>
+            Name of the Address.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Lines">
+        <xs:annotation>
+          <xs:documentation>
+            List of address lines that make up the address.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="AddressLine" maxOccurs="5" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation>
+                  Represents a line of the address.
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:maxLength value="50" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="HouseNo" type="tmct:ShortReferenceType" maxOccurs="1" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            House Number for the address. (Reserved for future use).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PostCode" minOccurs="0" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            PostCode for the address.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="10" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="GeoX" type="xs:float" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            X mapping co-ordinate for the Address.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="GeoY" type="xs:float" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Y mapping co-ordinate for the Address.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>    
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

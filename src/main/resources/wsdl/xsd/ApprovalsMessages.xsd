@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ApprovalsMessages" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2012/11/ApprovalsMessages.xsd" elementFormDefault="qualified" 
+					 xmlns="http://schemas.consiliumtechnologies.com/mobile/2012/11/ApprovalsMessages.xsd" 
+					 xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+					 xmlns:tmat="http://schemas.consiliumtechnologies.com/mobile/2012/11/ApprovalsTypes.xsd"
+					 xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd">
+	<xs:import id="tmat" namespace="http://schemas.consiliumtechnologies.com/mobile/2012/11/ApprovalsTypes.xsd" 
+						 schemaLocation="ApprovalsTypes.xsd" />
+	<xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+					 schemaLocation="CommonTypes.xsd"/>
+
+	<xs:element name="ApprovalAuthorisationNotification" type="ApprovalAuthorisationNotification"/>
+	<xs:complexType name="ApprovalAuthorisationNotification">
+		<xs:annotation>
+			<xs:documentation>
+				Notification that an Approval transaction has been authorised - automatically generated and sent to internal '\TM-AP\NOTIFICATION' queue when an existing Approval transaction is Approved, Rejected or Deleted.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TriggeringMessage" type="tmat:TriggerMessageType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						The original message which triggered creation of the Approval transaction 
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TransactionType" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						Reference for the transaction type of the Approval
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TransactionDate" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						The date recorded as the originating transaction date of the Approval
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Notes" type="tmat:NoteCollectionType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						Notes associated with the Approval
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Authorisation" type="tmat:AuthorisationType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						Details of the Approval authorisation 
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

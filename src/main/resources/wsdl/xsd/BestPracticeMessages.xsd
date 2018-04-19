@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="BestPracticeMessages" elementFormDefault="qualified"
+           targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/09/BestPracticeMessages.xsd"
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2009/09/BestPracticeMessages.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+           xmlns:tmft="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd"
+           >
+
+  <xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             schemaLocation="CommonTypes.xsd"/>
+  <xs:import id="tmft" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd"
+            schemaLocation="FormsTypes.xsd"/>
+
+  <xs:element name="GenerateCompletePracticeRequest" type="GenerateCompletePracticeRequest"/>
+  <xs:complexType name="GenerateCompletePracticeRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates a practice was completed by a user.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="User" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            User who completed the practice.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AnswerGuid" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identity of the completed practice.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:element name="CompletePracticeRequest" type="CompletePracticeRequest"/>
+  <xs:complexType name="CompletePracticeRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates a practice was completed by a user.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="User" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            User who completed the practice.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PracticeName" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Name of the practice.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PracticeText" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Text prompt of the practice.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="CompletedDate" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date the user completed the practice.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Signature" type="tmct:BinaryContentType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Signature of the user, captured at completion of the practice.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="FormResult" type="tmft:FormResultType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            FormResult details of the practice. Populated if the practice requires a form to be filled in.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Url" type="tmct:LongTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Url of the practice. Populated if the practice requires the user to navigate to a URL.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DismissPracticeRequest" type="DismissPracticeRequest"/>
+  <xs:complexType name="DismissPracticeRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates that a practice has been dismissed.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="PracticeName" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Name of the practice.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PracticeText" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Text prompt of the practice.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="User" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            User who dismissed the practice.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DismissalDate" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date the user dismissed the practice.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

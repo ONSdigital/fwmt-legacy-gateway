@@ -1,0 +1,36 @@
+﻿﻿<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+        <ns2:SendCreateVisitRequestMessage xmlns:ns1="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns2="http://schemas.consiliumtechnologies.com/services/mobile/2009/03/messaging" xmlns:ns3="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsMessages.xsd" xmlns:ns4="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd" xmlns:ns5="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd">
+            <!--Optional:-->
+            <ns2:SendMessageRequestInfo>
+                <ns2:QueueName>\TM-VI\INPUT</ns2:QueueName>
+                <ns2:Key>Test</ns2:Key>
+            </ns2:SendMessageRequestInfo>
+            <!--Optional:-->
+            <ns2:CreateVisitRequest>
+                <ns3:Visit>
+                    <ns4:Identity>
+                        <!-- Corresponds to the information in the Solution settings -->
+                        <ns4:WorkType>TES1</ns4:WorkType>
+                        <ns4:User>
+                            <!--Optional:-->
+                            <!-- Corresponds to the ID inside the SQL table, Dev_ONS_TotalMobile.dbo.TM_USER -->
+                            <ns5:ID>145</ns5:ID>
+                        </ns4:User>
+                        <ns4:Reference>Test-11</ns4:Reference>
+                    </ns4:Identity>
+                    <ns4:Description>?</ns4:Description>
+                    <ns4:Property>
+                        <ns5:Type>House</ns5:Type>
+                        <ns5:Reference>test</ns5:Reference>
+                        <ns5:Name>Test</ns5:Name>
+                        <!--Optional:-->
+                        <ns5:MobilePhone>0000</ns5:MobilePhone>
+                    </ns4:Property>
+                </ns3:Visit>
+            </ns2:CreateVisitRequest>
+        </ns2:SendCreateVisitRequestMessage>
+
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

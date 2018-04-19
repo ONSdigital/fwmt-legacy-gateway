@@ -1,0 +1,477 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="FormsTypes" elementFormDefault="qualified"
+           targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd"
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd">
+  <xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             schemaLocation="CommonTypes.xsd"/>
+
+
+  <xs:element name="FormResult" type="FormResultType"/>
+  <xs:complexType name="FormResultType">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a response to a form.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="User" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            User who provided the response.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Date" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            DateTime the response was completed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Form" type="FormIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Form that the response was created from.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Association" type="AssociationType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Entity associated with the form.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Responses" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of responses for this form.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Response" type="ResponseBaseType" minOccurs="1" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ResultGuid" type="tmct:GuidType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The Guid of the form result.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="FormIdentity" type="FormIdentityType"/>
+  <xs:complexType name="FormIdentityType">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies the identity of a form.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique reference of the form.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Version" type="xs:int" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Version of the form that the response was created from. If the version is 0 then the latest version is assumed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Association" type="AssociationType"/>
+  <xs:complexType name="AssociationType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an base Transaction Association.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:complexType>
+
+  <xs:element name="VisitAssociation" type="VisitAssociationType"/>
+  <xs:complexType name="VisitAssociationType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Transaction Visit Association.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="AssociationType">
+        <xs:sequence>
+          <xs:element name="WorkType" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                WorkType.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Reference" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Reference.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="Element" type="ElementType"/>
+  <xs:complexType name="ElementType">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a form element.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reference of the element.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Text" type="tmct:LongTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Question text.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ResponseBase" type="ResponseBaseType"/>
+  <xs:complexType name="ResponseBaseType" abstract="true">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a users response to an element.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Element" type="ElementType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Element the response is for.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ElementResponseBase" type="ElementResponseBaseType"/>
+  <xs:complexType name="ElementResponseBaseType" abstract="true">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a users response to an element.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ResponseBaseType">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="ElementResponse" type="ElementResponseType"/>
+  <xs:complexType name="ElementResponseType">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a users response to an element.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ElementResponseBaseType">
+        <xs:sequence>
+          <xs:element name="Value" type="tmct:LongTextType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Value supplied by the user for the element.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Description" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Description of the value supplied by the user for the element. Only populated for List elements.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:element name="BinaryResponse" type="BinaryResponseType"/>
+  <xs:complexType name="BinaryResponseType">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a users binary response to an element.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ElementResponseBaseType">
+        <xs:sequence>
+          <xs:element name="Value" type="tmct:BinaryContentType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Binary Value supplied by the user for the element.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="GroupResponse" type="GroupResponseType"/>
+  <xs:complexType name="GroupResponseType">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a users binary response to an element.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ElementResponseBaseType">
+        <xs:sequence>
+          <xs:element name="Instance" type="xs:int" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The instance of the response for an element.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Responses" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Collection of responses for this group/section.
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Response" type="ElementResponseBaseType" minOccurs="1" maxOccurs="unbounded" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  
+  <!--New-->
+ 
+  <xs:element name="FormIdentityTypeCollection" type="FormIdentityTypeCollection"/>
+  <xs:complexType name="FormIdentityTypeCollection">
+    <xs:sequence>
+      <xs:element name="Form" type="FormIdentityType" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="LocationResponse" type="LocationResponseType"/>
+  <xs:complexType name="LocationResponseType" >
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a users location response to an element.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ElementResponseBaseType">
+        <xs:sequence>
+        <xs:element name="DeviceLocation" type="DeviceLocationValueType" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Device Location value. Only available when device location is requested and when the device is able to determine its location.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+          <xs:element name="MarkedLocations" type="MarkedLocationTypeCollection" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+               Collection of Marked Locations
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="LocationValue" type="LocationValueType"/>
+  <xs:complexType name="LocationValueType" >
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a users location response to an element.
+      </xs:documentation>
+    </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Latitude" type="xs:double" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Latitude value.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Longitude" type="xs:double" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Longitude value.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+  </xs:complexType>
+ 
+  <xs:element name="MarkedLocation" type="MarkedLocationType"/>
+  <xs:complexType name="MarkedLocationType" >
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a users marked location response to an element.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="LocationValueType">
+        <xs:sequence>
+          <xs:element name="Description" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Description value.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Address" type="tmct:ShortTextType"  minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Address value.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:element name="DeviceLocation" type="DeviceLocationValueType"/>
+  <xs:complexType name="DeviceLocationValueType" >
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a device location. Only available when device location is requested and when the device is able to determine its location.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="LocationValueType">
+        <xs:sequence>
+          <xs:element name="Provider" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Location Provider value.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Accuracy" type="xs:double" minOccurs="1" maxOccurs="1" >
+            <xs:annotation>
+              <xs:documentation>
+                Accuracy value.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="MarkedLocations" type="MarkedLocationTypeCollection"/>
+  <xs:complexType name="MarkedLocationTypeCollection">
+    <xs:sequence>
+      <xs:element name="MarkedLocation" type="MarkedLocationType" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>  
+  
+  <xs:element name="OptionsElementResponse" type="OptionsElementResponseType"/>
+  <xs:complexType name="OptionsElementResponseType" >
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a user's selection of answer options to an element.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ElementResponseBaseType">
+        <xs:sequence>
+          <xs:element name="Answers" type="AnswerOptionCollectionType" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+               Collection of answer options.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:element name="AnswerOption" type="AnswerOptionType"/>
+  <xs:complexType name="AnswerOptionType" >
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a selected answer option response to an element.
+      </xs:documentation>
+    </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Code" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Code or Answer value of the selected option.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Description" type="tmct:LongTextType" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Description value of the selected option.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Score" type="xs:decimal" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Score value of the selected option.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="AnswerOptionCollection" type="AnswerOptionCollectionType"/>
+  <xs:complexType name="AnswerOptionCollectionType">
+    <xs:sequence>
+      <xs:element name="AnswerOption" type="AnswerOptionType" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <!--End of new-->
+  
+ 
+</xs:schema>

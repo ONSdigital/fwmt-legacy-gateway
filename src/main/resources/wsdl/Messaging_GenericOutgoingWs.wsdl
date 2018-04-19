@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging" xmlns:s0="http://schemas.consiliumtechnologies.com/services/mobile/2009/03/messaging" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://schemas.consiliumtechnologies.com/services/mobile/2009/03/messaging">
+      <s:element name="request" type="s0:WebServiceAdapterOutputRequest" />
+      <s:complexType name="WebServiceAdapterOutputRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Content" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Format" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="SendAdapterOutputSoapIn">
+    <wsdl:part name="request" element="s0:request" />
+  </wsdl:message>
+  <wsdl:message name="SendAdapterOutputSoapOut" />
+  <wsdl:portType name="GenericOutgoingWsSoap">
+    <wsdl:operation name="SendAdapterOutput">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Generic webservice that accepts a WebServiceAdapterOutputRequest</wsdl:documentation>
+      <wsdl:input message="tns:SendAdapterOutputSoapIn" />
+      <wsdl:output message="tns:SendAdapterOutputSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GenericOutgoingWsSoap" type="tns:GenericOutgoingWsSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SendAdapterOutput">
+      <soap:operation soapAction="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/SendAdapterOutput" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="GenericOutgoingWsSoap12" type="tns:GenericOutgoingWsSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SendAdapterOutput">
+      <soap12:operation soapAction="http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/SendAdapterOutput" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="GenericOutgoingWs">
+    <wsdl:port name="GenericOutgoingWsSoap" binding="tns:GenericOutgoingWsSoap">
+      <soap:address location="http://localhost/live/Services/taskmobileserver/v20/messaging/genericoutgoingws.asmx" />
+    </wsdl:port>
+    <wsdl:port name="GenericOutgoingWsSoap12" binding="tns:GenericOutgoingWsSoap12">
+      <soap12:address location="http://localhost/live/Services/taskmobileserver/v20/messaging/genericoutgoingws.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

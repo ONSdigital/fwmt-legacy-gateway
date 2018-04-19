@@ -1,0 +1,1471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema id="OptimiseTypes"
+           targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2015/05/OptimiseTypes.xsd" elementFormDefault="qualified"
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2015/05/OptimiseTypes.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+           xmlns:tmvt="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd">
+
+  <xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             schemaLocation="CommonTypes.xsd"/>
+  <xs:import id="tmvt" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd"
+          schemaLocation="VisitsTypes.xsd"/>
+
+  <xs:element name = "Project" type = "ProjectType" />
+  <xs:complexType name="ProjectType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Project.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="ProjectIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The Identity for the Project.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" minOccurs="1" maxOccurs="1" type="tmct:ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            A description for the Project.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TargetStart" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The target time to start the Project.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TargetEnd" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The target time to finish the Project.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="World" type="WorldIdentityType" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Indicates the World reference for the Project. The World reference is mandatory when the environment has more than one World.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>      
+      <xs:element name="Jobs" type="ProjectJobCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Defines a collection of Jobs that occur in a Project.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ProjectJobCollection" type="ProjectJobCollectionType"/>
+  <xs:complexType name="ProjectJobCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of Jobs that occur in a Project.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Job" type="ProjectJobType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Defines a Job in a Project.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name = "ProjectJob" type = "ProjectJobType" />
+  <xs:complexType name="ProjectJobType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Job in a Project.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="JobIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The Identity for the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>      
+      <xs:element name="DependsOn" type="ProjectJobDependencyCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            List of Jobs that must be finished prior to this Job starting.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ProjectJobDependencyCollection" type="ProjectJobDependencyCollectionType"/>
+  <xs:complexType name="ProjectJobDependencyCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of Jobs that occur in a Project.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Job" type="ProjectJobDependencyType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Defines a Job in a Project.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name = "ProjectJobDependency" type = "ProjectJobDependencyType" />
+  <xs:complexType name="ProjectJobDependencyType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Job dependency in a Project.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="JobIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The Identity for the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Wait" type="xs:int" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The time in minutes before the dependant Job may begin.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name = "Resource" type = "ResourceType" />
+  <xs:complexType name="ResourceType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Resource with information.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="ResourceIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The unique Identity for the Resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UserId" type="xs:int" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The user ID for the Resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UserKey" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The user key for the Resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Forename" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The forename for the Resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Surname" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The surname for the Resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="JobTitle" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The Job title for the Resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Address" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The address for the Resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="GeoX" type="xs:float" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            X mapping co-ordinate for the Address.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="GeoY" type="xs:float" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Y mapping co-ordinate for the Address.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="HomePhone" type="tmct:PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The home phone number for the Resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkPhone" type="tmct:PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The work phone number for the Resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="MobilePhone" type="tmct:PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The mobile phone number for the Resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Email" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The email address for the Resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TravelMode" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The mode of travel for the Resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Skills" type="SkillCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Skill(s) which the Resource has.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Attributes" type="NameValueAttributeCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Attributes (name / value pairs) used to provide additional information for the Resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    <xs:element name="WorkInProgress" type="xs:int" minOccurs="0" maxOccurs="1" nillable="true">
+      <xs:annotation>
+        <xs:documentation>
+	        Kanban setting - number of open jobs permitted on the resources mobile device
+        </xs:documentation>
+      </xs:annotation>
+      </xs:element>
+      <xs:element name="Range" type="xs:float" minOccurs="0" maxOccurs="1" nillable="true">
+      <xs:annotation>
+        <xs:documentation>
+	        Max range of the radius search area for job scheduling
+        </xs:documentation>
+      </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name = "ResourceIdentity" type = "ResourceIdentityType" />
+  <xs:complexType name="ResourceIdentityType">
+    <xs:annotation>
+      <xs:documentation>
+        The unique Identity for the Resource.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Username" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The username for the Resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name = "WorldIdentity" type = "WorldIdentityType" />
+  <xs:complexType name="WorldIdentityType">
+    <xs:annotation>
+      <xs:documentation>
+        The unique Identity for the World.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The reference for the World.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name = "ProjectIdentity" type = "ProjectIdentityType" />
+  <xs:complexType name="ProjectIdentityType">
+    <xs:annotation>
+      <xs:documentation>
+        The unique Identity for the Project.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The reference for the Project.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:element name="Contact" type="ContactInfoType" />
+  <xs:complexType name="ContactInfoType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines Contact information.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Title" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The title for the Contact.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Name" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The name for the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="HomePhone" type="tmct:PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The home phone number for the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkPhone" type="tmct:PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The work phone number for the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="MobilePhone" type="tmct:PhoneNumberType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The mobile phone number for the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Email" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The email address for the Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="URL" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The URL for the Contact.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:anyURI">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ContactExtension" type="tmct:ContactExtensionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Defines a Contact extension type for holding additonal infomation about a Contact.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Job" type="JobType" />
+  <xs:complexType name="JobType">
+    <xs:annotation>
+      <xs:documentation>
+        A Job is the task or piece of work that will be scheduled by TotalMobile Optimise.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" minOccurs="1" maxOccurs="1" type="JobIdentityType">
+        <xs:annotation>
+          <xs:documentation>
+            The unique Identity for the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Location" type="LocationType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Location for the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Contact" type="ContactInfoType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Contact information for the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" minOccurs="1" maxOccurs="1" type="tmct:LongTextType">
+        <xs:annotation>
+          <xs:documentation>
+            A description for the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SpecialInstructions" type="tmct:LongTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Additional text associated with the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DueDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The date before which the Job should be scheduled.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DueStart" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The beginning of the window within which the Job is due.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DueEnd" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The end of the window within which the Job is due.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Duration" type="xs:int" nillable="false" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Expected duration for the Job in minutes.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Status" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Current status of the Job.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="VisitStatus" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Current status of the visit (which is on the user's device).
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="10"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="VisitComplete" type="xs:boolean" default="false" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates whether the visit has been completed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Skills" type="SkillCollectionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Skill(s) required to carry out the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Priority" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Priority of the Visit/Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Emergency" type="xs:boolean" default="false" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the Job is an emergency.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Associated WorkType for the Job.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Origin" type="tmct:ShortReferenceType" minOccurs="0" maxOccurs="1" default="UNKNOWN">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates the system from which the Job originates.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ScheduleDate" type="tmct:DateTimeRangeType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The time for which the Job is scheduled. This will be only be used when imported into an Essentials World, when the Allocated To field is also populated.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ActualDate" type="tmct:DateTimeRangeType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The time during which the Job was actually done.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Dispatched" type="xs:boolean" default="false" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates whether the Job has been dispatched to a device.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DispatchDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            When the Job was dispatched.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AllocatedTo" type="ResourceIdentityType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Resource which identifies the owner of the Visit/Job. This will be rejected in an Enterprise world.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AppointmentPending" type="xs:boolean" default="false" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates whether the Job is pending an Appointment Booking.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AppointmentDate" type="tmct:DateTimeRangeType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            An appointment is a commitment to arrive at a specified location between a specified appointment slot's start and end time. A Job can have a single appointment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkOrderReference" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates the Work Order to which the Job is related.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AppointmentSlotTemplate" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            An Appointment Slot Template Name for use when Jobs are to be automatically booked.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CatalogueReference" minOccurs="0" maxOccurs="1" type="tmct:ShortReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Identifies the catalogue for any coded items associated with the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ClientReference" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            An additional reference for the Work Item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="GroupReference" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates a reference by which work will be grouped when scheduling. If not present then the Job latitude and longitude will be used to group the Job with others in the same location.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="World" type="WorldIdentityType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates the World reference for the Job. The World reference is mandatory when the environment has more than one World.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Tasks" type="tmvt:TaskCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Tasks associated with the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Attributes" type="NameValueAttributeCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Attributes (name / value pairs) used to provide additional information for the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AdditionalProperties" type="tmvt:AdditionalPropertyCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Additional properties associated with the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="RelatedJobs" type="RelatedJobCollectionType" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A list of all Jobs related to this Job
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="MandatoryResource" type="ResourceIdentityType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Resource who must do the Visit/Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PreferredResources" type="ResourceIdentityCollectionType" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A list of all preferred Resources for this Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ProhibitedResources" type="ResourceIdentityCollectionType" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A list of all prohibited Resources for this Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="JobIdentity" type="JobIdentityType" />
+  <xs:complexType name="JobIdentityType">
+    <xs:annotation>
+      <xs:documentation>
+        The unique Identity for a single Job.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" minOccurs="1" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            The reference for the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="World" type="WorldType" />
+  <xs:complexType name="WorldType">
+    <xs:annotation>
+      <xs:documentation>
+        An Optimise World.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>      
+      <xs:element name="Identity" minOccurs="1" maxOccurs="1" type="WorldIdentityType">
+        <xs:annotation>
+          <xs:documentation>
+            The unique Identity for a single World.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" minOccurs="1" maxOccurs="1" type="tmct:ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            The World description.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Type" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The World type.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="State" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The World state.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AccesKey" type="tmct:LongTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The World AccesKey.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Secret" type="tmct:LongTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The World secret.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Url" type="tmct:LongTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The World URL.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="RelatedJob" type="RelatedJobType" />
+  <xs:complexType name="RelatedJobType"  abstract="true">
+    
+      <xs:annotation>
+        <xs:documentation>
+          Defines the relation to another Job. For more information on the different relation types available, please see the specific Job Types, for example ConcurrentJobType.
+        </xs:documentation>
+      </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="JobIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The Job identifier for the linked Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  
+  <xs:element name = "RelatedJobCollection" type = "RelatedJobCollectionType" />
+  <xs:complexType name="RelatedJobCollectionType">
+    <xs:sequence>
+      <xs:element name="Job" type="RelatedJobType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ConcurrentJob" type="ConcurrentJobType" />
+  <xs:complexType name="ConcurrentJobType">    
+    <xs:annotation>
+      <xs:documentation>
+        A concurrent Job happens in the same location
+      </xs:documentation>
+    </xs:annotation>
+      <xs:complexContent>
+        <xs:extension base="RelatedJobType">
+          <xs:sequence>
+          <xs:element name="Type" type="ConcurrencyType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                The type of link.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>          
+        </xs:sequence>
+    </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="NameValueAttribute" type="NameValueAttributeType"/>
+  <xs:complexType name="NameValueAttributeType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an Attribute (name / value pair).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Name" minOccurs="1" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Attribute name.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Value" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Attribute value.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="NameValueAttributeCollection" type="NameValueAttributeCollectionType"/>
+  <xs:complexType name="NameValueAttributeCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of Attributes.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="NameValueAttribute" type="NameValueAttributeType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Defines an Attribute (name / value pair).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ResourceIdentityCollection" type="ResourceIdentityCollectionType"/>
+  <xs:complexType name="ResourceIdentityCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of Resources.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ResourceIdentity" type="ResourceIdentityType" minOccurs="1" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="SkillCollection" type="SkillCollectionType"/>
+  <xs:complexType name="SkillCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of Skills.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Skill" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Skill.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Location" type="LocationType" />
+  <xs:complexType name="LocationType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Location.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Address" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Address for the Location. If no specific address lines are provided in optional AddressDetail then when generating a CreateVisitRequest an attempt to split the address via commas is made.
+            Note that in cases where there are more than 5 comma separated address lines or if any of the lines exceeds 50 characters then data may be lost.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Reference" type="LocationReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The reference for the Location.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AddressDetail" type="AddressDetailType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Optionally provide extra address detail.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="LocationReference" type="LocationReferenceType" />
+  <xs:simpleType name="LocationReferenceType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Location Reference.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="20" />
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <xs:element name="ConcType" type="ConcurrencyType" />
+  <xs:simpleType name="ConcurrencyType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the type of the related link.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SINGLERESOURCE"/>
+      <xs:enumeration value="MULTIPLERESOURCE"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name ="AddressDetail" type="AddressDetailType"/>
+  <xs:complexType name="AddressDetailType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an Address.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Name" maxOccurs="1" minOccurs="0" type="tmct:ShortTextType" >
+        <xs:annotation>
+          <xs:documentation>
+            Name of the Address.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Lines">
+        <xs:annotation>
+          <xs:documentation>
+            List of address lines that make up the Address.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="AddressLine" maxOccurs="5" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation>
+                  Represents a line of the Address.
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:maxLength value="50" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="HouseNo" type="tmct:ShortReferenceType" maxOccurs="1" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            House Number for the Address. (Reserved for future use).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PostCode" minOccurs="0" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            PostCode for the Address.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="10" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="GeoX" type="xs:float" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            X mapping co-ordinate for the Address.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="GeoY" type="xs:float" nillable="true" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Y mapping co-ordinate for the Address.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name = "RosterIdentity" type = "RosterIdentityType" />
+  <xs:complexType name="RosterIdentityType">
+    <xs:annotation>
+      <xs:documentation>
+        The unique Identity for the Roster.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The reference for the Roster.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Roster" type="RosterType"/>
+  <xs:complexType name="RosterType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Roster with slots and assigned Resources.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="RosterIdentityType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique Identity for the Roster.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Name" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Name of the Roster.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Slots" type="RosterSlotCollectionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Slot(s) which belong to this Roster.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Assignments" type="ResourceRosterCollectionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Resource(s) which have been assigned to this Roster and when.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="RosterSlotCollection" type="RosterSlotCollectionType"/>
+  <xs:complexType name="RosterSlotCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of Roster slots.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="RosterSlot" type="RosterSlotType" minOccurs="1" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Roster slot.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ResourceRosterCollection" type="ResourceRosterCollectionType"/>
+  <xs:complexType name="ResourceRosterCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of Resource Rosters.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ResourceRoster" type="ResourceRosterType" minOccurs="1" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Resource Roster.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name ="RosterSlot" type="RosterSlotType"/>
+  <xs:complexType name="RosterSlotType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a slot which can be part of a Roster.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Day" type="xs:int" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Day of the Roster on which this slot begins.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StartTime" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Time at which this slot begins.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Duration" type="xs:float" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Number of minutes for which this slot lasts.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ShiftId" type="tmct:GuidType" minOccurs="0" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Guid which links slots which belong to the same shift.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name ="ResourceRoster" type="ResourceRosterType"/>
+  <xs:complexType name="ResourceRosterType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines when a Resource is on a certain Roster.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Resource" type="ResourceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The Resource for which the Resource Roster is defined.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Start" type="xs:dateTime" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            When the Resource begins on the Roster.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="End" type="xs:dateTime" minOccurs="0" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Number of minutes for which this slot lasts.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Offset" type="xs:int" minOccurs="0" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            The number of days by which this Roster is offset for the Resource.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="World" type="WorldIdentityType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates the World reference for which the Resource is rostered.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name = "ResourceAvailabilityIdentity" type = "ResourceAvailabilityIdentityType" />
+  <xs:complexType name="ResourceAvailabilityIdentityType">
+    <xs:annotation>
+      <xs:documentation>
+        The unique Identity of the Resource Availability.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The reference for the Resource Availability.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ResourceAvailability" type="ResourceAvailabilityType"/>
+  <xs:complexType name="ResourceAvailabilityType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the Availability of resource(s) for a given timespan.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="ResourceAvailabilityIdentityType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The unique Identity for this Availability.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="World" type="WorldIdentityType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates the World reference for the Availability.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SourceWorld" type="WorldIdentityType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates the Source World reference for the Availability... only applicable to LOAN availability types.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Type" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Type of Availability: FREE, BUSY or LOAN.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ReasonReference" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The reason associated with this period of Availability.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Resource" type="ResourceIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The Resource for whom this Availability is defined.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Start" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The date on which this period of Availability begins.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="End" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The date on which this period of Availability ends.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" type="tmct:LongTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Optional further details about this period of Availability.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AuditType" type="AuditType" />
+  <xs:complexType name="AuditType">
+    <xs:annotation>
+      <xs:documentation>
+        Records who made a change and when it occurred.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Username" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The username of the user who made the change.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Date" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The date and time on which the change was made.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="JobHeader" type="JobHeaderType" />
+  <xs:complexType name="JobHeaderType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines header information and selected detail information associated with a Job. Note that the AllocatedTo property is ignored when using Optimise Enterprise.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="JobIdentity" type="JobIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The unique Identity for the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Contact" type="ContactInfoType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Contact information for the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" type="tmct:LongTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A description for the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SpecialInstructions" type="tmct:LongTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Additional text associated with the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DueDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The date before which the Job should be scheduled.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DueStart" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The beginning of the window within which the Job is due.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DueEnd" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The end of the window within which the Job is due.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Duration" type="xs:int" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Expected duration for the Job in minutes.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Skills" type="SkillCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Skill(s) required to carry out the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AllocatedTo" type="ResourceIdentityType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Resource which identifies the owner of the Visit/Job. This will be rejected in an Enterprise world.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AppointmentDate" type="tmct:DateTimeRangeType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            An appointment is a commitment to arrive at a specified location between a specified appointment slot's start and end time. A Job can have a single appointment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="GroupReference" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates a reference by which work will be grouped when scheduling. If not present then the Job latitude and longitude will be used to group the Job with others in the same location.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Attributes" type="NameValueAttributeCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Attributes (name / value pairs) used to provide additional information for the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AdditionalProperties" type="tmvt:AdditionalPropertyCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Additional properties associated with the Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="MandatoryResource" type="ResourceIdentityType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Resource who must do the Visit/Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PreferredResources" type="ResourceIdentityCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A list of all preferred Resources for this Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ProhibitedResources" type="ResourceIdentityCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            A list of all prohibited Resources for this Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

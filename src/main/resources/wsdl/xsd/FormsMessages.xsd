@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="FormsMessages" elementFormDefault="qualified"
+           targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsMessages.xsd"
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsMessages.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+           xmlns:tmft="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd">
+  
+  <xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             schemaLocation="CommonTypes.xsd"/>
+  <xs:import id="tmft" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd"
+            schemaLocation="FormsTypes.xsd"/>
+
+  <xs:element name="SubmitFormResultRequest" type="SubmitFormResultRequest"/>
+  <xs:complexType name="SubmitFormResultRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates a form result has been submitted.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Result" type="tmft:FormResultType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Result of a form.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>      
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SubmitFormResultRequestCollectionType">
+    <xs:sequence>
+      <xs:element name="Form" type="SubmitFormResultRequest" minOccurs="0" maxOccurs="unbounded">
+        
+      </xs:element>
+    </xs:sequence>  
+  </xs:complexType>
+
+</xs:schema>

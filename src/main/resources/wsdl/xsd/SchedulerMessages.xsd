@@ -1,0 +1,483 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema id="SchedulerMessages"
+           targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/SchedulerMessages.xsd" elementFormDefault="qualified" 
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2009/03/SchedulerMessages.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tmsch="http://schemas.consiliumtechnologies.com/mobile/2009/03/SchedulerTypes.xsd"
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+           xmlns:tmvt="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd">
+  <xs:import id="tmsch" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/SchedulerTypes.xsd"
+             schemaLocation="SchedulerTypes.xsd"/>
+  <xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+           schemaLocation="CommonTypes.xsd"/>
+  <xs:import id="tmvt" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd"
+         schemaLocation="VisitsTypes.xsd"/>
+  
+  <xs:element name="CreateWorkItemRequest" type="CreateWorkItemRequest" />
+  <xs:complexType name="CreateWorkItemRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Request to create a work item.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="WorkItem" type="tmsch:WorkItemType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            work item which is to be created.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="HasPendingTasks" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates whether work item has any pending tasks. If true AddWorkItemTasksRequest(s) should follow.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ScheduleFor" type="tmct:UserType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            TotalMobile user which identifies who the work item will be scheduled for.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Schedule" type="tmct:DateTimeRangeType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Schedule (start and end date / time) to use for this work item. Ignored unless allocated to a user and no pending tasks remain to be added.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>      
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AddWorkItemTasksRequest" type="AddWorkItemTasksRequest"/>
+  <xs:complexType name="AddWorkItemTasksRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Used to add tasks to a work item.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" minOccurs="1" maxOccurs="1" type="tmsch:WorkItemIdentityType">
+        <xs:annotation>
+          <xs:documentation>
+            A unique reference for the work item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Tasks" type="tmvt:TaskCollectionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Tasks added to the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="HasPendingTasks" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates whether work item has any pending tasks. If true AddWorkItemTasksRequest(s) should follow.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ScheduleFor" type="tmct:UserType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            TotalMobile user which identifies who the work item will be scheduled for.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Schedule" type="tmct:DateTimeRangeType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Schedule (start and end date / time) to use for this work item. Ignored unless allocated to a user and no pending tasks remain to be added.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="CreateWorkItemNotification" type="CreateWorkItemNotification" />
+  <xs:complexType name="CreateWorkItemNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notification containing details of the work item created and schedule details (if it was scheduled).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>      
+      <xs:element name="WorkItem" type="tmsch:WorkItemType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The work item created in response to a CreateWorkItemRequest.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CreatedBy" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            TotalMobile user that updated the work item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Scheduled" type="xs:boolean" default="false" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the work item was successfully scheduled or not.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ScheduledFor" type="tmct:UserType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            TotalMobile user which identifies who the work item has been scheduled for.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Schedule" type="tmct:DateTimeRangeType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The schedule (start and end date / time) used for this work item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ErrorMessage" type="tmct:LongTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            If an attempt to schedule failed, information detailing why.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>    
+  </xs:complexType>
+
+  <xs:element name="UpdateWorkItemNotification" type="UpdateWorkItemNotification" />
+  <xs:complexType name="UpdateWorkItemNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notification containing details of the work item created and schedule details (if it was scheduled).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="WorkItem" type="tmsch:WorkItemType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The work item created in response to a CreateWorkItemRequest.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UpdatedBy" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            TotalMobile user that updated the work item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Scheduled" type="xs:boolean" default="false" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the work item was successfully scheduled or not.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ScheduledFor" type="tmct:UserType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            TotalMobile user which identifies who the work item has been scheduled for.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Schedule" type="tmct:DateTimeRangeType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The schedule (start and end date / time) used for this work item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ErrorMessage" type="tmct:LongTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            If an attempt to schedule failed, information detailing why.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DeleteWorkItemNotification" type="DeleteWorkItemNotification" />
+  <xs:complexType name="DeleteWorkItemNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notification containing details of a deleted work item, when it was deleted and by whom.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" minOccurs="1" maxOccurs="1" type="tmsch:WorkItemIdentityType">
+        <xs:annotation>
+          <xs:documentation>
+            A unique reference for the work item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletedBy" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            TotalMobile user that deleted the work item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletedDate" type="xs:dateTime" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Date the work item was deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletionReason" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reference indicating the reason the work item was deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletionNotes" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Additional notes indicating the reason the work item was deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="RecallWorkItemRequest" type="RecallWorkItemRequest" />
+  <xs:complexType name="RecallWorkItemRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Request to recall an existing work item.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" minOccurs="1" maxOccurs="1" type="tmsch:WorkItemIdentityType">
+        <xs:annotation>
+          <xs:documentation>
+            A unique reference for the work item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Lines" type="tmvt:LineNumberCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The number of each line upon which the recall applies.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>   
+  </xs:complexType>
+
+  <xs:element name="ScheduleWorkItemNotification" type="ScheduleWorkItemNotification" />
+  <xs:complexType name="ScheduleWorkItemNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notification containing details of a scheduled work item, when it was scheduled and to whom.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" minOccurs="1" maxOccurs="1" type="tmsch:WorkItemIdentityType">
+        <xs:annotation>
+          <xs:documentation>
+            A unique reference for the work item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ScheduledBy" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            TotalMobile user that scheduled the work item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ScheduledDate" type="xs:dateTime" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Date the work item was scheduled.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ScheduledFor" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            TotalMobile user which identifies who the work item has been scheduled for.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Schedule" type="tmct:DateTimeRangeType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The schedule (start and end date / time) used for this work item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Confirmed" type="xs:boolean" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Whether the schedule been confirmed for the work item.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DeleteScheduleNotification" type="DeleteScheduleNotification" />
+  <xs:complexType name="DeleteScheduleNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Notification containing details of a work item schedule that has been deleted.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" minOccurs="1" maxOccurs="1" type="tmsch:WorkItemIdentityType">
+        <xs:annotation>
+          <xs:documentation>
+            A unique reference for the work item for which the schedule has been deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DeletedBy" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            TotalMobile user that deleted the schedule.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+			<xs:element name="DeletedFrom" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						TotalMobile user that the schedule item was removed from.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeletedDate" type="xs:dateTime" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Date the schedule was deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>     
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="UpdateAvailabilityRequest" type="UpdateAvailabilityRequest" />
+  <xs:complexType name="UpdateAvailabilityRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Request to add an item of unavailablity to the resources schedule.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" minOccurs="0" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            A optional reference for the period of unavailability.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="User" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            TotalMobile user which identifies who the unavailablity will be scheduled for.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StartDate" minOccurs="1" maxOccurs="1" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>
+            Start Date / Time for the unavailablity.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Duration" type="xs:int" nillable="false" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Duration for the unavailablity in minutes.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Type" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            A type for the unavailablity e.g. Meeting
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Description for the unavailablity e.g. Meeting to discuss TotalMobile solutions
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="UpdateAvailabilityNotification" type="UpdateAvailabilityNotification" />
+  <xs:complexType name="UpdateAvailabilityNotification">
+    <xs:annotation>
+      <xs:documentation>
+        Response to a UpdateAvailabilityRequest.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" minOccurs="1" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            The unique reference for this period of unavailability.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="User" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            TotalMobile user which identifies who the unavailablity has been scheduled for.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StartDate" minOccurs="1" maxOccurs="1" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>
+            Start Date / Time for the unavailablity.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Duration" type="xs:int" nillable="false" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Duration for the unavailablity in minutes.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Type" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            The type of the unavailablity e.g. Meeting
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Description of the unavailablity e.g. Meeting to discuss TotalMobile solutions
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Deleted" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false">
+        <xs:annotation>
+          <xs:documentation>
+            Has this period of unavailability been deleted from the schedule.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

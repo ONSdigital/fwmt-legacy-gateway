@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="MaterialsMessages" targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsMessages.xsd" elementFormDefault="qualified" 
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsMessages.xsd" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:tmmt="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsTypes.xsd" 
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd">
+	<xs:import id="tmmt" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsTypes.xsd" 
+             schemaLocation="MaterialsTypes.xsd" />
+  <xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             schemaLocation="CommonTypes.xsd"/>
+
+  <xs:element name="StockRequestCollection" type ="StockRequestCollectionType"/>
+  <xs:complexType name="StockRequestCollectionType">
+    <xs:sequence>
+      <xs:element name="Material" type="StockRequestBase" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="StockRequestBase" type="StockRequestBase"/>
+  <xs:complexType name="StockRequestBase">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a base message for stock movement requests (such as Issues/Orders/Returns).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="User" type="tmct:UserType" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            User requesting the Issue/Order/Return.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Store" minOccurs="1" maxOccurs="1" type="tmmt:StoreType">
+        <xs:annotation>
+          <xs:documentation>
+            Store from which the Stock is being Issued/Ordered/Returned.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>      
+      <xs:element name="Date" minOccurs="1" maxOccurs="1" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>
+            Date and Time of the Issue/Order/Return.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Reason" minOccurs="0" maxOccurs="1" type="tmct:ReasonType">
+        <xs:annotation>
+          <xs:documentation>
+            Reason for the Issue/Order/Return.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Signature" minOccurs="0" maxOccurs="1" type="tmct:BinaryContentType">
+        <xs:annotation>
+          <xs:documentation>
+            Signature associated with Issue/Order/Return.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Association" minOccurs="0" maxOccurs="1" type="tmmt:AssociationType">
+        <xs:annotation>
+          <xs:documentation>
+            Entity with which the Transactions are associated.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Transactions" minOccurs="1" maxOccurs="1" type="tmmt:TransactionCollectionType">
+        <xs:annotation>
+          <xs:documentation>
+            Transactions associated with the Issue/Order/Return.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>      
+    </xs:sequence>
+  </xs:complexType>  
+
+  <xs:element name="StockIssueRequest" type="StockIssueRequest"/>
+  <xs:complexType name="StockIssueRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the issue of stock from a Store.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="StockRequestBase"/>              
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="StockReturnRequest" type="StockReturnRequest"/>
+  <xs:complexType name="StockReturnRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the return of issued stock to a Store.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="StockRequestBase"/>              
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="SupplierRequestBase" type="SupplierRequestBase"/>
+  <xs:complexType name="SupplierRequestBase">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a base message for Orders and Returns from a Supplier.
+      </xs:documentation>      
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="StockRequestBase">
+        <xs:sequence>
+          <xs:element name="Supplier" type="tmmt:SupplierType" minOccurs="0" maxOccurs="1" nillable="true">
+            <xs:annotation>
+              <xs:documentation>
+                Supplier.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="OrderFromSupplierRequest" type="OrderFromSupplierRequest"/>
+  <xs:complexType name="OrderFromSupplierRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the order of stock from a Supplier.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="SupplierRequestBase"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="ReturnToSupplierRequest" type="ReturnToSupplierRequest"/>
+  <xs:complexType name="ReturnToSupplierRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the return of stock to a Supplier.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="SupplierRequestBase"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="StockAdjustRequestBase" type="StockAdjustRequestBase"/>
+  <xs:complexType name="StockAdjustRequestBase">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an base message for stock level adjustment or replacement requests.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Store" type="tmmt:StoreType" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Van to which the stock level adjustment request refers.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Items" type="tmmt:ItemCollectionType" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Collection of products with the corresponding adjustment or replacement quantity.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AdjustStockLevelRequest" type="AdjustStockLevelRequest"/>
+  <xs:complexType name="AdjustStockLevelRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Defines adjustments (up or down) to currently held stock levels.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="StockAdjustRequestBase"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="ReplaceStockLevelRequest" type="ReplaceStockLevelRequest"/>
+  <xs:complexType name="ReplaceStockLevelRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Defines adjustment to stock levels by supplying REPLACEMENT quantity values for products.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="StockAdjustRequestBase"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="ReceiptRequestBase" type="ReceiptRequestBase"/>
+  <xs:complexType name="ReceiptRequestBase" abstract="true">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an abstract message relating to receipt of ordered stock.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="OrderReference" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reference for the Order to which the receipt pertains.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Supplier" type="tmmt:SupplierType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Supplier from which the order has been received.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Notes" minOccurs="0" maxOccurs="1" type="tmct:ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Further information relating to the receipt.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Store" type="tmmt:StoreType" minOccurs="0" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Store to which the ordered stock is being dispatched.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Items" type="tmmt:ItemCollectionType" minOccurs="0" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Collection of ordered Items.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Date" minOccurs="1" maxOccurs="1" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>
+            Date and Time of receipt.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Editable" type="xs:boolean" minOccurs="1" maxOccurs="1" default="false">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates whether the receipt can be edited.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="NotifyOrderStatusRequest" type="NotifyOrderStatusRequest"/>
+  <xs:complexType name="NotifyOrderStatusRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a notification on the status of an order.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ReceiptRequestBase" />
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="ReceiptRequest" type="ReceiptRequest"/>
+  <xs:complexType name="ReceiptRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Defines receipt of ordered stock.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ReceiptRequestBase">
+        <xs:sequence>
+          <xs:element name="Association" minOccurs="0" maxOccurs="1" type="tmmt:AssociationType">
+            <xs:annotation>
+              <xs:documentation>
+                Entity with which the receipt is associated.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="ResponseRequired" type="tmmt:ReceiptResponseRequirementType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Indicates required handling of receipt notification - acknowledgement may be auto-generated or a user response
+                may be required.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="ReceiptConfirmationRequest" type="ReceiptConfirmationRequest"/>
+  <xs:complexType name="ReceiptConfirmationRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Defines acknowledgement of a receipt notification for ordered stock.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ReceiptRequestBase">
+        <xs:sequence>
+          <xs:element name="User" type="tmct:UserType" minOccurs="1" maxOccurs="1" >
+            <xs:annotation>
+              <xs:documentation>
+                Identification of the person acknowledging the receipt.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Signature" type="tmct:BinaryContentType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Signature of the person acknowledging the receipt.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="StoreChangeRequest" type="StoreChangeRequest" />
+  <xs:complexType name ="StoreChangeRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an abstract message relating to a store change by a user.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="User" type="tmct:UserType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>User Information</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PreviousStore" type="tmmt:StoreType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Users previous store.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="NewStore" type="tmmt:StoreType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Users new store.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DateTime" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>Data and time of store change.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Notes" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>Notes about store change</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Reason" type="tmct:ReasonCodeType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reason code for store change.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+    
+</xs:schema>

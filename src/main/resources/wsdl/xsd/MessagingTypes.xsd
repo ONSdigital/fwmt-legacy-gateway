@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="MessagingTypes" elementFormDefault="qualified"
+           attributeFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://schemas.consiliumtechnologies.com/services/mobile/2009/03/messaging"
+           xmlns="http://schemas.consiliumtechnologies.com/services/mobile/2009/03/messaging"
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd">
+
+  <xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             schemaLocation="CommonTypes.xsd"/>
+  
+  <xs:element name="SendMessageRequestInfo" type="SendMessageRequestInfo"/>
+  <xs:complexType name="SendMessageRequestInfo">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies the basic information for sending of a message to the specified queue. 
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="QueueName" minOccurs="1" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Target queue for the message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CorrelationId" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Identifier used to correlate the message with another message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Key"  type="tmct:LongReferenceType" maxOccurs="1" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Optional Key to identify a set of messages in a queue.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="SendMessageRequest" type="SendMessageRequest"/>
+  <xs:complexType name="SendMessageRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies the sending of a message to the specified queue. 
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="SendMessageRequestInfo">
+        <xs:sequence>
+          <xs:element name="Body" type="xs:string" maxOccurs="1" minOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Contents of the message.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="TypeName" type="xs:string" maxOccurs="1" minOccurs="1" >
+            <xs:annotation>
+              <xs:documentation>
+                TypeName of the body.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="SendMessageResponse" type="SendMessageResponse"/>
+  <xs:complexType name="SendMessageResponse">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a response to sending a message, contains the identity of the sent message.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Id" type="tmct:GuidType" maxOccurs="1" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Identity of the message created by the request.
+          </xs:documentation>
+        </xs:annotation>        
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="TransformAndSendResponse" type="TransformAndSendResponse"/>
+  <xs:complexType name="TransformAndSendResponse">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a response to a TransformAndSendRequest. Contains the identites of any created messages.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Id" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Id of message created.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:element name="TransformAndSendRequest" type="TransformAndSendRequest"/>
+  <xs:complexType name="TransformAndSendRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies a message to be transformed and inserted into a message queue.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Targets" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Collection of target message types and queues.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Target" type="TransformTargetType" minOccurs="1" maxOccurs="unbounded" /> 
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Format" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Format of the source type.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Content" type="xs:string" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Source message content.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Key" type="tmct:ShortTextType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Optional Key to identify a set of messages in a queue
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="XPath" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Optional XPath to accomodate multiple messages in a single request
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:element name="TransformTarget" type="TransformTargetType"/>
+  <xs:complexType name="TransformTargetType">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies the target message type and queue of a transformation.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="QueueName" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Queue of the transformed message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Format" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Format of the target message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+
+  <xs:element name="WebServiceAdapterOutputRequest" type="WebServiceAdapterOutputRequest"/>
+  <xs:complexType name="WebServiceAdapterOutputRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies the output from a web service adapter.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>      
+      <xs:element name="Id" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Identity of the message that created the content.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Content" type="tmct:LongTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Formatted content.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Format" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Format of the content.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+
+  <xs:element name="QueryMessagesRequest" type="QueryMessagesRequest"/>
+  <xs:complexType name="QueryMessagesRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies the criteria for a query to be performed against the messaging system.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Criteria">
+        <xs:annotation>
+          <xs:documentation>
+            Search criteria for the request.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Criterion" type="tmct:CriteriaType" maxOccurs="unbounded" minOccurs="0" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="MessageStatus" type="MessageStatusType"/>
+  <xs:simpleType name="MessageStatusType">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies the status of the Message
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="New" />
+      <xs:enumeration value="Error" />
+      <xs:enumeration value="Processed" />
+      <xs:enumeration value="Processing" />
+      <xs:enumeration value="Deleted" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+
+  <xs:element name="MessageInfoType" type="MessageInfoType"/>
+  <xs:complexType name="MessageInfoType">
+    <xs:annotation>
+      <xs:documentation>
+        Contains information about a message not its content.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Id" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the Message..
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="CorrelationId" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Identifier used to relate messages to each other. Typically the correlation Id will the Id of an originating Message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      
+      <xs:element name="TypeName" type="xs:string" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The type of the Message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="QueueName" type="xs:string" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The Queue the message was sent to.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Key" type="xs:string" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The application specific key given to the Message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Date" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The date the message was sent.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Status" type="MessageStatusType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The current status of the message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StatusDate" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The date the message changed to its current status.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StatusText" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Optional text about the last change made to the messages status.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="BlockedBy" type="tmct:GuidType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            If the message is blocked this will be the blocking Message unique identifier
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="QueryMessagesResponse" type="QueryMessagesResponse"/>
+  <xs:complexType name="QueryMessagesResponse">
+    <xs:annotation>
+      <xs:documentation>
+        Returns information about the Messages that match the query request.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Messages">
+        <xs:annotation>
+          <xs:documentation>
+            Messages that match the query
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Message" type="MessageInfoType" maxOccurs="unbounded" minOccurs="0" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="GetMessageRequest" type="GetMessageRequest"/>
+  <xs:complexType name="GetMessageRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Requests a specified Message from the messaging system.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Id" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The unique identifier for the Message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UseCDATA" type="xs:boolean" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the returned content should be enclosed in a CDATA element.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="GetMessageResponse" type="GetMessageResponse"/>
+  <xs:complexType name="GetMessageResponse">
+    <xs:annotation>
+      <xs:documentation>
+        Returns a specified Message from the messaging system.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Message" type="MessageInfoType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The information about the message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Content" type="xs:string" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The contents of the message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DeleteMessageRequest" type="DeleteMessageRequest"/>
+  <xs:complexType name="DeleteMessageRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Deletes a specified Message from the messaging system.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Id" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The unique identifier for the the message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="DeleteMessageResponse" type="DeleteMessageResponse"/>
+  <xs:complexType name="DeleteMessageResponse">
+    <xs:annotation>
+      <xs:documentation>
+        Response from deleting a message.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ResetMessageRequest" type="ResetMessageRequest"/>
+  <xs:complexType name="ResetMessageRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Resets a failed Message in the messaging system.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Id" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The unique identifier for the the message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ResetMessageResponse" type="ResetMessageResponse"/>
+  <xs:complexType name="ResetMessageResponse">
+    <xs:annotation>
+      <xs:documentation>
+        Response from Reseting a failed Message in the messaging system.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+
+<xs:element name="RetryMessageRequest" type="RetryMessageRequest"/>
+  <xs:complexType name="RetryMessageRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Retries a failed Message in the messaging system.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Id" type="tmct:GuidType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            The unique identifier for the the message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="RetryMessageResponse" type="RetryMessageResponse"/>
+  <xs:complexType name="RetryMessageResponse">
+    <xs:annotation>
+      <xs:documentation>
+        Response from Retrying a failed Message in the messaging system.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

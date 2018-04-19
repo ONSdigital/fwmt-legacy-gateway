@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="MaterialsTypes" elementFormDefault="qualified"
+           targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsTypes.xsd" 
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsTypes.xsd" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd">
+  <xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             schemaLocation="CommonTypes.xsd"/>
+
+  <xs:element name="Product" type="ProductType"/>
+  <xs:complexType name="ProductType">
+    <xs:annotation>
+      <xs:documentation>        
+        Defines a Product.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>      
+      <xs:element name="Code" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Product Code.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Description" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Product Description.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>      
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Item" type="ItemType"/>
+  <xs:complexType name="ItemType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Stock Item.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Product" type="ProductType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Product.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Quantity" type="xs:double" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Quantity of the Product.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ItemCollection" type="ItemCollectionType"/>
+  <xs:complexType name="ItemCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of Stock Items.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Item" type="ItemType" minOccurs="0" maxOccurs="unbounded"/>        
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Store" type="StoreType"/>
+  <xs:complexType name="StoreType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Store (usually representing a Van).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>      
+      <xs:element name="Reference" type="tmct:ShortReferenceType" minOccurs="1" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Store Reference.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StoreID" type ="xs:int" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Store ID.
+          </xs:documentation>
+        </xs:annotation>        
+      </xs:element>
+      <xs:element name="Description" type="tmct:ShortTextType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+           Store Description.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="VirtualWarehouse" minOccurs="0" maxOccurs="1" type="tmct:ShortReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Virtual Warehouse (for internal use).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    <xs:element name="MainWarehouse" minOccurs="0" maxOccurs="1" type="tmct:ShortReferenceType">
+      <xs:annotation>
+        <xs:documentation>
+          Main Warehouse linked to the Store.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Supplier" type="SupplierType"/>
+  <xs:complexType name="SupplierType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Supplier. (which may be a Warehouse).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" type="tmct:ShortReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Supplier Reference.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" minOccurs="1" maxOccurs="1" type="tmct:ShortTextType">
+        <xs:annotation>
+          <xs:documentation>
+            Supplier Description.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Address" minOccurs="0" maxOccurs="1" type="tmct:AddressType">
+        <xs:annotation>
+          <xs:documentation>
+            Supplier Address.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Association" type="AssociationType"/>
+  <xs:complexType name="AssociationType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an base Transaction Association.
+      </xs:documentation>
+    </xs:annotation>    
+  </xs:complexType>
+
+  <xs:element name="VisitAssociation" type="VisitAssociationType"/>
+  <xs:complexType name="VisitAssociationType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Transaction Visit Association.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="AssociationType">
+        <xs:sequence>
+          <xs:element name="WorkType" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                WorkType.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Reference" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Reference.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="LineNo" type="xs:int" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Line Number.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="Transaction" type="TransactionType"/>
+  <xs:complexType name="TransactionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a Transaction.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>      
+      <xs:element name="Items" type="ItemCollectionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Stock Items involved in the Transaction.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="TransactionCollection" type="TransactionCollectionType"/>
+  <xs:complexType name="TransactionCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a collection of Transactions.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Transaction" type="TransactionType" minOccurs="0" maxOccurs="unbounded"/>        
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ReceiptResponseRequirement" type="ReceiptResponseRequirementType"/>
+  <xs:simpleType name ="ReceiptResponseRequirementType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines categories of required response behaviour for a receipt.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Standard">
+        <xs:annotation>
+          <xs:documentation>
+            A user ackowledgement is required but can be provided at the user's convenience.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Immediate">
+        <xs:annotation>
+          <xs:documentation>
+            The user is required to acknowledge the receipt before continuing with other tasks.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Auto">
+        <xs:annotation>
+          <xs:documentation>
+            The receipt should be acknowledged automatically and the user notified afterwards.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema>

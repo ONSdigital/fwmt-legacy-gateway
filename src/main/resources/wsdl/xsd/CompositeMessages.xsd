@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="CompositeMessages"
+    targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/09/CompositeMessages.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://schemas.consiliumtechnologies.com/mobile/2009/09/CompositeMessages.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd" 
+           xmlns:tmcm="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonMessages.xsd"
+           xmlns:tmvt="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd"
+           xmlns:tmvm="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsMessages.xsd"
+           xmlns:tmmt="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsTypes.xsd"
+           xmlns:tmmm="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsMessages.xsd"
+           xmlns:tmft="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd"
+           xmlns:tmfm="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsMessages.xsd"
+           xmlns:tmtsm="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetMessages.xsd"
+           xmlns:tmtst="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetTypes.xsd"
+           >
+	<xs:import id="tmct" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             schemaLocation="CommonTypes.xsd"/>
+  <xs:import id="tmcm" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonMessages.xsd"
+             schemaLocation="CommonMessages.xsd"/>
+  <xs:import id="tmvm" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsMessages.xsd"
+           schemaLocation="VisitsMessages.xsd" />
+  <xs:import id="tmvt" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/VisitsTypes.xsd"
+             schemaLocation="VisitsTypes.xsd" />
+  <xs:import id="tmmm" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsMessages.xsd"
+         schemaLocation="MaterialsMessages.xsd" />
+  <xs:import id="tmmt" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/MaterialsTypes.xsd"
+             schemaLocation="MaterialsTypes.xsd" />
+  <xs:import id="tmfm" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsMessages.xsd"
+         schemaLocation="FormsMessages.xsd" />
+  <xs:import id="tmft" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/07/FormsTypes.xsd"
+             schemaLocation="FormsTypes.xsd" />
+  <xs:import id="tmtsm" namespace="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetMessages.xsd"
+           schemaLocation="TimesheetMessages.xsd" />
+  <xs:import id="tmtst" namespace="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetTypes.xsd"
+         schemaLocation="TimesheetTypes.xsd" />
+  
+  <xs:element name ="CompositeVisitRequest" type="CompositeVisitRequest"/>
+  
+  <xs:complexType name="CompositeVisitRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Contains a set of Messages related to a Visit.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Identity" type="tmvt:VisitIdentityType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Identity of the Visit that the Messages to.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      
+      <xs:element name="Completions" type="tmvm:CompleteVisitRequestCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Any completions against the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="Updates" type="tmvm:UpdateVisitRequestCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Any updates against the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="UpdateStatus" type="tmvm:UpdateVisitStatusRequestCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Any update status against the Visit.
+          </xs:documentation>
+        </xs:annotation>        
+      </xs:element>
+      
+      <xs:element name="Materials" type="tmmm:StockRequestCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Any Issues/Returns/Orders against the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      
+      <xs:element name ="Images" type="tmcm:SubmitImagesRequestCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Any images captured during the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name ="Signatures" type="tmcm:SubmitSignatureRequestCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Any signatures captured during the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      
+      <xs:element name ="Forms" type="tmfm:SubmitFormResultRequestCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Any Forms filled during the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name ="TimesheetEntries" type="tmtsm:TimesheetEntryCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Any timesheet entries for the Visit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

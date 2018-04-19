@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="IncidentsTypes"
+    targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2009/11/IncidentsTypes.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://schemas.consiliumtechnologies.com/mobile/2009/11/IncidentsTypes.xsd"
+    xmlns:mstns="http://schemas.consiliumtechnologies.com/mobile/2009/11/IncidentsTypes.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+>
+
+  <xs:import id="tmct" schemaLocation="CommonTypes.xsd" namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd" />
+
+  <xs:element name="Incident" type="IncidentType"/>
+  <xs:complexType name="IncidentType">
+    <xs:annotation>
+      <xs:documentation>
+        Provides reference details of a recorded incident.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reference identifier for an Incident.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="AltReference" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Alternative Reference identifier for an Incident.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="User" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Identification of user recording incident.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Definition" type="IncidentDefinitionType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Description of the type of Incident recorded.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CreatedDate" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date/Time when recording of the incident began.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SubmittedDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date/Time when the incident was submitted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SelectedLocation" type="LocationType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Location reported as the Incident location.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ActualLocation" type="LocationType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Actual location of mobile device at time of recording the incident.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Vicinity" type="tmct:LongReferenceType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Optional selected qualifier (e.g. Behind, Beside) for vicinity description.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="VicinityDescription"  minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Optional text description of Incident vicinity.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Address" type="tmct:ContactType" minOccurs="0" maxOccurs="1" >
+        <xs:annotation>
+          <xs:documentation>
+            Address of recorded incident.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="IncidentDefinition" type="IncidentDefinitionType"/>
+  <xs:complexType name="IncidentDefinitionType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an IncidentDefinition - a type of Incident of which instances may be recorded.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Reference identifier for an IncidentDefinition.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Description" type="tmct:LongReferenceType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Text description of the IncidentDefinition.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Guid" type="tmct:GuidType" minOccurs="0" maxOccurs="1"></xs:element>
+      <xs:element name="AddressSetting" type="mstns:YesNoOptionalType" minOccurs="0" maxOccurs="1"></xs:element>
+      <xs:element name="ImageSetting" type="mstns:YesNoOptionalType" minOccurs="0" maxOccurs="1"></xs:element>
+      <xs:element name="LocationSetting" type="mstns:YesNoOptionalType" minOccurs="0" maxOccurs="1"></xs:element>
+      <xs:element name="Active" type="xs:boolean" minOccurs="0" maxOccurs="1"></xs:element>
+      <xs:element name="PinDocId" type="xs:int" minOccurs="0" maxOccurs="1"></xs:element>
+      <xs:element name="IncidentCount" type="xs:int" minOccurs="0" maxOccurs="1"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="YesNoOptionalType" type="YesNoOptionalType" />
+  <xs:simpleType name="YesNoOptionalType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration id="Yes" value="Yes"></xs:enumeration>
+      <xs:enumeration id="No" value="No"></xs:enumeration>
+      <xs:enumeration id="Optional" value="Optional"></xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="Location" type="LocationType"/>
+  <xs:complexType name="LocationType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines an Incident Location.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Latitude" type="xs:double" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Latitude measurement of the Location.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Longitude" type="xs:double" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Longitude measurement of the Location.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Accuracy" type="xs:int" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Degree of accuracy of the location.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Image" type="ImageType"/>
+  <xs:complexType name="ImageType">
+    <xs:annotation>
+      <xs:documentation>
+        Content and Tags for an image associated with an Incident.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Content" type="tmct:BinaryContentType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Content and mime-type of the image.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Tags" type="TagCollectionType" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Optional collection of Tags - short descriptions attached to image.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ImageCollection" type="ImageCollectionType"/>
+  <xs:complexType name="ImageCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Collection of Incident Images.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Item" type="ImageType" maxOccurs="unbounded" minOccurs="0" >
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="TagCollection" type="TagCollectionType"/>
+  <xs:complexType name="TagCollectionType">
+    <xs:annotation>
+      <xs:documentation>
+        Collection of short text descriptions associated with an Incident Image.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Item" type="xs:string" maxOccurs="unbounded" minOccurs="0" >
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

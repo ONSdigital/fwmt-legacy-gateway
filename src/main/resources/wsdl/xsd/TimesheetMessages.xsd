@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema id="TimesheetMessages"
+           targetNamespace="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetMessages.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetMessages.xsd"
+           xmlns:mstns="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetMessages.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tmtst="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetTypes.xsd"
+           xmlns:tmct="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd">
+  <xs:import namespace="http://schemas.consiliumtechnologies.com/mobile/2009/03/CommonTypes.xsd"
+             schemaLocation="CommonTypes.xsd" id="tmct" />
+  <xs:import namespace="http://schemas.consiliumtechnologies.com/mobile/2008/05/TimesheetTypes.xsd"
+             schemaLocation="TimesheetTypes.xsd" id="tmtst" />
+
+  <xs:element name="SubmitTimesheetRequest" type="SubmitTimesheetRequest" />
+  <xs:complexType name="SubmitTimesheetRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the timesheet being submitted.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Timesheet" type="tmtst:TimesheetType" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="TimesheetEntryCollectionType">
+    <xs:sequence>
+      <xs:element name="Entries" type="UpdateTimesheetStatusRequest" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="UpdateTimesheetStatusRequest" type="UpdateTimesheetStatusRequest" />
+  <xs:complexType name="UpdateTimesheetStatusRequest">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the details of the status change.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Reference" minOccurs="1" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            A reference for the Visit/Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Worktype" minOccurs="1" maxOccurs="1" type="tmct:LongReferenceType">
+        <xs:annotation>
+          <xs:documentation>
+            Worktype for the Visit/Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="User" type="tmct:UserType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            TotalMobile user which identifies the owner of the Visit/Job.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StartTime" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date and time of the start of the timesheet entry.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="EndTime" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Date and time of the end of the timesheet entry.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TimeType" type="tmtst:TimeTypeType" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Time Type of the timesheet entry being closed off my this message.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
