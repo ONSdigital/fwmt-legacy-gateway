@@ -16,6 +16,7 @@ spring.datasource:
   url: jdbc:postgresql://localhost/postgres?currentSchema=gateway
   driver-class-name: org.postgresql.Driver
   continue-on-error: true
+  schema: classpath:/db/schema.sql
 
 management.endpoint.health.show-details: always
 endpoints.health.sensitive: false
@@ -23,6 +24,7 @@ management.security.enabled: false
 
 liquibase:
   url: jdbc:postgresql://localhost:5432/postgres?currentSchema=gateway
+  default-schema: gateway
 
 logging:
   level:

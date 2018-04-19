@@ -4,7 +4,7 @@ spring:
   datasource:
     driverClassName: org.postgresql.Driver
     continue-on-error: true
-    schema: classpath:/schema-cloud.sql
+    schema: classpath:/db/schema-cloud.sql
 
 liquibase:
   user: ${cloud.services.postgresql.connection.username}
