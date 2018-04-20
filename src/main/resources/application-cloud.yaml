@@ -12,3 +12,15 @@ liquibase:
   default-schema:
   url: ${cloud.services.postgresql.connection.jdbcurl}
   changeLog: classpath:db/changelog/db.changelog-master.yaml
+
+# The following data is sensitive and must not be shared
+totalmobile:
+  username: “...”
+  password: “...”
+spring.datasource:
+  username: “...”
+  password: “...”
+security.user:
+  name: “...”
+  password: “...”
+
