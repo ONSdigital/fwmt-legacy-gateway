@@ -251,7 +251,7 @@
             </plugin>
             <!-- docker-maven-plugin -->
             <!-- This plugin sets up and tears down a Postgres Docker container for integration tests in the verify stage -->
-<!--             <plugin>
+             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.20.1</version>
@@ -287,9 +287,12 @@
                         <goals>
                             <goal>stop</goal>
                         </goals>
+						<configuration>
+							<skip>${skipITs}</skip>
+						</configuration>
                     </execution>
                 </executions>
-            </plugin> -->
+            </plugin>
         </plugins>
     </build>
 </project>
