@@ -246,6 +246,7 @@
                             <goal>start</goal>
                         </goals>
                         <configuration>
+                          <skip>${skipITs}</skip>
                             <images>
                                 <image>
                                     <name>postgres:9.5.4</name>
