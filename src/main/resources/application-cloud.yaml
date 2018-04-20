@@ -13,14 +13,12 @@ liquibase:
   url: ${cloud.services.postgresql.connection.jdbcurl}
   changeLog: classpath:db/changelog/db.changelog-master.yaml
 
-totalmobile:
-  url: "https://ons.totalmobile.co.uk"
-  message-queue-service: "/Live/Services/TM/v20/Messaging/MessageQueueWs.asmx"
-
 # The following data is sensitive and must not be shared
 totalmobile:
   username: “...”
   password: “...”
+  url: "https://ons.totalmobile.co.uk"
+  message-queue-service: "/Live/Services/TM/v20/Messaging/MessageQueueWs.asmx"
 spring.datasource:
   username: “...”
   password: “...”
