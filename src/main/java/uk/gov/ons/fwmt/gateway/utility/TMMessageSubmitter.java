@@ -195,7 +195,7 @@ public class TMMessageSubmitter {
      */
     @SuppressWarnings("unchecked")
     private <O> O soapResponseUnmarshal(SOAPMessage response)
-            throws javax.xml.bind.JAXBException, javax.xml.soap.SOAPException {
+            throws JAXBException, SOAPException {
         Unmarshaller unmarshaller = JAXBContext.newInstance(ObjectFactory.class).createUnmarshaller();
         Object obj = unmarshaller.unmarshal(response.getSOAPBody().extractContentAsDocument());
         return (O) obj;
