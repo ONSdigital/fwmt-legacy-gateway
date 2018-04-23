@@ -33,7 +33,7 @@ import uk.gov.ons.fwmt.gateway.utility.readers.LegacyUsersReader;
 public class PublishServiceImpl implements PublishService {
 
     private TMMessageSubmitter submitter;
-    private LegacySampleRepo legacySampleRepository;
+    private LegacySampleRepo legacySampleRepo;
     private LegacyStaffRepo legacyStaffRepo;
     private LegacyLeaversRepo legacyLeaversRepo;
     private LegacyJobsRepo legacyJobsRepo;
@@ -46,11 +46,11 @@ public class PublishServiceImpl implements PublishService {
     private List<LegacyUserEntity> usersEntries;
 
     @Autowired
-    public PublishServiceImpl(TMMessageSubmitter submitter, LegacySampleRepo legacySampleRepository,
+    public PublishServiceImpl(TMMessageSubmitter submitter, LegacySampleRepo legacySampleRepo,
             LegacyStaffRepo legacyStaffRepo, LegacyLeaversRepo legacyLeaversRepo, LegacyJobsRepo legacyJobsRepo,
             LegacyUsersRepo legacyUsersRepo) {
         this.submitter = submitter;
-        this.legacySampleRepository = legacySampleRepository;
+        this.legacySampleRepo = legacySampleRepo;
         this.legacyStaffRepo = legacyStaffRepo;
         this.legacyLeaversRepo = legacyLeaversRepo;
         this.legacyJobsRepo = legacyJobsRepo;
@@ -59,7 +59,7 @@ public class PublishServiceImpl implements PublishService {
 
     public void populateEntryArrays() {
         sampleEntries = new ArrayList<>();
-        legacySampleRepository.findAll().forEach(sampleEntries::add);
+        legacySampleRepo.findAll().forEach(sampleEntries::add);
 
         staffEntries = new ArrayList<>();
         legacyStaffRepo.findAll().forEach(staffEntries::add);
@@ -85,18 +85,6 @@ public class PublishServiceImpl implements PublishService {
         List<LegacyStaffEntity> newStaffEntities = new ArrayList<LegacyStaffEntity>();
         List<LegacyUserEntity> removedUserEntities = new ArrayList<LegacyUserEntity>();
 
-        for (LegacyStaffEntity staff : staffEntries) {
-            boolean newStaff = true;
-            for (LegacyUserEntity user : usersEntries) {
-                if (user.getAuthNo().equals(staff.getAuthno())) {
-                    newStaff = false;
-                }
-            }
-            if (newStaff) {
-                newStaffEntities.add(staff);
-            }
-        }
-
         for (LegacyUserEntity user : usersEntries) {
             boolean removedUser = true;
             for (LegacyStaffEntity staff : staffEntries) {
@@ -107,6 +95,20 @@ public class PublishServiceImpl implements PublishService {
             if (removedUser) {
                 removedUserEntities.add(user);
             }
+        }
+        
+        for (LegacyStaffEntity staff : staffEntries) {
+            boolean newStaff = true;
+            for (LegacyUserEntity user : usersEntries) {
+                if (user.getAuthNo().equals(staff.getAuthno())) {
+                    newStaff = false;
+                }
+            }
+            if (newStaff) {
+                newStaffEntities.add(staff);
+            }
+            
+            legacyStaffRepo.delete(staff);
         }
 
         for (LegacyUserEntity removedUser : removedUserEntities) {
@@ -162,6 +164,10 @@ public class PublishServiceImpl implements PublishService {
             legacyJobsRepo.save(legacyJobEntity);
         }
         sendJobRequests(createJobRequests, "\\OPTIMISE\\INPUT");
+        
+        for(LegacySampleEntity processedSample: newJobsEntities) {
+            legacySampleRepo.delete(processedSample);
+        }
 
         // Update database jobs table states for each job from inital to sent.
         for (CreateJobRequest job : createJobRequests) {
@@ -179,6 +185,10 @@ public class PublishServiceImpl implements PublishService {
         }
 
         sendUpdateJobRequests(updateJobHeaderRequest, "\\OPTIMISE\\INPUT");
+        
+        for(LegacySampleEntity processedSample: reallocationEntities) {
+            legacySampleRepo.delete(processedSample);
+        }
     }
 
     public void executeReissueJobs() {

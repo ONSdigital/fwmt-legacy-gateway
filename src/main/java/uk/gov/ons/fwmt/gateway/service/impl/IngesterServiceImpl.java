@@ -36,7 +36,6 @@ public class IngesterServiceImpl implements IngesterService {
 
     @Override
     public void ingestLegacyStaff(Iterator<LegacyStaffEntity> iter) {
-        legacyStaffRepository.deleteAll();
         while (iter.hasNext()) {
             legacyStaffRepository.save(iter.next());
         }
