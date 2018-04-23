@@ -55,6 +55,7 @@
         <java.version>1.8</java.version>
         <maven-jaxb2-plugin.version>0.13.3</maven-jaxb2-plugin.version>
         <snakeyaml.version>1.18</snakeyaml.version>
+        <skipITs>false</skipITs>
     </properties>
 
     <dependencies>
@@ -315,7 +316,7 @@
                             <goal>start</goal>
                         </goals>
                         <configuration>
-                            <!--<skip>${skipITs}</skip>-->
+                            <skip>${skipITs}</skip>
                             <images>
                                 <image>
                                     <name>postgres:9.5.4</name>
