@@ -1,5 +1,6 @@
 package uk.gov.ons.fwmt.gateway.integration_tests;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,11 +12,11 @@ import uk.gov.ons.fwmt.gateway.Application;
 @SpringBootTest(classes={Application.class})
 public class ExampleTestIT {
     @Value("${foo}")
-    String foo;
+    private String foo;
 
     @Test
     public void test() {
-        System.out.println(foo);
+        Assert.assertEquals(foo, "Blah");
     }
 
 }
