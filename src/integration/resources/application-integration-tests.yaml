@@ -1,0 +1,17 @@
+spring.datasource:
+  driverClassName: org.postgresql.Driver
+  continue-on-error: true
+  schema: classpath:/schema-integration.sql
+  username: "postgres"
+  password: "postgres"
+liquibase:
+  url: jdbc:postgresql://localhost:5433/postgres
+  default-schema: gateway
+  changeLog: classpath:db/changelog/db.changelog-master.yaml
+  user: "postgres"
+  password: "postgres"
+totalmobile:
+  username: ""
+  password: ""
+
+foo: Blah
