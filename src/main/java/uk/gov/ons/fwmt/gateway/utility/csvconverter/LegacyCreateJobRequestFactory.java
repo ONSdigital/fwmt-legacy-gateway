@@ -128,7 +128,7 @@ public class LegacyCreateJobRequestFactory {
 
     private static String staffIdToTMUsername(String authNo) {
         for (LegacyUserEntity user : allUsers) {
-            if (user.getAuthNo().equals(authNo)) {
+            if (user.getAuthno().equals(authNo)) {
                 return user.getTmusername();
             }
         }

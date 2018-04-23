@@ -6,7 +6,7 @@ import uk.gov.ons.fwmt.gateway.entity.LegacyUserEntity;
 
 public interface LegacyUsersRepo extends CrudRepository<LegacyUserEntity, Long> {
     Iterable<LegacyUserEntity> findAll();
-    LegacyUserEntity findByAuthNo(String authNo);
+    LegacyUserEntity findByAuthno(String authNo);
     boolean existsByAuthNo(String authNo);
     LegacyUserEntity findByTmusername(String tmUsername);
     boolean existsByTmusername(String proposedTMUsername);

@@ -34,7 +34,7 @@ public class LegacyUpdateJobHeaderRequestFactory {
     
     private static String staffIdToTMUsername(List<LegacyUserEntity> users, String authNo) {
         for (LegacyUserEntity user : users) {
-            if (user.getAuthNo().equals(authNo)) {
+            if (user.getAuthno().equals(authNo)) {
                 return user.getTmusername();
             }
         }
