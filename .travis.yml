@@ -11,7 +11,7 @@ services:
 
 before_install:
   - docker build -t postgres_test src/test/docker/postgres
-  - docker run --name postgres -p 5433:5432 -d postgres_test
+  - docker run --name postgres -p 5432:5432 -d postgres_test
   - docker ps
 
 after_script:
@@ -23,7 +23,7 @@ jobs:
   include:
     stage: test
 #    script: mvn clean test -Dcucumber.options="srs/test/resources/uk.gov.ons.fwmt.csvuploader.testing"
-    script: mvn -Dtest=RunnerTest testing
+    script: mvn -Dtest=RunnerTest -Dspring.profiles.active=integration-test testing
     stage: deploy
     deploy:
     provider: script
