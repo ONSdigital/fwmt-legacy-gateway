@@ -18,7 +18,6 @@ after_script:
   - docker stop $(docker ps -a -q)
   - docker rm $(docker ps -a -q)
 
-
 jobs:
   include:
     stage: test

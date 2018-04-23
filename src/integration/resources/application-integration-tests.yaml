@@ -10,3 +10,6 @@ liquibase:
   changeLog: classpath:db/changelog/db.changelog-master.yaml
   user: "postgres"
   password: "postgres"
+totalmobile:
+  username: ""
+  password: ""
