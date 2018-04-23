@@ -1,0 +1,4 @@
+spring.datasource:
+  driverClassName: org.postgresql.Driver
+  continue-on-error: true
+  schema: classpath:/schema-integration.sql
