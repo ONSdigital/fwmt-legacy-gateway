@@ -23,11 +23,11 @@
     <distributionManagement>
         <snapshotRepository>
             <id>snapshots</id>
-            <url>http://artifactory.rmdev.onsdigital.uk/artifactory/libs-snapshot</url>
+            <url>http://artifactory.rmdev.onsdigital.uk/artifactory/libs-snapshot-local</url>
         </snapshotRepository>
         <repository>
             <id>releases</id>
-            <url>http://artifactory.rmdev.onsdigital.uk/artifactory/libs-release</url>
+            <url>http://artifactory.rmdev.onsdigital.uk/artifactory/libs-release-local</url>
         </repository>
     </distributionManagement>
 
@@ -339,6 +339,9 @@
                         <goals>
                             <goal>stop</goal>
                         </goals>
+						<configuration>
+							<skip>${skipITs}</skip>
+						</configuration>
                     </execution>
                 </executions>
             </plugin>

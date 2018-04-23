@@ -1,1 +1,1 @@
-CREATE SCHEMA csvloader;
+CREATE SCHEMA gateway;
