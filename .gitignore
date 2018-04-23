@@ -23,7 +23,6 @@ tmp/
 *.bak
 *.swp
 *~.nib
-.project
 local.properties
 .settings/
 .loadpath
