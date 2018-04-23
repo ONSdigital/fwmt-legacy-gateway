@@ -31,6 +31,8 @@
         </repository>
     </distributionManagement>
 
+    <!-- profiles: Consider https://www.petrikainulainen.net/programming/maven/integration-testing-with-maven/ -->
+
     <repositories>
         <repository>
             <id>local-snapshots</id>
