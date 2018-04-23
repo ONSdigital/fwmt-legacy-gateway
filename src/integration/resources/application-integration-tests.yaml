@@ -5,7 +5,7 @@ spring.datasource:
   username: "postgres"
   password: "postgres"
 liquibase:
-  url: jdbc:postgresql://localhost:5432/postgres
+  url: jdbc:postgresql://localhost:5433/postgres
   default-schema: gateway
   changeLog: classpath:db/changelog/db.changelog-master.yaml
   user: "postgres"

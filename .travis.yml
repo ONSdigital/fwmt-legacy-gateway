@@ -11,7 +11,7 @@ services:
 
 before_install:
   - docker build -t postgres_test src/test/docker/postgres
-  - docker run --name postgres -p 5432:5432 -d postgres_test
+  - docker run --name postgres -p 5433:5432 -d postgres_test
   - docker ps
 
 after_script:
