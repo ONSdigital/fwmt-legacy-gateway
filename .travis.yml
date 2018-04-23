@@ -18,10 +18,10 @@ after_script:
   - docker stop $(docker ps -a -q)
   - docker rm $(docker ps -a -q)
 
-script: mvn clean install
+script: "mvn clean install -DskipITs"
 
 env:
-  - SPRING_PROFILES_ACTIVE=default,integration-tests
+  - "SPRING_PROFILES_ACTIVE=default,integration-tests"
 
 branches:
   only:
