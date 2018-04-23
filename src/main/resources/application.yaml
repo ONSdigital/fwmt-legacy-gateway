@@ -16,6 +16,8 @@ spring.datasource:
   url: jdbc:postgresql://localhost/postgres?currentSchema=gateway
   driver-class-name: org.postgresql.Driver
   continue-on-error: true
+  username: “...”
+  password: “...”
 
 management.endpoint.health.show-details: always
 endpoints.health.sensitive: false
@@ -23,6 +25,8 @@ management.security.enabled: false
 
 liquibase:
   url: jdbc:postgresql://localhost:5432/postgres?currentSchema=gateway
+  user: “...”
+  password: “...”
 
 logging:
   level:
@@ -39,9 +43,6 @@ logging:
 
 # The following data is sensitive and must not be shared
 totalmobile:
-  username: “...”
-  password: “...”
-spring.datasource:
   username: “...”
   password: “...”
 security.user:
