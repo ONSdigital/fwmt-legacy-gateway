@@ -35,5 +35,4 @@ jobs:
 branches:
   only:
     - master
-    - TravisTesting
-    - ThomasMergeAttempt_FromWillGriggs
+    - IntegrationTestsRefactor
