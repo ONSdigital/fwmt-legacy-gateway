@@ -16,7 +16,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 public class LegacyUserEntity {
     @Column(unique=true, nullable=true)
-    public String authNo;
+    public String authno;
+    @Column(unique=true, nullable=false)
+    public String employeeno;
     @Id
     public String tmusername;
 }

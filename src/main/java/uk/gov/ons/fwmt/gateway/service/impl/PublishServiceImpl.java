@@ -88,7 +88,7 @@ public class PublishServiceImpl implements PublishService {
         for (LegacyStaffEntity staff : staffEntries) {
             boolean newStaff = true;
             for (LegacyUserEntity user : usersEntries) {
-                if (user.getAuthNo().equals(staff.getAuthno())) {
+                if (user.getAuthno().equals(staff.getAuthno())) {
                     newStaff = false;
                 }
             }
@@ -100,7 +100,7 @@ public class PublishServiceImpl implements PublishService {
         for (LegacyUserEntity user : usersEntries) {
             boolean removedUser = true;
             for (LegacyStaffEntity staff : staffEntries) {
-                if (user.getAuthNo().equals(staff.getAuthno())) {
+                if (user.getAuthno().equals(staff.getAuthno())) {
                     removedUser = false;
                 }
             }
@@ -110,7 +110,7 @@ public class PublishServiceImpl implements PublishService {
         }
 
         for (LegacyUserEntity removedUser : removedUserEntities) {
-            removedUser.setAuthNo(null);
+            removedUser.setAuthno(null);
             legacyUsersRepo.save(removedUser);
         }
 
@@ -119,7 +119,7 @@ public class PublishServiceImpl implements PublishService {
             // if so then update thier staffid
             if (legacyUsersRepo.existsByTmusername(getProposedTMUsername(newStaff.getEmail()))) {
                 LegacyUserEntity user = legacyUsersRepo.findByTmusername(getProposedTMUsername(newStaff.getEmail()));
-                user.setAuthNo(newStaff.getAuthno());
+                user.setAuthno(newStaff.getAuthno());
                 legacyUsersRepo.save(user);
             } else {
                 // if not then create new user entity
