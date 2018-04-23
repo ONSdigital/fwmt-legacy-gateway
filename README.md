@@ -1,6 +1,7 @@
 # fwmt-legacy-gateway
 
-DO NOT USE THE KEYSTORE FILE IN src/main/resources/keystore.p12 FOR ANYTHING BUT TRIVIAL TESTS
+DO NOT USE THE KEYSTORE FILE IN keystore.p12 FOR ANYTHING BUT TRIVIAL TESTS
+DO NOT MERGE THE EXAMPLE WEB PAGE IN src/main/java/.../debug/HelloWorldWebPage INTO MASTER
 
 To start docker on local machine:
 
