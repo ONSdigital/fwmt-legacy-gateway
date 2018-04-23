@@ -13,3 +13,5 @@ liquibase:
 totalmobile:
   username: ""
   password: ""
+
+foo: Blah
