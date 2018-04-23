@@ -23,7 +23,7 @@ jobs:
   include:
     stage: test
 #    script: mvn clean test -Dcucumber.options="srs/test/resources/uk.gov.ons.fwmt.csvuploader.testing"
-    script: mvn -Dtest=RunnerTest -Dspring.profiles.active=integration-test testing
+    script: mvn -Dtest=RunnerTest testing
     stage: deploy
     deploy:
     provider: script
@@ -31,6 +31,9 @@ jobs:
     skip_cleanup: true
     on:
       tags: true
+
+env:
+  - SPRING_PROFILES_ACTIVE=default,integration-tests
 
 branches:
   only:
