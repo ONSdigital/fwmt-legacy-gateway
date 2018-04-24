@@ -1,18 +1,20 @@
 package uk.gov.ons.fwmt.gateway.utility.readers;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.bean.ColumnPositionMappingStrategy;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.bean.HeaderColumnNameMappingStrategy;
+import lombok.extern.slf4j.Slf4j;
+import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 
-import com.opencsv.CSVReader;
-import com.opencsv.bean.ColumnPositionMappingStrategy;
-import com.opencsv.bean.CsvToBean;
-
-import lombok.extern.slf4j.Slf4j;
-import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
-
 @Slf4j
-public class LegacySampleReader extends CsvToBean<LegacySampleEntity> {
+public class LegacySampleReader {
     private static final String SERNO = "serno";
     private static final String TLA = "tla";
     private static final String FP = "fp";
@@ -205,7 +207,7 @@ public class LegacySampleReader extends CsvToBean<LegacySampleEntity> {
     private static final String BriefSDC3 = "briefSDC3";
     private static final String BRIEF1 = "brief1";
 
-    private static final String[] SAMPLE_DATA_COLUMNS = new String[] { SERNO, TLA, FP, Quota_No, Issue_No, Part, Auth,
+    private static final String[] SAMPLE_DATA_COLUMNS = new String[]{SERNO, TLA, FP, Quota_No, Issue_No, Part, Auth,
             EmployeeNo, Last_Updated, RefDate, QUOTA, WEEK, W1YR, QRTR, ADDR, WAVFND, HHLD, CHKLET, THISWV, PREM1,
             PREM2, PREM3, PREM4, DISTRICT, POSTTOWN, POSTCODE, DIVADDIND, MO, DIRECTION, HOUT, LSTHO, LFSSAMP, THANKS,
             THANKE, TELENO, RECPHONE, COUNTRY, OSGRIDREF, MAIN, NUMHHLD, HHLDDESC, NUMPER, QRES_LINE_NAME_1,
@@ -233,18 +235,20 @@ public class LegacySampleReader extends CsvToBean<LegacySampleEntity> {
             QINDIV_14_OWNBUS, QINDIV_14_RELBUS, QINDIV_14_LOOK4, QINDIV_14_DIFJOB, QINDIV_14_INDOUT, QINDIV_15_WRKING,
             QINDIV_15_JBAWAY, QINDIV_15_OWNBUS, QINDIV_15_RELBUS, QINDIV_15_LOOK4, QINDIV_15_DIFJOB, QINDIV_15_INDOUT,
             QINDIV_16_WRKING, QINDIV_16_JBAWAY, QINDIV_16_OWNBUS, QINDIV_16_RELBUS, QINDIV_16_LOOK4, QINDIV_16_DIFJOB,
-            QINDIV_16_INDOUT, INTVNO, BriefSDC1, BriefSDC2, BriefSDC3, BRIEF1 };
+            QINDIV_16_INDOUT, INTVNO, BriefSDC1, BriefSDC2, BriefSDC3, BRIEF1};
 
-    private CSVReader csvReader;
-    private Iterator<String[]> csvIterator;
-    private ColumnPositionMappingStrategy<LegacySampleEntity> columnPositionMappingStrategy;
+    private CsvToBean<LegacySampleEntity> csvToBean;
 
     public LegacySampleReader(InputStream stream) {
-        columnPositionMappingStrategy = new ColumnPositionMappingStrategy<>();
-        columnPositionMappingStrategy.setType(LegacySampleEntity.class);
-        columnPositionMappingStrategy.setColumnMapping(SAMPLE_DATA_COLUMNS);
-        csvReader = new CSVReader(new InputStreamReader(stream));
-        this.setCsvReader(csvReader);
-        this.setMappingStrategy(columnPositionMappingStrategy);
+        HeaderColumnNameMappingStrategy<LegacySampleEntity> strategy = new HeaderColumnNameMappingStrategy<>();
+        strategy.setType(LegacySampleEntity.class);
+        CsvToBeanBuilder<LegacySampleEntity> builder = new CsvToBeanBuilder<>(new InputStreamReader(stream));
+        csvToBean = builder
+                .withMappingStrategy(strategy)
+                .build();
+    }
+
+    public Iterator<LegacySampleEntity> iterator() {
+        return csvToBean.iterator();
     }
 }

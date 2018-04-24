@@ -8,11 +8,13 @@ import com.opencsv.CSVReader;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
 
+import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.fwmt.gateway.entity.LegacyLeaverEntity;
 
 @Slf4j
-public class LegacyLeaversReader extends CsvToBean<LegacyLeaverEntity> {
+public class LegacyLeaversReader {
 
     private static final String EMPLOYEENO = "employeeNo";
     private static final String AUTHNO = "authNo";
@@ -25,17 +27,18 @@ public class LegacyLeaversReader extends CsvToBean<LegacyLeaverEntity> {
     private static final String[] NEW_USER_COLUMNS = new String[] { EMPLOYEENO, AUTHNO, FORENAME, SURNAME, JOB_TITLE,
             EMAIL, PHONE, USER_TYPE };
 
-    private CSVReader csvReader;
-    private Iterator<String[]> csvIterator;
-    private ColumnPositionMappingStrategy<LegacyLeaverEntity> columnPositionMappingStrategy;
-    
+    CsvToBean<LegacyLeaverEntity> csvToBean;
+
     public LegacyLeaversReader(InputStream stream) {
-        columnPositionMappingStrategy = new ColumnPositionMappingStrategy<>();
-        columnPositionMappingStrategy.setType(LegacyLeaverEntity.class);
-        columnPositionMappingStrategy.setColumnMapping(NEW_USER_COLUMNS);
-        csvReader = new CSVReader(new InputStreamReader(stream));
-        csvIterator = csvReader.iterator();
-        this.setCsvReader(csvReader);
-        this.setMappingStrategy(columnPositionMappingStrategy);
+        HeaderColumnNameMappingStrategy<LegacyLeaverEntity> strategy = new HeaderColumnNameMappingStrategy<>();
+        strategy.setType(LegacyLeaverEntity.class);
+        CsvToBeanBuilder<LegacyLeaverEntity> builder = new CsvToBeanBuilder<>(new InputStreamReader(stream));
+        csvToBean = builder
+                .withMappingStrategy(strategy)
+                .build();
+    }
+
+    public Iterator<LegacyLeaverEntity> iterator() {
+        return csvToBean.iterator();
     }
 }
