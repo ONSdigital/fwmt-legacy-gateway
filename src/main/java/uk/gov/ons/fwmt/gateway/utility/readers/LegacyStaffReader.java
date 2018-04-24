@@ -30,11 +30,13 @@ public class LegacyStaffReader {
 	CsvToBean<LegacyStaffEntity> csvToBean;
 
 	public LegacyStaffReader(InputStream stream) {
-		HeaderColumnNameMappingStrategy<LegacyStaffEntity> strategy = new HeaderColumnNameMappingStrategy<>();
+		ColumnPositionMappingStrategy<LegacyStaffEntity> strategy = new ColumnPositionMappingStrategy<>();
 		strategy.setType(LegacyStaffEntity.class);
+		strategy.setColumnMapping(NEW_USER_COLUMNS);
 		CsvToBeanBuilder<LegacyStaffEntity> builder = new CsvToBeanBuilder<>(new InputStreamReader(stream));
 		csvToBean = builder
 				.withMappingStrategy(strategy)
+				.withSkipLines(1)
 				.build();
 	}
 
