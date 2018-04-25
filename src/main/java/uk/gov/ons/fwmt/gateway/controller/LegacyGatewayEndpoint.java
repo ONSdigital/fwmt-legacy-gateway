@@ -66,7 +66,7 @@ public class LegacyGatewayEndpoint {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/staffs", method = RequestMethod.POST)
+    @RequestMapping(value = "/staff", method = RequestMethod.POST)
     public ResponseEntity<?> staffREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
             throws IOException {
 
@@ -82,23 +82,4 @@ public class LegacyGatewayEndpoint {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    @RequestMapping(value = "/leavers", method = RequestMethod.POST)
-    public ResponseEntity<?> leaversREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
-            throws IOException {
-
-        // confirm data is in correct format
-        if (!confirm(file)) {
-            return new ResponseEntity<>("Invalid file format",HttpStatus.BAD_REQUEST);
-        }
-        
-        // add data to reception table
-        LegacyLeaversReader legacyLeaversReader = new LegacyLeaversReader(file.getInputStream());
-        Iterator<LegacyLeaverEntity> iterator = legacyLeaversReader.iterator();
-        ingesterService.ingestLegacyLeavers(iterator);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-    
-    
 }

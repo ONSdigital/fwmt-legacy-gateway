@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.gateway;
+package uk.gov.ons.fwmt.gateway.config;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
