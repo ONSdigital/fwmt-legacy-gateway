@@ -18,19 +18,7 @@ All endpoints that accept HTTP POST requests may return any one of the HTTP erro
 
 * An `HTTP 500 Internal Server Error` is returned if the data could not be persisted by the gateway for whatever reason
 
-In addition to the HTTP error status code, a JSON error object will be returned in the HTTP response that provides additional information.
-
-### Example JSON Error Response
-```json
-{
-  "error": "Bad Request",
-  "exception": "uk.gov.ons.fwmt.gateway.domain.InvalidFilenameException",
-  "message": "Invalid filename",
-  "path": "/samples",
-  "status": 400,
-  "timestamp": "2018-04-24T19:44:32Z"
-}
-```
+In addition to the HTTP error status code, a JSON error object will be returned in the HTTP response that provides additional information. See the individual endpoint documentation below for details of this error object.
 
 ## Service Information
 * `GET /info` will return information about this service, collated from when it was last built.
@@ -60,6 +48,27 @@ In addition to the HTTP error status code, a JSON error object will be returned 
 
 The input filename is echoed back to the client upon a successful request, as is the number of rows within the CSV file that the gateway successfully persisted in its reception database table, prior to subsequent processing and transfer to the fieldwork management tool.
 
+### Example JSON Error Response
+```json
+{
+  "error": "Unprocessable Entity",
+  "message": "File parsing errors occurred",
+  "path": "/samples",
+  "status": 422,
+  "timestamp": "2018-04-24T19:44:32Z",
+  "errors": [
+    {
+      "row": 4,
+      "exception": "org.hibernate.exception.ConstraintViolationException: Could not insert"
+    },
+    {
+      "row": 12,
+      "exception": "org.hibernate.exception.ConstraintViolationException: Duplicate entry"
+    }
+  ]
+}
+```
+
 ## Upload Staff Data
 * `POST /staff` accepts a CSV file containing staff data as multi-part form data. The filename format must be *staff_&lt;timestamp&gt;.csv*
 
@@ -72,3 +81,15 @@ The input filename is echoed back to the client upon a successful request, as is
 ```
 
 The input filename is echoed back to the client upon a successful request, as is the number of rows within the CSV file that the gateway successfully persisted in its reception database table, prior to subsequent processing and transfer to the fieldwork management tool.
+
+### Example JSON Error Response
+```json
+{
+  "error": "Bad Request",
+  "exception": "uk.gov.ons.fwmt.gateway.domain.InvalidFilenameException",
+  "message": "Invalid filename",
+  "path": "/staff",
+  "status": 400,
+  "timestamp": "2018-04-24T19:44:32Z"
+}
+```
