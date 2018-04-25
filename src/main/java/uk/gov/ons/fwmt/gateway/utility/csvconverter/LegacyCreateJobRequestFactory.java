@@ -117,7 +117,7 @@ public class LegacyCreateJobRequestFactory {
         return request;
     }
 
-    static String composeReference(LegacySampleEntity entry) {
+    public static String composeReference(LegacySampleEntity entry) {
         String reference;
         if (entry.getTla().equals("LFS")) {
             reference = entry.getQuota() + entry.getWeek() + entry.getW1yr() + entry.getQrtr() + entry.getAddr()
@@ -128,9 +128,9 @@ public class LegacyCreateJobRequestFactory {
         return reference;
     }
 
-    static Date fieldPeriodToDates(String fp, String tla) {
+    public static Date fieldPeriodToDates(String fp, String tla) {
         Date date;
-        if (tla.equals("LFS")) {
+        if ("LFS".equals(tla)) {
             date = convertToLFSDate(fp);
         } else {
             date = convertToGFFDate(fp);
@@ -138,7 +138,7 @@ public class LegacyCreateJobRequestFactory {
         return date;
     }
 
-    static Date convertToGFFDate(String fp) {
+    public static Date convertToGFFDate(String fp) {
         Date date;
         int year = Integer.parseInt(fp.substring(0, 1));
         int month = Integer.parseInt(fp.substring(1, 3));
@@ -156,7 +156,7 @@ public class LegacyCreateJobRequestFactory {
         return date;
     }
 
-    static Date convertToLFSDate(String fp) {
+    public static Date convertToLFSDate(String fp) {
         Date date;
         int year = Integer.parseInt(fp.substring(0, 1));
         int quarter = Integer.parseInt(fp.substring(1, 2));
