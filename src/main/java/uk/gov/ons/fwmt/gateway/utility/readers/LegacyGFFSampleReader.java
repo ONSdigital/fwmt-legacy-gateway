@@ -1,8 +1,6 @@
 package uk.gov.ons.fwmt.gateway.utility.readers;
 
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
-import com.opencsv.bean.HeaderColumnNameTranslateMappingStrategy;
+import com.opencsv.bean.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -88,12 +86,14 @@ public class LegacyGFFSampleReader {
     strategy.setType(LegacyGFFSampleEntityRaw.class);
     strategy.setColumnMapping(SAMPLE_GFF_DATA_COLUMN_MAP);
     CsvToBeanBuilder<LegacyGFFSampleEntityRaw> builder = new CsvToBeanBuilder<>(new InputStreamReader(stream));
+    CsvToBeanFilter filter = new LegacyGFFSampleCSVFilter(strategy);
     csvToBean = builder
         .withMappingStrategy(strategy)
+        .withFilter(filter)
         .build();
   }
 
-  public LegacyGFFSampleIterator iterator() {
+  public Iterator<LegacySampleEntity> iterator() {
     return new LegacyGFFSampleIterator(csvToBean.iterator());
   }
 
@@ -149,45 +149,53 @@ public class LegacyGFFSampleReader {
     String oldSerial;
   }
 
-  /// This iterator strips excess data out of the LegacyGFFSampleEntityRaw structure as it iterates
   class LegacyGFFSampleIterator implements Iterator<LegacySampleEntity> {
     Iterator<LegacyGFFSampleEntityRaw> rawIterator;
 
-    LegacyGFFSampleIterator(Iterator<LegacyGFFSampleEntityRaw> rawIter) {
-      this.rawIterator = rawIter;
+    LegacyGFFSampleIterator(Iterator<LegacyGFFSampleEntityRaw> rawIterator) {
+      this.rawIterator = rawIterator;
     }
 
     @Override public boolean hasNext() {
       return rawIterator.hasNext();
     }
 
-    LegacyGFFSampleEntityRaw nextRaw() {
-      return rawIterator.next();
-    }
-
     @Override public LegacySampleEntity next() {
       LegacyGFFSampleEntityRaw raw = rawIterator.next();
-      if (raw == null) {
-        return null;
-      }
       LegacySampleEntity entity = new LegacySampleEntity();
       entity.setSerno(raw.getSerno());
       entity.setTla(raw.getTla());
       entity.setStage(raw.getStage());
       entity.setQuota(raw.getQuota());
-      entity.setAuthNo(raw.getAuth());
-      entity.setEmployeeNo(raw.getEmployeeNo());
-      entity.setAddressLine1(raw.getPrem1());
-      entity.setAddressLine2(raw.getPrem2());
-      entity.setAddressLine3(raw.getPrem3());
-      entity.setAddressLine4(raw.getPrem4());
+      entity.setAuthno(raw.getAuth());
+      entity.setEmployeeno(raw.getEmployeeNo());
+      entity.setAddressline1(raw.getPrem1());
+      entity.setAddressline2(raw.getPrem2());
+      entity.setAddressline3(raw.getPrem3());
+      entity.setAddressline4(raw.getPrem4());
       entity.setDistrict(raw.getDistrict());
-      entity.setPostTown(raw.getPostTown());
+      entity.setPosttown(raw.getPostTown());
       entity.setPostcode(raw.getPostcode());
-      entity.setAddressNo(raw.getAddressNo());
-      entity.setOsGridRef(raw.getOsGridRef());
-      entity.setKishGrid(null);
+      entity.setAddressno(raw.getAddressNo());
+      entity.setOsgridref(raw.getOsGridRef());
+      entity.setKishgrid(null);
       return entity;
+    }
+  }
+
+  private class LegacyGFFSampleCSVFilter implements CsvToBeanFilter {
+    private final MappingStrategy strategy;
+
+    LegacyGFFSampleCSVFilter(MappingStrategy strategy) {
+      this.strategy = strategy;
+    }
+
+    @Override public boolean allowLine(String[] strings) {
+      int sernoIndex = strategy.getColumnIndex("Serno");
+      // TODO the rest of these
+      // TODO verify what's in here for nulls
+      // TODO add logging
+      return false;
     }
   }
 }

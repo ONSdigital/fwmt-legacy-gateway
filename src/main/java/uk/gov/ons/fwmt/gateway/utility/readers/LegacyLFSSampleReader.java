@@ -1,8 +1,6 @@
 package uk.gov.ons.fwmt.gateway.utility.readers;
 
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
-import com.opencsv.bean.HeaderColumnNameTranslateMappingStrategy;
+import com.opencsv.bean.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,11 +41,11 @@ public class LegacyLFSSampleReader {
     register.accept("PREM3", "prem3");
     register.accept("PREM4", "prem4");
     register.accept("DISTRICT", "district");
-    register.accept("POSTTOWN", "postTown");
+    register.accept("POSTTOWN", "posttown");
     register.accept("POSTCODE", "postcode");
     register.accept("QUOTA", "quota");
     register.accept("ADDR", "addr");
-    register.accept("OSGRIDREF", "osGridRef");
+    register.accept("OSGRIDREF", "osgridref");
     register.accept("Year", "year");
     register.accept("Month", "month");
     register.accept("MAIN", "main");
@@ -250,7 +248,7 @@ public class LegacyLFSSampleReader {
     register.accept("Issue_No", "issueNo");
     register.accept("Part", "part");
     register.accept("Auth", "auth");
-    register.accept("EmployeeNo", "employeeNo");
+    register.accept("EmployeeNo", "employeeno");
     register.accept("Last_Updated", "lastUpdated");
     CSV_HEADERS = csvHeaders;
     DATA_FIELDS = dataFields;
@@ -270,7 +268,7 @@ public class LegacyLFSSampleReader {
         .build();
   }
 
-  public LegacyLFSSampleIterator iterator() {
+  public Iterator<LegacySampleEntity> iterator() {
     return new LegacyLFSSampleIterator(csvToBean.iterator());
   }
 
@@ -501,7 +499,6 @@ public class LegacyLFSSampleReader {
     String lastUpdated;
   }
 
-  /// This iterator strips excess data out of the LegacyLFSSampleEntityRaw structure as it iterates
   class LegacyLFSSampleIterator implements Iterator<LegacySampleEntity> {
     Iterator<LegacyLFSSampleEntityRaw> rawIterator;
 
@@ -513,33 +510,42 @@ public class LegacyLFSSampleReader {
       return rawIterator.hasNext();
     }
 
-    LegacyLFSSampleEntityRaw nextRaw() {
-      return rawIterator.next();
-    }
-
     @Override public LegacySampleEntity next() {
       LegacyLFSSampleEntityRaw raw = rawIterator.next();
-      if (raw == null) {
-        return null;
-      }
       LegacySampleEntity entity = new LegacySampleEntity();
       entity.setSerno(raw.getSerno());
       entity.setTla(raw.getTla());
       entity.setStage(raw.getFp());
       entity.setQuota(raw.getQuota());
-      entity.setAuthNo(raw.getAuth());
-      entity.setEmployeeNo(raw.getEmployeeNo());
-      entity.setAddressLine1(raw.getPrem1());
-      entity.setAddressLine2(raw.getPrem2());
-      entity.setAddressLine3(raw.getPrem3());
-      entity.setAddressLine4(raw.getPrem4());
+      entity.setAuthno(raw.getAuth());
+      entity.setEmployeeno(raw.getEmployeeNo());
+      entity.setAddressline1(raw.getPrem1());
+      entity.setAddressline2(raw.getPrem2());
+      entity.setAddressline3(raw.getPrem3());
+      entity.setAddressline4(raw.getPrem4());
       entity.setDistrict(raw.getDistrict());
-      entity.setPostTown(raw.getPostTown());
+      entity.setPosttown(raw.getPostTown());
       entity.setPostcode(raw.getPostcode());
-      entity.setAddressNo(raw.getAddr());
-      entity.setOsGridRef(raw.getOsGridRef());
-      entity.setKishGrid(null);
+      entity.setAddressno(raw.getAddr());
+      entity.setOsgridref(raw.getOsGridRef());
+      entity.setKishgrid(null);
       return entity;
+    }
+  }
+
+  private class LegacyLFSSampleCSVFilter implements CsvToBeanFilter {
+    private final MappingStrategy strategy;
+
+    LegacyLFSSampleCSVFilter(MappingStrategy strategy) {
+      this.strategy = strategy;
+    }
+
+    @Override public boolean allowLine(String[] strings) {
+      int sernoIndex = strategy.getColumnIndex("Serno");
+      // TODO the rest of these
+      // TODO verify what's in here for nulls
+      // TODO add logging
+      return false;
     }
   }
 }

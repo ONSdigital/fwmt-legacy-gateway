@@ -64,20 +64,20 @@ public class LegacyCreateJobRequestFactory {
         // identity
         // TODO restore this
         // request.getJob().getIdentity() .setReference(entry.getQuota() + "-" + entry.getAddr() + "-" + entry.getFp());
-        request.getJob().getIdentity() .setReference(entry.getQuota() + "-" + entry.getAddressNo());
+        request.getJob().getIdentity() .setReference(entry.getQuota() + "-" + entry.getAddressno());
 
         // location
         LocationType location = request.getJob().getLocation();
         List<String> addressLines = location.getAddressDetail().getLines().getAddressLine();
-        addressLines.add(entry.getAddressLine1());
-        addressLines.add(entry.getAddressLine1());
-        addressLines.add(entry.getAddressLine1());
-        addressLines.add(entry.getAddressLine1());
+        addressLines.add(entry.getAddressline1());
+        addressLines.add(entry.getAddressline2());
+        addressLines.add(entry.getAddressline3());
+        addressLines.add(entry.getAddressline4());
         location.getAddressDetail().setPostCode(entry.getPostcode());
         location.setReference(entry.getSerno());
 
-        Float geoX = Float.parseFloat(entry.getOsGridRef().substring(0, 6));
-        Float geoY = Float.parseFloat(entry.getOsGridRef().substring(7));
+        Float geoX = Float.parseFloat(entry.getOsgridref().substring(0, 6));
+        Float geoY = Float.parseFloat(entry.getOsgridref().substring(7));
 
         request.getJob().getLocation().getAddressDetail().setGeoX(factory.createAddressTypeGeoX(geoX));
         request.getJob().getLocation().getAddressDetail().setGeoY(factory.createAddressTypeGeoX(geoY));
@@ -115,7 +115,7 @@ public class LegacyCreateJobRequestFactory {
 
         // interviewer allocation
         ResourceIdentityType resourceIdentityType = new ResourceIdentityType();
-        resourceIdentityType.setUsername(staffIdToTMUsername(entry.getAuthNo()));
+        resourceIdentityType.setUsername(staffIdToTMUsername(entry.getAuthno()));
         request.getJob().setAllocatedTo(resourceIdentityType);
         
         return request;

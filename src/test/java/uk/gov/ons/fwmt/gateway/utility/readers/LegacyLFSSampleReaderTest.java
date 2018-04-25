@@ -18,7 +18,7 @@ public class LegacyLFSSampleReaderTest {
     String input = header + "\n" + value;
     // take the first raw result from the reader
     LegacyLFSSampleReader reader = new LegacyLFSSampleReader(new ByteArrayInputStream(input.getBytes()));
-    LegacyLFSSampleReader.LegacyLFSSampleEntityRaw output = reader.iterator().nextRaw();
+    LegacyLFSSampleReader.LegacyLFSSampleEntityRaw output = reader.iterator().next();
     // try all of the fields to ensure that they were filled with the field name
     Class<LegacyLFSSampleReader.LegacyLFSSampleEntityRaw> entityRawClass = LegacyLFSSampleReader.LegacyLFSSampleEntityRaw.class;
     Field[] fields = entityRawClass.getDeclaredFields();
