@@ -351,9 +351,9 @@
                         <goals>
                             <goal>stop</goal>
                         </goals>
-						<configuration>
-							<skip>${skipDocker}</skip>
-						</configuration>
+                        <configuration>
+                            <skip>${skipDocker}</skip>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
