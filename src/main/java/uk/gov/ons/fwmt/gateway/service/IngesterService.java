@@ -10,7 +10,6 @@ import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
 
 @Service
 public interface IngesterService {
-    void ingestLegacySample(Iterator<LegacySampleEntity> iter);
-    void ingestLegacyStaff(Iterator<LegacyStaffEntity> iter);
-    void ingestLegacyLeavers(Iterator<LegacyLeaverEntity> iter);
+    int ingestLegacySample(Iterator<LegacySampleEntity> iter);
+    int ingestLegacyStaff(Iterator<LegacyStaffEntity> iter);
 }
