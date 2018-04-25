@@ -23,7 +23,7 @@ import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLeaversReader;
-import uk.gov.ons.fwmt.gateway.utility.readers.LegacySampleReader;
+import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
 
 /**
@@ -59,8 +59,8 @@ public class LegacyEndpointRESTController {
         }
         
         // add data to reception table
-        LegacySampleReader legacySampleReader = new LegacySampleReader(file.getInputStream());
-        Iterator<LegacySampleEntity> iterator = legacySampleReader.iterator();
+        LegacyLFSSampleReader legacyLFSSampleReader = new LegacyLFSSampleReader(file.getInputStream());
+        Iterator<LegacySampleEntity> iterator = legacyLFSSampleReader.iterator();
         ingesterService.ingestLegacySample(iterator);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
