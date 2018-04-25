@@ -17,6 +17,8 @@ spring.datasource:
   driver-class-name: org.postgresql.Driver
   continue-on-error: true
   schema: classpath:/schema.sql
+  username: postgres
+  password: postgres
 
 management.endpoint.health.show-details: always
 endpoints.health.sensitive: false
@@ -25,6 +27,8 @@ management.security.enabled: false
 liquibase:
   url: jdbc:postgresql://localhost:5432/postgres?currentSchema=gateway
   default-schema: gateway
+  user: postgres
+  password: postgres
 
 logging:
   level:
@@ -38,3 +42,13 @@ logging:
   pattern:
     console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
     file: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
+
+security.user:
+  name: “user”
+  password: “password”
+
+totalmobile:
+  username: “...”
+  password: “...”
+  url: ""
+  message-queue-service: ""
