@@ -11,7 +11,6 @@ public class FieldPeriodTest {
     @Test
     public void fieldPeriodToDateGFF() {
         Date date = LegacyCreateJobRequestFactory.fieldPeriodToDates("807", "GFF");
-        System.out.println(date.toString());
         assertEquals(new Date(118, 6, 31, 23, 59, 59).toString(), date.toString());
     }
 
