@@ -29,7 +29,7 @@ import uk.gov.ons.fwmt.gateway.entity.LegacyUserEntity;
 public class LegacyCreateJobRequestFactory {
 
     private static List<LegacyUserEntity> allUsers;
-    
+
     /**
      * Build the initial outlive of a CreateJobRequest
      */
@@ -62,8 +62,7 @@ public class LegacyCreateJobRequestFactory {
         CreateJobRequest request = buildRequest();
 
         // identity
-        request.getJob().getIdentity()
-                .setReference(entry.getQuota() + "-" + entry.getAddr() + "-" + entry.getFp());
+        request.getJob().getIdentity().setReference(entry.getQuota() + "-" + entry.getAddr() + "-" + entry.getFp());
 
         // location
         LocationType location = request.getJob().getLocation();
@@ -114,16 +113,40 @@ public class LegacyCreateJobRequestFactory {
         ResourceIdentityType resourceIdentityType = new ResourceIdentityType();
         resourceIdentityType.setUsername(staffIdToTMUsername(entry.getAuth()));
         request.getJob().setAllocatedTo(resourceIdentityType);
-        
+
         return request;
     }
-
-    private static Date fpToDates(String stage) {
-        int year = Integer.parseInt(stage.substring(0, 1));
-        int month = Integer.parseInt(stage.substring(1, 3));
-        Calendar cal = Calendar.getInstance();
-        cal.set(2010 + year, month, cal.getActualMaximum(Calendar.DATE));
-        return cal.getTime();
+    
+    private static Date fpToDates(String fp) {
+        Date date;
+        try {
+            Integer.parseInt(fp);
+            int year = Integer.parseInt(fp.substring(0, 1));
+            int month = Integer.parseInt(fp.substring(1, 3));
+            if (month > 12) {
+                month = month - 20;
+            }
+            Calendar cal = Calendar.getInstance();
+            cal.set(2010 + year, month-1, cal.getActualMaximum(Calendar.DATE));
+            cal.set(Calendar.HOUR, 11);
+            cal.set(Calendar.MINUTE, 59);
+            cal.set(Calendar.SECOND, 59);
+            cal.set(Calendar.AM_PM, Calendar.PM);
+            date = cal.getTime();
+        } catch (Exception e) {
+            int year = Integer.parseInt(fp.substring(0, 1));
+            int quarter = Integer.parseInt(fp.substring(1, 2));
+            int week = fp.toLowerCase().charAt(2) - 'a' + 1;
+            Calendar cal = Calendar.getInstance();
+            cal.set(2010 + year, 1 + (3 * (quarter - 1))-1, 1);
+            cal.set(Calendar.HOUR, 11);
+            cal.set(Calendar.MINUTE, 59);
+            cal.set(Calendar.SECOND, 59);
+            cal.set(Calendar.AM_PM, Calendar.PM);
+            cal.add(Calendar.DATE, (7 * (week))-1);
+            date = cal.getTime();
+        }
+        return date;
     }
 
     private static String staffIdToTMUsername(String authNo) {
@@ -135,10 +158,10 @@ public class LegacyCreateJobRequestFactory {
         return null;
     }
 
-    public static List<CreateJobRequest> convert(List<LegacySampleEntity> samples,
-            List<LegacySampleEntity> allocations, List<LegacyUserEntity> users) {
+    public static List<CreateJobRequest> convert(List<LegacySampleEntity> samples, List<LegacySampleEntity> allocations,
+            List<LegacyUserEntity> users) {
         allUsers = users;
-        
+
         List<CreateJobRequest> jobs = new ArrayList<>();
 
         // convert all of the samples into CreateJobRequests
