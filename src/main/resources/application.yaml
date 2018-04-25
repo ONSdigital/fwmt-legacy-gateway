@@ -40,8 +40,8 @@ logging:
     file: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
 
 security.user:
-  name: “user”
-  password: “password”
+  name: user
+  password: password
 
 totalmobile:
   username: “...”

@@ -36,12 +36,12 @@ import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
 
 @Slf4j
 @RestController
-public class LegacyEndpointRESTController {
+public class LegacyGatewayEndpoint {
 
     private final IngesterService ingesterService;
 
     @Autowired
-    public LegacyEndpointRESTController(IngesterService ingesterService) {
+    public LegacyGatewayEndpoint(IngesterService ingesterService) {
         this.ingesterService = ingesterService;
     }
 
@@ -49,13 +49,13 @@ public class LegacyEndpointRESTController {
         return true;
     }
 
-    @RequestMapping(value = "/legacy/sample", method = RequestMethod.POST)
+    @RequestMapping(value = "/samples", method = RequestMethod.POST)
     public ResponseEntity<?> sampleREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
             throws IOException {
 
         // confirm data is in correct format
         if (!confirm(file)) {
-            return new ResponseEntity<>("Invalid file format",HttpStatus.I_AM_A_TEAPOT);
+            return new ResponseEntity<>("Invalid file format",HttpStatus.BAD_REQUEST);
         }
         
         // add data to reception table
@@ -63,16 +63,16 @@ public class LegacyEndpointRESTController {
         Iterator<LegacySampleEntity> iterator = legacySampleReader.iterator();
         ingesterService.ingestLegacySample(iterator);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/legacy/staff", method = RequestMethod.POST)
+    @RequestMapping(value = "/staffs", method = RequestMethod.POST)
     public ResponseEntity<?> staffREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
             throws IOException {
 
         // confirm data is in correct format
         if (!confirm(file)) {
-            return new ResponseEntity<>("Invalid file format",HttpStatus.I_AM_A_TEAPOT);
+            return new ResponseEntity<>("Invalid file format",HttpStatus.BAD_REQUEST);
         }
         
         // add data to reception table
@@ -80,16 +80,16 @@ public class LegacyEndpointRESTController {
         Iterator<LegacyStaffEntity> iterator = legacyStaffReader.iterator();
         ingesterService.ingestLegacyStaff(iterator);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/legacy/leavers", method = RequestMethod.POST)
+    @RequestMapping(value = "/leavers", method = RequestMethod.POST)
     public ResponseEntity<?> leaversREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
             throws IOException {
 
         // confirm data is in correct format
         if (!confirm(file)) {
-            return new ResponseEntity<>("Invalid file format",HttpStatus.I_AM_A_TEAPOT);
+            return new ResponseEntity<>("Invalid file format",HttpStatus.BAD_REQUEST);
         }
         
         // add data to reception table
@@ -97,7 +97,7 @@ public class LegacyEndpointRESTController {
         Iterator<LegacyLeaverEntity> iterator = legacyLeaversReader.iterator();
         ingesterService.ingestLegacyLeavers(iterator);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
     
