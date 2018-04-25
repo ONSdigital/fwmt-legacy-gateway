@@ -9,9 +9,7 @@
     <packaging>jar</packaging>
 
     <name>fwmt-legacy-gateway</name>
-    <description>The Fieldwork Management Tool Gateway for interfacing between the Social Survey legacy system and the
-        Fieldwork Management Tool
-    </description>
+    <description>The Fieldwork Management Tool Gateway for interfacing between the Social Survey legacy system and the Fieldwork Management Tool</description>
     <url>https://github.com/ONSdigital/fwmt-legacy-gateway</url>
 
     <parent>
@@ -30,9 +28,6 @@
             <url>http://artifactory.rmdev.onsdigital.uk/artifactory/libs-release-local</url>
         </repository>
     </distributionManagement>
-
-    <!-- profiles: Consider https://www.petrikainulainen.net/programming/maven/integration-testing-with-maven/ -->
-
     <repositories>
         <repository>
             <id>local-snapshots</id>
@@ -50,7 +45,6 @@
             </snapshots>
         </repository>
     </repositories>
-
     <properties>
         <java.version>1.8</java.version>
         <maven-jaxb2-plugin.version>0.13.3</maven-jaxb2-plugin.version>
@@ -193,7 +187,28 @@
     </dependencies>
 
     <build>
-        <plugins>
+	<plugins>
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>build-helper-maven-plugin</artifactId>
+			<version>1.4</version>
+			<executions>
+				<execution>
+					<id>add-wsdl-source</id>
+					<phase>generate-sources</phase>
+					<goals>
+						<goal>add-source</goal>
+					</goals>
+					<configuration>
+						<sources>
+							<source>${basedir}/src-generated/src</source>
+					
+						</sources>
+						
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
             <!-- maven-compiler-plugin -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -230,52 +245,11 @@
                     </schemaIncludes>
                 </configuration>
             </plugin>
-            <!-- build-helper-maven-plugin -->
-            <!-- This plugin allows the src/integration/java folder to be compiled -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.10</version>
-                <executions>
-                    <execution>
-                        <id>add-integration-test-source-as-test-sources</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>add-test-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>src/integration/java</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>add-integration-test-source-as-test-resources</id>
-                        <phase>generate-test-resources</phase>
-                        <goals>
-                            <goal>add-test-resource</goal>
-                        </goals>
-                        <configuration>
-                            <resources>
-                                <resource>
-                                    <directory>src/integration/resources</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <!-- maven-surefire-plugin -->
             <!-- Surefire runs unit tests during the test stage -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.18.1</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/integration_tests/**</exclude>
-                    </excludes>
-                </configuration>
             </plugin>
             <!-- maven-failsafe-plugin -->
             <!-- Failsafe runs integration tests during the verify stage -->
@@ -283,11 +257,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.20.1</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/unit_tests/**</exclude>
-                    </excludes>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -304,22 +273,22 @@
                 <version>3.5.3</version>
                 <executions>
                     <!--<execution>-->
-                    <!--<phase>pre-integration-test</phase>-->
-                    <!--<goals>-->
-                    <!--<goal>update</goal>-->
-                    <!--</goals>-->
+                        <!--<phase>pre-integration-test</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>update</goal>-->
+                        <!--</goals>-->
                     <!--</execution>-->
                     <!--<execution>-->
-                    <!--<phase>process-resources</phase>-->
-                    <!--<goals>-->
-                    <!--<goal>update</goal>-->
-                    <!--</goals>-->
+                        <!--<phase>process-resources</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>update</goal>-->
+                        <!--</goals>-->
                     <!--</execution>-->
                 </executions>
             </plugin>
             <!-- docker-maven-plugin -->
             <!-- This plugin sets up and tears down a Postgres Docker container for integration tests in the verify stage -->
-            <plugin>
+             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.20.1</version>

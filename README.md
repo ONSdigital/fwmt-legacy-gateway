@@ -10,5 +10,8 @@ This repository contains the Fieldwork Management Tool (FWMT) Gateway for interf
     docker pull postgres:latest
     docker run -p 127:0.0.1:5432:5432 postgres
 
+## API
+See [API.md](https://github.com/ONSdigital/fwmt-legacy-gateway/blob/master/API.md) for API documentation.
+
 ## Copyright
 Copyright (C) 2018 Crown Copyright (Office for National Statistics)
