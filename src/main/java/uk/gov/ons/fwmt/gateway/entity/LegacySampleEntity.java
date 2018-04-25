@@ -29,7 +29,7 @@ public class LegacySampleEntity {
     private String addressLine3;
     private String addressLine4;
     private String district;
-    private String pontTown;
+    private String postTown;
     private String postcode;
     private String addressNo;
     private String osGridRef;

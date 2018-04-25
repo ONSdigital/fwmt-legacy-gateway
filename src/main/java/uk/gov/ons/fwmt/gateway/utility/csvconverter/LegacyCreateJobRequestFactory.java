@@ -62,21 +62,22 @@ public class LegacyCreateJobRequestFactory {
         CreateJobRequest request = buildRequest();
 
         // identity
-        request.getJob().getIdentity()
-                .setReference(entry.getQuota() + "-" + entry.getAddr() + "-" + entry.getFp());
+        // TODO restore this
+        // request.getJob().getIdentity() .setReference(entry.getQuota() + "-" + entry.getAddr() + "-" + entry.getFp());
+        request.getJob().getIdentity() .setReference(entry.getQuota() + "-" + entry.getAddressNo());
 
         // location
         LocationType location = request.getJob().getLocation();
         List<String> addressLines = location.getAddressDetail().getLines().getAddressLine();
-        addressLines.add(entry.getPrem1());
-        addressLines.add(entry.getPrem2());
-        addressLines.add(entry.getPrem3());
-        addressLines.add(entry.getPrem4());
+        addressLines.add(entry.getAddressLine1());
+        addressLines.add(entry.getAddressLine1());
+        addressLines.add(entry.getAddressLine1());
+        addressLines.add(entry.getAddressLine1());
         location.getAddressDetail().setPostCode(entry.getPostcode());
         location.setReference(entry.getSerno());
 
-        Float geoX = Float.parseFloat(entry.getOsgridref().toString().substring(0, 6));
-        Float geoY = Float.parseFloat(entry.getOsgridref().toString().substring(7));
+        Float geoX = Float.parseFloat(entry.getOsGridRef().substring(0, 6));
+        Float geoY = Float.parseFloat(entry.getOsGridRef().substring(7));
 
         request.getJob().getLocation().getAddressDetail().setGeoX(factory.createAddressTypeGeoX(geoX));
         request.getJob().getLocation().getAddressDetail().setGeoY(factory.createAddressTypeGeoX(geoY));
@@ -86,10 +87,12 @@ public class LegacyCreateJobRequestFactory {
         // skills
         request.getJob().getSkills().getSkill().add("LegacySurvey");
 
-        Date dueDate = fpToDates(entry.getFp());
+        // TODO restore this
+        //Date dueDate = fpToDates(entry.getFp());
 
         GregorianCalendar dueDateCalendar = new GregorianCalendar();
-        dueDateCalendar.setTime(dueDate);
+        // TODO restore this
+        // dueDateCalendar.setTime(dueDate);
         XMLGregorianCalendar dueDateGC = DatatypeFactory.newInstance().newXMLGregorianCalendar(dueDateCalendar);
         request.getJob().setDueDate(dueDateGC);
 
@@ -112,7 +115,7 @@ public class LegacyCreateJobRequestFactory {
 
         // interviewer allocation
         ResourceIdentityType resourceIdentityType = new ResourceIdentityType();
-        resourceIdentityType.setUsername(staffIdToTMUsername(entry.getAuth()));
+        resourceIdentityType.setUsername(staffIdToTMUsername(entry.getAuthNo()));
         request.getJob().setAllocatedTo(resourceIdentityType);
         
         return request;
