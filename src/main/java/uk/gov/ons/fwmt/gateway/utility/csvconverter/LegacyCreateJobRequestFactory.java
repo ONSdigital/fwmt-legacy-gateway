@@ -85,7 +85,7 @@ public class LegacyCreateJobRequestFactory {
         // skills
         request.getJob().getSkills().getSkill().add("LegacySurvey");
 
-        Date dueDate = fpToDates(entry.getFp(), entry.getTla());
+        Date dueDate = fieldPeriodToDates(entry.getFp(), entry.getTla());
 
         GregorianCalendar dueDateCalendar = new GregorianCalendar();
         dueDateCalendar.setTime(dueDate);
@@ -117,7 +117,7 @@ public class LegacyCreateJobRequestFactory {
         return request;
     }
 
-    private static String composeReference(LegacySampleEntity entry) {
+    static String composeReference(LegacySampleEntity entry) {
         String reference;
         if (entry.getTla().equals("LFS")) {
             reference = entry.getQuota() + entry.getWeek() + entry.getW1yr() + entry.getQrtr() + entry.getAddr()
@@ -128,34 +128,47 @@ public class LegacyCreateJobRequestFactory {
         return reference;
     }
 
-    private static Date fpToDates(String fp, String tla) {
+    static Date fieldPeriodToDates(String fp, String tla) {
         Date date;
-        if (!tla.equals("LFS")) {
-            int year = Integer.parseInt(fp.substring(0, 1));
-            int month = Integer.parseInt(fp.substring(1, 3));
-            if (month > 12) {
-                month = month - 20;
-            }
-            Calendar cal = Calendar.getInstance();
-            cal.set(2010 + year, month - 1, cal.getActualMaximum(Calendar.DATE));
-            cal.set(Calendar.HOUR, 11);
-            cal.set(Calendar.MINUTE, 59);
-            cal.set(Calendar.SECOND, 59);
-            cal.set(Calendar.AM_PM, Calendar.PM);
-            date = cal.getTime();
+        if (tla.equals("LFS")) {
+            date = convertToLFSDate(fp);
         } else {
-            int year = Integer.parseInt(fp.substring(0, 1));
-            int quarter = Integer.parseInt(fp.substring(1, 2));
-            int week = fp.toLowerCase().charAt(2) - 'a' + 1;
-            Calendar cal = Calendar.getInstance();
-            cal.set(2010 + year, 1 + (3 * (quarter - 1)) - 1, 1);
-            cal.set(Calendar.HOUR, 11);
-            cal.set(Calendar.MINUTE, 59);
-            cal.set(Calendar.SECOND, 59);
-            cal.set(Calendar.AM_PM, Calendar.PM);
-            cal.add(Calendar.DATE, (7 * (week)) - 1);
-            date = cal.getTime();
+            date = convertToGFFDate(fp);
         }
+        return date;
+    }
+
+    static Date convertToGFFDate(String fp) {
+        Date date;
+        int year = Integer.parseInt(fp.substring(0, 1));
+        int month = Integer.parseInt(fp.substring(1, 3));
+        if (month > 12) {
+            month = month - 20;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.set(2010 + year, month - 1, 1);
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DATE));
+        cal.set(Calendar.HOUR, 11);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.AM_PM, Calendar.PM);
+        date = cal.getTime();
+        return date;
+    }
+
+    static Date convertToLFSDate(String fp) {
+        Date date;
+        int year = Integer.parseInt(fp.substring(0, 1));
+        int quarter = Integer.parseInt(fp.substring(1, 2));
+        int week = fp.toLowerCase().charAt(2) - 'a' + 1;
+        Calendar cal = Calendar.getInstance();
+        cal.set(2010 + year, 1 + (3 * (quarter - 1)) - 1, 1);
+        cal.set(Calendar.HOUR, 11);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.AM_PM, Calendar.PM);
+        cal.add(Calendar.DATE, (7 * (week)) - 1);
+        date = cal.getTime();
         return date;
     }
 
