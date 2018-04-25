@@ -1,6 +1,9 @@
 # FWMT Legacy Gateway API
 This page documents the Fieldwork Management Tool (FWMT) Gateway API endpoints. Apart from the Service Information endpoint, all these endpoints are secured using HTTP basic authentication. All endpoints return an `HTTP 200 OK` status code except where noted otherwise.
 
+## Content Type
+Incoming requests must specify `text/csv` as the value of the HTTP `Content-Type` header.
+
 ## Timestamps
 Where timestamps are used they should be in UTC and formatted according to ISO 8601 with a date and time component separated by a letter "T" and a letter "Z" suffix to indicate Zulu time (UTC) i.e. *YYYY-MM-DDTHH:MM:SSZ*. For example, 2018-04-24T19:31:25Z.
 
