@@ -4,10 +4,6 @@ server:
 project:
   basedir: ${basedir}
 
-totalmobile:
-  url: "https://ons.totalmobile.co.uk"
-  message-queue-service: "/Live/Services/TM/v20/Messaging/MessageQueueWs.asmx"
-
 spring.http.multipart:
   max-file-size: 12800MB
   max-request-size: 12800MB
@@ -50,5 +46,5 @@ security.user:
 totalmobile:
   username: “...”
   password: “...”
-  url: ""
-  message-queue-service: ""
+  url: "https://ons.totalmobile.co.uk"
+  message-queue-service: "/Live/Services/TM/v20/Messaging/MessageQueueWs.asmx"
