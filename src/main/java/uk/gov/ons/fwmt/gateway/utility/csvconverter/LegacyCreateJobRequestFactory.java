@@ -29,7 +29,7 @@ import uk.gov.ons.fwmt.gateway.entity.LegacyUserEntity;
 public class LegacyCreateJobRequestFactory {
 
     private static List<LegacyUserEntity> allUsers;
-
+    
     /**
      * Build the initial outlive of a CreateJobRequest
      */
@@ -67,15 +67,15 @@ public class LegacyCreateJobRequestFactory {
         // location
         LocationType location = request.getJob().getLocation();
         List<String> addressLines = location.getAddressDetail().getLines().getAddressLine();
-        addressLines.add(entry.getPrem1());
-        addressLines.add(entry.getPrem2());
-        addressLines.add(entry.getPrem3());
-        addressLines.add(entry.getPrem4());
+        addressLines.add(entry.getAddressline1());
+        addressLines.add(entry.getAddressline2());
+        addressLines.add(entry.getAddressline3());
+        addressLines.add(entry.getAddressline4());
         location.getAddressDetail().setPostCode(entry.getPostcode());
         location.setReference(entry.getSerno());
 
-        Float geoX = Float.parseFloat(entry.getOsgridref().toString().substring(0, 6));
-        Float geoY = Float.parseFloat(entry.getOsgridref().toString().substring(7));
+        Float geoX = Float.parseFloat(entry.getOsgridref().substring(0, 6));
+        Float geoY = Float.parseFloat(entry.getOsgridref().substring(7));
 
         request.getJob().getLocation().getAddressDetail().setGeoX(factory.createAddressTypeGeoX(geoX));
         request.getJob().getLocation().getAddressDetail().setGeoY(factory.createAddressTypeGeoX(geoY));
@@ -111,7 +111,7 @@ public class LegacyCreateJobRequestFactory {
 
         // interviewer allocation
         ResourceIdentityType resourceIdentityType = new ResourceIdentityType();
-        resourceIdentityType.setUsername(staffIdToTMUsername(entry.getAuth()));
+        resourceIdentityType.setUsername(staffIdToTMUsername(entry.getAuthno()));
         request.getJob().setAllocatedTo(resourceIdentityType);
 
         return request;
@@ -120,10 +120,10 @@ public class LegacyCreateJobRequestFactory {
     public static String composeReference(LegacySampleEntity entry) {
         String reference;
         if (entry.getTla().equals("LFS")) {
-            reference = entry.getQuota() + entry.getWeek() + entry.getW1yr() + entry.getQrtr() + entry.getAddr()
+            reference = entry.getQuota() + entry.getWeek() + entry.getW1yr() + entry.getQrtr() + entry.getAddressno()
                     + entry.getWavfnd() + entry.getHhld() + entry.getChklet();
         } else {
-            reference = entry.getQuota() + "-" + entry.getAddr() + "-" + entry.getFp();
+            reference = entry.getQuota() + "-" + entry.getAddressno() + "-" + entry.getFp();
         }
         return reference;
     }

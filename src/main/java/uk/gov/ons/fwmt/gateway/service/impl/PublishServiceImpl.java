@@ -175,7 +175,7 @@ public class PublishServiceImpl implements PublishService {
         for (LegacySampleEntity entity : reallocationEntities) {
             String tmJobId = legacyJobsRepo.findBySerno(entity.getSerno()).getTmjobid();
             updateJobHeaderRequest
-                    .add(LegacyUpdateJobHeaderRequestFactory.reallocate(tmJobId, entity.getAuth(), usersEntries));
+                    .add(LegacyUpdateJobHeaderRequestFactory.reallocate(tmJobId, entity.getAuthno(), usersEntries));
         }
 
         sendUpdateJobRequests(updateJobHeaderRequest, "\\OPTIMISE\\INPUT");

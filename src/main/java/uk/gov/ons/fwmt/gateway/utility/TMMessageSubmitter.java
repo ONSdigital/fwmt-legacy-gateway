@@ -34,9 +34,9 @@ public class TMMessageSubmitter {
     private static final boolean debug_on = true;
 
     // this is to avoid needing the terrible case statement in lookupAction
-    private static final Map<Class, String> oddMessageNames;
+    private static final Map<Class<?>, String> oddMessageNames;
     private static String namespace = "http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/";
-    private static Class[] knownMessageNames = {
+    private static Class<?>[] knownMessageNames = {
             SendMessageRequest.class, SendMessageResponse.class,
             TransformAndSendRequest.class, TransformAndSendResponse.class,
             QueryMessagesRequest.class, QueryMessagesResponse.class,
@@ -66,7 +66,7 @@ public class TMMessageSubmitter {
     };
 
     static {
-        Map<Class, String> messageNames = new HashMap<>();
+        Map<Class<?>, String> messageNames = new HashMap<>();
         messageNames.put(SendMessageRequest.class, "SendMessage");
         messageNames.put(SendMessageResponse.class, "SendMessage");
         messageNames.put(TransformAndSendRequest.class, "TransformAndSendMessage");
@@ -103,7 +103,7 @@ public class TMMessageSubmitter {
         if (message instanceof JAXBElement) {
             message = ((JAXBElement) message).getValue();
         }
-        final Class cl = message.getClass();
+        final Class<?> cl = message.getClass();
         if (Arrays.stream(knownMessageNames).noneMatch(c -> c == cl)) {
             throw new IllegalArgumentException("Invalid arguments - message's class did not match a known TotalMobile message");
             // throw new IllegalArgumentException("Invalid arguments - message's class did not match a known TotalMobile message: " + classEnd);
