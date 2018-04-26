@@ -32,7 +32,7 @@ public class LegacyGFFSampleReader {
     };
     register.accept("Serno", "serno");
     register.accept("TLA", "tla");
-    register.accept("Stage", "fp");
+    register.accept("Stage", "stage");
     register.accept("Wave", "wave");
     register.accept("Prem1", "prem1");
     register.accept("Prem2", "prem2");
