@@ -87,7 +87,7 @@ public class LegacyEndpointRESTController {
         }
     }
 
-    @RequestMapping(value = "/legacy/sample", method = RequestMethod.POST)
+    @RequestMapping(value = "/sample", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<?> sampleREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
             throws IOException {
 
@@ -108,7 +108,7 @@ public class LegacyEndpointRESTController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/legacy/staff", method = RequestMethod.POST)
+    @RequestMapping(value = "/staff", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<?> staffREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
             throws IOException {
 
@@ -121,6 +121,13 @@ public class LegacyEndpointRESTController {
         LegacyStaffReader legacyStaffReader = new LegacyStaffReader(file.getInputStream());
         Iterator<LegacyStaffEntity> iterator = legacyStaffReader.iterator();
         ingesterService.ingestLegacyStaff(iterator);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+    
+    @RequestMapping(value = "/info", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<?> infoREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
+            throws IOException {
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
