@@ -50,7 +50,7 @@ public class LegacyGatewayEndpoint {
     }
 
     @RequestMapping(value = "/samples", method = RequestMethod.POST)
-    public ResponseEntity<?> sampleREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
+    public ResponseEntity<?> uploadSampleFile(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
             throws IOException {
 
         // confirm data is in correct format
@@ -67,7 +67,7 @@ public class LegacyGatewayEndpoint {
     }
 
     @RequestMapping(value = "/staff", method = RequestMethod.POST)
-    public ResponseEntity<?> staffREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
+    public ResponseEntity<?> uploadStaffFile(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
             throws IOException {
 
         // confirm data is in correct format
