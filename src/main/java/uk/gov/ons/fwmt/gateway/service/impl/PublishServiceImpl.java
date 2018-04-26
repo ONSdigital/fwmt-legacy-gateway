@@ -13,6 +13,7 @@ import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.Sen
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendMessageRequestInfo;
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendUpdateJobHeaderRequestMessage;
 
+import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.fwmt.gateway.entity.LegacyJobEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacyLeaverEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
@@ -30,12 +31,12 @@ import uk.gov.ons.fwmt.gateway.utility.csvconverter.LegacyUpdateJobHeaderRequest
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyJobsReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyUsersReader;
 
+@Slf4j
 public class PublishServiceImpl implements PublishService {
 
   private TMMessageSubmitter submitter;
   private LegacySampleRepo legacySampleRepository;
   private LegacyStaffRepo legacyStaffRepo;
-  // private LegacyLeaversRepo legacyLeaversRepo;
   private LegacyJobsRepo legacyJobsRepo;
   private LegacyUsersRepo legacyUsersRepo;
   
@@ -48,7 +49,6 @@ public class PublishServiceImpl implements PublishService {
     this.submitter = submitter;
     this.legacySampleRepository = legacySampleRepository;
     this.legacyStaffRepo = legacyStaffRepo;
-    // this.legacyLeaversRepo = legacyLeaversRepo;
     this.legacyJobsRepo = legacyJobsRepo;
     this.legacyUsersRepo = legacyUsersRepo;
   }
@@ -57,24 +57,17 @@ public class PublishServiceImpl implements PublishService {
   public void publishUpdateUsers() {
     legacyStaffRepo.findAll().forEach(staff -> {
       if (!legacyUsersRepo.existsByAuthNo(staff.getAuthno())) {
-        // create new user in TM
-        // find if staff member already exists
-        // if so then update their staffid
         if (legacyUsersRepo.existsByTmusername(getProposedTMUsername(staff.getEmail()))) {
           LegacyUserEntity existingUser = legacyUsersRepo.findByTmusername(getProposedTMUsername(staff.getEmail()));
           existingUser.setAuthNo(staff.getAuthno());
           legacyUsersRepo.save(existingUser);
         } else {
-          // if not then create new user entity
           LegacyUserEntity newUser = LegacyUsersReader.createUserEntity(staff,
               getProposedTMUsername(staff.getEmail()));
-          // create new mobilise user in TM
-
-          // TODO CREATE THE USER IN TM USING THE ADMINWS OR SELENIUM
-          System.out.println("Must create new user " + newUser.getTmusername() + " and set correct AuthNo.");
+          
+          // TODO create new mobilise user in TM
+          log.info("Must create new user " + newUser.getTmusername() + " and set correct AuthNo.");
           // make sure to add authority number as an additional property
-
-          // add to the users table
           legacyUsersRepo.save(newUser);
         }
       }
