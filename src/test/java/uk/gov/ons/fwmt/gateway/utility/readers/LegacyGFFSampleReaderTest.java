@@ -18,7 +18,7 @@ public class LegacyGFFSampleReaderTest {
     String input = header + "\n" + value;
     // take the first raw result from the reader
     LegacyGFFSampleReader reader = new LegacyGFFSampleReader(new ByteArrayInputStream(input.getBytes()));
-    LegacyGFFSampleReader.LegacyGFFSampleEntityRaw output = reader.iterator().next();
+    LegacyGFFSampleReader.LegacyGFFSampleEntityRaw output = reader.iterator().nextRaw();
     // try all of the fields to ensure that they were filled with the field name
     Class<LegacyGFFSampleReader.LegacyGFFSampleEntityRaw> entityRawClass = LegacyGFFSampleReader.LegacyGFFSampleEntityRaw.class;
     Field[] fields = entityRawClass.getDeclaredFields();

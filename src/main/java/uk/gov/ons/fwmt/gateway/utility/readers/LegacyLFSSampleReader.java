@@ -248,13 +248,14 @@ public class LegacyLFSSampleReader {
     register.accept("Issue_No", "issueNo");
     register.accept("Part", "part");
     register.accept("Auth", "auth");
-    register.accept("EmployeeNo", "employeeno");
+    register.accept("EmployeeNo", "employeeNo");
     register.accept("Last_Updated", "lastUpdated");
     CSV_HEADERS = csvHeaders;
     DATA_FIELDS = dataFields;
     SAMPLE_LFS_DATA_COLUMN_MAP = map;
   }
 
+  public List<IllegalCSVStructureException> errorList;
   private CsvToBean<LegacyLFSSampleEntityRaw> csvToBean;
 
   public LegacyLFSSampleReader(InputStream stream) {
@@ -263,12 +264,14 @@ public class LegacyLFSSampleReader {
     strategy.setType(LegacyLFSSampleEntityRaw.class);
     strategy.setColumnMapping(SAMPLE_LFS_DATA_COLUMN_MAP);
     CsvToBeanBuilder<LegacyLFSSampleEntityRaw> builder = new CsvToBeanBuilder<>(new InputStreamReader(stream));
-    csvToBean = builder
+    this.errorList = new ArrayList<>();
+    this.csvToBean = builder
         .withMappingStrategy(strategy)
+        .withFilter(new LegacyLFSSampleCSVFilter(strategy))
         .build();
   }
 
-  public Iterator<LegacySampleEntity> iterator() {
+  public LegacyLFSSampleIterator iterator() {
     return new LegacyLFSSampleIterator(csvToBean.iterator());
   }
 
@@ -288,11 +291,11 @@ public class LegacyLFSSampleReader {
     String prem3;
     String prem4;
     String district;
-    String postTown;
+    String posttown;
     String postcode;
     String quota;
     String addr;
-    String osGridRef;
+    String osgridref;
     String year;
     String month;
     String main;
@@ -524,12 +527,16 @@ public class LegacyLFSSampleReader {
       entity.setAddressline3(raw.getPrem3());
       entity.setAddressline4(raw.getPrem4());
       entity.setDistrict(raw.getDistrict());
-      entity.setPosttown(raw.getPostTown());
+      entity.setPosttown(raw.getPosttown());
       entity.setPostcode(raw.getPostcode());
       entity.setAddressno(raw.getAddr());
-      entity.setOsgridref(raw.getOsGridRef());
+      entity.setOsgridref(raw.getOsgridref());
       entity.setKishgrid(null);
       return entity;
+    }
+
+    public LegacyLFSSampleEntityRaw nextRaw() {
+      return rawIterator.next();
     }
   }
 
@@ -541,11 +548,41 @@ public class LegacyLFSSampleReader {
     }
 
     @Override public boolean allowLine(String[] strings) {
-      int sernoIndex = strategy.getColumnIndex("Serno");
-      // TODO the rest of these
-      // TODO verify what's in here for nulls
-      // TODO add logging
-      return false;
+      int sernoIndex = strategy.getColumnIndex("SERNO");
+      int tlaIndex = strategy.getColumnIndex("TLA");
+      int stageIndex = strategy.getColumnIndex("FP");
+      int quotaIndex = strategy.getColumnIndex("Quota_No");
+      int authNoIndex = strategy.getColumnIndex("Auth");
+      int employeeNoIndex = strategy.getColumnIndex("EmployeeNo");
+      int addressLine1Index = strategy.getColumnIndex("PREM1");
+      int addressLine2Index = strategy.getColumnIndex("PREM2");
+      int addressLine3Index = strategy.getColumnIndex("PREM3");
+      int addressLine4Index = strategy.getColumnIndex("PREM4");
+      int districtIndex = strategy.getColumnIndex("DISTRICT");
+      int postTownIndex = strategy.getColumnIndex("POSTTOWN");
+      int postcodeIndex = strategy.getColumnIndex("POSTCODE");
+      int addressNoIndex = strategy.getColumnIndex("ADDR");
+      int osGridRefIndex = strategy.getColumnIndex("OSGRIDREF");
+      //      int kishGridIndex = strategy.getColumnIndex("");
+      boolean pass = strings[sernoIndex] != null &&
+          strings[tlaIndex] != null &&
+          strings[stageIndex] != null &&
+          strings[quotaIndex] != null &&
+          strings[authNoIndex] != null &&
+          strings[employeeNoIndex] != null &&
+          strings[addressLine1Index] != null &&
+          strings[addressLine2Index] != null &&
+          strings[addressLine3Index] != null &&
+          strings[addressLine4Index] != null &&
+          strings[districtIndex] != null &&
+          strings[postTownIndex] != null &&
+          strings[postcodeIndex] != null &&
+          strings[addressNoIndex] != null &&
+          strings[osGridRefIndex] != null;
+      if (!pass) {
+        LegacyLFSSampleReader.this.errorList.add(new IllegalCSVStructureException());
+      }
+      return pass;
     }
   }
 }

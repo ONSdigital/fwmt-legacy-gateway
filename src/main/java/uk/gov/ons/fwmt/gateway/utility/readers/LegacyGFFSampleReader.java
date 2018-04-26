@@ -4,6 +4,7 @@ import com.opencsv.bean.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
 
 import java.io.InputStream;
@@ -11,6 +12,7 @@ import java.io.InputStreamReader;
 import java.util.*;
 import java.util.function.BiConsumer;
 
+@Slf4j
 public class LegacyGFFSampleReader {
   static final List<String> CSV_HEADERS;
 
@@ -78,6 +80,7 @@ public class LegacyGFFSampleReader {
     SAMPLE_GFF_DATA_COLUMN_MAP = map;
   }
 
+  public List<IllegalCSVStructureException> errorList;
   private CsvToBean<LegacyGFFSampleEntityRaw> csvToBean;
 
   public LegacyGFFSampleReader(InputStream stream) {
@@ -93,7 +96,7 @@ public class LegacyGFFSampleReader {
         .build();
   }
 
-  public Iterator<LegacySampleEntity> iterator() {
+  public LegacyGFFSampleIterator iterator() {
     return new LegacyGFFSampleIterator(csvToBean.iterator());
   }
 
@@ -181,6 +184,10 @@ public class LegacyGFFSampleReader {
       entity.setKishgrid(null);
       return entity;
     }
+
+    public LegacyGFFSampleEntityRaw nextRaw() {
+      return rawIterator.next();
+    }
   }
 
   private class LegacyGFFSampleCSVFilter implements CsvToBeanFilter {
@@ -192,10 +199,40 @@ public class LegacyGFFSampleReader {
 
     @Override public boolean allowLine(String[] strings) {
       int sernoIndex = strategy.getColumnIndex("Serno");
-      // TODO the rest of these
-      // TODO verify what's in here for nulls
-      // TODO add logging
-      return false;
+      int tlaIndex = strategy.getColumnIndex("TLA");
+      int stageIndex = strategy.getColumnIndex("Stage");
+      int quotaIndex = strategy.getColumnIndex("Quota");
+      int authNoIndex = strategy.getColumnIndex("Auth");
+      int employeeNoIndex = strategy.getColumnIndex("EmployeeNo");
+      int addressLine1Index = strategy.getColumnIndex("Prem1");
+      int addressLine2Index = strategy.getColumnIndex("Prem2");
+      int addressLine3Index = strategy.getColumnIndex("Prem3");
+      int addressLine4Index = strategy.getColumnIndex("Prem4");
+      int districtIndex = strategy.getColumnIndex("District");
+      int postTownIndex = strategy.getColumnIndex("PostTown");
+      int postcodeIndex = strategy.getColumnIndex("Postcode");
+      int addressNoIndex = strategy.getColumnIndex("AddressNo");
+      int osGridRefIndex = strategy.getColumnIndex("OSGridRef");
+      //      int kishGridIndex = strategy.getColumnIndex("");
+      boolean pass = strings[sernoIndex] != null &&
+          strings[tlaIndex] != null &&
+          strings[stageIndex] != null &&
+          strings[quotaIndex] != null &&
+          strings[authNoIndex] != null &&
+          strings[employeeNoIndex] != null &&
+          strings[addressLine1Index] != null &&
+          strings[addressLine2Index] != null &&
+          strings[addressLine3Index] != null &&
+          strings[addressLine4Index] != null &&
+          strings[districtIndex] != null &&
+          strings[postTownIndex] != null &&
+          strings[postcodeIndex] != null &&
+          strings[addressNoIndex] != null &&
+          strings[osGridRefIndex] != null;
+      if (!pass) {
+        LegacyGFFSampleReader.this.errorList.add(new IllegalCSVStructureException());
+      }
+      return pass;
     }
   }
 }

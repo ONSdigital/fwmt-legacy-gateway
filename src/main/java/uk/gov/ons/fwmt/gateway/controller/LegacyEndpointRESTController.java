@@ -55,13 +55,17 @@ public class LegacyEndpointRESTController {
 
         // confirm data is in correct format
         if (!confirm(file)) {
-            return new ResponseEntity<>("Invalid file format",HttpStatus.I_AM_A_TEAPOT);
+            return new ResponseEntity<>("Invalid file format", HttpStatus.I_AM_A_TEAPOT);
         }
         
         // add data to reception table
         LegacyLFSSampleReader legacyLFSSampleReader = new LegacyLFSSampleReader(file.getInputStream());
         Iterator<LegacySampleEntity> iterator = legacyLFSSampleReader.iterator();
         ingesterService.ingestLegacySample(iterator);
+
+        if (legacyLFSSampleReader.errorList.size() != 0) {
+            // TODO handle errors
+        }
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
