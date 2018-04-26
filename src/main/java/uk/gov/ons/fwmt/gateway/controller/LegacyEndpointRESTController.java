@@ -5,6 +5,7 @@
 package uk.gov.ons.fwmt.gateway.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLeaversReader;
+import uk.gov.ons.fwmt.gateway.utility.HTTPResponse;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
 
@@ -45,14 +47,22 @@ public class LegacyEndpointRESTController {
         this.ingesterService = ingesterService;
     }
     
-    public ResponseEntity<?> confirmFile(MultipartFile file, String endpoint) {
+    public HTTPResponse confirmFile(MultipartFile file, String endpoint, HTTPResponse httpResponse) {
         // confirm data is in correct format
         if (!confirmFilename(file, endpoint)) {
-            return new ResponseEntity<>("The file name specified in the request does not match the file name format expected by the endpoint",HttpStatus.BAD_REQUEST);
+            httpResponse.setError("BAD_REQUEST");
+            httpResponse.setMessage("The file name specified in the request does not match the file name format expected by the endpoint");
+            httpResponse.setPath("/"+endpoint);
+            httpResponse.setTimestamp(new Date());
+            return httpResponse;
         } else if (!confirmFiletype(file)) {
-            return new ResponseEntity<>("Recieved non-CSV file",HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+            httpResponse.setError("UNSUPPORTED_MEDIA_TYPE");
+            httpResponse.setMessage("Recieved non-CSV file");
+            httpResponse.setPath("/"+endpoint);
+            httpResponse.setTimestamp(new Date());
+            return httpResponse;
         } else {
-            return null;
+            return httpResponse;
         }
         
     }
@@ -87,38 +97,47 @@ public class LegacyEndpointRESTController {
         }
     }
 
-    @RequestMapping(value = "/legacy/sample", method = RequestMethod.POST)
-    public ResponseEntity<?> sampleREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
+    @RequestMapping(value = "/sample", method = RequestMethod.POST, produces = "application/json")
+    public HTTPResponse sampleREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
             throws IOException {
 
-        ResponseEntity<?> responseEntity = confirmFile(file, "sample");
-        if (!responseEntity.equals(null)) {
-            return responseEntity;
-        }
+        HTTPResponse httpResponse = new HTTPResponse();
+        httpResponse = confirmFile(file, "sample", httpResponse);
         
         // add data to reception table
         LegacyLFSSampleReader legacyLFSSampleReader = new LegacyLFSSampleReader(file.getInputStream());
         Iterator<LegacySampleEntity> iterator = legacyLFSSampleReader.iterator();
         ingesterService.ingestLegacySample(iterator);
+        httpResponse.setFilename(file.getOriginalFilename());
+        // change this to number of rows in the CSV
+        httpResponse.setRows(5000);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return httpResponse;
     }
 
-    @RequestMapping(value = "/legacy/staff", method = RequestMethod.POST)
-    public ResponseEntity<?> staffREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
+    @RequestMapping(value = "/staff", method = RequestMethod.POST, produces = "application/json")
+    public HTTPResponse staffREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
             throws IOException {
 
-        ResponseEntity<?> responseEntity = confirmFile(file, "staff");
-        if (!responseEntity.equals(null)) {
-            return responseEntity;
-        }
+        HTTPResponse httpResponse = new HTTPResponse();
+        httpResponse = confirmFile(file, "staff", httpResponse);
         
         // add data to reception table
         LegacyStaffReader legacyStaffReader = new LegacyStaffReader(file.getInputStream());
         Iterator<LegacyStaffEntity> iterator = legacyStaffReader.iterator();
         ingesterService.ingestLegacyStaff(iterator);
+        httpResponse.setFilename(file.getOriginalFilename());
+        // change this to number of rows in the CSV
+        httpResponse.setRows(5000);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return httpResponse;
+    }
+    
+    @RequestMapping(value = "/info", method = RequestMethod.GET, produces = "application/json")
+    public HTTPResponse infoREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
+            throws IOException {
+        
+        return new HTTPResponse();
     }
 
     
