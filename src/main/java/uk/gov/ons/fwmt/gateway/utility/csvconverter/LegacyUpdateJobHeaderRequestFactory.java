@@ -18,11 +18,11 @@ public class LegacyUpdateJobHeaderRequestFactory {
         return request;
     }
     
-    public static UpdateJobHeaderRequest reallocate(String tmJobId, String staffId, List<LegacyUserEntity> users) {
+    public static UpdateJobHeaderRequest reallocate(String tmJobId, String username) {
         UpdateJobHeaderRequest update = buildRequest();
         
         ResourceIdentityType resourceIdentityType = new ResourceIdentityType();
-        resourceIdentityType.setUsername(staffIdToTMUsername(users, staffId));
+        resourceIdentityType.setUsername(username);
         update.getJobHeader().setAllocatedTo(resourceIdentityType);
         
         JobIdentityType jobIdentityType = new JobIdentityType();

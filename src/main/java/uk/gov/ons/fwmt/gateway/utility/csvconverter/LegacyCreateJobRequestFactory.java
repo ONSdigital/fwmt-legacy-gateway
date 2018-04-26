@@ -27,9 +27,6 @@ import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacyUserEntity;
 
 public class LegacyCreateJobRequestFactory {
-
-    private static List<LegacyUserEntity> allUsers;
-
     /**
      * Build the initial outlive of a CreateJobRequest
      */
@@ -56,8 +53,7 @@ public class LegacyCreateJobRequestFactory {
      * 
      * @throws DatatypeConfigurationException
      */
-    private static CreateJobRequest buildRequestFromSampleData(LegacySampleEntity entry)
-            throws DatatypeConfigurationException {
+    private static CreateJobRequest buildRequestFromSampleData(LegacySampleEntity entry, String username){
         ObjectFactory factory = new ObjectFactory();
         CreateJobRequest request = buildRequest();
 
@@ -89,8 +85,13 @@ public class LegacyCreateJobRequestFactory {
 
         GregorianCalendar dueDateCalendar = new GregorianCalendar();
         dueDateCalendar.setTime(dueDate);
-        XMLGregorianCalendar dueDateGC = DatatypeFactory.newInstance().newXMLGregorianCalendar(dueDateCalendar);
-        request.getJob().setDueDate(dueDateGC);
+        XMLGregorianCalendar dueDateGC;
+        try {
+          dueDateGC = DatatypeFactory.newInstance().newXMLGregorianCalendar(dueDateCalendar);
+          request.getJob().setDueDate(dueDateGC);
+        } catch (DatatypeConfigurationException e) {
+          e.printStackTrace();
+        }
 
         // other required values
         request.getJob().setVisitComplete(false);
@@ -111,7 +112,7 @@ public class LegacyCreateJobRequestFactory {
 
         // interviewer allocation
         ResourceIdentityType resourceIdentityType = new ResourceIdentityType();
-        resourceIdentityType.setUsername(staffIdToTMUsername(entry.getAuth()));
+        resourceIdentityType.setUsername(username);
         request.getJob().setAllocatedTo(resourceIdentityType);
 
         return request;
@@ -172,34 +173,7 @@ public class LegacyCreateJobRequestFactory {
         return date;
     }
 
-    private static String staffIdToTMUsername(String authNo) {
-        for (LegacyUserEntity user : allUsers) {
-            if (user.getAuthNo().equals(authNo)) {
-                return user.getTmusername();
-            }
-        }
-        return null;
-    }
-
-    public static List<CreateJobRequest> convert(List<LegacySampleEntity> samples, List<LegacySampleEntity> allocations,
-            List<LegacyUserEntity> users) {
-        allUsers = users;
-
-        List<CreateJobRequest> jobs = new ArrayList<>();
-
-        // convert all of the samples into CreateJobRequests
-        for (LegacySampleEntity sampleEntry : samples) {
-            try {
-                jobs.add(buildRequestFromSampleData(sampleEntry));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (jobs.size() > 0) {
-            throw new AssertionError("No sample data was matched with allocation data");
-        }
-
-        return jobs;
+    public static CreateJobRequest convert(LegacySampleEntity sample, String username) {
+        return buildRequestFromSampleData(sample, username);
     }
 }
