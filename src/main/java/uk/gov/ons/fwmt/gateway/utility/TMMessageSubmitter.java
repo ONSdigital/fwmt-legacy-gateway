@@ -237,6 +237,7 @@ public class TMMessageSubmitter {
             System.err.println(
                     "\nError occurred while sending SOAP request to Server!\nMake sure you have the correct endpoint URL and SOAPAction!\n");
             e.printStackTrace();
+            // nooooo
             System.exit(1);
         }
         return null;
