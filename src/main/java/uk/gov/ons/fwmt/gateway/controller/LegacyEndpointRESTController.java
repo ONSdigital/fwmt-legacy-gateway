@@ -64,10 +64,16 @@ public class LegacyEndpointRESTController {
     String fileEndpoint = nameSplit[0];
     String surveyTla = nameSplit[1];
     String timestamp = nameSplit[2];
-    DatatypeConverter.parseDateTime(timestamp);
+    boolean timestampValid;
+    try {
+      DatatypeConverter.parseDateTime(timestamp);
+      timestampValid = true;
+    } catch (IllegalArgumentException e) {
+      timestampValid = false;
+    }
     return fileEndpoint.equals(endpoint) &&
         surveyTla.length() == 3 &&
-        !timestamp.isEmpty();
+        timestampValid;
   }
 
   public boolean confirmFiletype(MultipartFile file) {
