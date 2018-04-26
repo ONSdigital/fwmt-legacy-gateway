@@ -64,27 +64,18 @@ public class LegacyEndpointRESTController {
         String fileEndpoint = nameSplit[0];
         String surveyTla = nameSplit[1];
         String timestamp = nameSplit[2];
-        if(fileEndpoint.equals(endpoint)) {
-            if(surveyTla.length()==3) {
-                //change this
-                return !timestamp.isEmpty();
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+        return fileEndpoint.equals(endpoint) &&
+            surveyTla.length() == 3 &&
+            !timestamp.isEmpty();
     }
 
     public boolean confirmFiletype(MultipartFile file) {
         String contentType = file.getContentType();
         String filename = file.getOriginalFilename();
-        if(contentType.equals("text/csv")) {
-            String[] filenameSplit = filename.split("\\.");
-            return filenameSplit[filenameSplit.length-1].equals("csv");
-        }else {
-            return false;
-        }
+        String[] filenameSplit = filename.split("\\.");
+        return contentType.equals("text/csv") &&
+            contentType.equals("text/csv") &&
+            filenameSplit[filenameSplit.length-1].equals("csv");
     }
 
     @RequestMapping(value = "/sample", method = RequestMethod.POST, produces = "application/json")
