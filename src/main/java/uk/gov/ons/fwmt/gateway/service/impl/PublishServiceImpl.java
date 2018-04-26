@@ -35,7 +35,7 @@ public class PublishServiceImpl implements PublishService {
   private TMMessageSubmitter submitter;
   private LegacySampleRepo legacySampleRepository;
   private LegacyStaffRepo legacyStaffRepo;
-  private LegacyLeaversRepo legacyLeaversRepo;
+//  private LegacyLeaversRepo legacyLeaversRepo;
   private LegacyJobsRepo legacyJobsRepo;
   private LegacyUsersRepo legacyUsersRepo;
 
@@ -46,7 +46,7 @@ public class PublishServiceImpl implements PublishService {
     this.submitter = submitter;
     this.legacySampleRepository = legacySampleRepository;
     this.legacyStaffRepo = legacyStaffRepo;
-    this.legacyLeaversRepo = legacyLeaversRepo;
+//    this.legacyLeaversRepo = legacyLeaversRepo;
     this.legacyJobsRepo = legacyJobsRepo;
     this.legacyUsersRepo = legacyUsersRepo;
   }
