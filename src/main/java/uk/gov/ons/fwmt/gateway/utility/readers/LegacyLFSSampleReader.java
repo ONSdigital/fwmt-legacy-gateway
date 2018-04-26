@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 @Slf4j
 public class LegacyLFSSampleReader {
@@ -548,39 +549,39 @@ public class LegacyLFSSampleReader {
     }
 
     @Override public boolean allowLine(String[] strings) {
-      int sernoIndex = strategy.getColumnIndex("SERNO");
-      int tlaIndex = strategy.getColumnIndex("TLA");
-      int stageIndex = strategy.getColumnIndex("FP");
-      int quotaIndex = strategy.getColumnIndex("Quota_No");
-      int authNoIndex = strategy.getColumnIndex("Auth");
-      int employeeNoIndex = strategy.getColumnIndex("EmployeeNo");
-      int addressLine1Index = strategy.getColumnIndex("PREM1");
-      int addressLine2Index = strategy.getColumnIndex("PREM2");
-      int addressLine3Index = strategy.getColumnIndex("PREM3");
-      int addressLine4Index = strategy.getColumnIndex("PREM4");
-      int districtIndex = strategy.getColumnIndex("DISTRICT");
-      int postTownIndex = strategy.getColumnIndex("POSTTOWN");
-      int postcodeIndex = strategy.getColumnIndex("POSTCODE");
-      int addressNoIndex = strategy.getColumnIndex("ADDR");
-      int osGridRefIndex = strategy.getColumnIndex("OSGRIDREF");
-      //      int kishGridIndex = strategy.getColumnIndex("");
-      boolean pass = strings[sernoIndex] != null &&
-          strings[tlaIndex] != null &&
-          strings[stageIndex] != null &&
-          strings[quotaIndex] != null &&
-          strings[authNoIndex] != null &&
-          strings[employeeNoIndex] != null &&
-          strings[addressLine1Index] != null &&
-          strings[addressLine2Index] != null &&
-          strings[addressLine3Index] != null &&
-          strings[addressLine4Index] != null &&
-          strings[districtIndex] != null &&
-          strings[postTownIndex] != null &&
-          strings[postcodeIndex] != null &&
-          strings[addressNoIndex] != null &&
-          strings[osGridRefIndex] != null;
+      String serno = strings[strategy.getColumnIndex("SERNO")];
+      String tla = strings[strategy.getColumnIndex("TLA")];
+      String stage = strings[strategy.getColumnIndex("FP")];
+      String quota = strings[strategy.getColumnIndex("Quota_No")];
+      String authNo = strings[strategy.getColumnIndex("Auth")];
+      String employeeNo = strings[strategy.getColumnIndex("EmployeeNo")];
+      String addressLine1 = strings[strategy.getColumnIndex("PREM1")];
+      String addressLine2 = strings[strategy.getColumnIndex("PREM2")];
+      String addressLine3 = strings[strategy.getColumnIndex("PREM3")];
+      String addressLine4 = strings[strategy.getColumnIndex("PREM4")];
+      String district = strings[strategy.getColumnIndex("DISTRICT")];
+      String postTown = strings[strategy.getColumnIndex("POSTTOWN")];
+      String postcode = strings[strategy.getColumnIndex("POSTCODE")];
+      String addressNo = strings[strategy.getColumnIndex("ADDR")];
+      String osGridRef = strings[strategy.getColumnIndex("OSGRIDREF")];
+      Function<String, Boolean> check = (s) -> s != null && s.length() != 0;
+      boolean pass = check.apply(serno) &&
+          check.apply(tla) &&
+          check.apply(stage) &&
+          check.apply(quota) &&
+          check.apply(authNo) &&
+          check.apply(employeeNo) &&
+          check.apply(addressLine1) &&
+          check.apply(addressLine2) &&
+          check.apply(addressLine3) &&
+          check.apply(addressLine4) &&
+          check.apply(district) &&
+          check.apply(postTown) &&
+          check.apply(postcode) &&
+          check.apply(addressNo) &&
+          check.apply(osGridRef);
       if (!pass) {
-        LegacyLFSSampleReader.this.errorList.add(new IllegalCSVStructureException());
+        errorList.add(new IllegalCSVStructureException(strings));
       }
       return pass;
     }

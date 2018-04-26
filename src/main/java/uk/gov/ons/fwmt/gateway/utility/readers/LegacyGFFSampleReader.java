@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 @Slf4j
 public class LegacyGFFSampleReader {
@@ -181,7 +182,7 @@ public class LegacyGFFSampleReader {
       entity.setPostcode(raw.getPostcode());
       entity.setAddressno(raw.getAddressNo());
       entity.setOsgridref(raw.getOsGridRef());
-      entity.setKishgrid(null);
+      entity.setKishgrid(null); // TODO fill this in from the data
       return entity;
     }
 
@@ -198,39 +199,40 @@ public class LegacyGFFSampleReader {
     }
 
     @Override public boolean allowLine(String[] strings) {
-      int sernoIndex = strategy.getColumnIndex("Serno");
-      int tlaIndex = strategy.getColumnIndex("TLA");
-      int stageIndex = strategy.getColumnIndex("Stage");
-      int quotaIndex = strategy.getColumnIndex("Quota");
-      int authNoIndex = strategy.getColumnIndex("Auth");
-      int employeeNoIndex = strategy.getColumnIndex("EmployeeNo");
-      int addressLine1Index = strategy.getColumnIndex("Prem1");
-      int addressLine2Index = strategy.getColumnIndex("Prem2");
-      int addressLine3Index = strategy.getColumnIndex("Prem3");
-      int addressLine4Index = strategy.getColumnIndex("Prem4");
-      int districtIndex = strategy.getColumnIndex("District");
-      int postTownIndex = strategy.getColumnIndex("PostTown");
-      int postcodeIndex = strategy.getColumnIndex("Postcode");
-      int addressNoIndex = strategy.getColumnIndex("AddressNo");
-      int osGridRefIndex = strategy.getColumnIndex("OSGridRef");
-      //      int kishGridIndex = strategy.getColumnIndex("");
-      boolean pass = strings[sernoIndex] != null &&
-          strings[tlaIndex] != null &&
-          strings[stageIndex] != null &&
-          strings[quotaIndex] != null &&
-          strings[authNoIndex] != null &&
-          strings[employeeNoIndex] != null &&
-          strings[addressLine1Index] != null &&
-          strings[addressLine2Index] != null &&
-          strings[addressLine3Index] != null &&
-          strings[addressLine4Index] != null &&
-          strings[districtIndex] != null &&
-          strings[postTownIndex] != null &&
-          strings[postcodeIndex] != null &&
-          strings[addressNoIndex] != null &&
-          strings[osGridRefIndex] != null;
+      String serno = strings[strategy.getColumnIndex("Serno")];
+      String tla = strings[strategy.getColumnIndex("TLA")];
+      String stage = strings[strategy.getColumnIndex("Stage")];
+      String quota = strings[strategy.getColumnIndex("Quota")];
+      String authNo = strings[strategy.getColumnIndex("Auth")];
+      String employeeNo = strings[strategy.getColumnIndex("EmployeeNo")];
+      String addressLine1 = strings[strategy.getColumnIndex("Prem1")];
+      String addressLine2 = strings[strategy.getColumnIndex("Prem2")];
+      String addressLine3 = strings[strategy.getColumnIndex("Prem3")];
+      String addressLine4 = strings[strategy.getColumnIndex("Prem4")];
+      String district = strings[strategy.getColumnIndex("District")];
+      String postTown = strings[strategy.getColumnIndex("PostTown")];
+      String postcode = strings[strategy.getColumnIndex("Postcode")];
+      String addressNo = strings[strategy.getColumnIndex("AddressNo")];
+      String osGridRef = strings[strategy.getColumnIndex("OSGridRef")];
+//      String kishGrid = strings[strategy.getColumnIndex("")];
+      Function<String, Boolean> check = (s) -> s != null && s.length() != 0;
+      boolean pass = check.apply(serno) &&
+          check.apply(tla) &&
+          check.apply(stage) &&
+          check.apply(quota) &&
+          check.apply(authNo) &&
+          check.apply(employeeNo) &&
+          check.apply(addressLine1) &&
+          check.apply(addressLine2) &&
+          check.apply(addressLine3) &&
+          check.apply(addressLine4) &&
+          check.apply(district) &&
+          check.apply(postTown) &&
+          check.apply(postcode) &&
+          check.apply(addressNo) &&
+          check.apply(osGridRef);
       if (!pass) {
-        LegacyGFFSampleReader.this.errorList.add(new IllegalCSVStructureException());
+        errorList.add(new IllegalCSVStructureException(strings));
       }
       return pass;
     }
