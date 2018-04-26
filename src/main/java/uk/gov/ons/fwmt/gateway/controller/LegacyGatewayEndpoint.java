@@ -19,6 +19,7 @@ import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
 import uk.gov.ons.fwmt.gateway.representation.SampleSummaryDTO;
 import uk.gov.ons.fwmt.gateway.representation.StaffSummaryDTO;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
+import uk.gov.ons.fwmt.gateway.utility.readers.LegacyGFFSampleReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
 
@@ -60,22 +61,26 @@ public class LegacyGatewayEndpoint {
   }
 
   public boolean confirmFilename(MultipartFile file, String endpoint) {
-    String filename = file.getOriginalFilename();
-    String[] filenameSplit = filename.split("\\.");
-    String[] nameSplit = filenameSplit[0].split("_");
-    String fileEndpoint = nameSplit[0];
-    String surveyTla = nameSplit[1];
-    String timestamp = nameSplit[2];
-    boolean timestampValid;
     try {
-      DatatypeConverter.parseDateTime(timestamp);
-      timestampValid = true;
-    } catch (IllegalArgumentException e) {
-      timestampValid = false;
+      String filename = file.getOriginalFilename();
+      String[] filenameSplit = filename.split("\\.");
+      String[] nameSplit = filenameSplit[0].split("_");
+      String fileEndpoint = nameSplit[0];
+      String surveyTla = nameSplit[1];
+      String timestamp = nameSplit[2];
+      boolean timestampValid;
+      try {
+        DatatypeConverter.parseDateTime(timestamp);
+        timestampValid = true;
+      } catch (IllegalArgumentException e) {
+        timestampValid = false;
+      }
+      return fileEndpoint.equals(endpoint) &&
+          surveyTla.length() == 3 &&
+          timestampValid;
+    } catch (Exception e) {
+      return false;
     }
-    return fileEndpoint.equals(endpoint) &&
-        surveyTla.length() == 3 &&
-        timestampValid;
   }
 
   public boolean confirmFiletype(MultipartFile file) {
@@ -88,21 +93,34 @@ public class LegacyGatewayEndpoint {
   }
 
   @RequestMapping(value = "/sample", method = RequestMethod.POST, produces = "application/json")
-  public ResponseEntity<SampleSummaryDTO> sampleREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
+  public ResponseEntity<?> sampleREST(@RequestParam("file") MultipartFile file,
+      RedirectAttributes redirectAttributes)
       throws IOException {
 
     ResponseEntity<?> responseEntity = confirmFile(file, "sample");
     if (responseEntity != null) {
-      // TODO
+      return responseEntity;
     }
 
-    // add data to reception table
-    LegacyLFSSampleReader legacyLFSSampleReader = new LegacyLFSSampleReader(file.getInputStream());
-    Iterator<LegacySampleEntity> iterator = legacyLFSSampleReader.iterator();
-    int rowsIngested = ingesterService.ingestLegacySample(iterator);
+    int rowsIngested;
 
-    if (legacyLFSSampleReader.errorList.size() != 0) {
-      // TODO handle errors
+    // add data to reception table
+    if (file.getOriginalFilename().contains("LFS")) {
+      LegacyLFSSampleReader legacyLFSSampleReader = new LegacyLFSSampleReader(file.getInputStream());
+      Iterator<LegacySampleEntity> iterator = legacyLFSSampleReader.iterator();
+      rowsIngested = ingesterService.ingestLegacySample(iterator);
+
+      if (legacyLFSSampleReader.errorList.size() != 0) {
+        // TODO handle errors
+      }
+    } else {
+      LegacyGFFSampleReader legacyGFFSampleReader = new LegacyGFFSampleReader(file.getInputStream());
+      Iterator<LegacySampleEntity> iterator = legacyGFFSampleReader.iterator();
+      rowsIngested = ingesterService.ingestLegacySample(iterator);
+
+      if (legacyGFFSampleReader.errorList.size() != 0) {
+        // TODO handle errors
+      }
     }
 
     SampleSummaryDTO sampleSummaryDTO = new SampleSummaryDTO(file.getOriginalFilename(), rowsIngested);
@@ -110,13 +128,13 @@ public class LegacyGatewayEndpoint {
   }
 
   @RequestMapping(value = "/staff", method = RequestMethod.POST, produces = "application/json")
-  public ResponseEntity<StaffSummaryDTO> staffREST(@RequestParam("file") MultipartFile file,
+  public ResponseEntity<?> staffREST(@RequestParam("file") MultipartFile file,
       RedirectAttributes redirectAttributes)
       throws IOException {
 
     ResponseEntity<?> responseEntity = confirmFile(file, "staff");
     if (responseEntity != null) {
-      // TODO
+      return responseEntity;
     }
 
     // add data to reception table
