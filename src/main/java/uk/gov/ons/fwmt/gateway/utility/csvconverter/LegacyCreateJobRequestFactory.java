@@ -120,10 +120,10 @@ public class LegacyCreateJobRequestFactory {
     public static String composeReference(LegacySampleEntity entry) {
         String reference;
         if (entry.getTla().equals("LFS")) {
-            reference = entry.getQuota() + entry.getWeek() + entry.getW1yr() + entry.getQrtr() + entry.getAddr()
+            reference = entry.getQuota() + entry.getWeek() + entry.getW1yr() + entry.getQrtr() + entry.getAddressno()
                     + entry.getWavfnd() + entry.getHhld() + entry.getChklet();
         } else {
-            reference = entry.getQuota() + "-" + entry.getAddr() + "-" + entry.getFp();
+            reference = entry.getQuota() + "-" + entry.getAddressno() + "-" + entry.getFp();
         }
         return reference;
     }

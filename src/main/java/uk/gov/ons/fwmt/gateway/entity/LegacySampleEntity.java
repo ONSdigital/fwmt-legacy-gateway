@@ -20,25 +20,49 @@ public class LegacySampleEntity {
   @Id
   private String serno;
   private String tla;
-  private String stage;
+  private String fp;
   private String quota;
   private String authno;
   private String employeeno;
+
   private String addressline1;
   private String addressline2;
   private String addressline3;
   private String addressline4;
+  private String addressno;
   private String district;
   private String posttown;
   private String postcode;
-  private String addressno;
   private String osgridref;
-  private String kishgrid;
+
+  // lfs only
+  private String week;
+  private String w1yr;
+  private String qrtr;
+  private String wavfnd;
+  private String hhld;
+  private String chklet;
+
+  // kish grid - nsw only
+  private String adult2;
+  private String adult3;
+  private String adult4;
+  private String adult5;
+  private String adult6;
+  private String adult7;
+  private String adult8;
+  private String adult9;
+  private String adult10;
+  private String adult11;
+  private String adult12;
+  private String adult13;
+  private String adult14;
+
 
   public boolean verify() {
     return serno != null &&
         tla != null &&
-        stage != null &&
+        fp != null &&
         quota != null &&
         authno != null &&
         employeeno != null &&
@@ -46,10 +70,10 @@ public class LegacySampleEntity {
         addressline2 != null &&
         addressline3 != null &&
         addressline4 != null &&
+        addressno != null &&
         district != null &&
         posttown != null &&
         postcode != null &&
-        addressno != null &&
         osgridref != null;
   }
 }
