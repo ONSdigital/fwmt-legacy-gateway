@@ -1,3 +1,11 @@
+info:
+ name: ${project.artifactId}
+ version: ${project.version}
+ origin: ${scm.url}
+ commit: ${buildNumber}
+ branch: ${scmBranch}
+ built: ${timestamp}
+
 spring:
   application:
     name: fwmt-csv-uploader

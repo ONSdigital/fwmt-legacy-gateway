@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.gateway;
+package uk.gov.ons.fwmt.gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

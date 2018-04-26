@@ -62,9 +62,7 @@ public class LegacyCreateJobRequestFactory {
         CreateJobRequest request = buildRequest();
 
         // identity
-        // TODO restore this
-        // request.getJob().getIdentity() .setReference(entry.getQuota() + "-" + entry.getAddr() + "-" + entry.getFp());
-        request.getJob().getIdentity() .setReference(entry.getQuota() + "-" + entry.getAddressno());
+        request.getJob().getIdentity().setReference(composeReference(entry));
 
         // location
         LocationType location = request.getJob().getLocation();
@@ -87,12 +85,10 @@ public class LegacyCreateJobRequestFactory {
         // skills
         request.getJob().getSkills().getSkill().add("LegacySurvey");
 
-        // TODO restore this
-        //Date dueDate = fpToDates(entry.getFp());
+        Date dueDate = fieldPeriodToDates(entry.getFp(), entry.getTla());
 
         GregorianCalendar dueDateCalendar = new GregorianCalendar();
-        // TODO restore this
-        // dueDateCalendar.setTime(dueDate);
+        dueDateCalendar.setTime(dueDate);
         XMLGregorianCalendar dueDateGC = DatatypeFactory.newInstance().newXMLGregorianCalendar(dueDateCalendar);
         request.getJob().setDueDate(dueDateGC);
 
@@ -117,16 +113,63 @@ public class LegacyCreateJobRequestFactory {
         ResourceIdentityType resourceIdentityType = new ResourceIdentityType();
         resourceIdentityType.setUsername(staffIdToTMUsername(entry.getAuthno()));
         request.getJob().setAllocatedTo(resourceIdentityType);
-        
+
         return request;
     }
 
-    private static Date fpToDates(String stage) {
-        int year = Integer.parseInt(stage.substring(0, 1));
-        int month = Integer.parseInt(stage.substring(1, 3));
+    public static String composeReference(LegacySampleEntity entry) {
+        String reference;
+        if (entry.getTla().equals("LFS")) {
+            reference = entry.getQuota() + entry.getWeek() + entry.getW1yr() + entry.getQrtr() + entry.getAddr()
+                    + entry.getWavfnd() + entry.getHhld() + entry.getChklet();
+        } else {
+            reference = entry.getQuota() + "-" + entry.getAddr() + "-" + entry.getFp();
+        }
+        return reference;
+    }
+
+    public static Date fieldPeriodToDates(String fp, String tla) {
+        Date date;
+        if ("LFS".equals(tla)) {
+            date = convertToLFSDate(fp);
+        } else {
+            date = convertToGFFDate(fp);
+        }
+        return date;
+    }
+
+    public static Date convertToGFFDate(String fp) {
+        Date date;
+        int year = Integer.parseInt(fp.substring(0, 1));
+        int month = Integer.parseInt(fp.substring(1, 3));
+        if (month > 12) {
+            month = month - 20;
+        }
         Calendar cal = Calendar.getInstance();
-        cal.set(2010 + year, month, cal.getActualMaximum(Calendar.DATE));
-        return cal.getTime();
+        cal.set(2010 + year, month - 1, 1);
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DATE));
+        cal.set(Calendar.HOUR, 11);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.AM_PM, Calendar.PM);
+        date = cal.getTime();
+        return date;
+    }
+
+    public static Date convertToLFSDate(String fp) {
+        Date date;
+        int year = Integer.parseInt(fp.substring(0, 1));
+        int quarter = Integer.parseInt(fp.substring(1, 2));
+        int week = fp.toLowerCase().charAt(2) - 'a' + 1;
+        Calendar cal = Calendar.getInstance();
+        cal.set(2010 + year, 1 + (3 * (quarter - 1)) - 1, 1);
+        cal.set(Calendar.HOUR, 11);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.AM_PM, Calendar.PM);
+        cal.add(Calendar.DATE, (7 * (week)) - 1);
+        date = cal.getTime();
+        return date;
     }
 
     private static String staffIdToTMUsername(String authNo) {
@@ -138,10 +181,10 @@ public class LegacyCreateJobRequestFactory {
         return null;
     }
 
-    public static List<CreateJobRequest> convert(List<LegacySampleEntity> samples,
-            List<LegacySampleEntity> allocations, List<LegacyUserEntity> users) {
+    public static List<CreateJobRequest> convert(List<LegacySampleEntity> samples, List<LegacySampleEntity> allocations,
+            List<LegacyUserEntity> users) {
         allUsers = users;
-        
+
         List<CreateJobRequest> jobs = new ArrayList<>();
 
         // convert all of the samples into CreateJobRequests
