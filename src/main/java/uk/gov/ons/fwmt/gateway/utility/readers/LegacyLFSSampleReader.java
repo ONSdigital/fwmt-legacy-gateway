@@ -519,7 +519,7 @@ public class LegacyLFSSampleReader {
       LegacySampleEntity entity = new LegacySampleEntity();
       entity.setSerno(raw.getSerno());
       entity.setTla(raw.getTla());
-      entity.setStage(raw.getFp());
+      entity.setFp(raw.getFp());
       entity.setQuota(raw.getQuota());
       entity.setAuthno(raw.getAuth());
       entity.setEmployeeno(raw.getEmployeeNo());
@@ -532,7 +532,12 @@ public class LegacyLFSSampleReader {
       entity.setPostcode(raw.getPostcode());
       entity.setAddressno(raw.getAddr());
       entity.setOsgridref(raw.getOsgridref());
-      entity.setKishgrid(null);
+      entity.setWeek(raw.getWeek());
+      entity.setW1yr(raw.getW1yr());
+      entity.setQrtr(raw.getQrtr());
+      entity.setWavfnd(raw.getWavfnd());
+      entity.setHhld(raw.getHhld());
+      entity.setChklet(raw.getChklet());
       return entity;
     }
 

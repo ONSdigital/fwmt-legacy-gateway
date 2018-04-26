@@ -4,7 +4,7 @@ CREATE TABLE gateway.sample
  (
     serno          CHARACTER VARYING(255) PRIMARY KEY,
     tla            CHARACTER VARYING(255),
-    stage          CHARACTER VARYING(255),
+    fp          CHARACTER VARYING(255),
     quota          CHARACTER VARYING(255),
     authno         CHARACTER VARYING(255),
     employeeno     CHARACTER VARYING(255),

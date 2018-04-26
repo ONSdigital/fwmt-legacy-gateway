@@ -32,7 +32,7 @@ public class LegacyGFFSampleReader {
     };
     register.accept("Serno", "serno");
     register.accept("TLA", "tla");
-    register.accept("Stage", "stage");
+    register.accept("Stage", "fp");
     register.accept("Wave", "wave");
     register.accept("Prem1", "prem1");
     register.accept("Prem2", "prem2");
@@ -169,7 +169,7 @@ public class LegacyGFFSampleReader {
       LegacySampleEntity entity = new LegacySampleEntity();
       entity.setSerno(raw.getSerno());
       entity.setTla(raw.getTla());
-      entity.setStage(raw.getStage());
+      entity.setFp(raw.getStage());
       entity.setQuota(raw.getQuota());
       entity.setAuthno(raw.getAuth());
       entity.setEmployeeno(raw.getEmployeeNo());
@@ -182,7 +182,19 @@ public class LegacyGFFSampleReader {
       entity.setPostcode(raw.getPostcode());
       entity.setAddressno(raw.getAddressNo());
       entity.setOsgridref(raw.getOsGridRef());
-      entity.setKishgrid(null); // TODO fill this in from the data
+      entity.setAdult2(raw.adult2);
+      entity.setAdult3(raw.adult3);
+      entity.setAdult4(raw.adult4);
+      entity.setAdult5(raw.adult5);
+      entity.setAdult6(raw.adult6);
+      entity.setAdult7(raw.adult7);
+      entity.setAdult8(raw.adult8);
+      entity.setAdult9(raw.adult9);
+      entity.setAdult10(raw.adult10);
+      entity.setAdult11(raw.adult11);
+      entity.setAdult12(raw.adult12);
+      entity.setAdult13(raw.adult13);
+      entity.setAdult14(raw.adult14);
       return entity;
     }
 
