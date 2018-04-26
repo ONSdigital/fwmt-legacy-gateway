@@ -35,9 +35,11 @@ public class PublishServiceImpl implements PublishService {
   private TMMessageSubmitter submitter;
   private LegacySampleRepo legacySampleRepository;
   private LegacyStaffRepo legacyStaffRepo;
-//  private LegacyLeaversRepo legacyLeaversRepo;
+  // private LegacyLeaversRepo legacyLeaversRepo;
   private LegacyJobsRepo legacyJobsRepo;
   private LegacyUsersRepo legacyUsersRepo;
+  
+  private List<String> successfullySentIds;
 
   @Autowired
   public PublishServiceImpl(TMMessageSubmitter submitter, LegacySampleRepo legacySampleRepository,
@@ -46,12 +48,13 @@ public class PublishServiceImpl implements PublishService {
     this.submitter = submitter;
     this.legacySampleRepository = legacySampleRepository;
     this.legacyStaffRepo = legacyStaffRepo;
-//    this.legacyLeaversRepo = legacyLeaversRepo;
+    // this.legacyLeaversRepo = legacyLeaversRepo;
     this.legacyJobsRepo = legacyJobsRepo;
     this.legacyUsersRepo = legacyUsersRepo;
   }
 
-  public void executeUpdateUsers() {
+  @Override
+  public void publishUpdateUsers() {
     legacyStaffRepo.findAll().forEach(staff -> {
       if (!legacyUsersRepo.existsByAuthNo(staff.getAuthno())) {
         // create new user in TM
@@ -77,19 +80,22 @@ public class PublishServiceImpl implements PublishService {
       }
     });
 
-    legacyUsersRepo.findAll().forEach(user ->
-
-    {
+    legacyUsersRepo.findAll().forEach(user -> {
       if (!legacyStaffRepo.existsByAuthno(user.getAuthNo())) {
         // remove user (potentially delete the user from totalmobile TBD)
         user.setAuthNo(null);
         legacyUsersRepo.save(user);
       }
     });
+    
+    // all lines of the staff repo have been processed to find new users and users that no longer exist.
+    // therefore i will now empty the staff reception table
+    legacyStaffRepo.deleteAll();
   }
 
   @Override
   public void publishNewJobsAndReallocations() {
+    successfullySentIds = new ArrayList<String>();
     legacySampleRepository.findAll().forEach(entity -> {
       if (legacyJobsRepo.existsBySerno(entity.getSerno())) {
         executeReallocateJob(entity);
@@ -97,14 +103,24 @@ public class PublishServiceImpl implements PublishService {
         executeNewJob(entity);
       }
     });
+    for(String id: successfullySentIds) {
+      legacySampleRepository.deleteBySerno(id);
+    }
   }
 
-  public void executeNewJob(LegacySampleEntity newJobsEntity) {
-    String tmUsername = legacyUsersRepo.findByAuthNo(newJobsEntity.getAuth()).getTmusername();
-    CreateJobRequest createJobRequest = LegacyCreateJobRequestFactory.convert(newJobsEntity, tmUsername);
+  public void executeNewJob(LegacySampleEntity newJobEntity) {
+    String tmUsername = legacyUsersRepo.findByAuthNo(newJobEntity.getAuth()).getTmusername();
+    CreateJobRequest createJobRequest = LegacyCreateJobRequestFactory.convert(newJobEntity, tmUsername);
     LegacyJobEntity legacyJobEntity = LegacyJobsReader.createJobEntity(createJobRequest);
     legacyJobsRepo.save(legacyJobEntity);
-    sendJobRequest(createJobRequest, "\\OPTIMISE\\INPUT");
+    try {
+      sendJobRequest(createJobRequest, "\\OPTIMISE\\INPUT");
+      // TODO CHANGE THIS TO NEW COMPOSITE PK
+      successfullySentIds.add(newJobEntity.getSerno());
+    } catch (Exception e) {
+      // something errored do something here
+      e.printStackTrace();
+    }
 
     // Update database jobs table states for each job from inital to sent.
     LegacyJobEntity jobEntity = legacyJobsRepo.findByTmjobid(createJobRequest.getJob().getIdentity().getReference());
@@ -115,7 +131,14 @@ public class PublishServiceImpl implements PublishService {
     String tmJobId = legacyJobsRepo.findBySerno(reallocationEntity.getSerno()).getTmjobid();
     String tmUsername = legacyUsersRepo.findByAuthNo(reallocationEntity.getAuth()).getTmusername();
     UpdateJobHeaderRequest updateJobHeaderRequest = LegacyUpdateJobHeaderRequestFactory.reallocate(tmJobId, tmUsername);
-    sendUpdateJobRequest(updateJobHeaderRequest, "\\OPTIMISE\\INPUT");
+    try {
+      sendUpdateJobRequest(updateJobHeaderRequest, "\\OPTIMISE\\INPUT");
+      // TODO CHANGE THIS TO NEW COMPOSITE PK
+      successfullySentIds.add(reallocationEntity.getSerno());
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
 
     // Update database jobs table states for each job from inital to sent.
     LegacyJobEntity jobEntity = legacyJobsRepo
@@ -135,7 +158,7 @@ public class PublishServiceImpl implements PublishService {
     return entities;
   }
 
-  private void sendJobRequest(CreateJobRequest request, String queueName) {
+  private void sendJobRequest(CreateJobRequest request, String queueName) throws Exception {
     List<SendCreateJobRequestMessage> messages = new ArrayList<SendCreateJobRequestMessage>();
 
     SendCreateJobRequestMessage message = new SendCreateJobRequestMessage();
@@ -149,7 +172,7 @@ public class PublishServiceImpl implements PublishService {
     submitter.sendAll(messages);
   }
 
-  private void sendUpdateJobRequest(UpdateJobHeaderRequest request, String queueName) {
+  private void sendUpdateJobRequest(UpdateJobHeaderRequest request, String queueName) throws Exception {
     List<SendUpdateJobHeaderRequestMessage> messages = new ArrayList<SendUpdateJobHeaderRequestMessage>();
 
     SendUpdateJobHeaderRequestMessage message = new SendUpdateJobHeaderRequestMessage();

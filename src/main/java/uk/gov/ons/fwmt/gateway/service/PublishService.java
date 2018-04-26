@@ -5,5 +5,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface PublishService {
     void publishNewJobsAndReallocations();
-    void executeUpdateUsers();
+    void publishUpdateUsers();
 }

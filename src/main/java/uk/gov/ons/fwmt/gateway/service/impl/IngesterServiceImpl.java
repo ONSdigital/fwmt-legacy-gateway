@@ -12,6 +12,7 @@ import uk.gov.ons.fwmt.gateway.repo.reception.LegacyLeaversRepo;
 import uk.gov.ons.fwmt.gateway.repo.reception.LegacySampleRepo;
 import uk.gov.ons.fwmt.gateway.repo.reception.LegacyStaffRepo;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
+import uk.gov.ons.fwmt.gateway.service.PublishService;
 
 @Service
 public class IngesterServiceImpl implements IngesterService {
@@ -19,12 +20,14 @@ public class IngesterServiceImpl implements IngesterService {
     private LegacySampleRepo legacySampleRepository;
     private LegacyStaffRepo legacyStaffRepository;
     private LegacyLeaversRepo legacyLeaversRepository;
+    private PublishService publishService;
 
     @Autowired
-    public IngesterServiceImpl(LegacySampleRepo legacySampleRepository, LegacyStaffRepo legacyStaffRepository, LegacyLeaversRepo legacyLeaversRepository) {
+    public IngesterServiceImpl(LegacySampleRepo legacySampleRepository, LegacyStaffRepo legacyStaffRepository, LegacyLeaversRepo legacyLeaversRepository, PublishService publishService) {
         this.legacySampleRepository = legacySampleRepository;
         this.legacyStaffRepository = legacyStaffRepository;
         this.legacyLeaversRepository = legacyLeaversRepository;
+        this.publishService = publishService;
     }
 
     @Override
@@ -32,16 +35,18 @@ public class IngesterServiceImpl implements IngesterService {
         while (iter.hasNext()) {
             legacySampleRepository.save(iter.next());
         }
+        publishService.publishNewJobsAndReallocations();
     }
 
     @Override
     public void ingestLegacyStaff(Iterator<LegacyStaffEntity> iter) {
-        legacyStaffRepository.deleteAll();
         while (iter.hasNext()) {
             legacyStaffRepository.save(iter.next());
         }
+        publishService.publishUpdateUsers();
     }
 
+    // not currently required
     @Override
     public void ingestLegacyLeavers(Iterator<LegacyLeaverEntity> iter) {
         while (iter.hasNext()) {
