@@ -45,17 +45,55 @@ public class LegacyEndpointRESTController {
         this.ingesterService = ingesterService;
     }
 
-    public boolean confirm(MultipartFile file) {
-        return true;
+    public ResponseEntity<?> confirmFile(MultipartFile file, String endpoint) {
+        // confirm data is in correct format
+        if (!confirmFilename(file, endpoint)) {
+            return new ResponseEntity<>("The file name specified in the request does not match the file name format expected by the endpoint",HttpStatus.BAD_REQUEST);
+        } else if (!confirmFiletype(file)) {
+            return new ResponseEntity<>("Recieved non-CSV file",HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        } else {
+            return null;
+        }
+
+    }
+
+    public boolean confirmFilename(MultipartFile file, String endpoint) {
+        String filename = file.getOriginalFilename();
+        String[] filenameSplit = filename.split("\\.");
+        String[] nameSplit = filenameSplit[0].split("_");
+        String fileEndpoint = nameSplit[0];
+        String surveyTla = nameSplit[1];
+        String timestamp = nameSplit[2];
+        if(fileEndpoint.equals(endpoint)) {
+            if(surveyTla.length()==3) {
+                //change this
+                return !timestamp.isEmpty();
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public boolean confirmFiletype(MultipartFile file) {
+        String contentType = file.getContentType();
+        String filename = file.getOriginalFilename();
+        if(contentType.equals("text/csv")) {
+            String[] filenameSplit = filename.split("\\.");
+            return filenameSplit[filenameSplit.length-1].equals("csv");
+        }else {
+            return false;
+        }
     }
 
     @RequestMapping(value = "/legacy/sample", method = RequestMethod.POST)
     public ResponseEntity<?> sampleREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
             throws IOException {
 
-        // confirm data is in correct format
-        if (!confirm(file)) {
-            return new ResponseEntity<>("Invalid file format", HttpStatus.I_AM_A_TEAPOT);
+        ResponseEntity<?> responseEntity = confirmFile(file, "sample");
+        if (!responseEntity.equals(null)) {
+            return responseEntity;
         }
         
         // add data to reception table
@@ -74,9 +112,9 @@ public class LegacyEndpointRESTController {
     public ResponseEntity<?> staffREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
             throws IOException {
 
-        // confirm data is in correct format
-        if (!confirm(file)) {
-            return new ResponseEntity<>("Invalid file format",HttpStatus.I_AM_A_TEAPOT);
+        ResponseEntity<?> responseEntity = confirmFile(file, "staff");
+        if (!responseEntity.equals(null)) {
+            return responseEntity;
         }
         
         // add data to reception table
@@ -87,22 +125,24 @@ public class LegacyEndpointRESTController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/legacy/leavers", method = RequestMethod.POST)
-    public ResponseEntity<?> leaversREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
-            throws IOException {
 
-        // confirm data is in correct format
-        if (!confirm(file)) {
-            return new ResponseEntity<>("Invalid file format",HttpStatus.I_AM_A_TEAPOT);
-        }
-        
-        // add data to reception table
-        LegacyLeaversReader legacyLeaversReader = new LegacyLeaversReader(file.getInputStream());
-        Iterator<LegacyLeaverEntity> iterator = legacyLeaversReader.iterator();
-        ingesterService.ingestLegacyLeavers(iterator);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+    // Not Currently Requried
+//    @RequestMapping(value = "/legacy/leavers", method = RequestMethod.POST)
+//    public ResponseEntity<?> leaversREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
+//            throws IOException {
+//
+//        // confirm data is in correct format
+//        if (!confirmFileType(file)) {
+//            return new ResponseEntity<>("Invalid file format",HttpStatus.I_AM_A_TEAPOT);
+//        }
+//
+//        // add data to reception table
+//        LegacyLeaversReader legacyLeaversReader = new LegacyLeaversReader(file.getInputStream());
+//        Iterator<LegacyLeaverEntity> iterator = legacyLeaversReader.iterator();
+//        ingesterService.ingestLegacyLeavers(iterator);
+//
+//        return new ResponseEntity<>(HttpStatus.CREATED);
+//    }
     
     
 }
