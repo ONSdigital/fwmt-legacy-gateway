@@ -192,9 +192,9 @@ public class LegacyGFFSampleReader {
   }
 
   private class LegacyGFFSampleCSVFilter implements CsvToBeanFilter {
-    private final MappingStrategy strategy;
+    private final MappingStrategy<LegacyGFFSampleEntityRaw> strategy;
 
-    LegacyGFFSampleCSVFilter(MappingStrategy strategy) {
+    LegacyGFFSampleCSVFilter(MappingStrategy<LegacyGFFSampleEntityRaw> strategy) {
       this.strategy = strategy;
     }
 
