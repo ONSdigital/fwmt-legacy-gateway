@@ -4,12 +4,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 
-import com.opencsv.CSVReader;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
 
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
 

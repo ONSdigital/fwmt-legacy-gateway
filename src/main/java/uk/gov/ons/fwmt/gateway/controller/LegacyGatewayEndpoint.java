@@ -82,9 +82,9 @@ public class LegacyGatewayEndpoint {
     String contentType = file.getContentType();
     String filename = file.getOriginalFilename();
     String[] filenameSplit = filename.split("\\.");
-    return contentType.equals("text/csv") &&
-        contentType.equals("text/csv") &&
-        filenameSplit[filenameSplit.length - 1].equals("csv");
+    return "text/csv".equals(contentType) &&
+        "text/csv".equals(contentType) &&
+        "csv".equals(filenameSplit[filenameSplit.length - 1]);
   }
 
   @RequestMapping(value = "/sample", method = RequestMethod.POST, produces = "application/json")
@@ -92,7 +92,7 @@ public class LegacyGatewayEndpoint {
       throws IOException {
 
     ResponseEntity<?> responseEntity = confirmFile(file, "sample");
-    if (!responseEntity.equals(null)) {
+    if (responseEntity != null) {
       // TODO
     }
 
@@ -115,7 +115,7 @@ public class LegacyGatewayEndpoint {
       throws IOException {
 
     ResponseEntity<?> responseEntity = confirmFile(file, "staff");
-    if (!responseEntity.equals(null)) {
+    if (responseEntity != null) {
       // TODO
     }
 

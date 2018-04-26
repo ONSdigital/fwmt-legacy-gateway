@@ -24,7 +24,7 @@ public class LegacyLeaversReader {
     private static final String[] NEW_USER_COLUMNS = new String[]{EMPLOYEENO, AUTHNO, FORENAME, SURNAME, JOB_TITLE,
             EMAIL, PHONE, USER_TYPE};
 
-    CsvToBean<LegacyLeaverEntity> csvToBean;
+    private CsvToBean<LegacyLeaverEntity> csvToBean;
 
     public LegacyLeaversReader(InputStream stream) {
         ColumnPositionMappingStrategy<LegacyLeaverEntity> strategy = new ColumnPositionMappingStrategy<>();

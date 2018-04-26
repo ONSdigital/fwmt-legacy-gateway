@@ -9,7 +9,11 @@ import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Iterator;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -226,7 +230,7 @@ public class LegacyGFFSampleReader {
       String postcode = strings[strategy.getColumnIndex("Postcode")];
       String addressNo = strings[strategy.getColumnIndex("AddressNo")];
       String osGridRef = strings[strategy.getColumnIndex("OSGridRef")];
-//      String kishGrid = strings[strategy.getColumnIndex("")];
+      //      String kishGrid = strings[strategy.getColumnIndex("")];
       Function<String, Boolean> check = (s) -> s != null && s.length() != 0;
       boolean pass = check.apply(serno) &&
           check.apply(tla) &&
