@@ -1,14 +1,9 @@
 package uk.gov.ons.fwmt.gateway.service.impl;
 
-import java.util.Iterator;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import uk.gov.ons.fwmt.gateway.entity.LegacyLeaverEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
-import uk.gov.ons.fwmt.gateway.repo.reception.LegacyLeaversRepo;
 import uk.gov.ons.fwmt.gateway.repo.reception.LegacySampleRepo;
 import uk.gov.ons.fwmt.gateway.repo.reception.LegacyStaffRepo;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
@@ -24,7 +19,8 @@ public class IngesterServiceImpl implements IngesterService {
   private PublishService publishService;
 
   @Autowired
-  public IngesterServiceImpl(LegacySampleRepo legacySampleRepository, LegacyStaffRepo legacyStaffRepository) {
+  public IngesterServiceImpl(LegacySampleRepo legacySampleRepository, LegacyStaffRepo legacyStaffRepository,
+      PublishService publishService) {
     this.legacySampleRepository = legacySampleRepository;
     this.legacyStaffRepository = legacyStaffRepository;
     this.publishService = publishService;
