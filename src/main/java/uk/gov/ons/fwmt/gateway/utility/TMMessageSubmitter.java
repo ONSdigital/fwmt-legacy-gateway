@@ -94,8 +94,7 @@ public class TMMessageSubmitter {
   private String password;
 
   /**
-   * Takes a visit request in order to return a complete XML document from the
-   * CSV
+   * Takes a visit request in order to return a complete XML document from the CSV
    *
    * @param message Update request message
    * @return The path used
@@ -108,8 +107,6 @@ public class TMMessageSubmitter {
     if (Arrays.stream(knownMessageNames).noneMatch(c -> c == cl)) {
       throw new IllegalArgumentException(
           "Invalid arguments - message's class did not match a known TotalMobile message");
-      // throw new IllegalArgumentException("Invalid arguments - message's class
-      // did not match a known TotalMobile message: " + classEnd);
     }
     String tail;
     String fullClass = message.getClass().getName();
@@ -119,15 +116,13 @@ public class TMMessageSubmitter {
       // The exceptionary case is detailed within oddMessageNames
       return namespace + oddMessageNames.get(message.getClass());
     } else {
-      // The common case is that RequestMessage and RequestMessageResponse be
-      // mapped to RequestMessage
+      // The common case is that RequestMessage and RequestMessageResponse be mapped to RequestMessage
       return namespace + classEnd.replace("Response", "");
     }
   }
 
   /**
-   * Takes a visit request in order to return a complete XML document from the
-   * CSV
+   * Takes a visit request in order to return a complete XML document from the CSV
    *
    * @param request Update request message
    * @return converted XML file
@@ -152,8 +147,7 @@ public class TMMessageSubmitter {
   }
 
   /**
-   * Converts the XML document into a SOAPmessage that can be used for
-   * webservice
+   * Converts the XML document into a SOAPmessage that can be used for webservice
    *
    * @param document XML file to be converted into a SOAP message
    * @param action The SOAPAction header to send with the message
@@ -252,12 +246,12 @@ public class TMMessageSubmitter {
   /**
    * @param requests A list of requests to be submitted
    * @return A list of responses for each request
-   * @throws IOException 
-   * @throws ParserConfigurationException 
-   * @throws SOAPException 
-   * @throws JAXBException 
+   * @throws IOException
+   * @throws ParserConfigurationException
+   * @throws SOAPException
+   * @throws JAXBException
    */
-  public <I, O> List<O> sendAll(List<I> requests) throws Exception {
+  public <I, O> List<O> sendAll(List<I> requests) throws IOException, ParserConfigrationException, SOAPException, JAXBException {
     List<O> list = new ArrayList<>();
 
     for (I visit : requests) {

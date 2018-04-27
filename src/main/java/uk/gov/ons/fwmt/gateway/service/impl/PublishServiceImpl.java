@@ -39,7 +39,7 @@ public class PublishServiceImpl implements PublishService {
   private LegacyStaffRepo legacyStaffRepo;
   private LegacyJobsRepo legacyJobsRepo;
   private LegacyUsersRepo legacyUsersRepo;
-  
+
   private List<String> successfullySentIds;
 
   @Autowired
@@ -64,7 +64,7 @@ public class PublishServiceImpl implements PublishService {
         } else {
           LegacyUserEntity newUser = LegacyUsersReader.createUserEntity(staff,
               getProposedTMUsername(staff.getEmail()));
-          
+
           // TODO create new mobilise user in TM
           log.info("Must create new user " + newUser.getTmusername() + " and set correct AuthNo.");
           // make sure to add authority number as an additional property
@@ -80,7 +80,7 @@ public class PublishServiceImpl implements PublishService {
         legacyUsersRepo.save(user);
       }
     });
-    
+
     // all lines of the staff repo have been processed to find new users and users that no longer exist.
     // therefore i will now empty the staff reception table
     legacyStaffRepo.deleteAll();
