@@ -14,6 +14,7 @@ import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.Sen
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendUpdateJobHeaderRequestMessage;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import uk.gov.ons.fwmt.gateway.entity.LegacyJobEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacyLeaverEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
@@ -32,6 +33,7 @@ import uk.gov.ons.fwmt.gateway.utility.readers.LegacyJobsReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyUsersReader;
 
 @Slf4j
+@Service
 public class PublishServiceImpl implements PublishService {
 
   private TMMessageSubmitter submitter;
