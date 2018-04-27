@@ -40,6 +40,7 @@ public class PublishServiceImpl implements PublishService {
   private LegacyJobsRepo legacyJobsRepo;
   private LegacyUsersRepo legacyUsersRepo;
 
+  // TODO refactor this, it's local state and should be in a local variable passed between functions
   private List<String> successfullySentIds;
 
   @Autowired
