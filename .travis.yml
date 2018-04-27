@@ -26,3 +26,4 @@ env:
 branches:
   only:
     - master
+    - Array_to_Repo
