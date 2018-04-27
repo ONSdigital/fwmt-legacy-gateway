@@ -178,7 +178,34 @@ public class LegacyCreateJobRequestFactory {
         return date;
     }
 
-    public static CreateJobRequest convert(LegacySampleEntity sample, String username) {
-        return buildRequestFromSampleData(sample, username);
+    private static String staffIdToTMUsername(String authNo) {
+        for (LegacyUserEntity user : allUsers) {
+            if (user.getAuthNo().equals(authNo)) {
+                return user.getTmusername();
+            }
+        }
+        return null;
+    }
+
+    public static List<CreateJobRequest> convert(List<LegacySampleEntity> samples, List<LegacySampleEntity> allocations,
+        List<LegacyUserEntity> users) {
+        allUsers = users;
+
+        List<CreateJobRequest> jobs = new ArrayList<>();
+
+        // convert all of the samples into CreateJobRequests
+        for (LegacySampleEntity sampleEntry : samples) {
+            try {
+                jobs.add(buildRequestFromSampleData(sampleEntry));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (jobs.size() > 0) {
+            throw new AssertionError("No sample data was matched with allocation data");
+        }
+
+        return jobs;
     }
 }
