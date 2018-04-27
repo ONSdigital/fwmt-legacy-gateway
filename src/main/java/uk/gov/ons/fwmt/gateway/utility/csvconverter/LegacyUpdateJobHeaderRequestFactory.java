@@ -18,11 +18,11 @@ public class LegacyUpdateJobHeaderRequestFactory {
         return request;
     }
     
-    public static UpdateJobHeaderRequest reallocate(String tmJobId, String staffId, List<LegacyUserEntity> users) {
+    public static UpdateJobHeaderRequest reallocate(String tmJobId, String username) {
         UpdateJobHeaderRequest update = buildRequest();
         
         ResourceIdentityType resourceIdentityType = new ResourceIdentityType();
-        resourceIdentityType.setUsername(staffIdToTMUsername(users, staffId));
+        resourceIdentityType.setUsername(username);
         update.getJobHeader().setAllocatedTo(resourceIdentityType);
         
         JobIdentityType jobIdentityType = new JobIdentityType();
@@ -30,14 +30,5 @@ public class LegacyUpdateJobHeaderRequestFactory {
         update.getJobHeader().setJobIdentity(jobIdentityType);
         
         return update;
-    }
-    
-    private static String staffIdToTMUsername(List<LegacyUserEntity> users, String authNo) {
-        for (LegacyUserEntity user : users) {
-            if (user.getAuthNo().equals(authNo)) {
-                return user.getTmusername();
-            }
-        }
-        return null;
     }
 }
