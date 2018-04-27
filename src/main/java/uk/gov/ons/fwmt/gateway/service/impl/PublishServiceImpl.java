@@ -44,8 +44,7 @@ public class PublishServiceImpl implements PublishService {
 
   @Autowired
   public PublishServiceImpl(TMMessageSubmitter submitter, LegacySampleRepo legacySampleRepository,
-      LegacyStaffRepo legacyStaffRepo, LegacyLeaversRepo legacyLeaversRepo, LegacyJobsRepo legacyJobsRepo,
-      LegacyUsersRepo legacyUsersRepo) {
+      LegacyStaffRepo legacyStaffRepo, LegacyJobsRepo legacyJobsRepo, LegacyUsersRepo legacyUsersRepo) {
     this.submitter = submitter;
     this.legacySampleRepository = legacySampleRepository;
     this.legacyStaffRepo = legacyStaffRepo;
@@ -152,7 +151,7 @@ public class PublishServiceImpl implements PublishService {
   }
 
   private void sendJobRequest(CreateJobRequest request, String queueName) throws Exception {
-    List<SendCreateJobRequestMessage> messages = new ArrayList<SendCreateJobRequestMessage>();
+    List<SendCreateJobRequestMessage> messages = new ArrayList<>();
 
     SendCreateJobRequestMessage message = new SendCreateJobRequestMessage();
     message.setCreateJobRequest(request);
@@ -166,7 +165,7 @@ public class PublishServiceImpl implements PublishService {
   }
 
   private void sendUpdateJobRequest(UpdateJobHeaderRequest request, String queueName) throws Exception {
-    List<SendUpdateJobHeaderRequestMessage> messages = new ArrayList<SendUpdateJobHeaderRequestMessage>();
+    List<SendUpdateJobHeaderRequestMessage> messages = new ArrayList<>();
 
     SendUpdateJobHeaderRequestMessage message = new SendUpdateJobHeaderRequestMessage();
     message.setUpdateJobHeaderRequest(request);
