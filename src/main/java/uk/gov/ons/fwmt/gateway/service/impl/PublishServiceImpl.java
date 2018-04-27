@@ -102,7 +102,7 @@ public class PublishServiceImpl implements PublishService {
   }
 
   public void executeNewJob(LegacySampleEntity newJobEntity) {
-    String tmUsername = legacyUsersRepo.findByAuthNo(newJobEntity.getAuth()).getTmusername();
+    String tmUsername = legacyUsersRepo.findByAuthNo(newJobEntity.getAuthno()).getTmusername();
     CreateJobRequest createJobRequest = LegacyCreateJobRequestFactory.convert(newJobEntity, tmUsername);
     LegacyJobEntity legacyJobEntity = LegacyJobsReader.createJobEntity(createJobRequest);
     legacyJobsRepo.save(legacyJobEntity);
@@ -122,7 +122,7 @@ public class PublishServiceImpl implements PublishService {
 
   public void executeReallocateJob(LegacySampleEntity reallocationEntity) {
     String tmJobId = legacyJobsRepo.findBySerno(reallocationEntity.getSerno()).getTmjobid();
-    String tmUsername = legacyUsersRepo.findByAuthNo(reallocationEntity.getAuth()).getTmusername();
+    String tmUsername = legacyUsersRepo.findByAuthNo(reallocationEntity.getAuthno()).getTmusername();
     UpdateJobHeaderRequest updateJobHeaderRequest = LegacyUpdateJobHeaderRequestFactory.reallocate(tmJobId, tmUsername);
     try {
       sendUpdateJobRequest(updateJobHeaderRequest, "\\OPTIMISE\\INPUT");

@@ -6,16 +6,16 @@ import com.consiliumtechnologies.schemas.mobile._2009._03.visitstypes.Additional
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.CreateJobRequest;
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.*;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
-import uk.gov.ons.fwmt.gateway.entity.LegacyUserEntity;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 public class LegacyCreateJobRequestFactory {
-
-  private static List<LegacyUserEntity> allUsers;
 
   /**
    * Build the initial outlive of a CreateJobRequest
@@ -43,8 +43,7 @@ public class LegacyCreateJobRequestFactory {
    *
    * @throws DatatypeConfigurationException
    */
-  private static CreateJobRequest buildRequestFromSampleData(LegacySampleEntity entry)
-      throws DatatypeConfigurationException {
+  private static CreateJobRequest buildRequestFromSampleData(LegacySampleEntity entry, String username) {
     ObjectFactory factory = new ObjectFactory();
     CreateJobRequest request = buildRequest();
 
@@ -104,7 +103,7 @@ public class LegacyCreateJobRequestFactory {
 
     // interviewer allocation
     ResourceIdentityType resourceIdentityType = new ResourceIdentityType();
-    resourceIdentityType.setUsername(staffIdToTMUsername(entry.getAuthno()));
+    resourceIdentityType.setUsername(username);
     request.getJob().setAllocatedTo(resourceIdentityType);
 
     return request;
@@ -165,34 +164,7 @@ public class LegacyCreateJobRequestFactory {
     return date;
   }
 
-  private static String staffIdToTMUsername(String authNo) {
-    for (LegacyUserEntity user : allUsers) {
-      if (user.getAuthNo().equals(authNo)) {
-        return user.getTmusername();
-      }
-    }
-    return null;
-  }
-
-  public static List<CreateJobRequest> convert(List<LegacySampleEntity> samples, List<LegacySampleEntity> allocations,
-      List<LegacyUserEntity> users) {
-    allUsers = users;
-
-    List<CreateJobRequest> jobs = new ArrayList<>();
-
-    // convert all of the samples into CreateJobRequests
-    for (LegacySampleEntity sampleEntry : samples) {
-      try {
-        jobs.add(buildRequestFromSampleData(sampleEntry));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
-
-    if (jobs.size() > 0) {
-      throw new AssertionError("No sample data was matched with allocation data");
-    }
-
-    return jobs;
+  public static CreateJobRequest convert(LegacySampleEntity sample, String username) {
+    return buildRequestFromSampleData(sample, username);
   }
 }

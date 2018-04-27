@@ -9,11 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -150,7 +146,7 @@ public class TMMessageSubmitter {
    * Converts the XML document into a SOAPmessage that can be used for webservice
    *
    * @param document XML file to be converted into a SOAP message
-   * @param action The SOAPAction header to send with the message
+   * @param action   The SOAPAction header to send with the message
    * @return SOAP message to sent to webservice
    * @throws javax.xml.soap.SOAPException
    * @throws java.io.IOException
@@ -251,7 +247,8 @@ public class TMMessageSubmitter {
    * @throws SOAPException
    * @throws JAXBException
    */
-  public <I, O> List<O> sendAll(List<I> requests) throws IOException, ParserConfigrationException, SOAPException, JAXBException {
+  public <I, O> List<O> sendAll(List<I> requests)
+      throws IOException, ParserConfigurationException, SOAPException, JAXBException {
     List<O> list = new ArrayList<>();
 
     for (I visit : requests) {

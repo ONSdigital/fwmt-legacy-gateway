@@ -19,7 +19,6 @@ import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
 import uk.gov.ons.fwmt.gateway.representation.SampleSummaryDTO;
 import uk.gov.ons.fwmt.gateway.representation.StaffSummaryDTO;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
-import uk.gov.ons.fwmt.gateway.utility.readers.LegacySampleReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
 import javax.xml.bind.DatatypeConverter;
