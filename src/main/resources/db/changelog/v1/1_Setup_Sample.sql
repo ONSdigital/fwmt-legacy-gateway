@@ -38,5 +38,5 @@ CREATE TABLE gateway.sample
     adult11        CHARACTER VARYING(255),
     adult12        CHARACTER VARYING(255),
     adult13        CHARACTER VARYING(255),
-    adult14        CHARACTER VARYING(255),
+    adult14        CHARACTER VARYING(255)
  );
