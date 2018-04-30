@@ -22,5 +22,5 @@ public class LegacyUserEntity {
   public String authNo;
 
   @Column(nullable = false)
-  public String tmusername;
+  public String tmUserName;
 }

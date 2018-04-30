@@ -16,12 +16,12 @@ import javax.persistence.Table;
 @Table(name = "jobs")
 public class LegacyJobEntity {
   @Id
-  public String tmjobid;
+  public String tmJobId;
   @Column(unique = true, nullable = true)
-  public String legacyjobid;
+  public String legacyJobId;
   public String state;
-  public String initaltimestamp;
-  public String senttimestamp;
-  public String processedtimestamp;
-  public String erroredtimestamp;
+  public String initalTimeStamp;
+  public String sentTimeStamp;
+  public String processedTimeStamp;
+  public String erroredTimeStamp;
 }

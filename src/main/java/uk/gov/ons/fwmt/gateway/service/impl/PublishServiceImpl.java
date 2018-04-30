@@ -3,7 +3,6 @@ package uk.gov.ons.fwmt.gateway.service.impl;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,13 +15,10 @@ import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.Sen
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.ons.fwmt.gateway.entity.LegacyJobEntity;
-import uk.gov.ons.fwmt.gateway.entity.LegacyLeaverEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
-import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacyUserEntity;
 import uk.gov.ons.fwmt.gateway.repo.monitoring.LegacyJobsRepo;
 import uk.gov.ons.fwmt.gateway.repo.monitoring.LegacyUsersRepo;
-import uk.gov.ons.fwmt.gateway.repo.reception.LegacyLeaversRepo;
 import uk.gov.ons.fwmt.gateway.repo.reception.LegacySampleRepo;
 import uk.gov.ons.fwmt.gateway.repo.reception.LegacyStaffRepo;
 import uk.gov.ons.fwmt.gateway.service.PublishService;
@@ -58,17 +54,17 @@ public class PublishServiceImpl implements PublishService {
   @Override
   public void publishUpdateUsers() {
     legacyStaffRepo.findAll().forEach(staff -> {
-      if (!legacyUsersRepo.existsByAuthNo(staff.getAuthno())) {
+      if (!legacyUsersRepo.existsByAuthNo(staff.getAuthNo())) {
         if (legacyUsersRepo.existsByTmusername(getProposedTMUsername(staff.getEmail()))) {
           LegacyUserEntity existingUser = legacyUsersRepo.findByTmusername(getProposedTMUsername(staff.getEmail()));
-          existingUser.setAuthNo(staff.getAuthno());
+          existingUser.setAuthNo(staff.getAuthNo());
           legacyUsersRepo.save(existingUser);
         } else {
           LegacyUserEntity newUser = LegacyUsersReader.createUserEntity(staff,
               getProposedTMUsername(staff.getEmail()));
 
           // TODO create new mobilise user in TM
-          log.info("Must create new user " + newUser.getTmusername() + " and set correct AuthNo.");
+          log.info("Must create new user " + newUser.getTmUserName() + " and set correct AuthNo.");
           // make sure to add authority number as an additional property
           legacyUsersRepo.save(newUser);
         }
@@ -92,7 +88,7 @@ public class PublishServiceImpl implements PublishService {
   public void publishNewJobsAndReallocations() {
     successfullySentIds = new ArrayList<String>();
     legacySampleRepository.findAll().forEach(entity -> {
-      if (legacyJobsRepo.existsByLegacyjobid(entity.getLegacyjobid())) {
+      if (legacyJobsRepo.existsByLegacyjobid(entity.getLegacyJobId())) {
         executeReallocateJob(entity);
       } else {
         executeNewJob(entity);
@@ -104,13 +100,13 @@ public class PublishServiceImpl implements PublishService {
   }
 
   public void executeNewJob(LegacySampleEntity newJobEntity) {
-    String tmUsername = legacyUsersRepo.findByAuthNo(newJobEntity.getAuthno()).getTmusername();
+    String tmUsername = legacyUsersRepo.findByAuthNo(newJobEntity.getAuthNo()).getTmUserName();
     CreateJobRequest createJobRequest = LegacyCreateJobRequestFactory.convert(newJobEntity, tmUsername);
     LegacyJobEntity legacyJobEntity = LegacyJobsReader.createJobEntity(createJobRequest);
     legacyJobsRepo.save(legacyJobEntity);
     try {
       sendJobRequest(createJobRequest, "\\OPTIMISE\\INPUT");
-      successfullySentIds.add(newJobEntity.getLegacyjobid());
+      successfullySentIds.add(newJobEntity.getLegacyJobId());
     } catch (Exception e) {
       // something errored do something here
       e.printStackTrace();
@@ -122,12 +118,12 @@ public class PublishServiceImpl implements PublishService {
   }
 
   public void executeReallocateJob(LegacySampleEntity reallocationEntity) {
-    String tmJobId = legacyJobsRepo.findByLegacyjobid(reallocationEntity.getLegacyjobid()).getTmjobid();
-    String tmUsername = legacyUsersRepo.findByAuthNo(reallocationEntity.getAuthno()).getTmusername();
+    String tmJobId = legacyJobsRepo.findByLegacyjobid(reallocationEntity.getLegacyJobId()).getTmJobId();
+    String tmUsername = legacyUsersRepo.findByAuthNo(reallocationEntity.getAuthNo()).getTmUserName();
     UpdateJobHeaderRequest updateJobHeaderRequest = LegacyUpdateJobHeaderRequestFactory.reallocate(tmJobId, tmUsername);
     try {
       sendUpdateJobRequest(updateJobHeaderRequest, "\\OPTIMISE\\INPUT");
-      successfullySentIds.add(reallocationEntity.getLegacyjobid());
+      successfullySentIds.add(reallocationEntity.getLegacyJobId());
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
