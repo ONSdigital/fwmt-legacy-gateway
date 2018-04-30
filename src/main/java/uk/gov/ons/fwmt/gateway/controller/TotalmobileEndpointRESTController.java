@@ -29,7 +29,7 @@ import uk.gov.ons.fwmt.gateway.service.IngesterService;
 public class TotalmobileEndpointRESTController {
     
     private final IngesterService ingesterService;
-
+    
     @Autowired
     public TotalmobileEndpointRESTController(IngesterService ingesterService) {
         this.ingesterService = ingesterService;

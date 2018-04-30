@@ -4,13 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>uk.gov.ons.fwmt</groupId>
-    <artifactId>fwmt-csv-uploader</artifactId>
+    <artifactId>fwmt-legacy-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>fwmt-csv-uploader</name>
-    <description>A web-app designed to allow the upload of CSV files to a TotalMobile server</description>
-    <url>https://github.com/ONSdigital/fwmt-csv-uploader</url>
+    <name>fwmt-legacy-gateway</name>
+    <description>The Fieldwork Management Tool Gateway for interfacing between the Social Survey legacy system and the Fieldwork Management Tool</description>
+    <url>https://github.com/ONSdigital/fwmt-legacy-gateway</url>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -18,20 +18,38 @@
         <version>1.5.9.RELEASE</version>
     </parent>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>http://artifactory.rmdev.onsdigital.uk/artifactory/libs-snapshot-local</url>
+        </snapshotRepository>
+        <repository>
+            <id>releases</id>
+            <url>http://artifactory.rmdev.onsdigital.uk/artifactory/libs-release-local</url>
+        </repository>
+    </distributionManagement>
     <repositories>
         <repository>
+            <id>local-snapshots</id>
+            <url>http://artifactory.rmdev.onsdigital.uk/artifactory/libs-snapshot</url>
+        </repository>
+        <repository>
+            <id>local-releases</id>
+            <url>http://artifactory.rmdev.onsdigital.uk/artifactory/libs-release</url>
+        </repository>
+        <repository>
             <id>sonatype-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <url>https://oss.sonatype.org/content/repositories/libs-snapshot</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
         </repository>
     </repositories>
-
     <properties>
         <java.version>1.8</java.version>
         <maven-jaxb2-plugin.version>0.13.3</maven-jaxb2-plugin.version>
         <snakeyaml.version>1.18</snakeyaml.version>
+        <skipDocker>false</skipDocker>
     </properties>
 
     <dependencies>
@@ -67,6 +85,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-server -->
         <dependency>
@@ -104,6 +126,17 @@
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
             <version>4.0</version>
+        </dependency>
+        <!-- springfox-swagger2 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.8.0</version>
         </dependency>
         <!-- * testing packages -->
         <dependency>
@@ -154,7 +187,28 @@
     </dependencies>
 
     <build>
-        <plugins>
+	<plugins>
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>build-helper-maven-plugin</artifactId>
+			<version>1.4</version>
+			<executions>
+				<execution>
+					<id>add-wsdl-source</id>
+					<phase>generate-sources</phase>
+					<goals>
+						<goal>add-source</goal>
+					</goals>
+					<configuration>
+						<sources>
+							<source>${basedir}/src-generated/src</source>
+					
+						</sources>
+						
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
             <!-- maven-compiler-plugin -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -192,13 +246,13 @@
                 </configuration>
             </plugin>
             <!-- maven-surefire-plugin -->
-            <!-- Surefire runs unit tests during the test stage -->
+            <!-- Surefire runs unit tests during the test fp -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
             <!-- maven-failsafe-plugin -->
-            <!-- Failsafe runs integration tests during the verify stage -->
+            <!-- Failsafe runs integration tests during the verify fp -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -233,8 +287,8 @@
                 </executions>
             </plugin>
             <!-- docker-maven-plugin -->
-            <!-- This plugin sets up and tears down a Postgres Docker container for integration tests in the verify stage -->
-            <plugin>
+            <!-- This plugin sets up and tears down a Postgres Docker container for integration tests in the verify fp -->
+             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.20.1</version>
@@ -246,6 +300,7 @@
                             <goal>start</goal>
                         </goals>
                         <configuration>
+                            <skip>${skipDocker}</skip>
                             <images>
                                 <image>
                                     <name>postgres:9.5.4</name>
@@ -269,6 +324,9 @@
                         <goals>
                             <goal>stop</goal>
                         </goals>
+                        <configuration>
+                            <skip>${skipDocker}</skip>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

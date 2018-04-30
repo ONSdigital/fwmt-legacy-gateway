@@ -6,4 +6,6 @@ import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
 
 public interface LegacySampleRepo extends CrudRepository<LegacySampleEntity, Long> {
     Iterable<LegacySampleEntity> findAll();
+    // TODO should be by composite PK
+    void deleteBySerno(String serno);
 }

@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface PublishService {
-    void execute();
-    void executeJobs();
-    void executeUpdateUsers();
+    void publishNewJobsAndReallocations();
+    void publishUpdateUsers();
 }

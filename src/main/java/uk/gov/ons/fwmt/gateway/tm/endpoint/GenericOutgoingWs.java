@@ -1,10 +1,10 @@
 package uk.gov.ons.fwmt.gateway.tm.endpoint;
 
+import javax.xml.bind.JAXBElement;
+
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ObjectFactory;
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendMessageResponse;
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.WebServiceAdapterOutputRequest;
-import lombok.extern.slf4j.Slf4j;
-import uk.gov.ons.fwmt.gateway.controller.LegacyEndpointRESTController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -12,11 +12,7 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.xml.bind.JAXBElement;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SuppressWarnings("unused")
