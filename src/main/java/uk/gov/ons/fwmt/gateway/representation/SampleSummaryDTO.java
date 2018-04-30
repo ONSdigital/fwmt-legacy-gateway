@@ -3,6 +3,8 @@ package uk.gov.ons.fwmt.gateway.representation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 public class SampleSummaryDTO {
@@ -10,11 +12,12 @@ public class SampleSummaryDTO {
   @AllArgsConstructor
   public static class UnprocessedEntry {
     private final String[] content;
-    private final int line;
+    private final int row;
+    private final String message;
   }
 
   private final String filename;
   private final int rows;
-  private final UnprocessedEntry[] unprocessed;
+  private final List<UnprocessedEntry> unprocessed;
 
 }

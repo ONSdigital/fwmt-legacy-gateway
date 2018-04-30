@@ -550,6 +550,11 @@ public class LegacyLFSSampleReader {
   private class LegacyLFSSampleCSVFilter implements CsvToBeanFilter {
     private final MappingStrategy strategy;
 
+    // TODO ensure that this counter always begins at 2
+    // We must be sure that this instance is never re-used
+    // It begins at 2 as the first line of the CSV is skipped
+    private int counter = 2;
+
     LegacyLFSSampleCSVFilter(MappingStrategy strategy) {
       this.strategy = strategy;
     }
@@ -587,8 +592,9 @@ public class LegacyLFSSampleReader {
           check.apply(addressNo) &&
           check.apply(osGridRef);
       if (!pass) {
-        errorList.add(new IllegalCSVStructureException(strings));
+        errorList.add(new IllegalCSVStructureException(strings, counter, "A null or empty required field was found"));
       }
+      counter++;
       return pass;
     }
   }

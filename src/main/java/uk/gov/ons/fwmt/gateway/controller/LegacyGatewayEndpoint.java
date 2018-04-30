@@ -26,6 +26,8 @@ import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Class for file upload controller
@@ -104,12 +106,9 @@ public class LegacyGatewayEndpoint {
     int rowsIngested = ingesterService.ingestLegacySample(iterator);
 
     // pull the unprocessed entries out from the exceptions stored in the legacySampleReader
-    SampleSummaryDTO.UnprocessedEntry[] unprocessedEntries =
-        new SampleSummaryDTO.UnprocessedEntry[legacyLFSSampleReader.errorList.size()];
-    for (int i = 0; i < legacyLFSSampleReader.errorList.size(); i++) {
-      IllegalCSVStructureException entry = legacyLFSSampleReader.errorList.get(i);
-      unprocessedEntries[i] = new SampleSummaryDTO.UnprocessedEntry(entry.getStrings(), entry.getLineNumber());
-    }
+    List<SampleSummaryDTO.UnprocessedEntry> unprocessedEntries = legacyLFSSampleReader.errorList.stream()
+        .map(IllegalCSVStructureException::toUnprocessedEntry)
+        .collect(Collectors.toList());
 
     // create the response object
     SampleSummaryDTO sampleSummaryDTO = new SampleSummaryDTO(file.getOriginalFilename(), rowsIngested,
