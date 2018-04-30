@@ -17,7 +17,7 @@ public class SampleSummaryDTO {
   }
 
   private final String filename;
-  private final int rows;
-  private final List<UnprocessedEntry> unprocessed;
+  private final int processedRows;
+  private final List<UnprocessedEntry> unprocessedRows;
 
 }

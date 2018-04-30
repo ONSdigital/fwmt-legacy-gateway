@@ -27,25 +27,19 @@ public class IngesterServiceImpl implements IngesterService {
   }
 
   @Override
-  public int ingestLegacySample(Iterator<LegacySampleEntity> iter) {
-    int count = 0;
+  public void ingestLegacySample(Iterator<LegacySampleEntity> iter) {
     while (iter.hasNext()) {
       legacySampleRepository.save(iter.next());
-      count++;
     }
     publishService.publishNewJobsAndReallocations();
-    return count;
   }
 
   @Override
-  public int ingestLegacyStaff(Iterator<LegacyStaffEntity> iter) {
-    int count = 0;
+  public void ingestLegacyStaff(Iterator<LegacyStaffEntity> iter) {
     legacyStaffRepository.deleteAll();
     while (iter.hasNext()) {
       legacyStaffRepository.save(iter.next());
-      count++;
     }
     publishService.publishUpdateUsers();
-    return count;
   }
 }

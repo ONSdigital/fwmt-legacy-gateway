@@ -3,6 +3,7 @@ package uk.gov.ons.fwmt.gateway.utility.readers;
 import com.opencsv.bean.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
@@ -259,6 +260,7 @@ public class LegacyLFSSampleReader {
 
   public List<IllegalCSVStructureException> errorList;
   private CsvToBean<LegacyLFSSampleEntityRaw> csvToBean;
+  @Getter private int processedCount;
 
   public LegacyLFSSampleReader(InputStream stream) {
     HeaderColumnNameTranslateMappingStrategy<LegacyLFSSampleEntityRaw> strategy =
@@ -516,6 +518,7 @@ public class LegacyLFSSampleReader {
     }
 
     @Override public LegacySampleEntity next() {
+      processedCount++;
       LegacyLFSSampleEntityRaw raw = rawIterator.next();
       LegacySampleEntity entity = new LegacySampleEntity();
       entity.setSerno(raw.getSerno());

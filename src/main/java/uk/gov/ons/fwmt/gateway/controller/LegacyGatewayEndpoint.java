@@ -100,17 +100,16 @@ public class LegacyGatewayEndpoint {
     }
 
     // add data to reception table
-    LegacyLFSSampleReader legacyLFSSampleReader = new LegacyLFSSampleReader(file.getInputStream());
-    Iterator<LegacySampleEntity> iterator = legacyLFSSampleReader.iterator();
-    int rowsIngested = ingesterService.ingestLegacySample(iterator);
+    LegacyLFSSampleReader reader = new LegacyLFSSampleReader(file.getInputStream());
+    Iterator<LegacySampleEntity> iterator = reader.iterator();
 
     // pull the unprocessed entries out from the exceptions stored in the legacySampleReader
-    List<SampleSummaryDTO.UnprocessedEntry> unprocessedEntries = legacyLFSSampleReader.errorList.stream()
+    List<SampleSummaryDTO.UnprocessedEntry> unprocessedEntries = reader.errorList.stream()
         .map(IllegalCSVStructureException::toUnprocessedEntry)
         .collect(Collectors.toList());
 
     // create the response object
-    SampleSummaryDTO sampleSummaryDTO = new SampleSummaryDTO(file.getOriginalFilename(), rowsIngested,
+    SampleSummaryDTO sampleSummaryDTO = new SampleSummaryDTO(file.getOriginalFilename(), reader.getProcessedCount(),
         unprocessedEntries);
     return ResponseEntity.ok(sampleSummaryDTO);
   }
@@ -129,9 +128,10 @@ public class LegacyGatewayEndpoint {
     LegacyStaffReader legacyStaffReader = new LegacyStaffReader(file.getInputStream());
     Iterator<LegacyStaffEntity> iterator = legacyStaffReader.iterator();
 
-    int rowsIngested = ingesterService.ingestLegacyStaff(iterator);
+    ingesterService.ingestLegacyStaff(iterator);
 
-    StaffSummaryDTO staffSummaryDTO = new StaffSummaryDTO(file.getOriginalFilename(), rowsIngested);
+    StaffSummaryDTO staffSummaryDTO = new StaffSummaryDTO(file.getOriginalFilename(),
+        legacyStaffReader.getProcessedCount());
     return ResponseEntity.ok(staffSummaryDTO);
   }
 }
