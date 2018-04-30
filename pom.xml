@@ -9,7 +9,9 @@
     <packaging>jar</packaging>
 
     <name>fwmt-legacy-gateway</name>
-    <description>The Fieldwork Management Tool Gateway for interfacing between the Social Survey legacy system and the Fieldwork Management Tool</description>
+    <description>The Fieldwork Management Tool Gateway for interfacing between the Social Survey legacy system and the
+        Fieldwork Management Tool
+    </description>
     <url>https://github.com/ONSdigital/fwmt-legacy-gateway</url>
 
     <parent>
@@ -194,28 +196,28 @@
     </dependencies>
 
     <build>
-	<plugins>
-		<plugin>
-			<groupId>org.codehaus.mojo</groupId>
-			<artifactId>build-helper-maven-plugin</artifactId>
-			<version>1.4</version>
-			<executions>
-				<execution>
-					<id>add-wsdl-source</id>
-					<phase>generate-sources</phase>
-					<goals>
-						<goal>add-source</goal>
-					</goals>
-					<configuration>
-						<sources>
-							<source>${basedir}/src-generated/src</source>
-					
-						</sources>
-						
-					</configuration>
-				</execution>
-			</executions>
-		</plugin>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <id>add-wsdl-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${basedir}/src-generated/src</source>
+
+                            </sources>
+
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- maven-compiler-plugin -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -223,6 +225,18 @@
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+            <!-- maven-resources-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <delimiters>
+                        <delimiter>@</delimiter>
+                    </delimiters>
+                    <useDefaultDelimiters>false</useDefaultDelimiters>
                 </configuration>
             </plugin>
             <!-- spring-boot-maven-plugin -->
@@ -280,16 +294,16 @@
                 <version>3.5.3</version>
                 <executions>
                     <!--<execution>-->
-                        <!--<phase>pre-integration-test</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>update</goal>-->
-                        <!--</goals>-->
+                    <!--<phase>pre-integration-test</phase>-->
+                    <!--<goals>-->
+                    <!--<goal>update</goal>-->
+                    <!--</goals>-->
                     <!--</execution>-->
                     <!--<execution>-->
-                        <!--<phase>process-resources</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>update</goal>-->
-                        <!--</goals>-->
+                    <!--<phase>process-resources</phase>-->
+                    <!--<goals>-->
+                    <!--<goal>update</goal>-->
+                    <!--</goals>-->
                     <!--</execution>-->
                 </executions>
             </plugin>
@@ -347,3 +361,4 @@
         </resources>
     </build>
 </project>
+
