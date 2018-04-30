@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.gateway.utility.readers;
+package uk.gov.ons.fwmt.gateway.error;
 
 
 public class IllegalCSVStructureException extends Throwable {
@@ -6,11 +6,11 @@ public class IllegalCSVStructureException extends Throwable {
 
   private final String[] strings;
 
-  IllegalCSVStructureException() {
+  public IllegalCSVStructureException() {
     this.strings = null;
   }
 
-  IllegalCSVStructureException(String[] strings) {
+  public IllegalCSVStructureException(String[] strings) {
     this.strings = strings;
   }
 }

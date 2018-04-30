@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
+import uk.gov.ons.fwmt.gateway.error.IllegalCSVStructureException;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
