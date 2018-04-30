@@ -6,8 +6,15 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class SampleSummaryDTO {
+  @Data
+  @AllArgsConstructor
+  public static class UnprocessedEntry {
+    private final String[] content;
+    private final int line;
+  }
 
-  private String filename;
-  private int rows;
+  private final String filename;
+  private final int rows;
+  private final UnprocessedEntry[] unprocessed;
 
 }

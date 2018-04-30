@@ -16,11 +16,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
+import uk.gov.ons.fwmt.gateway.error.IllegalCSVStructureException;
 import uk.gov.ons.fwmt.gateway.representation.SampleSummaryDTO;
 import uk.gov.ons.fwmt.gateway.representation.StaffSummaryDTO;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
-import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
+import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
+
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.util.Iterator;
@@ -87,7 +89,8 @@ public class LegacyGatewayEndpoint {
   }
 
   @RequestMapping(value = "/sample", method = RequestMethod.POST, produces = "application/json")
-  public ResponseEntity<SampleSummaryDTO> sampleREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
+  public ResponseEntity<SampleSummaryDTO> sampleREST(@RequestParam("file") MultipartFile file,
+      RedirectAttributes redirectAttributes)
       throws IOException {
 
     ResponseEntity<?> responseEntity = confirmFile(file, "sample");
@@ -100,11 +103,17 @@ public class LegacyGatewayEndpoint {
     Iterator<LegacySampleEntity> iterator = legacyLFSSampleReader.iterator();
     int rowsIngested = ingesterService.ingestLegacySample(iterator);
 
-    if (legacyLFSSampleReader.errorList.size() != 0) {
-      // TODO handle errors
+    // pull the unprocessed entries out from the exceptions stored in the legacySampleReader
+    SampleSummaryDTO.UnprocessedEntry[] unprocessedEntries =
+        new SampleSummaryDTO.UnprocessedEntry[legacyLFSSampleReader.errorList.size()];
+    for (int i = 0; i < legacyLFSSampleReader.errorList.size(); i++) {
+      IllegalCSVStructureException entry = legacyLFSSampleReader.errorList.get(i);
+      unprocessedEntries[i] = new SampleSummaryDTO.UnprocessedEntry(entry.getStrings(), entry.getLineNumber());
     }
 
-    SampleSummaryDTO sampleSummaryDTO = new SampleSummaryDTO(file.getOriginalFilename(), rowsIngested);
+    // create the response object
+    SampleSummaryDTO sampleSummaryDTO = new SampleSummaryDTO(file.getOriginalFilename(), rowsIngested,
+        unprocessedEntries);
     return ResponseEntity.ok(sampleSummaryDTO);
   }
 
