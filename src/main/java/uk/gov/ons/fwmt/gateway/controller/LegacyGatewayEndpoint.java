@@ -59,12 +59,12 @@ public class LegacyGatewayEndpoint {
     } else {
       return null;
     }
-
   }
 
   public boolean confirmFilename(MultipartFile file, String endpoint) {
     String filename = file.getOriginalFilename();
     String[] filenameSplit = filename.split("\\.");
+    // TODO replace these unchecked array accesses
     String[] nameSplit = filenameSplit[0].split("_");
     String fileEndpoint = nameSplit[0];
     String surveyTla = nameSplit[1];
@@ -85,6 +85,7 @@ public class LegacyGatewayEndpoint {
     String contentType = file.getContentType();
     String filename = file.getOriginalFilename();
     String[] filenameSplit = filename.split("\\.");
+    // TODO replace these unchecked array accesses
     return "text/csv".equals(contentType) &&
         "csv".equals(filenameSplit[filenameSplit.length - 1]);
   }
