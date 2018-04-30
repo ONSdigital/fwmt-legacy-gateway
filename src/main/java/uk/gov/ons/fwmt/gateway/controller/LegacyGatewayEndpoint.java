@@ -86,7 +86,6 @@ public class LegacyGatewayEndpoint {
     String filename = file.getOriginalFilename();
     String[] filenameSplit = filename.split("\\.");
     return "text/csv".equals(contentType) &&
-        "text/csv".equals(contentType) &&
         "csv".equals(filenameSplit[filenameSplit.length - 1]);
   }
 
