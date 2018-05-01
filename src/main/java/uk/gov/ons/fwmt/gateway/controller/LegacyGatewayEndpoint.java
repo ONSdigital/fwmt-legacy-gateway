@@ -4,6 +4,8 @@
 
 package uk.gov.ons.fwmt.gateway.controller;
 
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
+import uk.gov.ons.fwmt.gateway.error.GatewayCommonErrorDTO;
 import uk.gov.ons.fwmt.gateway.error.IllegalCSVStructureException;
+import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.gateway.representation.SampleSummaryDTO;
 import uk.gov.ons.fwmt.gateway.representation.StaffSummaryDTO;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
@@ -24,7 +28,6 @@ import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
 
 import javax.xml.bind.DatatypeConverter;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,7 +51,7 @@ public class LegacyGatewayEndpoint {
     this.ingesterService = ingesterService;
   }
 
-  public ResponseEntity<?> confirmFile(MultipartFile file, String endpoint) {
+  public ResponseEntity<?> confirmFile(MultipartFile file, String endpoint) throws Exception {
     // confirm data is in correct format
     if (!confirmFilename(file, endpoint)) {
       return new ResponseEntity<>(
@@ -61,9 +64,12 @@ public class LegacyGatewayEndpoint {
     }
   }
 
-  public boolean confirmFilename(MultipartFile file, String endpoint) {
+  public boolean confirmFilename(MultipartFile file, String endpoint) throws Exception {
     String filename = file.getOriginalFilename();
     String[] filenameSplit = filename.split("\\.");
+    if (filenameSplit.length != 3) {
+      throw new InvalidFileNameException(filename);
+    }
     // TODO replace these unchecked array accesses
     String[] nameSplit = filenameSplit[0].split("_");
     String fileEndpoint = nameSplit[0];
@@ -81,19 +87,21 @@ public class LegacyGatewayEndpoint {
         timestampValid;
   }
 
-  public boolean confirmFiletype(MultipartFile file) {
-    String contentType = file.getContentType();
+  public boolean confirmFiletype(MultipartFile file)  {
     String filename = file.getOriginalFilename();
     String[] filenameSplit = filename.split("\\.");
     // TODO replace these unchecked array accesses
-    return "text/csv".equals(contentType) &&
-        "csv".equals(filenameSplit[filenameSplit.length - 1]);
+    return "csv".equals(filenameSplit[filenameSplit.length - 1]);
   }
 
-  @RequestMapping(value = "/sample", method = RequestMethod.POST, produces = "application/json")
+  @RequestMapping(value = "/sample", method = RequestMethod.POST, consumes = "text/csv", produces = "application/json")
+  @ApiResponses(value = {
+      @ApiResponse(code = 400, message = "Bad Request", response = GatewayCommonErrorDTO.class),
+      @ApiResponse(code = 415, message = "Unsupported Media Type", response = GatewayCommonErrorDTO.class),
+      @ApiResponse(code = 500, message = "Internal Server Error", response = GatewayCommonErrorDTO.class),
+  })
   public ResponseEntity<SampleSummaryDTO> sampleREST(@RequestParam("file") MultipartFile file,
-      RedirectAttributes redirectAttributes)
-      throws IOException {
+      RedirectAttributes redirectAttributes) throws Exception {
 
     ResponseEntity<?> responseEntity = confirmFile(file, "sample");
     if (responseEntity != null) {
@@ -115,10 +123,14 @@ public class LegacyGatewayEndpoint {
     return ResponseEntity.ok(sampleSummaryDTO);
   }
 
-  @RequestMapping(value = "/staff", method = RequestMethod.POST, produces = "application/json")
+  @RequestMapping(value = "/staff", method = RequestMethod.POST, consumes = "text/csv", produces = "application/json")
+  @ApiResponses(value = {
+      @ApiResponse(code = 400, message = "Bad Request", response = GatewayCommonErrorDTO.class),
+      @ApiResponse(code = 415, message = "Unsupported Media Type", response = GatewayCommonErrorDTO.class),
+      @ApiResponse(code = 500, message = "Internal Server Error", response = GatewayCommonErrorDTO.class),
+  })
   public ResponseEntity<StaffSummaryDTO> staffREST(@RequestParam("file") MultipartFile file,
-      RedirectAttributes redirectAttributes)
-      throws IOException {
+      RedirectAttributes redirectAttributes) throws Exception {
 
     ResponseEntity<?> responseEntity = confirmFile(file, "staff");
     if (responseEntity != null) {
