@@ -42,6 +42,7 @@ logging:
     org.springframework.web: ERROR
     org.hibernate: ERROR
     org.apache.commons.dbcp2: ERROR
+    org.springframework.boot.autoconfigure: DEBUG
   file: target/SpringErrors/spring.log
   pattern:
     console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"

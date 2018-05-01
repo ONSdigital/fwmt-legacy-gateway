@@ -292,11 +292,11 @@ public class LegacyLFSSampleReader {
     String prem3;
     String prem4;
     String district;
-    String posttown;
+    String postTown;
     String postcode;
     String quota;
     String addr;
-    String osgridref;
+    String osGridRef;
     String year;
     String month;
     String main;
@@ -517,7 +517,7 @@ public class LegacyLFSSampleReader {
     @Override public LegacySampleEntity next() {
       LegacyLFSSampleEntityRaw raw = rawIterator.next();
       LegacySampleEntity entity = new LegacySampleEntity();
-      entity.setLegacyJobId(raw.getSerno()+raw.getFp()+raw.getTla());
+      entity.setLegacyJobId(raw.getSerno() + raw.getFp() + raw.getTla());
       entity.setSerno(raw.getSerno());
       entity.setTla(raw.getTla());
       entity.setFp(raw.getFp());
@@ -529,10 +529,10 @@ public class LegacyLFSSampleReader {
       entity.setAddressLine3(raw.getPrem3());
       entity.setAddressLine4(raw.getPrem4());
       entity.setDistrict(raw.getDistrict());
-      entity.setPostTown(raw.getPosttown());
+      entity.setPostTown(raw.getPostTown());
       entity.setPostcode(raw.getPostcode());
       entity.setAddressNo(raw.getAddr());
-      entity.setOsGridRef(raw.getOsgridref());
+      entity.setOsGridRef(raw.getOsGridRef());
       entity.setWeek(raw.getWeek());
       entity.setW1yr(raw.getW1yr());
       entity.setQrtr(raw.getQrtr());

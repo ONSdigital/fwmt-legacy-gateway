@@ -21,7 +21,7 @@ ALTER TABLE gateway.leavers RENAME COLUMN jobTitle TO job_title;
 ALTER TABLE gateway.leavers RENAME COLUMN userType TO user_type;
 
 ALTER TABLE gateway.jobs RENAME COLUMN legacyjobid TO legacy_job_id;
-ALTER TABLE gateway.jobs RENAME COLUMN tmJobId TO user_type;
+ALTER TABLE gateway.jobs RENAME COLUMN tmJobId TO tm_job_id;
 ALTER TABLE gateway.jobs RENAME COLUMN initalTimestamp TO initial_time_stamp;
 ALTER TABLE gateway.jobs RENAME COLUMN sentTimestamp TO sent_time_stamp;
 ALTER TABLE gateway.jobs RENAME COLUMN processedTimestamp TO processed_time_stamp;

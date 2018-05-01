@@ -55,8 +55,8 @@ public class PublishServiceImpl implements PublishService {
   public void publishUpdateUsers() {
     legacyStaffRepo.findAll().forEach(staff -> {
       if (!legacyUsersRepo.existsByAuthNo(staff.getAuthNo())) {
-        if (legacyUsersRepo.existsByTmusername(getProposedTMUsername(staff.getEmail()))) {
-          LegacyUserEntity existingUser = legacyUsersRepo.findByTmusername(getProposedTMUsername(staff.getEmail()));
+        if (legacyUsersRepo.existsByTmUsername(getProposedTMUsername(staff.getEmail()))) {
+          LegacyUserEntity existingUser = legacyUsersRepo.findByTmUsername(getProposedTMUsername(staff.getEmail()));
           existingUser.setAuthNo(staff.getAuthNo());
           legacyUsersRepo.save(existingUser);
         } else {
@@ -64,7 +64,7 @@ public class PublishServiceImpl implements PublishService {
               getProposedTMUsername(staff.getEmail()));
 
           // TODO create new mobilise user in TM
-          log.info("Must create new user " + newUser.getTmUserName() + " and set correct AuthNo.");
+          log.info("Must create new user " + newUser.getTmUsername() + " and set correct AuthNo.");
           // make sure to add authority number as an additional property
           legacyUsersRepo.save(newUser);
         }
@@ -72,7 +72,7 @@ public class PublishServiceImpl implements PublishService {
     });
 
     legacyUsersRepo.findAll().forEach(user -> {
-      if (!legacyStaffRepo.existsByAuthno(user.getAuthNo())) {
+      if (!legacyStaffRepo.existsByAuthNo(user.getAuthNo())) {
         // remove user (potentially delete the user from totalmobile TBD)
         user.setAuthNo(null);
         legacyUsersRepo.save(user);
@@ -88,19 +88,19 @@ public class PublishServiceImpl implements PublishService {
   public void publishNewJobsAndReallocations() {
     successfullySentIds = new ArrayList<String>();
     legacySampleRepository.findAll().forEach(entity -> {
-      if (legacyJobsRepo.existsByLegacyjobid(entity.getLegacyJobId())) {
+      if (legacyJobsRepo.existsByLegacyJobId(entity.getLegacyJobId())) {
         executeReallocateJob(entity);
       } else {
         executeNewJob(entity);
       }
     });
     for(String id: successfullySentIds) {
-      legacySampleRepository.deleteByLegacyjobid(id);
+      legacySampleRepository.deleteByLegacyJobId(id);
     }
   }
 
   public void executeNewJob(LegacySampleEntity newJobEntity) {
-    String tmUsername = legacyUsersRepo.findByAuthNo(newJobEntity.getAuthNo()).getTmUserName();
+    String tmUsername = legacyUsersRepo.findByAuthNo(newJobEntity.getAuthNo()).getTmUsername();
     CreateJobRequest createJobRequest = LegacyCreateJobRequestFactory.convert(newJobEntity, tmUsername);
     LegacyJobEntity legacyJobEntity = LegacyJobsReader.createJobEntity(createJobRequest);
     legacyJobsRepo.save(legacyJobEntity);
@@ -113,13 +113,13 @@ public class PublishServiceImpl implements PublishService {
     }
 
     // Update database jobs table states for each job from inital to sent.
-    LegacyJobEntity jobEntity = legacyJobsRepo.findByTmjobid(createJobRequest.getJob().getIdentity().getReference());
+    LegacyJobEntity jobEntity = legacyJobsRepo.findByTmJobId(createJobRequest.getJob().getIdentity().getReference());
     legacyJobsRepo.save(LegacyJobsReader.setStateSent(jobEntity));
   }
 
   public void executeReallocateJob(LegacySampleEntity reallocationEntity) {
-    String tmJobId = legacyJobsRepo.findByLegacyjobid(reallocationEntity.getLegacyJobId()).getTmJobId();
-    String tmUsername = legacyUsersRepo.findByAuthNo(reallocationEntity.getAuthNo()).getTmUserName();
+    String tmJobId = legacyJobsRepo.findByLegacyJobId(reallocationEntity.getLegacyJobId()).getTmJobId();
+    String tmUsername = legacyUsersRepo.findByAuthNo(reallocationEntity.getAuthNo()).getTmUsername();
     UpdateJobHeaderRequest updateJobHeaderRequest = LegacyUpdateJobHeaderRequestFactory.reallocate(tmJobId, tmUsername);
     try {
       sendUpdateJobRequest(updateJobHeaderRequest, "\\OPTIMISE\\INPUT");
@@ -131,7 +131,7 @@ public class PublishServiceImpl implements PublishService {
 
     // Update database jobs table states for each job from inital to sent.
     LegacyJobEntity jobEntity = legacyJobsRepo
-        .findByTmjobid(updateJobHeaderRequest.getJobHeader().getJobIdentity().getReference());
+        .findByTmJobId(updateJobHeaderRequest.getJobHeader().getJobIdentity().getReference());
     legacyJobsRepo.save(LegacyJobsReader.setStateSent(jobEntity));
   }
 

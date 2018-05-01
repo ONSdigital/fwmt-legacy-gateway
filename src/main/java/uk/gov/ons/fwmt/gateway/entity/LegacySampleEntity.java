@@ -4,11 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * This class corresponds to a single row of resources/sampledata/test.csv
@@ -20,7 +16,6 @@ import javax.persistence.Table;
 @Table(name = "sample")
 public class LegacySampleEntity {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long primaryKey;
   private String legacyJobId;
   private String serno;
@@ -30,10 +25,10 @@ public class LegacySampleEntity {
   private String authNo;
   private String employeeNo;
 
-  private String addressLine1;
-  private String addressLine2;
-  private String addressLine3;
-  private String addressLine4;
+  @Column(name="address_line_1") private String addressLine1;
+  @Column(name="address_line_2") private String addressLine2;
+  @Column(name="address_line_3") private String addressLine3;
+  @Column(name="address_line_4") private String addressLine4;
   private String addressNo;
   private String district;
   private String postTown;

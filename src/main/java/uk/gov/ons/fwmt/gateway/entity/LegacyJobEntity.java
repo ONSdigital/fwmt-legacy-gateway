@@ -20,7 +20,7 @@ public class LegacyJobEntity {
   @Column(unique = true, nullable = true)
   public String legacyJobId;
   public String state;
-  public String initalTimeStamp;
+  public String initialTimeStamp;
   public String sentTimeStamp;
   public String processedTimeStamp;
   public String erroredTimeStamp;
