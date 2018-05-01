@@ -18,11 +18,11 @@ import javax.transaction.Transactional;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
 public class RepoIT {
-  @Autowired LegacyJobsRepo legacyJobRepo;
-  @Autowired LegacyLeaversRepo legacyLeaversRepo;
-  @Autowired LegacySampleRepo legacySampleRepo;
-  @Autowired LegacyStaffRepo legacyStaffRepo;
-  @Autowired LegacyUsersRepo legacyUsersRepo;
+  @Autowired private LegacyJobsRepo legacyJobRepo;
+  @Autowired private LegacyLeaversRepo legacyLeaversRepo;
+  @Autowired private LegacySampleRepo legacySampleRepo;
+  @Autowired private LegacyStaffRepo legacyStaffRepo;
+  @Autowired private LegacyUsersRepo legacyUsersRepo;
 
   /// Save one entity of each type to the database, then delete them
   /// We do this to test the naming of fields and the primary key functionality
