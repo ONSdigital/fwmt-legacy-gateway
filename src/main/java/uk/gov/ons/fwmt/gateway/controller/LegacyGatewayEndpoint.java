@@ -22,6 +22,7 @@ import uk.gov.ons.fwmt.gateway.service.IngesterService;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyGFFSampleReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
+import uk.gov.ons.fwmt.gateway.utility.readers.SampleReader;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
@@ -105,23 +106,20 @@ public class LegacyGatewayEndpoint {
 
     int rowsIngested;
 
+    SampleReader reader;
+
     // add data to reception table
     if (file.getOriginalFilename().contains("LFS")) {
-      LegacyLFSSampleReader legacyLFSSampleReader = new LegacyLFSSampleReader(file.getInputStream());
-      Iterator<LegacySampleEntity> iterator = legacyLFSSampleReader.iterator();
-      rowsIngested = ingesterService.ingestLegacySample(iterator);
-
-      if (legacyLFSSampleReader.errorList.size() != 0) {
-        // TODO handle errors
-      }
+      reader = new LegacyLFSSampleReader(file.getInputStream());
     } else {
-      LegacyGFFSampleReader legacyGFFSampleReader = new LegacyGFFSampleReader(file.getInputStream());
-      Iterator<LegacySampleEntity> iterator = legacyGFFSampleReader.iterator();
-      rowsIngested = ingesterService.ingestLegacySample(iterator);
+      reader = new LegacyGFFSampleReader(file.getInputStream());
+    }
 
-      if (legacyGFFSampleReader.errorList.size() != 0) {
-        // TODO handle errors
-      }
+    Iterator<LegacySampleEntity> iterator = reader.iterator();
+    rowsIngested = ingesterService.ingestLegacySample(iterator);
+
+    if (reader.getErrorList().size() != 0) {
+      // TODO handle errors
     }
 
     SampleSummaryDTO sampleSummaryDTO = new SampleSummaryDTO(file.getOriginalFilename(), rowsIngested);
