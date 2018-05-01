@@ -59,7 +59,5 @@ public class RepoIT {
     legacyUsersEntity.setAuthNo("<no>");
     legacyUsersRepo.save(legacyUsersEntity);
     legacyUsersRepo.delete(legacyUsersEntity);
-
-    assertTrue(true);
   }
 }
