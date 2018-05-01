@@ -15,6 +15,8 @@ import uk.gov.ons.fwmt.gateway.repo.reception.LegacyStaffRepo;
 
 import javax.transaction.Transactional;
 
+import static org.junit.Assert.assertTrue;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
 public class RepoIT {
@@ -57,5 +59,7 @@ public class RepoIT {
     legacyUsersEntity.setAuthNo("<no>");
     legacyUsersRepo.save(legacyUsersEntity);
     legacyUsersRepo.delete(legacyUsersEntity);
+
+    assertTrue(true);
   }
 }
