@@ -14,8 +14,6 @@ All endpoints that accept HTTP POST requests may return any one of the HTTP erro
 
 * An `HTTP 415 Unsupported Media Type` is returned upon receipt of a non-CSV file
 
-* An `HTTP 422 Unprocessable Entity` is returned for all other parsing errors
-
 * An `HTTP 500 Internal Server Error` is returned if the data could not be persisted by the gateway for whatever reason
 
 In addition to the HTTP error status code, a JSON error object will be returned in the HTTP response that provides additional information. See the individual endpoint documentation below for details of this error object.
@@ -42,30 +40,31 @@ In addition to the HTTP error status code, a JSON error object will be returned 
 ```json
 {
   "filename": "sample_GFF_2018-04-24T19:09:54Z.csv",
-  "rows": 5000
+  "processedRows": 5000,
+  "unprocessedRows": [
+    {
+      "row": 4,
+      "message": "Row value is null"
+    },
+    {
+      "row": 12,
+      "message": "Row value is empty"
+    }
+  ]
 }
 ```
 
-The input filename is echoed back to the client upon a successful request, as is the number of rows within the CSV file that the gateway successfully persisted in its reception database table, prior to subsequent processing and transfer to the fieldwork management tool.
+The input filename is echoed back to the client upon a successful request, as is the number of processed rows within the CSV file that the gateway successfully persisted in its reception database table, prior to subsequent processing and transfer to the fieldwork management tool. A list of rows that could not be processed is also returned.
 
 ### Example JSON Error Response
 ```json
 {
-  "error": "Unprocessable Entity",
-  "message": "File parsing errors occurred",
+  "error": "Bad Request",
+  "exception": "uk.gov.ons.fwmt.gateway.domain.InvalidFilenameException",
+  "message": "Invalid filename",
   "path": "/samples",
-  "status": 422,
-  "timestamp": "2018-04-24T19:44:32Z",
-  "errors": [
-    {
-      "row": 4,
-      "exception": "org.hibernate.exception.ConstraintViolationException: Could not insert"
-    },
-    {
-      "row": 12,
-      "exception": "org.hibernate.exception.ConstraintViolationException: Duplicate entry"
-    }
-  ]
+  "status": 400,
+  "timestamp": "2018-04-24T19:44:32Z"
 }
 ```
 
@@ -76,11 +75,11 @@ The input filename is echoed back to the client upon a successful request, as is
 ```json
 {
   "filename": "staff_GFF_2018-04-24T19:09:54Z.csv",
-  "rows": 750
+  "processedRows": 750
 }
 ```
 
-The input filename is echoed back to the client upon a successful request, as is the number of rows within the CSV file that the gateway successfully persisted in its reception database table, prior to subsequent processing and transfer to the fieldwork management tool.
+The input filename is echoed back to the client upon a successful request, as is the number of processed rows within the CSV file that the gateway successfully persisted in its reception database table, prior to subsequent processing and transfer to the fieldwork management tool.
 
 ### Example JSON Error Response
 ```json

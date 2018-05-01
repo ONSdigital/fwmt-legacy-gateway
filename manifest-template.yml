@@ -1,8 +1,8 @@
 applications:
-- name: fwmt-legacy-gateway
+- name: fwmt-legacy-gateway-&{SPACE}
   instances: 1
   timeout: 180
-  host: fwmt-legacy-gateway
+  host: fwmt-legacy-gateway-&{SPACE}
   memory: 1024M
   path: target/fwmt-legacy-gateway-0.0.1-SNAPSHOT-exec.jar
   services:

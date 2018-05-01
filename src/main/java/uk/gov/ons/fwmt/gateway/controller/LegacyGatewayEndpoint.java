@@ -61,6 +61,7 @@ public class LegacyGatewayEndpoint {
   }
 
   public boolean confirmFilename(MultipartFile file, String endpoint) {
+    // TODO What is this outer try catching?
     try {
       String filename = file.getOriginalFilename();
       String[] filenameSplit = filename.split("\\.");
@@ -140,6 +141,7 @@ public class LegacyGatewayEndpoint {
     // add data to reception table
     LegacyStaffReader legacyStaffReader = new LegacyStaffReader(file.getInputStream());
     Iterator<LegacyStaffEntity> iterator = legacyStaffReader.iterator();
+
     int rowsIngested = ingesterService.ingestLegacyStaff(iterator);
 
     StaffSummaryDTO staffSummaryDTO = new StaffSummaryDTO(file.getOriginalFilename(), rowsIngested);
