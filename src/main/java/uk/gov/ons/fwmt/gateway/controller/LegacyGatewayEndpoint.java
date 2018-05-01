@@ -120,6 +120,7 @@ public class LegacyGatewayEndpoint {
 
     if (reader.getErrorList().size() != 0) {
       // TODO handle errors
+      log.error("Found a CSV parsing error");
     }
 
     SampleSummaryDTO sampleSummaryDTO = new SampleSummaryDTO(file.getOriginalFilename(), rowsIngested);
