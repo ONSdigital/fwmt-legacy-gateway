@@ -51,16 +51,13 @@ public class LegacyGatewayEndpoint {
     this.ingesterService = ingesterService;
   }
 
-  public ResponseEntity<?> confirmFile(MultipartFile file, String endpoint) throws Exception {
+  public void assertValidFilename(MultipartFile file, String endpoint) throws Exception {
     // confirm data is in correct format
     if (!confirmFilename(file, endpoint)) {
-      return new ResponseEntity<>(
-          "The file name specified in the request does not match the file name format expected by the endpoint",
-          HttpStatus.BAD_REQUEST);
-    } else if (!confirmFiletype(file)) {
-      return new ResponseEntity<>("Recieved non-CSV file", HttpStatus.UNSUPPORTED_MEDIA_TYPE);
-    } else {
-      return null;
+      throw new InvalidFileNameException(file.getOriginalFilename());
+//      return new ResponseEntity<>(
+//          "The file name specified in the request does not match the file name format expected by the endpoint",
+//          HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -87,13 +84,6 @@ public class LegacyGatewayEndpoint {
         timestampValid;
   }
 
-  public boolean confirmFiletype(MultipartFile file)  {
-    String filename = file.getOriginalFilename();
-    String[] filenameSplit = filename.split("\\.");
-    // TODO replace these unchecked array accesses
-    return "csv".equals(filenameSplit[filenameSplit.length - 1]);
-  }
-
   @RequestMapping(value = "/sample", method = RequestMethod.POST, consumes = "text/csv", produces = "application/json")
   @ApiResponses(value = {
       @ApiResponse(code = 400, message = "Bad Request", response = GatewayCommonErrorDTO.class),
@@ -103,10 +93,7 @@ public class LegacyGatewayEndpoint {
   public ResponseEntity<SampleSummaryDTO> sampleREST(@RequestParam("file") MultipartFile file,
       RedirectAttributes redirectAttributes) throws Exception {
 
-    ResponseEntity<?> responseEntity = confirmFile(file, "sample");
-    if (responseEntity != null) {
-      // TODO
-    }
+    assertValidFilename(file, "sample");
 
     // add data to reception table
     LegacyLFSSampleReader reader = new LegacyLFSSampleReader(file.getInputStream());
@@ -132,10 +119,7 @@ public class LegacyGatewayEndpoint {
   public ResponseEntity<StaffSummaryDTO> staffREST(@RequestParam("file") MultipartFile file,
       RedirectAttributes redirectAttributes) throws Exception {
 
-    ResponseEntity<?> responseEntity = confirmFile(file, "staff");
-    if (responseEntity != null) {
-      // TODO
-    }
+    assertValidFilename(file, "staff");
 
     // add data to reception table
     LegacyStaffReader legacyStaffReader = new LegacyStaffReader(file.getInputStream());
