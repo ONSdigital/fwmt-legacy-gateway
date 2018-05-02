@@ -258,10 +258,10 @@ public class LegacyLFSSampleReader implements SampleReader {
     SAMPLE_LFS_DATA_COLUMN_MAP = map;
   }
 
-  @Getter
-  private List<IllegalCSVStructureException> errorList;
   private CsvToBean<LegacyLFSSampleEntityRaw> csvToBean;
-  @Getter private int processedCount;
+  @Getter private List<IllegalCSVStructureException> errorList;
+  @Getter private int errorCount;
+  @Getter private int successCount;
 
   public LegacyLFSSampleReader(InputStream stream) {
     HeaderColumnNameTranslateMappingStrategy<LegacyLFSSampleEntityRaw> strategy =
@@ -519,7 +519,6 @@ public class LegacyLFSSampleReader implements SampleReader {
     }
 
     @Override public LegacySampleEntity next() {
-      processedCount++;
       LegacyLFSSampleEntityRaw raw = rawIterator.next();
       LegacySampleEntity entity = new LegacySampleEntity();
       entity.setLegacyjobid(raw.getSerno()+raw.getFp()+raw.getTla());
@@ -555,10 +554,10 @@ public class LegacyLFSSampleReader implements SampleReader {
   private class LegacyLFSSampleCSVFilter implements CsvToBeanFilter {
     private final MappingStrategy strategy;
 
-    // TODO ensure that this counter always begins at 2
+    // TODO ensure that this lineCounter always begins at 2
     // We must be sure that this instance is never re-used
     // It begins at 2 as the first line of the CSV is skipped
-    private int counter = 2;
+    private int lineCounter = 2;
 
     LegacyLFSSampleCSVFilter(MappingStrategy strategy) {
       this.strategy = strategy;
@@ -596,10 +595,13 @@ public class LegacyLFSSampleReader implements SampleReader {
           check.apply(postcode) &&
           check.apply(addressNo) &&
           check.apply(osGridRef);
-      if (!pass) {
-        errorList.add(new IllegalCSVStructureException(strings, counter, "A null or empty required field was found"));
+      if (pass) {
+        successCount++;
+      } else {
+        errorCount++;
+        errorList.add(new IllegalCSVStructureException(strings, lineCounter, "A null or empty required field was found"));
       }
-      counter++;
+      lineCounter++;
       return pass;
     }
   }

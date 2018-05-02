@@ -26,6 +26,7 @@ public class LegacyStaffReader {
       EMAIL, PHONE, USER_TYPE};
 
   CsvToBean<LegacyStaffEntity> csvToBean;
+  // TODO this means is a bit old, see LegacyLFSSampleReader
   @Getter private int processedCount;
 
   public LegacyStaffReader(InputStream stream) {

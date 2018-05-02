@@ -83,9 +83,10 @@ public class LegacyGFFSampleReader implements SampleReader {
     SAMPLE_GFF_DATA_COLUMN_MAP = map;
   }
 
-  @Getter
-  private List<IllegalCSVStructureException> errorList;
   private CsvToBean<LegacyGFFSampleEntityRaw> csvToBean;
+  @Getter private List<IllegalCSVStructureException> errorList;
+  @Getter private int errorCount;
+  @Getter private int successCount;
 
   public LegacyGFFSampleReader(InputStream stream) {
     HeaderColumnNameTranslateMappingStrategy<LegacyGFFSampleEntityRaw> strategy =
@@ -212,7 +213,7 @@ public class LegacyGFFSampleReader implements SampleReader {
     // TODO ensure that this counter always begins at 2
     // We must be sure that this instance is never re-used
     // It begins at 2 as the first line of the CSV is skipped
-    private int counter = 2;
+    private int lineCounter = 2;
 
     LegacyGFFSampleCSVFilter(MappingStrategy<LegacyGFFSampleEntityRaw> strategy) {
       this.strategy = strategy;
@@ -251,10 +252,13 @@ public class LegacyGFFSampleReader implements SampleReader {
           check.apply(postcode) &&
           check.apply(addressNo) &&
           check.apply(osGridRef);
-      if (!pass) {
-        errorList.add(new IllegalCSVStructureException(strings, counter, "A null or empty required field was found"));
+      if (pass) {
+        successCount++;
+      } else {
+        errorCount++;
+        errorList.add(new IllegalCSVStructureException(strings, lineCounter, "A null or empty required field was found"));
       }
-      counter++;
+      lineCounter++;
       return pass;
     }
   }
