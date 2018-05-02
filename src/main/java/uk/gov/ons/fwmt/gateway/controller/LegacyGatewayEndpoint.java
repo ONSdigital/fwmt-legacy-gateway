@@ -52,23 +52,15 @@ public class LegacyGatewayEndpoint {
   }
 
   public void assertValidFilename(MultipartFile file, String endpoint) throws Exception {
-    // confirm data is in correct format
-    if (!confirmFilename(file, endpoint)) {
-      throw new InvalidFileNameException(file.getOriginalFilename());
-//      return new ResponseEntity<>(
-//          "The file name specified in the request does not match the file name format expected by the endpoint",
-//          HttpStatus.BAD_REQUEST);
-    }
-  }
-
-  public boolean confirmFilename(MultipartFile file, String endpoint) throws Exception {
     String filename = file.getOriginalFilename();
     String[] filenameSplit = filename.split("\\.");
-    if (filenameSplit.length != 3) {
+    if (filenameSplit.length != 2) {
       throw new InvalidFileNameException(filename);
     }
-    // TODO replace these unchecked array accesses
     String[] nameSplit = filenameSplit[0].split("_");
+    if (nameSplit.length != 3) {
+      throw new InvalidFileNameException(filename);
+    }
     String fileEndpoint = nameSplit[0];
     String surveyTla = nameSplit[1];
     String timestamp = nameSplit[2];
@@ -79,9 +71,11 @@ public class LegacyGatewayEndpoint {
     } catch (IllegalArgumentException e) {
       timestampValid = false;
     }
-    return fileEndpoint.equals(endpoint) &&
+    if (!(fileEndpoint.equals(endpoint) &&
         surveyTla.length() == 3 &&
-        timestampValid;
+        timestampValid)) {
+      throw new InvalidFileNameException(filename);
+    }
   }
 
   @RequestMapping(value = "/sample", method = RequestMethod.POST, consumes = "text/csv", produces = "application/json")
