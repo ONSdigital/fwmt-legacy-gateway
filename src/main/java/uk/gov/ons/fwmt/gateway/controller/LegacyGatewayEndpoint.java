@@ -86,12 +86,16 @@ public class LegacyGatewayEndpoint {
   }
 
   public boolean confirmFiletype(MultipartFile file) {
-    String contentType = file.getContentType();
-    String filename = file.getOriginalFilename();
-    String[] filenameSplit = filename.split("\\.");
-    return "text/csv".equals(contentType) &&
-        "text/csv".equals(contentType) &&
-        "csv".equals(filenameSplit[filenameSplit.length - 1]);
+    try {
+      String contentType = file.getContentType();
+      String filename = file.getOriginalFilename();
+      String[] filenameSplit = filename.split("\\.");
+      return "text/csv".equals(contentType) &&
+          "text/csv".equals(contentType) &&
+          "csv".equals(filenameSplit[filenameSplit.length - 1]);
+    } catch (Exception e) {
+      return false;
+    }    
   }
 
   @RequestMapping(value = "/samples", method = RequestMethod.POST, produces = "application/json")
