@@ -13,6 +13,8 @@ import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.Sen
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendMessageRequestInfo;
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendUpdateJobHeaderRequestMessage;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import uk.gov.ons.fwmt.gateway.entity.LegacyJobEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacyLeaverEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
@@ -30,201 +32,156 @@ import uk.gov.ons.fwmt.gateway.utility.csvconverter.LegacyUpdateJobHeaderRequest
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyJobsReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyUsersReader;
 
+@Slf4j
+@Service
 public class PublishServiceImpl implements PublishService {
 
-    private TMMessageSubmitter submitter;
-    private LegacySampleRepo legacySampleRepository;
-    private LegacyStaffRepo legacyStaffRepo;
-    private LegacyLeaversRepo legacyLeaversRepo;
-    private LegacyJobsRepo legacyJobsRepo;
-    private LegacyUsersRepo legacyUsersRepo;
+  private TMMessageSubmitter submitter;
+  private LegacySampleRepo legacySampleRepository;
+  private LegacyStaffRepo legacyStaffRepo;
+  private LegacyJobsRepo legacyJobsRepo;
+  private LegacyUsersRepo legacyUsersRepo;
 
-    private List<LegacySampleEntity> sampleEntries;
-    private List<LegacyStaffEntity> staffEntries;
-    private List<LegacyLeaverEntity> leaversEntries;
-    private List<LegacyJobEntity> jobsEntries;
-    private List<LegacyUserEntity> usersEntries;
+  // TODO refactor this, it's local state and should be in a local variable passed between functions
+  private List<String> successfullySentIds;
 
-    @Autowired
-    public PublishServiceImpl(TMMessageSubmitter submitter, LegacySampleRepo legacySampleRepository,
-            LegacyStaffRepo legacyStaffRepo, LegacyLeaversRepo legacyLeaversRepo, LegacyJobsRepo legacyJobsRepo,
-            LegacyUsersRepo legacyUsersRepo) {
-        this.submitter = submitter;
-        this.legacySampleRepository = legacySampleRepository;
-        this.legacyStaffRepo = legacyStaffRepo;
-        this.legacyLeaversRepo = legacyLeaversRepo;
-        this.legacyJobsRepo = legacyJobsRepo;
-        this.legacyUsersRepo = legacyUsersRepo;
-    }
+  @Autowired
+  public PublishServiceImpl(TMMessageSubmitter submitter, LegacySampleRepo legacySampleRepository,
+      LegacyStaffRepo legacyStaffRepo, LegacyJobsRepo legacyJobsRepo, LegacyUsersRepo legacyUsersRepo) {
+    this.submitter = submitter;
+    this.legacySampleRepository = legacySampleRepository;
+    this.legacyStaffRepo = legacyStaffRepo;
+    this.legacyJobsRepo = legacyJobsRepo;
+    this.legacyUsersRepo = legacyUsersRepo;
+  }
 
-    public void populateEntryArrays() {
-        sampleEntries = new ArrayList<>();
-        legacySampleRepository.findAll().forEach(sampleEntries::add);
+  @Override
+  public void publishUpdateUsers() {
+    legacyStaffRepo.findAll().forEach(staff -> {
+      if (!legacyUsersRepo.existsByAuthNo(staff.getAuthno())) {
+        if (legacyUsersRepo.existsByTmusername(getProposedTMUsername(staff.getEmail()))) {
+          LegacyUserEntity existingUser = legacyUsersRepo.findByTmusername(getProposedTMUsername(staff.getEmail()));
+          existingUser.setAuthNo(staff.getAuthno());
+          legacyUsersRepo.save(existingUser);
+        } else {
+          LegacyUserEntity newUser = LegacyUsersReader.createUserEntity(staff,
+              getProposedTMUsername(staff.getEmail()));
 
-        staffEntries = new ArrayList<>();
-        legacyStaffRepo.findAll().forEach(staffEntries::add);
-
-        leaversEntries = new ArrayList<>();
-        legacyLeaversRepo.findAll().forEach(leaversEntries::add);
-
-        jobsEntries = new ArrayList<>();
-        legacyJobsRepo.findAll().forEach(jobsEntries::add);
-
-        usersEntries = new ArrayList<>();
-        legacyUsersRepo.findAll().forEach(usersEntries::add);
-    }
-
-    @Override
-    public void execute() {
-        populateEntryArrays();
-        executeUpdateUsers();
-        executeJobs();
-    }
-
-    public void executeUpdateUsers() {
-        List<LegacyStaffEntity> newStaffEntities = new ArrayList<LegacyStaffEntity>();
-        List<LegacyUserEntity> removedUserEntities = new ArrayList<LegacyUserEntity>();
-
-        for (LegacyStaffEntity staff : staffEntries) {
-            boolean newStaff = true;
-            for (LegacyUserEntity user : usersEntries) {
-                if (user.getAuthNo().equals(staff.getAuthno())) {
-                    newStaff = false;
-                }
-            }
-            if (newStaff) {
-                newStaffEntities.add(staff);
-            }
+          // TODO create new mobilise user in TM
+          log.info("Must create new user " + newUser.getTmusername() + " and set correct AuthNo.");
+          // make sure to add authority number as an additional property
+          legacyUsersRepo.save(newUser);
         }
+      }
+    });
 
-        for (LegacyUserEntity user : usersEntries) {
-            boolean removedUser = true;
-            for (LegacyStaffEntity staff : staffEntries) {
-                if (user.getAuthNo().equals(staff.getAuthno())) {
-                    removedUser = false;
-                }
-            }
-            if (removedUser) {
-                removedUserEntities.add(user);
-            }
-        }
+    legacyUsersRepo.findAll().forEach(user -> {
+      if (!legacyStaffRepo.existsByAuthno(user.getAuthNo())) {
+        // remove user (potentially delete the user from totalmobile TBD)
+        user.setAuthNo(null);
+        legacyUsersRepo.save(user);
+      }
+    });
 
-        for (LegacyUserEntity removedUser : removedUserEntities) {
-            removedUser.setAuthNo(null);
-            legacyUsersRepo.save(removedUser);
-        }
+    // all lines of the staff repo have been processed to find new users and users that no longer exist.
+    // therefore i will now empty the staff reception table
+    legacyStaffRepo.deleteAll();
+  }
 
-        for (LegacyStaffEntity newStaff : newStaffEntities) {
-            // find if staff member already exists
-            // if so then update thier staffid
-            if (legacyUsersRepo.existsByTmusername(getProposedTMUsername(newStaff.getEmail()))) {
-                LegacyUserEntity user = legacyUsersRepo.findByTmusername(getProposedTMUsername(newStaff.getEmail()));
-                user.setAuthNo(newStaff.getAuthno());
-                legacyUsersRepo.save(user);
-            } else {
-                // if not then create new user entity
-                LegacyUserEntity newUser = LegacyUsersReader.createUserEntity(newStaff,
-                        getProposedTMUsername(newStaff.getEmail()));
-                // create new mobilise user in TM
+  @Override
+  public void publishNewJobsAndReallocations() {
+    successfullySentIds = new ArrayList<String>();
+    legacySampleRepository.findAll().forEach(entity -> {
+      if (legacyJobsRepo.existsBySerno(entity.getSerno())) {
+        executeReallocateJob(entity);
+      } else {
+        executeNewJob(entity);
+      }
+    });
+    for(String id: successfullySentIds) {
+      legacySampleRepository.deleteBySerno(id);
+    }
+  }
 
-                // TODO CREATE THE USER IN TM USING THE ADMINWS OR SELENIUM
-                System.out.println("Must create new user "+newUser.getTmusername() + " and set correct AuthNo.");
-                // make sure to add authority number as an additional property
-
-                // add to the users table
-                legacyUsersRepo.save(newUser);
-            }
-        }
+  public void executeNewJob(LegacySampleEntity newJobEntity) {
+    String tmUsername = legacyUsersRepo.findByAuthNo(newJobEntity.getAuthno()).getTmusername();
+    CreateJobRequest createJobRequest = LegacyCreateJobRequestFactory.convert(newJobEntity, tmUsername);
+    LegacyJobEntity legacyJobEntity = LegacyJobsReader.createJobEntity(createJobRequest);
+    legacyJobsRepo.save(legacyJobEntity);
+    try {
+      sendJobRequest(createJobRequest, "\\OPTIMISE\\INPUT");
+      // TODO CHANGE THIS TO NEW COMPOSITE PK
+      successfullySentIds.add(newJobEntity.getSerno());
+    } catch (Exception e) {
+      // something errored do something here
+      e.printStackTrace();
     }
 
-    @Override
-    public void executeJobs() {
-        List<LegacySampleEntity> newJobsEntities = new ArrayList<LegacySampleEntity>();
-        List<LegacySampleEntity> reallocationEntities = new ArrayList<LegacySampleEntity>();        
-        
-        for (LegacySampleEntity sample : sampleEntries) {
-            if (legacyJobsRepo.existsBySerno(sample.getSerno())) {
-                reallocationEntities.add(sample);
-            } else {
-                newJobsEntities.add(sample);
-            }
-        }
+    // Update database jobs table states for each job from inital to sent.
+    LegacyJobEntity jobEntity = legacyJobsRepo.findByTmjobid(createJobRequest.getJob().getIdentity().getReference());
+    legacyJobsRepo.save(LegacyJobsReader.setStateSent(jobEntity));
+  }
 
-        executeAllocationJobs(newJobsEntities);
-        executeReallocateJobs(reallocationEntities);
+  public void executeReallocateJob(LegacySampleEntity reallocationEntity) {
+    String tmJobId = legacyJobsRepo.findBySerno(reallocationEntity.getSerno()).getTmjobid();
+    String tmUsername = legacyUsersRepo.findByAuthNo(reallocationEntity.getAuthno()).getTmusername();
+    UpdateJobHeaderRequest updateJobHeaderRequest = LegacyUpdateJobHeaderRequestFactory.reallocate(tmJobId, tmUsername);
+    try {
+      sendUpdateJobRequest(updateJobHeaderRequest, "\\OPTIMISE\\INPUT");
+      // TODO CHANGE THIS TO NEW COMPOSITE PK
+      successfullySentIds.add(reallocationEntity.getSerno());
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
 
-    public void executeAllocationJobs(List<LegacySampleEntity> newJobsEntities) {
-        List<CreateJobRequest> createJobRequests = LegacyCreateJobRequestFactory.convert(sampleEntries, newJobsEntities,
-                usersEntries);
-        for (CreateJobRequest createJobRequest : createJobRequests) {
-            LegacyJobEntity legacyJobEntity = LegacyJobsReader.createJobEntity(createJobRequest);
-            legacyJobsRepo.save(legacyJobEntity);
-        }
-        sendJobRequests(createJobRequests, "\\OPTIMISE\\INPUT");
+    // Update database jobs table states for each job from inital to sent.
+    LegacyJobEntity jobEntity = legacyJobsRepo
+        .findByTmjobid(updateJobHeaderRequest.getJobHeader().getJobIdentity().getReference());
+    legacyJobsRepo.save(LegacyJobsReader.setStateSent(jobEntity));
+  }
 
-        // Update database jobs table states for each job from inital to sent.
-        for (CreateJobRequest job : createJobRequests) {
-            LegacyJobEntity jobEntity = legacyJobsRepo.findByTmjobid(job.getJob().getIdentity().getReference());
-            legacyJobsRepo.save(LegacyJobsReader.setStateSent(jobEntity));
-        }
+  public void executeReissueJobs() {
+    // this may or may not be required
+  }
+
+  private <T> List<T> getAllEntities(Iterator<T> iter) {
+    List<T> entities = new ArrayList<>();
+    while (iter.hasNext()) {
+      entities.add(iter.next());
     }
+    return entities;
+  }
 
-    public void executeReallocateJobs(List<LegacySampleEntity> reallocationEntities) {
-        List<UpdateJobHeaderRequest> updateJobHeaderRequest = new ArrayList<UpdateJobHeaderRequest>();
-        for (LegacySampleEntity entity : reallocationEntities) {
-            String tmJobId = legacyJobsRepo.findBySerno(entity.getSerno()).getTmjobid();
-            updateJobHeaderRequest
-                    .add(LegacyUpdateJobHeaderRequestFactory.reallocate(tmJobId, entity.getAuthno(), usersEntries));
-        }
+  private void sendJobRequest(CreateJobRequest request, String queueName) throws Exception {
+    List<SendCreateJobRequestMessage> messages = new ArrayList<>();
 
-        sendUpdateJobRequests(updateJobHeaderRequest, "\\OPTIMISE\\INPUT");
-    }
+    SendCreateJobRequestMessage message = new SendCreateJobRequestMessage();
+    message.setCreateJobRequest(request);
 
-    public void executeReissueJobs() {
-        // this may or may not be required
-    }
+    message.setSendMessageRequestInfo(new SendMessageRequestInfo());
+    message.getSendMessageRequestInfo().setQueueName(queueName);
+    message.getSendMessageRequestInfo().setKey(request.getJob().getIdentity().getReference());
+    messages.add(message);
 
-    private <T> List<T> getAllEntities(Iterator<T> iter) {
-        List<T> entities = new ArrayList<>();
-        while (iter.hasNext()) {
-            entities.add(iter.next());
-        }
-        return entities;
-    }
+    submitter.sendAll(messages);
+  }
 
-    private void sendJobRequests(List<CreateJobRequest> requests, String queueName) {
-        List<SendCreateJobRequestMessage> messages = requests.stream().map(r -> {
-            SendCreateJobRequestMessage message = new SendCreateJobRequestMessage();
-            message.setCreateJobRequest(r);
+  private void sendUpdateJobRequest(UpdateJobHeaderRequest request, String queueName) throws Exception {
+    List<SendUpdateJobHeaderRequestMessage> messages = new ArrayList<>();
 
-            message.setSendMessageRequestInfo(new SendMessageRequestInfo());
-            message.getSendMessageRequestInfo().setQueueName(queueName);
-            message.getSendMessageRequestInfo().setKey(r.getJob().getIdentity().getReference());
+    SendUpdateJobHeaderRequestMessage message = new SendUpdateJobHeaderRequestMessage();
+    message.setUpdateJobHeaderRequest(request);
 
-            return message;
-        }).collect(Collectors.toList());
+    message.setSendMessageRequestInfo(new SendMessageRequestInfo());
+    message.getSendMessageRequestInfo().setQueueName(queueName);
+    message.getSendMessageRequestInfo().setKey(request.getJobHeader().getJobIdentity().getReference());
 
-        submitter.sendAll(messages);
-    }
+    submitter.sendAll(messages);
+  }
 
-    private void sendUpdateJobRequests(List<UpdateJobHeaderRequest> requests, String queueName) {
-        List<SendUpdateJobHeaderRequestMessage> messages = requests.stream().map(r -> {
-            SendUpdateJobHeaderRequestMessage message = new SendUpdateJobHeaderRequestMessage();
-            message.setUpdateJobHeaderRequest(r);
-
-            message.setSendMessageRequestInfo(new SendMessageRequestInfo());
-            message.getSendMessageRequestInfo().setQueueName(queueName);
-            message.getSendMessageRequestInfo().setKey(r.getJobHeader().getJobIdentity().getReference());
-
-            return message;
-        }).collect(Collectors.toList());
-
-        submitter.sendAll(messages);
-    }
-
-    private String getProposedTMUsername(String email) {
-        String username = email.split("@")[0];
-        return username;
-    }
+  private String getProposedTMUsername(String email) {
+    String username = email.split("@")[0];
+    return username;
+  }
 }
