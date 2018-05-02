@@ -74,28 +74,28 @@ public class LegacyGatewayEndpoint {
     // one dot, splitting the file name
     String[] filenameSplit = filename.split("\\.");
     if (filenameSplit.length != 2)
-         throw new InvalidFileNameException(filename);
+         throw new InvalidFileNameException(filename, "No 'csv' extension");
     // two underscores, splitting the file name sans extension
     String[] nameSplit = filenameSplit[0].split("_");
     if (nameSplit.length != 3)
-         throw new InvalidFileNameException(filename);
+         throw new InvalidFileNameException(filename, "Invalid number of underscore-delimited sections");
     // the first section matches our endpoint
     String fileEndpoint = nameSplit[0];
     if (!endpoint.equals(fileEndpoint))
-      throw new InvalidFileNameException(filename);
+      throw new InvalidFileNameException(filename, "Invalid endpoint declaration");
     // the second section contains only three characters
     String surveyTla = nameSplit[1];
     if (surveyTla.length() != 3)
-      throw new InvalidFileNameException(filename);
+      throw new InvalidFileNameException(filename, "Survey name must be three characters long");
     // the third section is a valid timestamp
     String timestamp = nameSplit[2];
     String parsedDate = parseFWMTDateTime(timestamp);
     if (parsedDate == null)
-      throw new InvalidFileNameException(filename);
+      throw new InvalidFileNameException(filename, "Survey date did not parse correctly");
     try {
       DatatypeConverter.parseDateTime(parsedDate);
     } catch (IllegalArgumentException e) {
-      throw new InvalidFileNameException(filename);
+      throw new InvalidFileNameException(filename, "Survey date did not represent a valid date");
     }
   }
 
@@ -114,6 +114,8 @@ public class LegacyGatewayEndpoint {
   public ResponseEntity<SampleSummaryDTO> sampleREST(@RequestParam("file") MultipartFile file,
       RedirectAttributes redirectAttributes)
       throws IOException, InvalidFileNameException, MediaTypeNotSupportedException {
+    log.error("Started REST endpoint");
+
     SampleReader reader;
 
     assertValidFilename(file, "sample");
@@ -122,10 +124,10 @@ public class LegacyGatewayEndpoint {
     // add data to reception table
     if (file.getOriginalFilename().contains("LFS")) {
       reader = new LegacyLFSSampleReader(file.getInputStream());
-    } else if (file.getOriginalFilename().contains("LFS")) {
+    } else if (file.getOriginalFilename().contains("GFS")) {
       reader = new LegacyGFFSampleReader(file.getInputStream());
     } else {
-      throw new InvalidFileNameException(file.getOriginalFilename());
+      throw new InvalidFileNameException(file.getOriginalFilename(), "Invalid survey type");
     }
 
     Iterator<LegacySampleEntity> iterator = reader.iterator();

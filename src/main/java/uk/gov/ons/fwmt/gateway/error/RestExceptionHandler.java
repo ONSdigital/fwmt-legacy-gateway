@@ -46,8 +46,7 @@ public class RestExceptionHandler {
   @ExceptionHandler(InvalidFileNameException.class)
   public ResponseEntity<GatewayCommonErrorDTO> handleInvalidFileNameException(HttpServletRequest request,
       InvalidFileNameException exception) {
-    return makeCommonError(request, exception, HttpStatus.BAD_REQUEST, "Invalid CSV File Name",
-        "'" + exception.getName() + "' is not a valid file name.");
+    return makeCommonError(request, exception, HttpStatus.BAD_REQUEST, "Invalid CSV File Name", exception.toString());
   }
 
 }
