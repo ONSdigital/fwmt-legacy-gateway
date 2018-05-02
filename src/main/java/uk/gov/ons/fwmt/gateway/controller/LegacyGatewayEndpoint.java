@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,12 +21,15 @@ import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
 import uk.gov.ons.fwmt.gateway.error.GatewayCommonErrorDTO;
 import uk.gov.ons.fwmt.gateway.error.IllegalCSVStructureException;
 import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
+import uk.gov.ons.fwmt.gateway.error.MediaTypeNotSupportedException;
 import uk.gov.ons.fwmt.gateway.representation.SampleSummaryDTO;
 import uk.gov.ons.fwmt.gateway.representation.StaffSummaryDTO;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
+import uk.gov.ons.fwmt.gateway.utility.readers.LegacyGFFSampleReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
-import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
+import uk.gov.ons.fwmt.gateway.utility.readers.SampleReader;
+
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.util.Iterator;
@@ -52,60 +55,77 @@ public class LegacyGatewayEndpoint {
     this.ingesterService = ingesterService;
   }
 
-  public void parseDateTime(String timestamp) throws IllegalArgumentException {
-    List<Integer> indexes = new ArrayList<Integer>();
-    for (int index = timestamp.indexOf("-"); index >= 0; index = timestamp.indexOf("-", index + 1)) {
-      indexes.add(index);
-    }
-    StringBuilder newTimestamp = new StringBuilder(timestamp);
-    newTimestamp.setCharAt(indexes.get(indexes.size()-1), ':');
-    newTimestamp.setCharAt(indexes.get(indexes.size()-2), ':');
-    DatatypeConverter.parseDateTime(newTimestamp.toString());
+  public String parseFWMTDateTime(String timestamp) {
+    int index2 = timestamp.lastIndexOf('-');
+    if (index2 == -1 || index2 < 1)
+      return null;
+    int index1 = timestamp.lastIndexOf('-', index2 - 1);
+    if (index1 == -1)
+      return null;
+    StringBuffer sb = new StringBuffer(timestamp);
+    sb.setCharAt(index1, ':');
+    sb.setCharAt(index2, ':');
+    return sb.toString();
   }
 
-  public void assertValidFilename(MultipartFile file, String endpoint) throws Exception {
+  // TODO tag these all with descriptive messages of the problems that caused them
+  public void assertValidFilename(MultipartFile file, String endpoint) throws InvalidFileNameException {
     String filename = file.getOriginalFilename();
+    // one dot, splitting the file name
     String[] filenameSplit = filename.split("\\.");
-    if (filenameSplit.length != 2) {
-      throw new InvalidFileNameException(filename);
-    }
+    if (filenameSplit.length != 2)
+         throw new InvalidFileNameException(filename);
+    // two underscores, splitting the file name sans extension
     String[] nameSplit = filenameSplit[0].split("_");
-    if (nameSplit.length != 3) {
-      throw new InvalidFileNameException(filename);
-    }
+    if (nameSplit.length != 3)
+         throw new InvalidFileNameException(filename);
+    // the first section matches our endpoint
     String fileEndpoint = nameSplit[0];
+    if (!endpoint.equals(fileEndpoint))
+      throw new InvalidFileNameException(filename);
+    // the second section contains only three characters
     String surveyTla = nameSplit[1];
+    if (surveyTla.length() != 3)
+      throw new InvalidFileNameException(filename);
+    // the third section is a valid timestamp
     String timestamp = nameSplit[2];
-    boolean timestampValid;
+    String parsedDate = parseFWMTDateTime(timestamp);
+    if (parsedDate == null)
+      throw new InvalidFileNameException(filename);
     try {
-      DatatypeConverter.parseDateTime(timestamp);
-      timestampValid = true;
+      DatatypeConverter.parseDateTime(parsedDate);
     } catch (IllegalArgumentException e) {
-      timestampValid = false;
-    }
-    if (!(fileEndpoint.equals(endpoint) &&
-        surveyTla.length() == 3 &&
-        timestampValid)) {
       throw new InvalidFileNameException(filename);
     }
   }
 
-  @RequestMapping(value = "/samples", method = RequestMethod.POST, consumes = "text/csv", produces = "application/json")
+  private void assertValidFileMetadata(MultipartFile file) throws MediaTypeNotSupportedException {
+    if (!"text/csv".equals(file.getContentType())) {
+      throw new MediaTypeNotSupportedException(new MediaType(file.getContentType()), new MediaType("text/csv"));
+    }
+  }
+
+  @RequestMapping(value = "/samples", method = RequestMethod.POST, produces = "application/json")
   @ApiResponses(value = {
       @ApiResponse(code = 400, message = "Bad Request", response = GatewayCommonErrorDTO.class),
       @ApiResponse(code = 415, message = "Unsupported Media Type", response = GatewayCommonErrorDTO.class),
       @ApiResponse(code = 500, message = "Internal Server Error", response = GatewayCommonErrorDTO.class),
   })
   public ResponseEntity<SampleSummaryDTO> sampleREST(@RequestParam("file") MultipartFile file,
-      RedirectAttributes redirectAttributes) throws IOException {
+      RedirectAttributes redirectAttributes)
+      throws IOException, InvalidFileNameException, MediaTypeNotSupportedException {
+    SampleReader reader;
 
     assertValidFilename(file, "sample");
+    assertValidFileMetadata(file);
 
     // add data to reception table
     if (file.getOriginalFilename().contains("LFS")) {
       reader = new LegacyLFSSampleReader(file.getInputStream());
-    } else {
+    } else if (file.getOriginalFilename().contains("LFS")) {
       reader = new LegacyGFFSampleReader(file.getInputStream());
+    } else {
+      throw new InvalidFileNameException(file.getOriginalFilename());
     }
 
     Iterator<LegacySampleEntity> iterator = reader.iterator();
@@ -116,17 +136,17 @@ public class LegacyGatewayEndpoint {
       log.error("Found a CSV parsing error");
     }
     // pull the unprocessed entries out from the exceptions stored in the legacySampleReader
-    List<SampleSummaryDTO.UnprocessedEntry> unprocessedEntries = reader.errorList.stream()
+    List<SampleSummaryDTO.UnprocessedEntry> unprocessedEntries = reader.getErrorList().stream()
         .map(IllegalCSVStructureException::toUnprocessedEntry)
         .collect(Collectors.toList());
 
     // create the response object
-    SampleSummaryDTO sampleSummaryDTO = new SampleSummaryDTO(file.getOriginalFilename(), reader.getProcessedCount(),
+    SampleSummaryDTO sampleSummaryDTO = new SampleSummaryDTO(file.getOriginalFilename(), reader.getSuccessCount(),
         unprocessedEntries);
     return ResponseEntity.ok(sampleSummaryDTO);
   }
 
-  @RequestMapping(value = "/staff", method = RequestMethod.POST, consumes = "text/csv", produces = "application/json")
+  @RequestMapping(value = "/staff", method = RequestMethod.POST, produces = "application/json")
   @ApiResponses(value = {
       @ApiResponse(code = 400, message = "Bad Request", response = GatewayCommonErrorDTO.class),
       @ApiResponse(code = 415, message = "Unsupported Media Type", response = GatewayCommonErrorDTO.class),
@@ -136,6 +156,7 @@ public class LegacyGatewayEndpoint {
       RedirectAttributes redirectAttributes) throws Exception {
 
     assertValidFilename(file, "staff");
+    assertValidFileMetadata(file);
 
     // add data to reception table
     LegacyStaffReader legacyStaffReader = new LegacyStaffReader(file.getInputStream());
