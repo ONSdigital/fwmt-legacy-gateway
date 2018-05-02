@@ -15,7 +15,7 @@ public class LegacyJobsReader  extends CsvToBean<LegacyJobEntity>{
         JobType job = createJobRequest.getJob();
         
         legacyJobEntity.setTmjobid(job.getIdentity().getReference());
-        legacyJobEntity.setSerno(job.getLocation().getReference());
+        legacyJobEntity.setLegacyjobid(job.getLocation().getReference());
         legacyJobEntity.setState("INITAL");
         legacyJobEntity.setInitaltimestamp(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
         legacyJobEntity.setSenttimestamp(null);

@@ -18,7 +18,7 @@ public class LegacyJobEntity {
   @Id
   public String tmjobid;
   @Column(unique = true, nullable = true)
-  public String serno;
+  public String legacyjobid;
   public String state;
   public String initaltimestamp;
   public String senttimestamp;
