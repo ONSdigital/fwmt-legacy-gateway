@@ -19,8 +19,11 @@ import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
 import uk.gov.ons.fwmt.gateway.representation.SampleSummaryDTO;
 import uk.gov.ons.fwmt.gateway.representation.StaffSummaryDTO;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
-import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
+import uk.gov.ons.fwmt.gateway.utility.readers.LegacyGFFSampleReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
+import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
+import uk.gov.ons.fwmt.gateway.utility.readers.SampleReader;
+
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.util.Iterator;
@@ -59,49 +62,69 @@ public class LegacyGatewayEndpoint {
   }
 
   public boolean confirmFilename(MultipartFile file, String endpoint) {
-    String filename = file.getOriginalFilename();
-    String[] filenameSplit = filename.split("\\.");
-    String[] nameSplit = filenameSplit[0].split("_");
-    String fileEndpoint = nameSplit[0];
-    String surveyTla = nameSplit[1];
-    String timestamp = nameSplit[2];
-    boolean timestampValid;
+    // TODO What is this outer try catching?
     try {
-      DatatypeConverter.parseDateTime(timestamp);
-      timestampValid = true;
-    } catch (IllegalArgumentException e) {
-      timestampValid = false;
+      String filename = file.getOriginalFilename();
+      String[] filenameSplit = filename.split("\\.");
+      String[] nameSplit = filenameSplit[0].split("_");
+      String fileEndpoint = nameSplit[0];
+      String surveyTla = nameSplit[1];
+      String timestamp = nameSplit[2];
+      boolean timestampValid;
+      try {
+        DatatypeConverter.parseDateTime(timestamp);
+        timestampValid = true;
+      } catch (IllegalArgumentException e) {
+        timestampValid = false;
+      }
+      return fileEndpoint.equals(endpoint) &&
+          surveyTla.length() == 3 &&
+          timestampValid;
+    } catch (Exception e) {
+      return false;
     }
-    return fileEndpoint.equals(endpoint) &&
-        surveyTla.length() == 3 &&
-        timestampValid;
   }
 
   public boolean confirmFiletype(MultipartFile file) {
-    String contentType = file.getContentType();
-    String filename = file.getOriginalFilename();
-    String[] filenameSplit = filename.split("\\.");
-    return "text/csv".equals(contentType) &&
-        "text/csv".equals(contentType) &&
-        "csv".equals(filenameSplit[filenameSplit.length - 1]);
+    try {
+      String contentType = file.getContentType();
+      String filename = file.getOriginalFilename();
+      String[] filenameSplit = filename.split("\\.");
+      return "text/csv".equals(contentType) &&
+          "text/csv".equals(contentType) &&
+          "csv".equals(filenameSplit[filenameSplit.length - 1]);
+    } catch (Exception e) {
+      return false;
+    }    
   }
 
-  @RequestMapping(value = "/sample", method = RequestMethod.POST, produces = "application/json")
-  public ResponseEntity<SampleSummaryDTO> sampleREST(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
+  @RequestMapping(value = "/samples", method = RequestMethod.POST, produces = "application/json")
+  public ResponseEntity<?> sampleREST(@RequestParam("file") MultipartFile file,
+      RedirectAttributes redirectAttributes)
       throws IOException {
 
     ResponseEntity<?> responseEntity = confirmFile(file, "sample");
     if (responseEntity != null) {
-      // TODO
+      return responseEntity;
     }
 
-    // add data to reception table
-    LegacyLFSSampleReader legacyLFSSampleReader = new LegacyLFSSampleReader(file.getInputStream());
-    Iterator<LegacySampleEntity> iterator = legacyLFSSampleReader.iterator();
-    int rowsIngested = ingesterService.ingestLegacySample(iterator);
+    int rowsIngested;
 
-    if (legacyLFSSampleReader.errorList.size() != 0) {
+    SampleReader reader;
+
+    // add data to reception table
+    if (file.getOriginalFilename().contains("LFS")) {
+      reader = new LegacyLFSSampleReader(file.getInputStream());
+    } else {
+      reader = new LegacyGFFSampleReader(file.getInputStream());
+    }
+
+    Iterator<LegacySampleEntity> iterator = reader.iterator();
+    rowsIngested = ingesterService.ingestLegacySample(iterator);
+
+    if (reader.getErrorList().size() != 0) {
       // TODO handle errors
+      log.error("Found a CSV parsing error");
     }
 
     SampleSummaryDTO sampleSummaryDTO = new SampleSummaryDTO(file.getOriginalFilename(), rowsIngested);
@@ -109,13 +132,13 @@ public class LegacyGatewayEndpoint {
   }
 
   @RequestMapping(value = "/staff", method = RequestMethod.POST, produces = "application/json")
-  public ResponseEntity<StaffSummaryDTO> staffREST(@RequestParam("file") MultipartFile file,
+  public ResponseEntity<?> staffREST(@RequestParam("file") MultipartFile file,
       RedirectAttributes redirectAttributes)
       throws IOException {
 
     ResponseEntity<?> responseEntity = confirmFile(file, "staff");
     if (responseEntity != null) {
-      // TODO
+      return responseEntity;
     }
 
     // add data to reception table
