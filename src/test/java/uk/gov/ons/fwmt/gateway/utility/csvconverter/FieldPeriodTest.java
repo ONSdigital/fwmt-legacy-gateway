@@ -43,4 +43,12 @@ public class FieldPeriodTest {
     String expected = "2018-12-16:23:59:59";
     assertEquals(expected, actual);
   }
+
+  @Test
+  public void fieldPeriodToDateLFSforQuater2Week2() {
+    Date date = LegacyCreateJobRequestFactory.fieldPeriodToDates("82B", "LFS");
+    String actual = formatter.format(date);
+    String expected = "2018-04-14:23:59:59";
+    assertEquals(expected, actual);
+  }
 }
