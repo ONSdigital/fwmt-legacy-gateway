@@ -28,6 +28,8 @@ import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
 
 import javax.xml.bind.DatatypeConverter;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,6 +66,17 @@ public class LegacyGatewayEndpoint {
     }
   }
 
+  public void parseDateTime(String timestamp) throws IllegalArgumentException {
+    List<Integer> indexes = new ArrayList<Integer>();
+    for (int index = timestamp.indexOf("-"); index >= 0; index = timestamp.indexOf("-", index + 1)) {
+      indexes.add(index);
+    }
+    StringBuilder newTimestamp = new StringBuilder(timestamp);
+    newTimestamp.setCharAt(indexes.get(indexes.size()-1), ':');
+    newTimestamp.setCharAt(indexes.get(indexes.size()-2), ':');
+    DatatypeConverter.parseDateTime(newTimestamp.toString());
+  }
+
   public boolean confirmFilename(MultipartFile file, String endpoint) throws Exception {
     String filename = file.getOriginalFilename();
     String[] filenameSplit = filename.split("\\.");
@@ -77,7 +90,7 @@ public class LegacyGatewayEndpoint {
     String timestamp = nameSplit[2];
     boolean timestampValid;
     try {
-      DatatypeConverter.parseDateTime(timestamp);
+      parseDateTime(timestamp);
       timestampValid = true;
     } catch (IllegalArgumentException e) {
       timestampValid = false;
@@ -87,7 +100,7 @@ public class LegacyGatewayEndpoint {
         timestampValid;
   }
 
-  public boolean confirmFiletype(MultipartFile file)  {
+  public boolean confirmFiletype(MultipartFile file) {
     String filename = file.getOriginalFilename();
     String[] filenameSplit = filename.split("\\.");
     // TODO replace these unchecked array accesses
@@ -112,7 +125,8 @@ public class LegacyGatewayEndpoint {
     LegacyLFSSampleReader reader = new LegacyLFSSampleReader(file.getInputStream());
     Iterator<LegacySampleEntity> iterator = reader.iterator();
 
-    // pull the unprocessed entries out from the exceptions stored in the legacySampleReader
+    // pull the unprocessed entries out from the exceptions stored in the
+    // legacySampleReader
     List<SampleSummaryDTO.UnprocessedEntry> unprocessedEntries = reader.errorList.stream()
         .map(IllegalCSVStructureException::toUnprocessedEntry)
         .collect(Collectors.toList());
