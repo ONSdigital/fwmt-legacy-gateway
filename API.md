@@ -5,7 +5,7 @@ This page documents the Fieldwork Management Tool (FWMT) Gateway API endpoints. 
 Incoming requests must specify `text/csv` as the value of the HTTP `Content-Type` header.
 
 ## Timestamps
-Where timestamps are used they should be in UTC and formatted according to ISO 8601 with a date and time component separated by a letter "T" and a letter "Z" suffix to indicate Zulu time (UTC) i.e. *YYYY-MM-DDTHH:MM:SSZ*. For example, 2018-04-24T19:31:25Z.
+Where timestamps are used they should be in UTC and formatted according to ISO 8601 with a date and time component separated by a letter "T" and a letter "Z" suffix to indicate Zulu time (UTC) i.e. *YYYY-MM-DDTHH:MM:SSZ*. For example, 2018-04-24T19:31:25Z. The only exception to this is within filenames where colons are not permitted on Windows. In this case, hyphens should be used instead e.g. 2018-04-24T19-31-25Z.
 
 ## Error Handling
 All endpoints that accept HTTP POST requests may return any one of the HTTP error status codes below:
