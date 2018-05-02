@@ -9,7 +9,9 @@
     <packaging>jar</packaging>
 
     <name>fwmt-legacy-gateway</name>
-    <description>The Fieldwork Management Tool Gateway for interfacing between the Social Survey legacy system and the Fieldwork Management Tool</description>
+    <description>The Fieldwork Management Tool Gateway for interfacing between the Social Survey legacy system and the
+        Fieldwork Management Tool
+    </description>
     <url>https://github.com/ONSdigital/fwmt-legacy-gateway</url>
 
     <parent>
@@ -17,6 +19,12 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.5.9.RELEASE</version>
     </parent>
+
+    <scm>
+        <url>https://github.com/ONSdigital/fwmt-legacy-gateway</url>
+        <connection>scm:git:https://github.com/ONSdigital/fwmt-legacy-gateway</connection>
+        <tag>HEAD</tag>
+    </scm>
 
     <distributionManagement>
         <snapshotRepository>
@@ -45,6 +53,7 @@
             </snapshots>
         </repository>
     </repositories>
+
     <properties>
         <java.version>1.8</java.version>
         <maven-jaxb2-plugin.version>0.13.3</maven-jaxb2-plugin.version>
@@ -187,28 +196,28 @@
     </dependencies>
 
     <build>
-	<plugins>
-		<plugin>
-			<groupId>org.codehaus.mojo</groupId>
-			<artifactId>build-helper-maven-plugin</artifactId>
-			<version>1.4</version>
-			<executions>
-				<execution>
-					<id>add-wsdl-source</id>
-					<phase>generate-sources</phase>
-					<goals>
-						<goal>add-source</goal>
-					</goals>
-					<configuration>
-						<sources>
-							<source>${basedir}/src-generated/src</source>
-					
-						</sources>
-						
-					</configuration>
-				</execution>
-			</executions>
-		</plugin>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <id>add-wsdl-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${basedir}/src-generated/src</source>
+
+                            </sources>
+
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- maven-compiler-plugin -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -216,6 +225,18 @@
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+            <!-- maven-resources-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <delimiters>
+                        <delimiter>@</delimiter>
+                    </delimiters>
+                    <useDefaultDelimiters>false</useDefaultDelimiters>
                 </configuration>
             </plugin>
             <!-- spring-boot-maven-plugin -->
@@ -273,22 +294,22 @@
                 <version>3.5.3</version>
                 <executions>
                     <!--<execution>-->
-                        <!--<phase>pre-integration-test</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>update</goal>-->
-                        <!--</goals>-->
+                    <!--<phase>pre-integration-test</phase>-->
+                    <!--<goals>-->
+                    <!--<goal>update</goal>-->
+                    <!--</goals>-->
                     <!--</execution>-->
                     <!--<execution>-->
-                        <!--<phase>process-resources</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>update</goal>-->
-                        <!--</goals>-->
+                    <!--<phase>process-resources</phase>-->
+                    <!--<goals>-->
+                    <!--<goal>update</goal>-->
+                    <!--</goals>-->
                     <!--</execution>-->
                 </executions>
             </plugin>
             <!-- docker-maven-plugin -->
             <!-- This plugin sets up and tears down a Postgres Docker container for integration tests in the verify fp -->
-             <plugin>
+            <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.20.1</version>
@@ -330,6 +351,36 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- buildnumber-maven-plugin -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <doCheck>false</doCheck>
+                    <doUpdate>false</doUpdate>
+                    <timestampFormat>{0,date,yyyy-MM-dd'T'HH:mm:ss'Z'}</timestampFormat>
+                    <items>
+                        <item>timestamp</item>
+                    </items>
+                </configuration>
+            </plugin>
         </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 </project>
+

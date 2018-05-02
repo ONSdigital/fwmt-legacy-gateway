@@ -16,7 +16,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 @Slf4j
-public class LegacyLFSSampleReader {
+public class LegacyLFSSampleReader implements SampleReader {
   static final List<String> CSV_HEADERS;
 
   static final List<String> DATA_FIELDS;
@@ -258,7 +258,8 @@ public class LegacyLFSSampleReader {
     SAMPLE_LFS_DATA_COLUMN_MAP = map;
   }
 
-  public List<IllegalCSVStructureException> errorList;
+  @Getter
+  private List<IllegalCSVStructureException> errorList;
   private CsvToBean<LegacyLFSSampleEntityRaw> csvToBean;
   @Getter private int processedCount;
 
@@ -521,6 +522,7 @@ public class LegacyLFSSampleReader {
       processedCount++;
       LegacyLFSSampleEntityRaw raw = rawIterator.next();
       LegacySampleEntity entity = new LegacySampleEntity();
+      entity.setLegacyjobid(raw.getSerno()+raw.getFp()+raw.getTla());
       entity.setSerno(raw.getSerno());
       entity.setTla(raw.getTla());
       entity.setFp(raw.getFp());

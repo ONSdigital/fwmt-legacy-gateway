@@ -44,3 +44,12 @@ databaseChangeLog:
           path: 5_Setup_Users.sql
           relativeToChangelogFile: true
           splitStatements: false
+ - changeSet:
+    id: v6
+    author: James Berry
+    comment: Create users table
+    changes:
+      - sqlFile:
+          path: 6_Add_Primary_and_Natural_Keys.sql
+          relativeToChangelogFile: true
+          splitStatements: false

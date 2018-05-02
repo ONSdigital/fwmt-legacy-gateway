@@ -4,8 +4,6 @@
 
 package uk.gov.ons.fwmt.gateway.controller;
 
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,19 +16,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
-import uk.gov.ons.fwmt.gateway.error.GatewayCommonErrorDTO;
-import uk.gov.ons.fwmt.gateway.error.IllegalCSVStructureException;
-import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.gateway.representation.SampleSummaryDTO;
 import uk.gov.ons.fwmt.gateway.representation.StaffSummaryDTO;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
-import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
-
+import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
 import javax.xml.bind.DatatypeConverter;
+import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Class for file upload controller
@@ -78,21 +71,31 @@ public class LegacyGatewayEndpoint {
     }
   }
 
-  @RequestMapping(value = "/sample", method = RequestMethod.POST, consumes = "text/csv", produces = "application/json")
+  @RequestMapping(value = "/samples", method = RequestMethod.POST, consumes = "text/csv", produces = "application/json")
   @ApiResponses(value = {
       @ApiResponse(code = 400, message = "Bad Request", response = GatewayCommonErrorDTO.class),
       @ApiResponse(code = 415, message = "Unsupported Media Type", response = GatewayCommonErrorDTO.class),
       @ApiResponse(code = 500, message = "Internal Server Error", response = GatewayCommonErrorDTO.class),
   })
   public ResponseEntity<SampleSummaryDTO> sampleREST(@RequestParam("file") MultipartFile file,
-      RedirectAttributes redirectAttributes) throws Exception {
+      RedirectAttributes redirectAttributes) throws IOException {
 
     assertValidFilename(file, "sample");
 
     // add data to reception table
-    LegacyLFSSampleReader reader = new LegacyLFSSampleReader(file.getInputStream());
-    Iterator<LegacySampleEntity> iterator = reader.iterator();
+    if (file.getOriginalFilename().contains("LFS")) {
+      reader = new LegacyLFSSampleReader(file.getInputStream());
+    } else {
+      reader = new LegacyGFFSampleReader(file.getInputStream());
+    }
 
+    Iterator<LegacySampleEntity> iterator = reader.iterator();
+    ingesterService.ingestLegacySample(iterator);
+
+    if (reader.getErrorList().size() != 0) {
+      // TODO handle errors
+      log.error("Found a CSV parsing error");
+    }
     // pull the unprocessed entries out from the exceptions stored in the legacySampleReader
     List<SampleSummaryDTO.UnprocessedEntry> unprocessedEntries = reader.errorList.stream()
         .map(IllegalCSVStructureException::toUnprocessedEntry)

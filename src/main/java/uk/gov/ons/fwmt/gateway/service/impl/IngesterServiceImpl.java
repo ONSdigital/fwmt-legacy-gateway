@@ -2,6 +2,8 @@ package uk.gov.ons.fwmt.gateway.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
 import uk.gov.ons.fwmt.gateway.repo.reception.LegacySampleRepo;
@@ -26,6 +28,7 @@ public class IngesterServiceImpl implements IngesterService {
     this.publishService = publishService;
   }
 
+  @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
   @Override
   public void ingestLegacySample(Iterator<LegacySampleEntity> iter) {
     while (iter.hasNext()) {
@@ -34,6 +37,7 @@ public class IngesterServiceImpl implements IngesterService {
     publishService.publishNewJobsAndReallocations();
   }
 
+  @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
   @Override
   public void ingestLegacyStaff(Iterator<LegacyStaffEntity> iter) {
     legacyStaffRepository.deleteAll();

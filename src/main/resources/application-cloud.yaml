@@ -1,10 +1,10 @@
 info:
- name: ${project.artifactId}
- version: ${project.version}
- origin: ${scm.url}
- commit: ${buildNumber}
- branch: ${scmBranch}
- built: ${timestamp}
+  name: @project.artifactId@
+  version: @project.version@
+  origin: @scm.url@
+  commit: @buildNumber@
+  branch: @scmBranch@
+  built: @timestamp@
 
 spring:
   application:
@@ -12,7 +12,7 @@ spring:
   datasource:
     driverClassName: org.postgresql.Driver
     continue-on-error: true
-    schema: classpath:/schema-cloud.sql
+    schema: classpath:/db/schema-cloud.sql
 
 liquibase:
   user: ${cloud.services.postgresql.connection.username}
