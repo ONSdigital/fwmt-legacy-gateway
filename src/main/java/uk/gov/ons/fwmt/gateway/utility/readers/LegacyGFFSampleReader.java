@@ -3,22 +3,19 @@ package uk.gov.ons.fwmt.gateway.utility.readers;
 import com.opencsv.bean.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Iterator;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 @Slf4j
-public class LegacyGFFSampleReader {
+public class LegacyGFFSampleReader implements SampleReader {
   static final List<String> CSV_HEADERS;
 
   static final List<String> DATA_FIELDS;
@@ -85,7 +82,8 @@ public class LegacyGFFSampleReader {
     SAMPLE_GFF_DATA_COLUMN_MAP = map;
   }
 
-  public List<IllegalCSVStructureException> errorList;
+  @Getter
+  private List<IllegalCSVStructureException> errorList;
   private CsvToBean<LegacyGFFSampleEntityRaw> csvToBean;
 
   public LegacyGFFSampleReader(InputStream stream) {
