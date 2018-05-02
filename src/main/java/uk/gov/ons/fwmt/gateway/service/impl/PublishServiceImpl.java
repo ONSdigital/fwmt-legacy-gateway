@@ -92,14 +92,14 @@ public class PublishServiceImpl implements PublishService {
   public void publishNewJobsAndReallocations() {
     successfullySentIds = new ArrayList<String>();
     legacySampleRepository.findAll().forEach(entity -> {
-      if (legacyJobsRepo.existsBySerno(entity.getSerno())) {
+      if (legacyJobsRepo.existsByLegacyjobid(entity.getLegacyjobid())) {
         executeReallocateJob(entity);
       } else {
         executeNewJob(entity);
       }
     });
     for(String id: successfullySentIds) {
-      legacySampleRepository.deleteBySerno(id);
+      legacySampleRepository.deleteByLegacyjobid(id);
     }
   }
 
@@ -110,8 +110,7 @@ public class PublishServiceImpl implements PublishService {
     legacyJobsRepo.save(legacyJobEntity);
     try {
       sendJobRequest(createJobRequest, "\\OPTIMISE\\INPUT");
-      // TODO CHANGE THIS TO NEW COMPOSITE PK
-      successfullySentIds.add(newJobEntity.getSerno());
+      successfullySentIds.add(newJobEntity.getLegacyjobid());
     } catch (Exception e) {
       // something errored do something here
       e.printStackTrace();
@@ -123,13 +122,12 @@ public class PublishServiceImpl implements PublishService {
   }
 
   public void executeReallocateJob(LegacySampleEntity reallocationEntity) {
-    String tmJobId = legacyJobsRepo.findBySerno(reallocationEntity.getSerno()).getTmjobid();
+    String tmJobId = legacyJobsRepo.findByLegacyjobid(reallocationEntity.getLegacyjobid()).getTmjobid();
     String tmUsername = legacyUsersRepo.findByAuthNo(reallocationEntity.getAuthno()).getTmusername();
     UpdateJobHeaderRequest updateJobHeaderRequest = LegacyUpdateJobHeaderRequestFactory.reallocate(tmJobId, tmUsername);
     try {
       sendUpdateJobRequest(updateJobHeaderRequest, "\\OPTIMISE\\INPUT");
-      // TODO CHANGE THIS TO NEW COMPOSITE PK
-      successfullySentIds.add(reallocationEntity.getSerno());
+      successfullySentIds.add(reallocationEntity.getLegacyjobid());
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
