@@ -4,6 +4,8 @@
 
 package uk.gov.ons.fwmt.gateway.controller;
 
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,14 +18,20 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
+import uk.gov.ons.fwmt.gateway.error.GatewayCommonErrorDTO;
+import uk.gov.ons.fwmt.gateway.error.IllegalCSVStructureException;
+import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.gateway.representation.SampleSummaryDTO;
 import uk.gov.ons.fwmt.gateway.representation.StaffSummaryDTO;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
+import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Class for file upload controller
@@ -42,6 +50,17 @@ public class LegacyGatewayEndpoint {
   @Autowired
   public LegacyGatewayEndpoint(IngesterService ingesterService) {
     this.ingesterService = ingesterService;
+  }
+
+  public void parseDateTime(String timestamp) throws IllegalArgumentException {
+    List<Integer> indexes = new ArrayList<Integer>();
+    for (int index = timestamp.indexOf("-"); index >= 0; index = timestamp.indexOf("-", index + 1)) {
+      indexes.add(index);
+    }
+    StringBuilder newTimestamp = new StringBuilder(timestamp);
+    newTimestamp.setCharAt(indexes.get(indexes.size()-1), ':');
+    newTimestamp.setCharAt(indexes.get(indexes.size()-2), ':');
+    DatatypeConverter.parseDateTime(newTimestamp.toString());
   }
 
   public void assertValidFilename(MultipartFile file, String endpoint) throws Exception {
