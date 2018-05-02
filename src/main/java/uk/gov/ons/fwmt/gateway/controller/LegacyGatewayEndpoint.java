@@ -92,7 +92,7 @@ public class LegacyGatewayEndpoint {
         "csv".equals(filenameSplit[filenameSplit.length - 1]);
   }
 
-  @RequestMapping(value = "/sample", method = RequestMethod.POST, produces = "application/json")
+  @RequestMapping(value = "/samples", method = RequestMethod.POST, produces = "application/json")
   public ResponseEntity<?> sampleREST(@RequestParam("file") MultipartFile file,
       RedirectAttributes redirectAttributes)
       throws IOException {
