@@ -57,7 +57,7 @@ public class LegacyGatewayEndpoint {
   public void assertValidFilename(String filename, String endpoint) throws InvalidFileNameException {
     // Ensure filename of form 'A.csv'
     String[] filenameParts = filename.split("\\.");
-    if (filenameParts.length != 2 || "csv".equals(filenameParts[1]))
+    if (filenameParts.length != 2 || !("csv".equals(filenameParts[1])))
       throw new InvalidFileNameException(filename, "No 'csv' extension");
     // Ensure filename of the form 'B_C_D.csv'
     String[] nameParts = filenameParts[0].split("_");
@@ -74,15 +74,15 @@ public class LegacyGatewayEndpoint {
       throw new InvalidFileNameException(filename, "Survey name must be three characters long");
     // the third section is a valid timestamp
     String timestamp = nameParts[2];
-    DateTimeFormatter formatterISO = DateTimeFormatter.ofPattern("yyy-mm-dd'T'HH:mm:ss'Z'");
-    DateTimeFormatter formatterISOWindows = DateTimeFormatter.ofPattern("yyy-mm-dd'T'HH-mm-ss'Z'");
+    DateTimeFormatter formatterISO = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    DateTimeFormatter formatterISOWindows = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
     try {
       LocalDateTime.parse(timestamp, formatterISO);
     } catch (DateTimeException e) {
       try {
         LocalDateTime.parse(timestamp, formatterISOWindows);
       } catch (DateTimeException f) {
-        throw new InvalidFileNameException(filename, "Invalid timestamp");
+        throw new InvalidFileNameException(filename, "Invalid timestamp of " + timestamp, f);
       }
     }
   }
