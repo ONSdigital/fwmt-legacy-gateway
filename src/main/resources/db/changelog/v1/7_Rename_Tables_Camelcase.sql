@@ -1,3 +1,5 @@
+SET SCHEMA 'gateway';
+
 ALTER TABLE gateway.sample RENAME COLUMN authno TO auth_no;
 ALTER TABLE gateway.sample RENAME COLUMN employeeno TO employee_no;
 ALTER TABLE gateway.sample RENAME COLUMN addressline1 TO address_line_1;

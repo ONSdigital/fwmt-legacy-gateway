@@ -1,7 +1,7 @@
 databaseChangeLog:
  - changeSet:
     id: v1
-    author: William Grigg
+    author: James Berry
     comment: Create sample table
     changes:
       - sqlFile:
@@ -10,7 +10,7 @@ databaseChangeLog:
           splitStatements: false
  - changeSet:
     id: v2
-    author: William Grigg
+    author: James Berry
     comment: Create staff table
     changes:
       - sqlFile:
@@ -19,7 +19,7 @@ databaseChangeLog:
           splitStatements: false
  - changeSet:
     id: v3
-    author: William Grigg
+    author: James Berry
     comment: Create leavers table
     changes:
       - sqlFile:
@@ -28,7 +28,7 @@ databaseChangeLog:
           splitStatements: false
  - changeSet:
     id: v4
-    author: William Grigg
+    author: James Berry
     comment: Create jobs table
     changes:
       - sqlFile:
@@ -37,7 +37,7 @@ databaseChangeLog:
           splitStatements: false
  - changeSet:
     id: v5
-    author: William Grigg
+    author: James Berry
     comment: Create users table
     changes:
       - sqlFile:
