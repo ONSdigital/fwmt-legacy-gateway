@@ -9,7 +9,11 @@ info:
 spring:
   application:
     name: fwmt-csv-uploader
+  jpa.properties.hibernate.default_schema: gateway
   datasource:
+    username: ${cloud.services.postgresql.connection.username}
+    password: ${cloud.services.postgresql.connection.password}
+    url: ${cloud.services.postgresql.connection.jdbcurl}
     driverClassName: org.postgresql.Driver
     continue-on-error: true
     schema: classpath:/db/schema-cloud.sql
@@ -27,9 +31,6 @@ totalmobile:
   password: password
   url: "https://ons.totalmobile.co.uk"
   message-queue-service: "/Live/Services/TM/v20/Messaging/MessageQueueWs.asmx"
-spring.datasource:
-  username: username
-  password: password
 security.user:
   name: name
   password: password
