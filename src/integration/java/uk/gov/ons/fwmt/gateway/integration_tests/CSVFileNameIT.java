@@ -23,17 +23,17 @@ public class CSVFileNameIT {
   }
 
   @Test(expected = InvalidFileNameException.class)
-  public void testInvalidCSVNames_1() throws InvalidFileNameException {
+  public void testInvalidCSVNames1() throws InvalidFileNameException {
     legacyGatewayEndpoint.assertValidFilename("staff_LFS_2018-04-24R19-31-25Z.csv", "staff");
   }
 
   @Test(expected = InvalidFileNameException.class)
-  public void testInvalidCSVNames_2() throws InvalidFileNameException {
+  public void testInvalidCSVNames2() throws InvalidFileNameException {
     legacyGatewayEndpoint.assertValidFilename("staff_EG_2018-04-24L19-31-25Z.csv", "staff");
   }
 
   @Test(expected = InvalidFileNameException.class)
-  public void testInvalidCSVNames_3() throws InvalidFileNameException {
+  public void testInvalidCSVNames3() throws InvalidFileNameException {
     legacyGatewayEndpoint.assertValidFilename("foo_LFS_2018-04-24L19-31-25Z.csv", "staff");
   }
 }
