@@ -6,7 +6,7 @@ import uk.gov.ons.fwmt.gateway.entity.LegacyJobEntity;
 
 public interface LegacyJobsRepo extends CrudRepository<LegacyJobEntity, Long> {
     Iterable<LegacyJobEntity> findAll();
-    LegacyJobEntity findByLegacyjobid(String legacyjobid);
-    boolean existsByLegacyjobid(String legacyjobid);
-    LegacyJobEntity findByTmjobid(String reference);
+    LegacyJobEntity findByLegacyJobId(String legacyjobid);
+    boolean existsByLegacyJobId(String legacyjobid);
+    LegacyJobEntity findByTmJobId(String reference);
 }

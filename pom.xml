@@ -9,9 +9,7 @@
     <packaging>jar</packaging>
 
     <name>fwmt-legacy-gateway</name>
-    <description>The Fieldwork Management Tool Gateway for interfacing between the Social Survey legacy system and the
-        Fieldwork Management Tool
-    </description>
+    <description>The Fieldwork Management Tool Gateway for interfacing between the Social Survey legacy system and the Fieldwork Management Tool</description>
     <url>https://github.com/ONSdigital/fwmt-legacy-gateway</url>
 
     <parent>
@@ -196,6 +194,8 @@
     </dependencies>
 
     <build>
+        <testSourceDirectory>src/integration/java</testSourceDirectory>
+
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -318,16 +318,16 @@
                 <version>3.5.3</version>
                 <executions>
                     <!--<execution>-->
-                    <!--<phase>pre-integration-test</phase>-->
-                    <!--<goals>-->
-                    <!--<goal>update</goal>-->
-                    <!--</goals>-->
+                        <!--<phase>pre-integration-test</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>update</goal>-->
+                        <!--</goals>-->
                     <!--</execution>-->
                     <!--<execution>-->
-                    <!--<phase>process-resources</phase>-->
-                    <!--<goals>-->
-                    <!--<goal>update</goal>-->
-                    <!--</goals>-->
+                        <!--<phase>process-resources</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>update</goal>-->
+                        <!--</goals>-->
                     <!--</execution>-->
                 </executions>
             </plugin>

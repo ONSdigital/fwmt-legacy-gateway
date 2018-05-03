@@ -53,3 +53,21 @@ databaseChangeLog:
           path: 6_Add_Primary_and_Natural_Keys.sql
           relativeToChangelogFile: true
           splitStatements: false
+ - changeSet:
+    id: v7
+    author: Thomas Poot
+    comment: Alter the names of all columns to fit Postgres standards
+    changes:
+      - sqlFile:
+          path: 7_Rename_Tables_Camelcase.sql
+          relativeToChangelogFile: true
+          splitStatements: false
+ - changeSet:
+    id: v8
+    author: Thomas Poot
+    comment: Made the primary key of the sample table autoincrement
+    changes:
+      - sqlFile:
+          path: 8_Autoincrement_Sample_Primary_Key.sql
+          relativeToChangelogFile: true
+          splitStatements: false

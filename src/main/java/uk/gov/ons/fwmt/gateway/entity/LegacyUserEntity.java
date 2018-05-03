@@ -16,11 +16,8 @@ import javax.persistence.Table;
 @Table(name = "users")
 public class LegacyUserEntity {
   @Id
-  public int id;
-
-  @Column(unique = true, nullable = true)
   public String authNo;
 
   @Column(nullable = false)
-  public String tmusername;
+  public String tmUsername;
 }
