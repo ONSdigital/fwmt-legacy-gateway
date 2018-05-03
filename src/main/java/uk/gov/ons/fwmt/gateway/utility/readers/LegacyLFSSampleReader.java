@@ -520,7 +520,6 @@ public class LegacyLFSSampleReader implements SampleReader {
       LegacyLFSSampleEntityRaw raw = rawIterator.next();
       LegacySampleEntity entity = new LegacySampleEntity();
       entity.setLegacyJobId(raw.getSerno() + raw.getFp() + raw.getTla());
-      entity.setLegacyjobid(raw.getSerno() + raw.getFp() + raw.getTla());
       entity.setSerno(raw.getSerno());
       entity.setTla(raw.getTla());
       entity.setFp(raw.getFp());
