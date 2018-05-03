@@ -13,7 +13,6 @@ import java.util.Iterator;
 
 @Slf4j
 public class LegacyStaffReader {
-
   private static final String EMPLOYEENO = "employeeNo";
   private static final String AUTHNO = "authNo";
   private static final String FORENAME = "forename";
@@ -25,7 +24,7 @@ public class LegacyStaffReader {
   private static final String[] NEW_USER_COLUMNS = new String[] {EMPLOYEENO, AUTHNO, FORENAME, SURNAME, JOB_TITLE,
       EMAIL, PHONE, USER_TYPE};
 
-  CsvToBean<LegacyStaffEntity> csvToBean;
+  private CsvToBean<LegacyStaffEntity> csvToBean;
   // TODO this means is a bit old, see LegacyLFSSampleReader
   @Getter private int processedCount;
 

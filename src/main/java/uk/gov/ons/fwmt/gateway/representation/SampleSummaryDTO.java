@@ -8,6 +8,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class SampleSummaryDTO {
+  private final String filename;
+  private final int processedRows;
+  private final List<UnprocessedEntry> unprocessedRows;
+
   @Data
   @AllArgsConstructor
   public static class UnprocessedEntry {
@@ -15,9 +19,5 @@ public class SampleSummaryDTO {
     private final int row;
     private final String message;
   }
-
-  private final String filename;
-  private final int processedRows;
-  private final List<UnprocessedEntry> unprocessedRows;
 
 }

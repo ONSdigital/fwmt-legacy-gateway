@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class GatewayCommonErrorDTO {
-  String error;
-  String exception;
-  String message;
-  String path;
-  int status;
-  String timestamp;
+  public String error;
+  public String exception;
+  public String message;
+  public String path;
+  public int status;
+  public String timestamp;
 }
