@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface SampleReader {
   Iterator<LegacySampleEntity> iterator();
-  List<IllegalCSVStructureException> getErrorList();
+  List<UnprocessedCSVRow> getUnprocessedCSVRows();
+  int getUnprocessedCount();
+  int getSuccessCount();
 }

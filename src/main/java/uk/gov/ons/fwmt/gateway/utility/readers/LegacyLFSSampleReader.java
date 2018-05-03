@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 @Slf4j
 public class LegacyLFSSampleReader implements SampleReader {
@@ -257,9 +256,10 @@ public class LegacyLFSSampleReader implements SampleReader {
     SAMPLE_LFS_DATA_COLUMN_MAP = map;
   }
 
-  @Getter
-  private List<IllegalCSVStructureException> errorList;
   private CsvToBean<LegacyLFSSampleEntityRaw> csvToBean;
+  @Getter private List<UnprocessedCSVRow> unprocessedCSVRows;
+  @Getter private int unprocessedCount;
+  @Getter private int successCount;
 
   public LegacyLFSSampleReader(InputStream stream) {
     HeaderColumnNameTranslateMappingStrategy<LegacyLFSSampleEntityRaw> strategy =
@@ -267,7 +267,7 @@ public class LegacyLFSSampleReader implements SampleReader {
     strategy.setType(LegacyLFSSampleEntityRaw.class);
     strategy.setColumnMapping(SAMPLE_LFS_DATA_COLUMN_MAP);
     CsvToBeanBuilder<LegacyLFSSampleEntityRaw> builder = new CsvToBeanBuilder<>(new InputStreamReader(stream));
-    this.errorList = new ArrayList<>();
+    this.unprocessedCSVRows = new ArrayList<>();
     this.csvToBean = builder
         .withMappingStrategy(strategy)
         .withFilter(new LegacyLFSSampleCSVFilter(strategy))
@@ -519,7 +519,7 @@ public class LegacyLFSSampleReader implements SampleReader {
     @Override public LegacySampleEntity next() {
       LegacyLFSSampleEntityRaw raw = rawIterator.next();
       LegacySampleEntity entity = new LegacySampleEntity();
-      entity.setLegacyjobid(raw.getSerno()+raw.getFp()+raw.getTla());
+      entity.setLegacyjobid(raw.getSerno() + raw.getFp() + raw.getTla());
       entity.setSerno(raw.getSerno());
       entity.setTla(raw.getTla());
       entity.setFp(raw.getFp());
@@ -550,48 +550,46 @@ public class LegacyLFSSampleReader implements SampleReader {
   }
 
   private class LegacyLFSSampleCSVFilter implements CsvToBeanFilter {
+    private final String[] requiredFields = {"SERNO", "TLA", "FP", "Quota_No", "Auth", "EmployeeNo", "PREM1",
+        "PREM2", "PREM3", "PREM4", "DISTRICT", "POSTTOWN", "POSTCODE", "ADDR", "OSGRIDREF"};
+
     private final MappingStrategy strategy;
+
+    // TODO ensure that this lineCounter always begins at 1 - We must be sure that this instance is never re-used
+    // It begins at 1 as the first line of the CSV is skipped
+    // It should be incremented every time we begin a new line
+    private int lineCounter = 1;
 
     LegacyLFSSampleCSVFilter(MappingStrategy strategy) {
       this.strategy = strategy;
     }
 
+    private void fail(String[] strings, String reason) {
+      unprocessedCount++;
+      unprocessedCSVRows.add(new UnprocessedCSVRow(strings, lineCounter, reason));
+    }
+
     @Override public boolean allowLine(String[] strings) {
-      String serno = strings[strategy.getColumnIndex("SERNO")];
-      String tla = strings[strategy.getColumnIndex("TLA")];
-      String stage = strings[strategy.getColumnIndex("FP")];
-      String quota = strings[strategy.getColumnIndex("Quota_No")];
-      String authNo = strings[strategy.getColumnIndex("Auth")];
-      String employeeNo = strings[strategy.getColumnIndex("EmployeeNo")];
-      String addressLine1 = strings[strategy.getColumnIndex("PREM1")];
-      String addressLine2 = strings[strategy.getColumnIndex("PREM2")];
-      String addressLine3 = strings[strategy.getColumnIndex("PREM3")];
-      String addressLine4 = strings[strategy.getColumnIndex("PREM4")];
-      String district = strings[strategy.getColumnIndex("DISTRICT")];
-      String postTown = strings[strategy.getColumnIndex("POSTTOWN")];
-      String postcode = strings[strategy.getColumnIndex("POSTCODE")];
-      String addressNo = strings[strategy.getColumnIndex("ADDR")];
-      String osGridRef = strings[strategy.getColumnIndex("OSGRIDREF")];
-      Function<String, Boolean> check = (s) -> s != null && s.length() != 0;
-      boolean pass = check.apply(serno) &&
-          check.apply(tla) &&
-          check.apply(stage) &&
-          check.apply(quota) &&
-          check.apply(authNo) &&
-          check.apply(employeeNo) &&
-          check.apply(addressLine1) &&
-          check.apply(addressLine2) &&
-          check.apply(addressLine3) &&
-          check.apply(addressLine4) &&
-          check.apply(district) &&
-          check.apply(postTown) &&
-          check.apply(postcode) &&
-          check.apply(addressNo) &&
-          check.apply(osGridRef);
-      if (!pass) {
-        errorList.add(new IllegalCSVStructureException(strings));
+      lineCounter++;
+      for (String field : requiredFields) {
+        Integer index = strategy.getColumnIndex(field);
+        if (index == null) {
+          // TODO add error
+          fail(strings, field + " could not be found, but is required");
+          return false;
+        }
+        String value = strings[index];
+        if (value == null) {
+          fail(strings, field + " was null, but is required");
+          return false;
+        }
+        if (value.length() == 0) {
+          fail(strings, field + " was empty, but is required");
+          return false;
+        }
       }
-      return pass;
+      successCount++;
+      return true;
     }
   }
 }

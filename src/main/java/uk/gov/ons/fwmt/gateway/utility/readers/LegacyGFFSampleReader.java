@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 @Slf4j
 public class LegacyGFFSampleReader implements SampleReader {
@@ -82,9 +81,10 @@ public class LegacyGFFSampleReader implements SampleReader {
     SAMPLE_GFF_DATA_COLUMN_MAP = map;
   }
 
-  @Getter
-  private List<IllegalCSVStructureException> errorList;
   private CsvToBean<LegacyGFFSampleEntityRaw> csvToBean;
+  @Getter private List<UnprocessedCSVRow> unprocessedCSVRows;
+  @Getter private int unprocessedCount;
+  @Getter private int successCount;
 
   public LegacyGFFSampleReader(InputStream stream) {
     HeaderColumnNameTranslateMappingStrategy<LegacyGFFSampleEntityRaw> strategy =
@@ -206,49 +206,46 @@ public class LegacyGFFSampleReader implements SampleReader {
   }
 
   private class LegacyGFFSampleCSVFilter implements CsvToBeanFilter {
+    private final String[] requiredFields = {"Serno", "TLA", "Stage", "Quota", "Auth", "EmployeeNo", "Prem1",
+        "Prem2", "Prem3", "Prem4", "District", "PostTown", "Postcode", "AddressNo", "OSGridRef"};
+
     private final MappingStrategy<LegacyGFFSampleEntityRaw> strategy;
+
+    // TODO ensure that this lineCounter always begins at 1 - We must be sure that this instance is never re-used
+    // It begins at 2 as the first line of the CSV is skipped
+    // It should be incremented every time we begin a new line
+    private int lineCounter = 1;
 
     LegacyGFFSampleCSVFilter(MappingStrategy<LegacyGFFSampleEntityRaw> strategy) {
       this.strategy = strategy;
     }
 
+    private void fail(String[] strings, String reason) {
+      unprocessedCount++;
+      unprocessedCSVRows.add(new UnprocessedCSVRow(strings, lineCounter, reason));
+    }
+
     @Override public boolean allowLine(String[] strings) {
-      String serno = strings[strategy.getColumnIndex("Serno")];
-      String tla = strings[strategy.getColumnIndex("TLA")];
-      String stage = strings[strategy.getColumnIndex("Stage")];
-      String quota = strings[strategy.getColumnIndex("Quota")];
-      String authNo = strings[strategy.getColumnIndex("Auth")];
-      String employeeNo = strings[strategy.getColumnIndex("EmployeeNo")];
-      String addressLine1 = strings[strategy.getColumnIndex("Prem1")];
-      String addressLine2 = strings[strategy.getColumnIndex("Prem2")];
-      String addressLine3 = strings[strategy.getColumnIndex("Prem3")];
-      String addressLine4 = strings[strategy.getColumnIndex("Prem4")];
-      String district = strings[strategy.getColumnIndex("District")];
-      String postTown = strings[strategy.getColumnIndex("PostTown")];
-      String postcode = strings[strategy.getColumnIndex("Postcode")];
-      String addressNo = strings[strategy.getColumnIndex("AddressNo")];
-      String osGridRef = strings[strategy.getColumnIndex("OSGridRef")];
-      //      String kishGrid = strings[strategy.getColumnIndex("")];
-      Function<String, Boolean> check = (s) -> s != null && s.length() != 0;
-      boolean pass = check.apply(serno) &&
-          check.apply(tla) &&
-          check.apply(stage) &&
-          check.apply(quota) &&
-          check.apply(authNo) &&
-          check.apply(employeeNo) &&
-          check.apply(addressLine1) &&
-          check.apply(addressLine2) &&
-          check.apply(addressLine3) &&
-          check.apply(addressLine4) &&
-          check.apply(district) &&
-          check.apply(postTown) &&
-          check.apply(postcode) &&
-          check.apply(addressNo) &&
-          check.apply(osGridRef);
-      if (!pass) {
-        errorList.add(new IllegalCSVStructureException(strings));
+      lineCounter++;
+      for (String field : requiredFields) {
+        Integer index = strategy.getColumnIndex(field);
+        if (index == null) {
+          // TODO add error
+          fail(strings, field + " could not be found, but is required");
+          return false;
+        }
+        String value = strings[index];
+        if (value == null) {
+          fail(strings, field + " was null, but is required");
+          return false;
+        }
+        if (value.length() == 0) {
+          fail(strings, field + " was empty, but is required");
+          return false;
+        }
       }
-      return pass;
+      successCount++;
+      return true;
     }
   }
 }
