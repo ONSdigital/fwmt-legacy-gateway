@@ -16,6 +16,7 @@ import javax.persistence.*;
 @Table(name = "sample")
 public class LegacySampleEntity {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long primaryKey;
   private String legacyJobId;
   private String serno;
