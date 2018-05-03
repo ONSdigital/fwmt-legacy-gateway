@@ -21,8 +21,8 @@ public class CSVFileNameIT {
     try {
       legacyGatewayEndpoint.assertValidFilename("sample_LFS_2018-04-24T19:31:25Z.csv", "sample");
       legacyGatewayEndpoint.assertValidFilename("sample_LFS_2018-04-24T19-31-25Z.csv", "sample");
-      legacyGatewayEndpoint.assertValidFilename("staff_LFS_2018-04-24T19:31:25Z.csv", "staff");
-      legacyGatewayEndpoint.assertValidFilename("staff_LFS_2018-04-24T19-31-25Z.csv", "staff");
+      legacyGatewayEndpoint.assertValidFilename("staff_2018-04-24T19:31:25Z.csv", "staff");
+      legacyGatewayEndpoint.assertValidFilename("staff_2018-04-24T19-31-25Z.csv", "staff");
     } catch (InvalidFileNameException e) {
       fail("Valid file name was rejected");
     }
@@ -30,7 +30,7 @@ public class CSVFileNameIT {
 
   @Test(expected = InvalidFileNameException.class)
   public void testInvalidCSVNames1() throws InvalidFileNameException {
-    legacyGatewayEndpoint.assertValidFilename("staff_LFS_2018-04-24R19-31-25Z.csv", "staff");
+    legacyGatewayEndpoint.assertValidFilename("staff_2018-04-24R19-31-25Z.csv", "staff");
   }
 
   @Test(expected = InvalidFileNameException.class)
@@ -41,5 +41,15 @@ public class CSVFileNameIT {
   @Test(expected = InvalidFileNameException.class)
   public void testInvalidCSVNames3() throws InvalidFileNameException {
     legacyGatewayEndpoint.assertValidFilename("foo_LFS_2018-04-24L19-31-25Z.csv", "staff");
+  }
+
+  @Test(expected = InvalidFileNameException.class)
+  public void testInvalidCSVNames4() throws InvalidFileNameException {
+    legacyGatewayEndpoint.assertValidFilename("staff_LFS_2018-04-24T19-31-25Z.csv", "staff");
+  }
+
+  @Test(expected = InvalidFileNameException.class)
+  public void testInvalidCSVNames5() throws InvalidFileNameException {
+    legacyGatewayEndpoint.assertValidFilename("sample_2018-04-24T19-31-25Z.csv", "sample");
   }
 }
