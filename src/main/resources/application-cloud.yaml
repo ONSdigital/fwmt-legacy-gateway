@@ -17,20 +17,20 @@ spring:
 liquibase:
   user: ${cloud.services.postgresql.connection.username}
   password: ${cloud.services.postgresql.connection.password}
-  default-schema:
+  default-schema: gateway
   url: ${cloud.services.postgresql.connection.jdbcurl}
   changeLog: classpath:db/changelog/db.changelog-master.yaml
 
 # The following data is sensitive and must not be shared
 totalmobile:
-  username: “...”
-  password: “...”
+  username: username
+  password: password
   url: "https://ons.totalmobile.co.uk"
   message-queue-service: "/Live/Services/TM/v20/Messaging/MessageQueueWs.asmx"
 spring.datasource:
-  username: “...”
-  password: “...”
+  username: username
+  password: password
 security.user:
-  name: “...”
-  password: “...”
+  name: name
+  password: password
 
