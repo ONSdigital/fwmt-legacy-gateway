@@ -19,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
 import uk.gov.ons.fwmt.gateway.error.GatewayCommonErrorDTO;
-import uk.gov.ons.fwmt.gateway.error.IllegalCSVStructureException;
 import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.gateway.error.MediaTypeNotSupportedException;
 import uk.gov.ons.fwmt.gateway.representation.SampleSummaryDTO;
@@ -71,11 +70,11 @@ public class LegacyGatewayEndpoint {
     // one dot, splitting the file name
     String[] filenameSplit = filename.split("\\.");
     if (filenameSplit.length != 2)
-         throw new InvalidFileNameException(filename, "No 'csv' extension");
+      throw new InvalidFileNameException(filename, "No 'csv' extension");
     // two underscores, splitting the file name sans extension
     String[] nameSplit = filenameSplit[0].split("_");
     if (nameSplit.length != 3)
-         throw new InvalidFileNameException(filename, "Invalid number of underscore-delimited sections");
+      throw new InvalidFileNameException(filename, "Invalid number of underscore-delimited sections");
     // the first section matches our endpoint
     String fileEndpoint = nameSplit[0];
     if (!endpoint.equals(fileEndpoint))
@@ -130,14 +129,12 @@ public class LegacyGatewayEndpoint {
     Iterator<LegacySampleEntity> iterator = reader.iterator();
     ingesterService.ingestLegacySample(iterator);
 
-    if (reader.getErrorList().size() != 0) {
+    if (reader.getUnprocessedCSVRows().size() != 0) {
       // TODO handle errors
       log.error("Found a CSV parsing error");
     }
     // pull the unprocessed entries out from the exceptions stored in the legacySampleReader
-    List<UnprocessedCSVRow> unprocessedEntries = reader.getErrorList().stream()
-        .map(IllegalCSVStructureException::toUnprocessedEntry)
-        .collect(Collectors.toList());
+    List<UnprocessedCSVRow> unprocessedEntries = reader.getUnprocessedCSVRows().stream().collect(Collectors.toList());
 
     // create the response object
     SampleSummaryDTO sampleSummaryDTO = new SampleSummaryDTO(file.getOriginalFilename(), reader.getSuccessCount(),

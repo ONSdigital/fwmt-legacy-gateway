@@ -37,12 +37,6 @@ public class RestExceptionHandler {
         exception.getMessage());
   }
 
-  @ExceptionHandler(IllegalCSVStructureException.class)
-  public ResponseEntity<GatewayCommonErrorDTO> handleCSVStructureException(HttpServletRequest request,
-      IllegalCSVStructureException exception) {
-    return makeCommonError(request, exception, HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Invalid CSV File", "...");
-  }
-
   @ExceptionHandler(InvalidFileNameException.class)
   public ResponseEntity<GatewayCommonErrorDTO> handleInvalidFileNameException(HttpServletRequest request,
       InvalidFileNameException exception) {

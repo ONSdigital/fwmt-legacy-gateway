@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
-import uk.gov.ons.fwmt.gateway.error.IllegalCSVStructureException;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -258,8 +257,8 @@ public class LegacyLFSSampleReader implements SampleReader {
   }
 
   private CsvToBean<LegacyLFSSampleEntityRaw> csvToBean;
-  @Getter private List<IllegalCSVStructureException> errorList;
-  @Getter private int errorCount;
+  @Getter private List<UnprocessedCSVRow> unprocessedCSVRows;
+  @Getter private int unprocessedCount;
   @Getter private int successCount;
 
   public LegacyLFSSampleReader(InputStream stream) {
@@ -268,7 +267,7 @@ public class LegacyLFSSampleReader implements SampleReader {
     strategy.setType(LegacyLFSSampleEntityRaw.class);
     strategy.setColumnMapping(SAMPLE_LFS_DATA_COLUMN_MAP);
     CsvToBeanBuilder<LegacyLFSSampleEntityRaw> builder = new CsvToBeanBuilder<>(new InputStreamReader(stream));
-    this.errorList = new ArrayList<>();
+    this.unprocessedCSVRows = new ArrayList<>();
     this.csvToBean = builder
         .withMappingStrategy(strategy)
         .withFilter(new LegacyLFSSampleCSVFilter(strategy))
@@ -566,8 +565,8 @@ public class LegacyLFSSampleReader implements SampleReader {
     }
 
     private void fail(String[] strings, String reason) {
-      errorCount++;
-      errorList.add(new IllegalCSVStructureException(strings, lineCounter, reason));
+      unprocessedCount++;
+      unprocessedCSVRows.add(new UnprocessedCSVRow(strings, lineCounter, reason));
     }
 
     @Override public boolean allowLine(String[] strings) {

@@ -7,13 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
-import uk.gov.ons.fwmt.gateway.error.IllegalCSVStructureException;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 @Slf4j
 public class LegacyGFFSampleReader implements SampleReader {
@@ -84,8 +82,8 @@ public class LegacyGFFSampleReader implements SampleReader {
   }
 
   private CsvToBean<LegacyGFFSampleEntityRaw> csvToBean;
-  @Getter private List<IllegalCSVStructureException> errorList;
-  @Getter private int errorCount;
+  @Getter private List<UnprocessedCSVRow> unprocessedCSVRows;
+  @Getter private int unprocessedCount;
   @Getter private int successCount;
 
   public LegacyGFFSampleReader(InputStream stream) {
@@ -223,8 +221,8 @@ public class LegacyGFFSampleReader implements SampleReader {
     }
 
     private void fail(String[] strings, String reason) {
-      errorCount++;
-      errorList.add(new IllegalCSVStructureException(strings, lineCounter, reason));
+      unprocessedCount++;
+      unprocessedCSVRows.add(new UnprocessedCSVRow(strings, lineCounter, reason));
     }
 
     @Override public boolean allowLine(String[] strings) {
