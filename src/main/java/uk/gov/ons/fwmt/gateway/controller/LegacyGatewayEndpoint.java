@@ -28,6 +28,9 @@ import uk.gov.ons.fwmt.gateway.utility.readers.*;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,47 +54,36 @@ public class LegacyGatewayEndpoint {
     this.ingesterService = ingesterService;
   }
 
-  public String parseFWMTDateTime(String timestamp) {
-    int index2 = timestamp.lastIndexOf('-');
-    if (index2 == -1 || index2 < 1)
-      return null;
-    int index1 = timestamp.lastIndexOf('-', index2 - 1);
-    if (index1 == -1)
-      return null;
-    StringBuffer sb = new StringBuffer(timestamp);
-    sb.setCharAt(index1, ':');
-    sb.setCharAt(index2, ':');
-    return sb.toString();
-  }
-
-  // TODO tag these all with descriptive messages of the problems that caused them
-  public void assertValidFilename(MultipartFile file, String endpoint) throws InvalidFileNameException {
-    String filename = file.getOriginalFilename();
-    // one dot, splitting the file name
-    String[] filenameSplit = filename.split("\\.");
-    if (filenameSplit.length != 2)
+  public void assertValidFilename(String filename, String endpoint) throws InvalidFileNameException {
+    // Ensure filename of form 'A.csv'
+    String[] filenameParts = filename.split("\\.");
+    if (filenameParts.length != 2 || "csv".equals(filenameParts[1]))
       throw new InvalidFileNameException(filename, "No 'csv' extension");
-    // two underscores, splitting the file name sans extension
-    String[] nameSplit = filenameSplit[0].split("_");
-    if (nameSplit.length != 3)
-      throw new InvalidFileNameException(filename, "Invalid number of underscore-delimited sections");
-    // the first section matches our endpoint
-    String fileEndpoint = nameSplit[0];
+    // Ensure filename of the form 'B_C_D.csv'
+    String[] nameParts = filenameParts[0].split("_");
+    if (nameParts.length != 3)
+      throw new InvalidFileNameException(filename,
+          "Invalid number of underscore-delimited sections, there should be three");
+    // Ensure that section 'B' matches our endpoint
+    String fileEndpoint = nameParts[0];
     if (!endpoint.equals(fileEndpoint))
       throw new InvalidFileNameException(filename, "Invalid endpoint declaration");
-    // the second section contains only three characters
-    String surveyTla = nameSplit[1];
+    // Ensure that section 'C' is a three-character survey name
+    String surveyTla = nameParts[1];
     if (surveyTla.length() != 3)
       throw new InvalidFileNameException(filename, "Survey name must be three characters long");
     // the third section is a valid timestamp
-    String timestamp = nameSplit[2];
-    String parsedDate = parseFWMTDateTime(timestamp);
-    if (parsedDate == null)
-      throw new InvalidFileNameException(filename, "Survey date did not parse correctly");
+    String timestamp = nameParts[2];
+    DateTimeFormatter formatterISO = DateTimeFormatter.ofPattern("yyy-mm-dd'T'HH:mm:ss'Z'");
+    DateTimeFormatter formatterISOWindows = DateTimeFormatter.ofPattern("yyy-mm-dd'T'HH-mm-ss'Z'");
     try {
-      DatatypeConverter.parseDateTime(parsedDate);
-    } catch (IllegalArgumentException e) {
-      throw new InvalidFileNameException(filename, "Survey date did not represent a valid date");
+      LocalDateTime.parse(timestamp, formatterISO);
+    } catch (DateTimeException e) {
+      try {
+        LocalDateTime.parse(timestamp, formatterISOWindows);
+      } catch (DateTimeException f) {
+        throw new InvalidFileNameException(filename, "Invalid timestamp");
+      }
     }
   }
 
@@ -114,7 +106,7 @@ public class LegacyGatewayEndpoint {
 
     SampleReader reader;
 
-    assertValidFilename(file, "sample");
+    assertValidFilename(file.getOriginalFilename(), "sample");
     assertValidFileMetadata(file);
 
     // add data to reception table
@@ -151,7 +143,7 @@ public class LegacyGatewayEndpoint {
   public ResponseEntity<StaffSummaryDTO> staffREST(@RequestParam("file") MultipartFile file,
       RedirectAttributes redirectAttributes) throws Exception {
 
-    assertValidFilename(file, "staff");
+    assertValidFilename(file.getOriginalFilename(), "staff");
     assertValidFileMetadata(file);
 
     // add data to reception table
