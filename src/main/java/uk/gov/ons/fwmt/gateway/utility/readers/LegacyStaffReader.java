@@ -45,7 +45,7 @@ public class LegacyStaffReader {
 
   // We implement this pass-through iterator purely to give us a running count of the number of processed entries
   class LegacyStaffIterator implements Iterator<LegacyStaffEntity> {
-    Iterator<LegacyStaffEntity> rawIterator;
+    private Iterator<LegacyStaffEntity> rawIterator;
 
     public LegacyStaffIterator(Iterator<LegacyStaffEntity> rawIterator) {
       this.rawIterator = rawIterator;

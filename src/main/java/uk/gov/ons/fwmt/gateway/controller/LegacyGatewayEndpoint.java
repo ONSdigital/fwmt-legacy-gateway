@@ -26,7 +26,6 @@ import uk.gov.ons.fwmt.gateway.representation.StaffSummaryDTO;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
 import uk.gov.ons.fwmt.gateway.utility.readers.*;
 
-import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;

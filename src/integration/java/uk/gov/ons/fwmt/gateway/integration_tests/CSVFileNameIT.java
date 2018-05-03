@@ -9,17 +9,23 @@ import uk.gov.ons.fwmt.gateway.Application;
 import uk.gov.ons.fwmt.gateway.controller.LegacyGatewayEndpoint;
 import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
 
+import static org.junit.Assert.fail;
+
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes={Application.class})
+@SpringBootTest(classes = {Application.class})
 public class CSVFileNameIT {
-  @Autowired LegacyGatewayEndpoint legacyGatewayEndpoint;
+  @Autowired private LegacyGatewayEndpoint legacyGatewayEndpoint;
 
   @Test
   public void testValidCSVNames() throws InvalidFileNameException {
-    legacyGatewayEndpoint.assertValidFilename("sample_LFS_2018-04-24T19:31:25Z.csv", "sample");
-    legacyGatewayEndpoint.assertValidFilename("sample_LFS_2018-04-24T19-31-25Z.csv", "sample");
-    legacyGatewayEndpoint.assertValidFilename("staff_LFS_2018-04-24T19:31:25Z.csv", "staff");
-    legacyGatewayEndpoint.assertValidFilename("staff_LFS_2018-04-24T19-31-25Z.csv", "staff");
+    try {
+      legacyGatewayEndpoint.assertValidFilename("sample_LFS_2018-04-24T19:31:25Z.csv", "sample");
+      legacyGatewayEndpoint.assertValidFilename("sample_LFS_2018-04-24T19-31-25Z.csv", "sample");
+      legacyGatewayEndpoint.assertValidFilename("staff_LFS_2018-04-24T19:31:25Z.csv", "staff");
+      legacyGatewayEndpoint.assertValidFilename("staff_LFS_2018-04-24T19-31-25Z.csv", "staff");
+    } catch (InvalidFileNameException e) {
+      fail("Valid file name was rejected");
+    }
   }
 
   @Test(expected = InvalidFileNameException.class)
