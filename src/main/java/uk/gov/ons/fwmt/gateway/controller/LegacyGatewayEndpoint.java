@@ -25,10 +25,7 @@ import uk.gov.ons.fwmt.gateway.error.MediaTypeNotSupportedException;
 import uk.gov.ons.fwmt.gateway.representation.SampleSummaryDTO;
 import uk.gov.ons.fwmt.gateway.representation.StaffSummaryDTO;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
-import uk.gov.ons.fwmt.gateway.utility.readers.LegacyGFFSampleReader;
-import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
-import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
-import uk.gov.ons.fwmt.gateway.utility.readers.SampleReader;
+import uk.gov.ons.fwmt.gateway.utility.readers.*;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
@@ -138,7 +135,7 @@ public class LegacyGatewayEndpoint {
       log.error("Found a CSV parsing error");
     }
     // pull the unprocessed entries out from the exceptions stored in the legacySampleReader
-    List<SampleSummaryDTO.UnprocessedEntry> unprocessedEntries = reader.getErrorList().stream()
+    List<UnprocessedCSVRow> unprocessedEntries = reader.getErrorList().stream()
         .map(IllegalCSVStructureException::toUnprocessedEntry)
         .collect(Collectors.toList());
 
