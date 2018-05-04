@@ -93,6 +93,7 @@ public class LegacyGFFSampleReader implements SampleReader {
     strategy.setColumnMapping(SAMPLE_GFF_DATA_COLUMN_MAP);
     CsvToBeanBuilder<LegacyGFFSampleEntityRaw> builder = new CsvToBeanBuilder<>(new InputStreamReader(stream));
     CsvToBeanFilter filter = new LegacyGFFSampleCSVFilter(strategy);
+    this.unprocessedCSVRows = new ArrayList<>();
     csvToBean = builder
         .withMappingStrategy(strategy)
         .withFilter(filter)
