@@ -31,7 +31,7 @@ public class RestExceptionHandler {
     return makeCommonError(request, exception, HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error", "Unknown error");
   }
 
-  @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+  @ExceptionHandler(MediaTypeNotSupportedException.class)
   public ResponseEntity<GatewayCommonErrorDTO> handleContentTypeException(HttpServletRequest request,
       HttpMediaTypeNotSupportedException exception) {
     return makeCommonError(request, exception, HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Invalid content type",

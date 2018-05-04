@@ -34,8 +34,7 @@ public class IngesterServiceImpl implements IngesterService {
     while (iter.hasNext()) {
       legacySampleRepository.save(iter.next());
     }
-    // TODO find a location for this service
-//    publishService.publishNewJobsAndReallocations();
+    publishService.publishNewJobsAndReallocations();
   }
 
   @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
@@ -45,7 +44,6 @@ public class IngesterServiceImpl implements IngesterService {
     while (iter.hasNext()) {
       legacyStaffRepository.save(iter.next());
     }
-    // TODO find a location for this service
-//    publishService.publishUpdateUsers();
+    publishService.publishUpdateUsers();
   }
 }
