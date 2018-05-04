@@ -551,7 +551,7 @@ public class LegacyLFSSampleReader implements SampleReader {
 
   private class LegacyLFSSampleCSVFilter implements CsvToBeanFilter {
     private final String[] requiredFields = {"SERNO", "TLA", "FP", "Quota_No", "Auth", "EmployeeNo", "PREM1",
-        "PREM2", "PREM3", "PREM4", "DISTRICT", "POSTTOWN", "POSTCODE", "ADDR", "OSGRIDREF"};
+        "POSTCODE", "ADDR"};
 
     private final MappingStrategy strategy;
 
