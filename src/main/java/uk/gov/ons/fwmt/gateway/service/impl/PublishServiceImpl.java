@@ -42,9 +42,6 @@ public class PublishServiceImpl implements PublishService {
   private LegacyJobsRepo legacyJobsRepo;
   private LegacyUsersRepo legacyUsersRepo;
 
-  // TODO refactor this, it's local state and should be in a local variable passed between functions
-  private List<String> successfullySentIds;
-
   @Autowired
   public PublishServiceImpl(TMMessageSubmitter submitter, LegacySampleRepo legacySampleRepository,
       LegacyStaffRepo legacyStaffRepo, LegacyJobsRepo legacyJobsRepo, LegacyUsersRepo legacyUsersRepo) {
@@ -83,60 +80,66 @@ public class PublishServiceImpl implements PublishService {
       }
     });
 
-    // all lines of the staff repo have been processed to find new users and users that no longer exist.
+    // all lines of the staff repo have been processed to find new users and
+    // users that no longer exist.
     // therefore i will now empty the staff reception table
     legacyStaffRepo.deleteAll();
   }
 
   @Override
-  public void publishNewJobsAndReallocations() {
-    successfullySentIds = new ArrayList<String>();
+  public void publishNewJobsReallocationsAndReissues() {
     legacySampleRepository.findAll().forEach(entity -> {
-      if (legacyJobsRepo.existsByLegacyjobid(entity.getLegacyjobid())) {
-        executeReallocateJob(entity);
-      } else {
-        executeNewJob(entity);
+      if (legacyUsersRepo.existsByAuthNo(entity.getAuthno())) {
+        if (legacyJobsRepo.existsByLegacyjobid(entity.getLegacyjobid())) {
+          if (executeReallocateJob(entity)) {
+            legacySampleRepository.deleteByLegacyjobid(entity.getLegacyjobid());
+          }
+        } else {
+          // may need to identify reissues in order to reference previous jobs
+          if (executeNewJob(entity)) {
+            legacySampleRepository.deleteByLegacyjobid(entity.getLegacyjobid());
+          }
+        }
       }
     });
-    for(String id: successfullySentIds) {
-      legacySampleRepository.deleteByLegacyjobid(id);
-    }
   }
 
-  public void executeNewJob(LegacySampleEntity newJobEntity) {
+  public boolean executeNewJob(LegacySampleEntity newJobEntity) {
     String tmUsername = legacyUsersRepo.findByAuthNo(newJobEntity.getAuthno()).getTmusername();
     CreateJobRequest createJobRequest = LegacyCreateJobRequestFactory.convert(newJobEntity, tmUsername);
     LegacyJobEntity legacyJobEntity = LegacyJobsReader.createJobEntity(createJobRequest);
     legacyJobsRepo.save(legacyJobEntity);
     try {
       sendJobRequest(createJobRequest, "\\OPTIMISE\\INPUT");
-      successfullySentIds.add(newJobEntity.getLegacyjobid());
     } catch (Exception e) {
       // something errored do something here
       e.printStackTrace();
+      return false;
     }
 
     // Update database jobs table states for each job from inital to sent.
     LegacyJobEntity jobEntity = legacyJobsRepo.findByTmjobid(createJobRequest.getJob().getIdentity().getReference());
     legacyJobsRepo.save(LegacyJobsReader.setStateSent(jobEntity));
+    return true;
   }
 
-  public void executeReallocateJob(LegacySampleEntity reallocationEntity) {
+  public boolean executeReallocateJob(LegacySampleEntity reallocationEntity) {
     String tmJobId = legacyJobsRepo.findByLegacyjobid(reallocationEntity.getLegacyjobid()).getTmjobid();
     String tmUsername = legacyUsersRepo.findByAuthNo(reallocationEntity.getAuthno()).getTmusername();
     UpdateJobHeaderRequest updateJobHeaderRequest = LegacyUpdateJobHeaderRequestFactory.reallocate(tmJobId, tmUsername);
     try {
       sendUpdateJobRequest(updateJobHeaderRequest, "\\OPTIMISE\\INPUT");
-      successfullySentIds.add(reallocationEntity.getLegacyjobid());
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
+      return false;
     }
 
     // Update database jobs table states for each job from inital to sent.
     LegacyJobEntity jobEntity = legacyJobsRepo
         .findByTmjobid(updateJobHeaderRequest.getJobHeader().getJobIdentity().getReference());
     legacyJobsRepo.save(LegacyJobsReader.setStateSent(jobEntity));
+    return true;
   }
 
   public void executeReissueJobs() {
