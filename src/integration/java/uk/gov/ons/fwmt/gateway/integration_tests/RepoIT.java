@@ -15,6 +15,8 @@ import uk.gov.ons.fwmt.gateway.repo.reception.LegacyStaffRepo;
 
 import javax.transaction.Transactional;
 
+import static junit.framework.TestCase.fail;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
 public class RepoIT {
@@ -30,32 +32,36 @@ public class RepoIT {
   @Test
   @Transactional
   public void storeSampleInDB() {
-    LegacyJobEntity legacyJobEntity = new LegacyJobEntity();
-    legacyJobEntity.setTmJobId("<test>");
-    legacyJobRepo.save(legacyJobEntity);
-    legacyJobRepo.delete(legacyJobEntity);
+    try {
+      LegacyJobEntity legacyJobEntity = new LegacyJobEntity();
+      legacyJobEntity.setTmJobId("<test>");
+      legacyJobRepo.save(legacyJobEntity);
+      legacyJobRepo.delete(legacyJobEntity);
 
-    LegacyLeaverEntity legacyLeaverEntity = new LegacyLeaverEntity();
-    legacyLeaverEntity.setEmployeeNo("<no>");
-    legacyLeaversRepo.save(legacyLeaverEntity);
-    legacyLeaversRepo.delete(legacyLeaverEntity);
+      LegacyLeaverEntity legacyLeaverEntity = new LegacyLeaverEntity();
+      legacyLeaverEntity.setEmployeeNo("<no>");
+      legacyLeaversRepo.save(legacyLeaverEntity);
+      legacyLeaversRepo.delete(legacyLeaverEntity);
 
-    LegacySampleEntity legacySampleEntity = new LegacySampleEntity();
-    legacySampleEntity.setSerno("<no>");
-    legacySampleEntity.setPrimaryKey(1L);
-    legacySampleRepo.save(legacySampleEntity);
-    legacySampleRepo.delete(legacySampleEntity);
+      LegacySampleEntity legacySampleEntity = new LegacySampleEntity();
+      legacySampleEntity.setSerno("<no>");
+      legacySampleEntity.setPrimaryKey(1L);
+      legacySampleRepo.save(legacySampleEntity);
+      legacySampleRepo.delete(legacySampleEntity);
 
-    LegacyStaffEntity legacyStaffEntity = new LegacyStaffEntity();
-    legacyStaffEntity.setEmployeeNo("<no>");
-    legacyStaffEntity.setAuthNo("<no>");
-    legacyStaffRepo.save(legacyStaffEntity);
-    legacyStaffRepo.delete(legacyStaffEntity);
+      LegacyStaffEntity legacyStaffEntity = new LegacyStaffEntity();
+      legacyStaffEntity.setEmployeeNo("<no>");
+      legacyStaffEntity.setAuthNo("<no>");
+      legacyStaffRepo.save(legacyStaffEntity);
+      legacyStaffRepo.delete(legacyStaffEntity);
 
-    LegacyUserEntity legacyUsersEntity = new LegacyUserEntity();
-    legacyUsersEntity.setTmUsername("<username>");
-    legacyUsersEntity.setAuthNo("<no>");
-    legacyUsersRepo.save(legacyUsersEntity);
-    legacyUsersRepo.delete(legacyUsersEntity);
+      LegacyUserEntity legacyUsersEntity = new LegacyUserEntity();
+      legacyUsersEntity.setTmUsername("<username>");
+      legacyUsersEntity.setAuthNo("<no>");
+      legacyUsersRepo.save(legacyUsersEntity);
+      legacyUsersRepo.delete(legacyUsersEntity);
+    } catch (Exception e) {
+      fail("An error occurred while interfacing with the database");
+    }
   }
 }
