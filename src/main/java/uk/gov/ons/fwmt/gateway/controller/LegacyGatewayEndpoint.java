@@ -101,7 +101,7 @@ public class LegacyGatewayEndpoint {
 
   private void assertValidFileMetadata(MultipartFile file) throws MediaTypeNotSupportedException {
     if (!"text/csv".equals(file.getContentType())) {
-      throw new MediaTypeNotSupportedException(file.getContentType(), "text/csv");
+      throw new MediaTypeNotSupportedException("text/csv", file.getContentType());
     }
   }
 
