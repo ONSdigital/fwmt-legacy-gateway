@@ -15,6 +15,7 @@ public class LegacyGFFSampleReaderNew extends LegacyReaderBase<LegacySampleEntit
       "Rand", "ADULT2", "ADULT3", "ADULT4", "ADULT5", "ADULT6", "ADULT7", "ADULT8", "ADULT9", "ADULT10", "ADULT11",
       "ADULT12", "ADULT13", "ADULT14", "Telno", "Issue_No", "Part", "Auth", "EmployeeNo", "Last_Updated", "Ward",
       "Ward_Name", "MO", "DiffAddInd", "GFFMU", "OldSerial"};
+
   private static final String[] requiredFields = {"Serno", "TLA", "Stage", "Quota", "Auth", "EmployeeNo", "Prem1",
       "District", "PostTown", "Postcode", "AddressNo", "OSGridRef"};
 
@@ -28,7 +29,7 @@ public class LegacyGFFSampleReaderNew extends LegacyReaderBase<LegacySampleEntit
 
   @Override LegacySampleEntity parseRecord(CSVRecord record) {
     for (String fieldName : requiredFields) {
-      String field = record.get(field);
+      String field = record.get(fieldName);
       if (field == null) {
         fail(strings, field + " could not be found, but is required");
         return null;
