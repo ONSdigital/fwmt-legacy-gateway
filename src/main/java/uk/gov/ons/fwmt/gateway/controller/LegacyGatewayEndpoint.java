@@ -53,7 +53,7 @@ public class LegacyGatewayEndpoint {
     this.ingesterService = ingesterService;
   }
 
-  public void assertValidFilename(String filename, String endpoint) throws InvalidFileNameException {
+  public static void assertValidFilename(String filename, String endpoint) throws InvalidFileNameException {
     // Ensure filename of form 'A.csv'
     String[] filenameParts = filename.split("\\.");
     if (filenameParts.length != 2 || !("csv".equals(filenameParts[1])))
@@ -86,7 +86,7 @@ public class LegacyGatewayEndpoint {
     }
   }
 
-  private void assertValidFileMetadata(MultipartFile file) throws MediaTypeNotSupportedException {
+  private static void assertValidFileMetadata(MultipartFile file) throws MediaTypeNotSupportedException {
     if (!"text/csv".equals(file.getContentType())) {
       throw new MediaTypeNotSupportedException(new MediaType(file.getContentType()), new MediaType("text/csv"));
     }
