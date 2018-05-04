@@ -27,6 +27,7 @@ public class RestExceptionHandler {
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<GatewayCommonErrorDTO> handleAnyException(HttpServletRequest request, Exception exception) {
+    exception.printStackTrace();
     return makeCommonError(request, exception, HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error", "Unknown error");
   }
 

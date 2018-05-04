@@ -4,11 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * This class corresponds to a single row of resources/sampledata/test.csv
@@ -21,24 +17,24 @@ import javax.persistence.Table;
 public class LegacySampleEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long primarykey;
-  private String legacyjobid;
+  private Long primaryKey;
+  private String legacyJobId;
   private String serno;
   private String tla;
   private String fp;
   private String quota;
-  private String authno;
-  private String employeeno;
+  private String authNo;
+  private String employeeNo;
 
-  private String addressline1;
-  private String addressline2;
-  private String addressline3;
-  private String addressline4;
-  private String addressno;
+  @Column(name="address_line_1") private String addressLine1;
+  @Column(name="address_line_2") private String addressLine2;
+  @Column(name="address_line_3") private String addressLine3;
+  @Column(name="address_line_4") private String addressLine4;
+  private String addressNo;
   private String district;
-  private String posttown;
+  private String postTown;
   private String postcode;
-  private String osgridref;
+  private String osGridRef;
 
   // lfs only
   private String week;
@@ -69,16 +65,16 @@ public class LegacySampleEntity {
         tla != null &&
         fp != null &&
         quota != null &&
-        authno != null &&
-        employeeno != null &&
-        addressline1 != null &&
-        addressline2 != null &&
-        addressline3 != null &&
-        addressline4 != null &&
-        addressno != null &&
+        authNo != null &&
+        employeeNo != null &&
+        addressLine1 != null &&
+        addressLine2 != null &&
+        addressLine3 != null &&
+        addressLine4 != null &&
+        addressNo != null &&
         district != null &&
-        posttown != null &&
+        postTown != null &&
         postcode != null &&
-        osgridref != null;
+        osGridRef != null;
   }
 }

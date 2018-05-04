@@ -14,32 +14,32 @@ public class LegacyJobsReader  extends CsvToBean<LegacyJobEntity>{
         LegacyJobEntity legacyJobEntity = new LegacyJobEntity();
         JobType job = createJobRequest.getJob();
         
-        legacyJobEntity.setTmjobid(job.getIdentity().getReference());
-        legacyJobEntity.setLegacyjobid(job.getLocation().getReference());
+        legacyJobEntity.setTmJobId(job.getIdentity().getReference());
+        legacyJobEntity.setLegacyJobId(job.getLocation().getReference());
         legacyJobEntity.setState("INITAL");
-        legacyJobEntity.setInitaltimestamp(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
-        legacyJobEntity.setSenttimestamp(null);
-        legacyJobEntity.setProcessedtimestamp(null);
-        legacyJobEntity.setErroredtimestamp(null);
+        legacyJobEntity.setInitialTimeStamp(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
+        legacyJobEntity.setSentTimeStamp(null);
+        legacyJobEntity.setProcessedTimeStamp(null);
+        legacyJobEntity.setErroredTimeStamp(null);
         
         return legacyJobEntity;
     }
 
     public static LegacyJobEntity setStateSent(LegacyJobEntity jobEntity) {
         jobEntity.setState("SENT");
-        jobEntity.setSenttimestamp(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
+        jobEntity.setSentTimeStamp(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
         return jobEntity;
     }
 
     public static LegacyJobEntity setStateProcessed(LegacyJobEntity jobEntity) {
         jobEntity.setState("PROCESSED");
-        jobEntity.setSenttimestamp(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
+        jobEntity.setSentTimeStamp(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
         return jobEntity;
     }
     
     public static LegacyJobEntity setStateErrored(LegacyJobEntity jobEntity) {
         jobEntity.setState("ERRORED");
-        jobEntity.setSenttimestamp(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
+        jobEntity.setSentTimeStamp(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
         return jobEntity;
     }
 }

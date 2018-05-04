@@ -58,21 +58,34 @@ public class LegacyGatewayEndpoint {
     String[] filenameParts = filename.split("\\.");
     if (filenameParts.length != 2 || !("csv".equals(filenameParts[1])))
       throw new InvalidFileNameException(filename, "No 'csv' extension");
-    // Ensure filename of the form 'B_C_D.csv'
+    // Ensure filename of the form:
+    //  'B_C_D.csv' if endpoint is 'sample'
+    //  'B_D.csv' if endpoint is 'staff'
     String[] nameParts = filenameParts[0].split("_");
-    if (nameParts.length != 3)
-      throw new InvalidFileNameException(filename,
-          "Invalid number of underscore-delimited sections, there should be three");
+    String fileEndpoint; // B
+    String surveyTla; // C, null if endpoint is 'staff'
+    String timestamp; // D
+    if ("staff".equals(endpoint)) {
+      if (nameParts.length != 2)
+        throw new InvalidFileNameException(filename, "Invalid number of underscore-delimited sections, there should be two");
+      fileEndpoint = nameParts[0];
+      timestamp = nameParts[1];
+    } else if ("sample".equals(endpoint)) {
+      if (nameParts.length != 3)
+        throw new InvalidFileNameException(filename, "Invalid number of underscore-delimited sections, there should be three");
+      fileEndpoint = nameParts[0];
+      surveyTla = nameParts[1]; // C
+      timestamp = nameParts[2];
+      // Ensure that section 'C' is a three-character survey name
+      if (surveyTla.length() != 3)
+        throw new InvalidFileNameException(filename, "Survey name must be three characters long");
+    } else {
+      throw new IllegalArgumentException("Invalid endpoint - was not 'staff' or 'sample'");
+    }
     // Ensure that section 'B' matches our endpoint
-    String fileEndpoint = nameParts[0];
     if (!endpoint.equals(fileEndpoint))
       throw new InvalidFileNameException(filename, "Invalid endpoint declaration");
-    // Ensure that section 'C' is a three-character survey name
-    String surveyTla = nameParts[1];
-    if (surveyTla.length() != 3)
-      throw new InvalidFileNameException(filename, "Survey name must be three characters long");
-    // the third section is a valid timestamp
-    String timestamp = nameParts[2];
+    // Ensure that section 'D' is a valid timestamp
     DateTimeFormatter formatterISO = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
     DateTimeFormatter formatterISOWindows = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
     try {
@@ -88,7 +101,7 @@ public class LegacyGatewayEndpoint {
 
   private void assertValidFileMetadata(MultipartFile file) throws MediaTypeNotSupportedException {
     if (!"text/csv".equals(file.getContentType())) {
-      throw new MediaTypeNotSupportedException(new MediaType(file.getContentType()), new MediaType("text/csv"));
+      throw new MediaTypeNotSupportedException(file.getContentType(), "text/csv");
     }
   }
 
@@ -111,7 +124,7 @@ public class LegacyGatewayEndpoint {
     // add data to reception table
     if (file.getOriginalFilename().contains("LFS")) {
       reader = new LegacyLFSSampleReader(file.getInputStream());
-    } else if (file.getOriginalFilename().contains("GFS")) {
+    } else if (file.getOriginalFilename().contains("GFF")) {
       reader = new LegacyGFFSampleReader(file.getInputStream());
     } else {
       throw new InvalidFileNameException(file.getOriginalFilename(), "Invalid survey type");

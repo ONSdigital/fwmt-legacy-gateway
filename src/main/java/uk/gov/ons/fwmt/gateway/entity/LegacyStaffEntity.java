@@ -16,10 +16,10 @@ import javax.persistence.Table;
 @Table(name = "staff")
 public class LegacyStaffEntity {
   @Id
-  public String authno;
+  public String authNo;
 
   @Column(unique = true)
-  public String employeeno;
+  public String employeeNo;
 
   @Column(nullable = false)
   public String forename;
@@ -28,7 +28,7 @@ public class LegacyStaffEntity {
   public String surname;
 
   @Column(nullable = false)
-  public String jobtitle;
+  public String jobTitle;
 
   @Column(nullable = false)
   public String email;
@@ -37,5 +37,5 @@ public class LegacyStaffEntity {
   public String phone;
 
   @Column(nullable = false)
-  public String usertype;
+  public String userType;
 }
