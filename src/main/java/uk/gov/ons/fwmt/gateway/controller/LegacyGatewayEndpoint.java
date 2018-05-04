@@ -53,7 +53,7 @@ public class LegacyGatewayEndpoint {
     this.ingesterService = ingesterService;
   }
 
-  public static void assertValidFilename(String filename, String endpoint) throws InvalidFileNameException {
+  public void assertValidFilename(String filename, String endpoint) throws InvalidFileNameException {
     // Ensure filename of form 'A.csv'
     String[] filenameParts = filename.split("\\.");
     if (filenameParts.length != 2 || !("csv".equals(filenameParts[1])))
