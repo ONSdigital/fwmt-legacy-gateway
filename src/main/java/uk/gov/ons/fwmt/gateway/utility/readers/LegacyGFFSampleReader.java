@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
+import uk.gov.ons.fwmt.gateway.representation.UnprocessedCSVRowDTO;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -82,7 +83,7 @@ public class LegacyGFFSampleReader implements SampleReader {
   }
 
   private CsvToBean<LegacyGFFSampleEntityRaw> csvToBean;
-  @Getter private List<UnprocessedCSVRow> unprocessedCSVRows;
+  @Getter private List<UnprocessedCSVRowDTO> unprocessedCSVRows;
   @Getter private int unprocessedCount;
   @Getter private int successCount;
 
@@ -223,7 +224,7 @@ public class LegacyGFFSampleReader implements SampleReader {
 
     private void fail(String[] strings, String reason) {
       unprocessedCount++;
-      unprocessedCSVRows.add(new UnprocessedCSVRow(strings, lineCounter, reason));
+      unprocessedCSVRows.add(new UnprocessedCSVRowDTO(strings, lineCounter, reason));
     }
 
     @Override public boolean allowLine(String[] strings) {

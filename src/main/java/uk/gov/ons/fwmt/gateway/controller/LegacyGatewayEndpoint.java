@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +22,7 @@ import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.gateway.error.MediaTypeNotSupportedException;
 import uk.gov.ons.fwmt.gateway.representation.SampleSummaryDTO;
 import uk.gov.ons.fwmt.gateway.representation.StaffSummaryDTO;
+import uk.gov.ons.fwmt.gateway.representation.UnprocessedCSVRowDTO;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
 import uk.gov.ons.fwmt.gateway.utility.readers.*;
 
@@ -138,7 +138,7 @@ public class LegacyGatewayEndpoint {
       log.error("Found a CSV parsing error");
     }
     // pull the unprocessed entries out from the exceptions stored in the legacySampleReader
-    List<UnprocessedCSVRow> unprocessedEntries = reader.getUnprocessedCSVRows().stream().collect(Collectors.toList());
+    List<UnprocessedCSVRowDTO> unprocessedEntries = reader.getUnprocessedCSVRows().stream().collect(Collectors.toList());
 
     // create the response object
     SampleSummaryDTO sampleSummaryDTO = new SampleSummaryDTO(file.getOriginalFilename(), reader.getSuccessCount(),
