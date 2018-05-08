@@ -8,6 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.ons.fwmt.gateway.Application;
 import uk.gov.ons.fwmt.gateway.controller.LegacyGatewayEndpoint;
 import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
+import uk.gov.ons.fwmt.gateway.utility.FileValidation;
 
 import static org.junit.Assert.fail;
 
