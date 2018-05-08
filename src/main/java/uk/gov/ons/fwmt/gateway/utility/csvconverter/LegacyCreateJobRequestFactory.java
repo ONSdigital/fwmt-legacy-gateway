@@ -44,7 +44,6 @@ public class LegacyCreateJobRequestFactory {
    * @throws DatatypeConfigurationException
    */
   private static CreateJobRequest buildRequestFromSampleData(LegacySampleEntity entry, String username) {
-    ObjectFactory factory = new ObjectFactory();
     CreateJobRequest request = buildRequest();
 
     // identity
@@ -60,16 +59,16 @@ public class LegacyCreateJobRequestFactory {
     location.getAddressDetail().setPostCode(entry.getPostcode());
     location.setReference(entry.getSerno());
 
-    Float geoX = Float.parseFloat(entry.getOsGridRef().substring(0, 6));
-    Float geoY = Float.parseFloat(entry.getOsGridRef().substring(7));
-
-    request.getJob().getLocation().getAddressDetail().setGeoX(factory.createAddressTypeGeoX(geoX));
-    request.getJob().getLocation().getAddressDetail().setGeoY(factory.createAddressTypeGeoX(geoY));
+    // TODO Confirm this is correct with new data map
+    // Float geoX = Float.parseFloat(entry.getOsgridref().substring(0, 6));
+    // Float geoY = Float.parseFloat(entry.getOsgridref().substring(7));
+    // request.getJob().getLocation().getAddressDetail().setGeoX(factory.createAddressTypeGeoX(geoX));
+    // request.getJob().getLocation().getAddressDetail().setGeoY(factory.createAddressTypeGeoX(geoY));
 
     request.getJob().getContact().setName(entry.getPostcode());
 
     // skills
-    request.getJob().getSkills().getSkill().add("LegacySurvey");
+    request.getJob().getSkills().getSkill().add("Survey");
 
     Date dueDate = fieldPeriodToDates(entry.getFp(), entry.getTla());
 
@@ -152,7 +151,7 @@ public class LegacyCreateJobRequestFactory {
     Date date;
     int year = Integer.parseInt(fp.substring(0, 1));
     int quarter = Integer.parseInt(fp.substring(1, 2));
-    int week = fp.toLowerCase().charAt(2) - 'a' + 1;
+    int week = fp.toLowerCase().charAt(2) - 'a' + 3;
     Calendar cal = Calendar.getInstance();
     cal.set(2010 + year, 1 + (3 * (quarter - 1)) - 1, 1);
     cal.set(Calendar.HOUR, 11);

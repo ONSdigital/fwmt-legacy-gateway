@@ -38,9 +38,6 @@ public class PublishServiceImpl implements PublishService {
   private LegacyJobsRepo legacyJobsRepo;
   private LegacyUsersRepo legacyUsersRepo;
 
-  // TODO refactor this, it's local state and should be in a local variable passed between functions
-  private List<String> successfullySentIds;
-
   @Autowired
   public PublishServiceImpl(TMMessageSubmitter submitter, LegacySampleRepo legacySampleRepository,
       LegacyStaffRepo legacyStaffRepo, LegacyJobsRepo legacyJobsRepo, LegacyUsersRepo legacyUsersRepo) {
@@ -79,61 +76,68 @@ public class PublishServiceImpl implements PublishService {
       }
     });
 
-    // all lines of the staff repo have been processed to find new users and users that no longer exist.
+    // all lines of the staff repo have been processed to find new users and
+    // users that no longer exist.
     // therefore i will now empty the staff reception table
     legacyStaffRepo.deleteAll();
   }
 
   @Override
-  public void publishNewJobsAndReallocations() {
-    successfullySentIds = new ArrayList<String>();
+  public void publishNewJobsReallocationsAndReissues() {
     legacySampleRepository.findAll().forEach(entity -> {
-      if (legacyJobsRepo.existsByLegacyJobId(entity.getLegacyJobId())) {
-        executeReallocateJob(entity);
-      } else {
-        executeNewJob(entity);
+      if (legacyUsersRepo.existsByAuthNo(entity.getAuthNo())) {
+        if (legacyJobsRepo.existsByLegacyJobId(entity.getLegacyJobId())) {
+          if (executeReallocateJob(entity)) {
+            legacySampleRepository.deleteByLegacyJobId(entity.getLegacyJobId());
+          }
+        } else {
+          // may need to identify reissues in order to reference previous jobs
+          if (executeNewJob(entity)) {
+            legacySampleRepository.deleteByLegacyJobId(entity.getLegacyJobId());
+          }
+        }
       }
     });
-    for(String id: successfullySentIds) {
-      legacySampleRepository.deleteByLegacyJobId(id);
-    }
   }
 
-  public void executeNewJob(LegacySampleEntity newJobEntity) {
+  public boolean executeNewJob(LegacySampleEntity newJobEntity) {
     String tmUsername = legacyUsersRepo.findByAuthNo(newJobEntity.getAuthNo()).getTmUsername();
     CreateJobRequest createJobRequest = LegacyCreateJobRequestFactory.convert(newJobEntity, tmUsername);
     LegacyJobEntity legacyJobEntity = LegacyJobsReader.createJobEntity(createJobRequest);
     legacyJobsRepo.save(legacyJobEntity);
     try {
       // TODO re-enable this once TM support is enabled
-//      sendJobRequest(createJobRequest, "\\OPTIMISE\\INPUT");
-      successfullySentIds.add(newJobEntity.getLegacyJobId());
+      // sendJobRequest(createJobRequest, "\\OPTIMISE\\INPUT");
     } catch (Exception e) {
       // something errored do something here
       e.printStackTrace();
+      return false;
     }
 
     // Update database jobs table states for each job from inital to sent.
     LegacyJobEntity jobEntity = legacyJobsRepo.findByTmJobId(createJobRequest.getJob().getIdentity().getReference());
     legacyJobsRepo.save(LegacyJobsReader.setStateSent(jobEntity));
+    return true;
   }
 
-  public void executeReallocateJob(LegacySampleEntity reallocationEntity) {
+  public boolean executeReallocateJob(LegacySampleEntity reallocationEntity) {
     String tmJobId = legacyJobsRepo.findByLegacyJobId(reallocationEntity.getLegacyJobId()).getTmJobId();
     String tmUsername = legacyUsersRepo.findByAuthNo(reallocationEntity.getAuthNo()).getTmUsername();
     UpdateJobHeaderRequest updateJobHeaderRequest = LegacyUpdateJobHeaderRequestFactory.reallocate(tmJobId, tmUsername);
     try {
-      sendUpdateJobRequest(updateJobHeaderRequest, "\\OPTIMISE\\INPUT");
-      successfullySentIds.add(reallocationEntity.getLegacyJobId());
+      // TODO re-enable this once TM support is enabled
+      // sendUpdateJobRequest(updateJobHeaderRequest, "\\OPTIMISE\\INPUT");
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
+      return false;
     }
 
     // Update database jobs table states for each job from inital to sent.
     LegacyJobEntity jobEntity = legacyJobsRepo
         .findByTmJobId(updateJobHeaderRequest.getJobHeader().getJobIdentity().getReference());
     legacyJobsRepo.save(LegacyJobsReader.setStateSent(jobEntity));
+    return true;
   }
 
   public void executeReissueJobs() {
