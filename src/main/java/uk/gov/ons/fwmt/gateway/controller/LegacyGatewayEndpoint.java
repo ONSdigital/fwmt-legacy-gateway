@@ -116,7 +116,7 @@ public class LegacyGatewayEndpoint {
       throws IOException, InvalidFileNameException, MediaTypeNotSupportedException {
     log.error("Started REST endpoint");
 
-    SampleReader reader;
+    LegacyReaderBase reader;
 
     assertValidFilename(file.getOriginalFilename(), "sample");
     assertValidFileMetadata(file);
@@ -130,19 +130,16 @@ public class LegacyGatewayEndpoint {
       throw new InvalidFileNameException(file.getOriginalFilename(), "Invalid survey type");
     }
 
-    Iterator<LegacySampleEntity> iterator = reader.iterator();
-    ingesterService.ingestLegacySample(iterator);
+    ingesterService.ingestLegacySample(reader);
 
     if (reader.getUnprocessedCSVRows().size() != 0) {
-      // TODO handle errors
+      // errors are reported back
       log.error("Found a CSV parsing error");
     }
-    // pull the unprocessed entries out from the exceptions stored in the legacySampleReader
-    List<UnprocessedCSVRowDTO> unprocessedEntries = reader.getUnprocessedCSVRows().stream().collect(Collectors.toList());
 
     // create the response object
     SampleSummaryDTO sampleSummaryDTO = new SampleSummaryDTO(file.getOriginalFilename(), reader.getSuccessCount(),
-        unprocessedEntries);
+        reader.getUnprocessedCSVRows());
     return ResponseEntity.ok(sampleSummaryDTO);
   }
 
@@ -160,12 +157,11 @@ public class LegacyGatewayEndpoint {
 
     // add data to reception table
     LegacyStaffReader legacyStaffReader = new LegacyStaffReader(file.getInputStream());
-    Iterator<LegacyStaffEntity> iterator = legacyStaffReader.iterator();
 
-    ingesterService.ingestLegacyStaff(iterator);
+    ingesterService.ingestLegacyStaff(legacyStaffReader);
 
     StaffSummaryDTO staffSummaryDTO = new StaffSummaryDTO(file.getOriginalFilename(),
-        legacyStaffReader.getProcessedCount());
+        legacyStaffReader.getSuccessCount());
     return ResponseEntity.ok(staffSummaryDTO);
   }
 }

@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import uk.gov.ons.fwmt.gateway.error.CSVParsingException;
 import uk.gov.ons.fwmt.gateway.representation.UnprocessedCSVRowDTO;
 
 import java.io.IOException;
@@ -30,7 +31,7 @@ public abstract class LegacyReaderBase<T> implements Iterator<T> {
 
   abstract String[] getCSVHeaders();
 
-  abstract T parseRecord(CSVRecord record);
+  abstract T parseRecord(CSVRecord record) throws CSVParsingException;
 
   @Override
   public boolean hasNext() {
@@ -42,10 +43,10 @@ public abstract class LegacyReaderBase<T> implements Iterator<T> {
     do {
       CSVRecord record = iter.next();
       T result = null;
-      Exception exception = null;
+      CSVParsingException exception = null;
       try {
         result = parseRecord(record);
-      } catch (Exception e) {
+      } catch (CSVParsingException e) {
         exception = e;
       }
       if (result == null) {
