@@ -54,9 +54,9 @@ public abstract class LegacyReaderBase<T> implements Iterator<T> {
         List<String> columns = new ArrayList<>();
         record.iterator().forEachRemaining(columns::add);
         if (exception == null) {
-          unprocessedCSVRows.add(new UnprocessedCSVRowDTO(columns, (int) record.getRecordNumber(), "Unable to process"));
+          unprocessedCSVRows.add(new UnprocessedCSVRowDTO((int) record.getRecordNumber(), "Unable to process"));
         } else {
-          unprocessedCSVRows.add(new UnprocessedCSVRowDTO(columns, (int) record.getRecordNumber(), exception.toString()));
+          unprocessedCSVRows.add(new UnprocessedCSVRowDTO((int) record.getRecordNumber(), exception.toString()));
         }
       } else {
         successCount++;

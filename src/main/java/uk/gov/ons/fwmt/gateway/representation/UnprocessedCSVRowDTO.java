@@ -8,7 +8,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class UnprocessedCSVRowDTO {
-  private final List<String> content;
   private final int row;
   private final String message;
 }
