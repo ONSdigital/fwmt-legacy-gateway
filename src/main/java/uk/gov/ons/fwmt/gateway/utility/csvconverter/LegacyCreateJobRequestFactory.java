@@ -44,7 +44,6 @@ public class LegacyCreateJobRequestFactory {
    * @throws DatatypeConfigurationException
    */
   private static CreateJobRequest buildRequestFromSampleData(LegacySampleEntity entry, String username) {
-    ObjectFactory factory = new ObjectFactory();
     CreateJobRequest request = buildRequest();
 
     // identity
