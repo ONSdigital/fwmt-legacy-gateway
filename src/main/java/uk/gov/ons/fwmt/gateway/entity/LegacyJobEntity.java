@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 @Data
@@ -18,6 +19,11 @@ import java.util.Calendar;
 @NoArgsConstructor
 @Table(name = "jobs")
 public class LegacyJobEntity {
+  public static final String INITIAL_STATE = "INITIAL";
+  public static final String SENT_STATE = "SENT";
+  public static final String PROCESSED_STATE = "PROCESSED";
+  public static final String ERRORED_STATE = "ERROR";
+
   @Id
   public String tmJobId;
   @Column(unique = true, nullable = true)
@@ -33,25 +39,25 @@ public class LegacyJobEntity {
 
     this.setTmJobId(job.getIdentity().getReference());
     this.setLegacyJobId(job.getLocation().getReference());
-    this.setState("INITAL");
-    this.setInitialTimeStamp(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
+    this.setState(INITIAL_STATE);
+    this.setInitialTimeStamp(LocalDateTime.now().toString());
     this.setSentTimeStamp(null);
     this.setProcessedTimeStamp(null);
     this.setErroredTimeStamp(null);
   }
 
   public void setStateSent() {
-    this.setState("SENT");
-    this.setSentTimeStamp(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
+    this.setState(SENT_STATE);
+    this.setSentTimeStamp(LocalDateTime.now().toString());
   }
 
   public void setStateProcessed() {
-    this.setState("PROCESSED");
-    this.setSentTimeStamp(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
+    this.setState(PROCESSED_STATE);
+    this.setSentTimeStamp(LocalDateTime.now().toString());
   }
 
   public void setStateErrored() {
-    this.setState("ERRORED");
-    this.setSentTimeStamp(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
+    this.setState(ERRORED_STATE);
+    this.setSentTimeStamp(LocalDateTime.now().toString());
   }
 }

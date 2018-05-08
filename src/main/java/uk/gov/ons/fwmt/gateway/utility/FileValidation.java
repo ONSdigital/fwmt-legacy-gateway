@@ -49,7 +49,7 @@ public class FileValidation {
 
   public void assertValidFileMetadata(MultipartFile file) throws MediaTypeNotSupportedException {
     if (!"text/csv".equals(file.getContentType())) {
-      throw new MediaTypeNotSupportedException(new MediaType(file.getContentType()), new MediaType("text/csv"));
+      throw new MediaTypeNotSupportedException(file.getContentType(), "text/csv");
     }
   }
 }
