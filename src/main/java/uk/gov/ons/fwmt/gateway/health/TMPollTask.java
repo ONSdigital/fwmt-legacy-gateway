@@ -38,11 +38,11 @@ public class TMPollTask {
     private TMMessageSubmitter submitter;
 
     @Autowired
-    TMPollTask() {
+    TMPollTask(TMMessageSubmitter submitter) {
         this.rest = new RestTemplate();
         this.headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
-        this.submitter = new TMMessageSubmitter();
+        this.submitter = submitter;
     }
 
     @PostConstruct

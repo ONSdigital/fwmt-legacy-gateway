@@ -5,6 +5,8 @@ import lombok.Getter;
 import java.util.List;
 
 public class CSVParsingException extends Exception {
+  static final long serialVersionUID = 74703456705476L;
+
   @Getter private final List<String> rows;
 
   public CSVParsingException(String message, List<String> rows) {

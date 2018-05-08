@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.ons.fwmt.gateway.entity.LegacyJobEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
 import uk.gov.ons.fwmt.gateway.entity.LegacyUserEntity;
+import uk.gov.ons.fwmt.gateway.error.UnknownUserException;
 import uk.gov.ons.fwmt.gateway.repo.monitoring.LegacyJobsRepo;
 import uk.gov.ons.fwmt.gateway.repo.monitoring.LegacyUsersRepo;
 import uk.gov.ons.fwmt.gateway.repo.reception.LegacySampleRepo;
@@ -25,8 +26,6 @@ import uk.gov.ons.fwmt.gateway.service.PublishService;
 import uk.gov.ons.fwmt.gateway.utility.TMMessageSubmitter;
 import uk.gov.ons.fwmt.gateway.utility.csvconverter.LegacyCreateJobRequestFactory;
 import uk.gov.ons.fwmt.gateway.utility.csvconverter.LegacyUpdateJobHeaderRequestFactory;
-import uk.gov.ons.fwmt.gateway.utility.readers.LegacyJobsReader;
-import uk.gov.ons.fwmt.gateway.utility.readers.LegacyUsersReader;
 
 @Slf4j
 @Service
@@ -60,8 +59,7 @@ public class PublishServiceImpl implements PublishService {
           existingUser.setAuthNo(staff.getAuthNo());
           legacyUsersRepo.save(existingUser);
         } else {
-          LegacyUserEntity newUser = LegacyUsersReader.createUserEntity(staff,
-              getProposedTMUsername(staff.getEmail()));
+          LegacyUserEntity newUser = new LegacyUserEntity(staff, getProposedTMUsername(staff.getEmail()));
 
           // TODO create new mobilise user in TM
           log.info("Must create new user " + newUser.getTmUsername() + " and set correct AuthNo.");
@@ -100,9 +98,13 @@ public class PublishServiceImpl implements PublishService {
   }
 
   public void executeNewJob(LegacySampleEntity newJobEntity) {
-    String tmUsername = legacyUsersRepo.findByAuthNo(newJobEntity.getAuthNo()).getTmUsername();
+    LegacyUserEntity user = legacyUsersRepo.findByAuthNo(newJobEntity.getAuthNo());
+    if (user == null) {
+      throw new UnknownUserException(newJobEntity.getAuthNo());
+    }
+    String tmUsername = user.getTmUsername();
     CreateJobRequest createJobRequest = LegacyCreateJobRequestFactory.convert(newJobEntity, tmUsername);
-    LegacyJobEntity legacyJobEntity = LegacyJobsReader.createJobEntity(createJobRequest);
+    LegacyJobEntity legacyJobEntity = new LegacyJobEntity(createJobRequest);
     legacyJobsRepo.save(legacyJobEntity);
     try {
       // TODO re-enable this once TM support is enabled
@@ -115,7 +117,8 @@ public class PublishServiceImpl implements PublishService {
 
     // Update database jobs table states for each job from inital to sent.
     LegacyJobEntity jobEntity = legacyJobsRepo.findByTmJobId(createJobRequest.getJob().getIdentity().getReference());
-    legacyJobsRepo.save(LegacyJobsReader.setStateSent(jobEntity));
+    jobEntity.setStateSent();
+    legacyJobsRepo.save(jobEntity);
   }
 
   public void executeReallocateJob(LegacySampleEntity reallocationEntity) {
@@ -133,7 +136,8 @@ public class PublishServiceImpl implements PublishService {
     // Update database jobs table states for each job from inital to sent.
     LegacyJobEntity jobEntity = legacyJobsRepo
         .findByTmJobId(updateJobHeaderRequest.getJobHeader().getJobIdentity().getReference());
-    legacyJobsRepo.save(LegacyJobsReader.setStateSent(jobEntity));
+    jobEntity.setStateSent();
+    legacyJobsRepo.save(jobEntity);
   }
 
   public void executeReissueJobs() {

@@ -52,7 +52,7 @@ security.user:
   password: password
 
 totalmobile:
-  username: “...”
-  password: “...”
+  username: "..."
+  password: "..."
   url: "https://ons.totalmobile.co.uk"
   message-queue-service: "/Live/Services/TM/v20/Messaging/MessageQueueWs.asmx"

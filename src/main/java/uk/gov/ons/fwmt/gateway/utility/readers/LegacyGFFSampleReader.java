@@ -13,14 +13,19 @@ import java.util.List;
 
 @Slf4j
 public class LegacyGFFSampleReader extends LegacyReaderBase<LegacySampleEntity> {
-  static final String[] CSV_HEADERS = {"Serno", "TLA", "Stage", "Wave", "Prem1", "Prem2", "Prem3", "Prem4", "District",
-      "PostTown", "Postcode", "Quota", "AddressNo", "OSGridRef", "Year", "Month", "LAUA", "LAUA_Name", "SubSample",
-      "Rand", "ADULT2", "ADULT3", "ADULT4", "ADULT5", "ADULT6", "ADULT7", "ADULT8", "ADULT9", "ADULT10", "ADULT11",
-      "ADULT12", "ADULT13", "ADULT14", "Telno", "Issue_No", "Part", "Auth", "EmployeeNo", "Last_Updated", "Ward",
-      "Ward_Name", "MO", "DiffAddInd", "GFFMU", "OldSerial"};
+  private static final String[] CSV_HEADERS = {
+      "Transmission_Date", "Serno", "TLA", "Year", "Month", "Stage", "Wave", "Name", "Prem1", "Prem2", "Prem3", "Prem4",
+      "District", "PostTown", "Postcode", "Quota", "AddressNo", "OSGridRef", "Issue_No", "Part", "Auth", "EmployeeNo",
+      "Last_Updated", "Rand", "LAUA", "LAUA_Name", "Ward", "Ward_Name", "MO", "DivAddInd", "GFFMU", "OldSerial",
+      "SubSample",
+      "ADULT2", "ADULT3", "ADULT4", "ADULT5", "ADULT6", "ADULT7", "ADULT8", "ADULT9", "ADULT10", "ADULT11",
+      "ADULT12", "ADULT13", "ADULT14"
+      // missing in the provided samples
+      // "Telno"
+  };
 
-  private static final String[] requiredFields = {"Serno", "TLA", "Stage", "Quota", "Auth", "EmployeeNo", "Prem1",
-      "District", "PostTown", "Postcode", "AddressNo", "OSGridRef"};
+  private static final String[] requiredFields = {"Transmission_Date", "Serno", "TLA", "Stage", "Wave", "Prem1",
+      "Postcode", "Auth", "EmployeeNo"};
 
   public LegacyGFFSampleReader(InputStream stream) throws IOException {
     super(new InputStreamReader(stream));
