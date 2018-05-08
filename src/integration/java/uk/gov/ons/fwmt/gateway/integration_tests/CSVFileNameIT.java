@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.ons.fwmt.gateway.Application;
-import uk.gov.ons.fwmt.gateway.controller.LegacyGatewayEndpoint;
 import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.gateway.utility.FileValidation;
 

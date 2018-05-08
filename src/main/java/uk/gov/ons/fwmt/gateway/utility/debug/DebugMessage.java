@@ -1,12 +1,5 @@
 package uk.gov.ons.fwmt.gateway.utility.debug;
 
-import java.util.Date;
-import java.util.GregorianCalendar;
-
-import javax.xml.bind.JAXBElement;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import com.consiliumtechnologies.schemas.mobile._2009._03.commontypes.CriteriaType;
 import com.consiliumtechnologies.schemas.mobile._2009._03.commontypes.ObjectFactory;
 import com.consiliumtechnologies.schemas.mobile._2009._03.commontypes.ParseAsType;
@@ -14,20 +7,16 @@ import com.consiliumtechnologies.schemas.mobile._2009._03.visitstypes.Additional
 import com.consiliumtechnologies.schemas.mobile._2009._03.visitstypes.AdditionalPropertyType;
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.CreateJobRequest;
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.DeleteJobRequest;
-import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.AddressDetailType;
-import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.ContactInfoType;
-import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.JobIdentityType;
-import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.JobType;
-import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.LocationType;
-import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.ResourceIdentityType;
-import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.SkillCollectionType;
-import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.WorldIdentityType;
-import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ArrayOfCriteriaType;
-import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.GetMessageRequest;
-import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.QueryMessagesRequest;
-import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendCreateJobRequestMessage;
-import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendDeleteJobRequestMessage;
-import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendMessageRequestInfo;
+import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.*;
+import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.*;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import com.consiliumtechnologies.schemas.mobile._2009._03.commontypes.ObjectFactory;
 
 public class DebugMessage {
     public static SendCreateJobRequestMessage createSendCreateJobRequestMessage(String username, String[] addressLines,

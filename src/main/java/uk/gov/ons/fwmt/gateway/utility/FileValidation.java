@@ -1,15 +1,13 @@
 package uk.gov.ons.fwmt.gateway.utility;
 
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
+import uk.gov.ons.fwmt.gateway.error.MediaTypeNotSupportedException;
+
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
-
-import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
-import uk.gov.ons.fwmt.gateway.error.MediaTypeNotSupportedException;
 
 @Component
 public class FileValidation {

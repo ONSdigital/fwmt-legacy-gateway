@@ -1,12 +1,12 @@
 package uk.gov.ons.fwmt.gateway.utility.csvconverter;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class FieldPeriodTest {
 

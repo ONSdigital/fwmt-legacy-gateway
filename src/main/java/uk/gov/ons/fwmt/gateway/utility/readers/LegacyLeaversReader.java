@@ -1,8 +1,5 @@
 package uk.gov.ons.fwmt.gateway.utility.readers;
 
-import com.opencsv.bean.ColumnPositionMappingStrategy;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVRecord;
 import uk.gov.ons.fwmt.gateway.entity.LegacyLeaverEntity;
@@ -10,7 +7,6 @@ import uk.gov.ons.fwmt.gateway.entity.LegacyLeaverEntity;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Iterator;
 
 @Slf4j
 public class LegacyLeaversReader extends LegacyReaderBase<LegacyLeaverEntity> {

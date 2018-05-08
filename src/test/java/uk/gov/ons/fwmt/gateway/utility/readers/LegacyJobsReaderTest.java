@@ -9,7 +9,8 @@ import uk.gov.ons.fwmt.gateway.entity.LegacyJobEntity;
 
 import java.time.LocalDateTime;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 
 public class LegacyJobsReaderTest {

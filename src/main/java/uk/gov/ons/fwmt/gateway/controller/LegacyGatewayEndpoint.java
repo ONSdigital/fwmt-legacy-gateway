@@ -15,22 +15,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
-import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
 import uk.gov.ons.fwmt.gateway.error.GatewayCommonErrorDTO;
 import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.gateway.error.MediaTypeNotSupportedException;
 import uk.gov.ons.fwmt.gateway.representation.SampleSummaryDTO;
 import uk.gov.ons.fwmt.gateway.representation.StaffSummaryDTO;
-import uk.gov.ons.fwmt.gateway.representation.UnprocessedCSVRowDTO;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
 import uk.gov.ons.fwmt.gateway.utility.FileValidation;
-import uk.gov.ons.fwmt.gateway.utility.readers.*;
+import uk.gov.ons.fwmt.gateway.utility.readers.LegacyGFFSampleReader;
+import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
+import uk.gov.ons.fwmt.gateway.utility.readers.LegacyReaderBase;
+import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Class for file upload controller

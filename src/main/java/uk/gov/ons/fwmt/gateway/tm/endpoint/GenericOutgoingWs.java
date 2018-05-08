@@ -1,18 +1,16 @@
 package uk.gov.ons.fwmt.gateway.tm.endpoint;
 
-import javax.xml.bind.JAXBElement;
-
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ObjectFactory;
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendMessageResponse;
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.WebServiceAdapterOutputRequest;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.xml.bind.JAXBElement;
 
 @Slf4j
 @SuppressWarnings("unused")
