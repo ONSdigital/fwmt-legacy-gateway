@@ -75,7 +75,7 @@ public class LegacyGatewayEndpoint {
     // add data to reception table
     if (file.getOriginalFilename().contains("LFS")) {
       reader = new LegacyLFSSampleReader(file.getInputStream());
-    } else if (file.getOriginalFilename().contains("GFS")) {
+    } else if (file.getOriginalFilename().contains("GFF")) {
       reader = new LegacyGFFSampleReader(file.getInputStream());
     } else {
       throw new InvalidFileNameException(file.getOriginalFilename(), "Invalid survey type");

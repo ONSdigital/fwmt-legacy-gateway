@@ -1,1 +1,1 @@
-CREATE SCHEMA gateway;
+CREATE SCHEMA IF NOT EXISTS gateway;

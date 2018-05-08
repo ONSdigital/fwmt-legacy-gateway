@@ -8,6 +8,6 @@ public interface LegacyUsersRepo extends CrudRepository<LegacyUserEntity, Long> 
     Iterable<LegacyUserEntity> findAll();
     LegacyUserEntity findByAuthNo(String authNo);
     boolean existsByAuthNo(String authNo);
-    LegacyUserEntity findByTmusername(String tmUsername);
-    boolean existsByTmusername(String proposedTMUsername);
+    LegacyUserEntity findByTmUsername(String tmUsername);
+    boolean existsByTmUsername(String tmUsername);
 }
