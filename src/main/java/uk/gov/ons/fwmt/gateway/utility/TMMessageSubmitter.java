@@ -217,8 +217,6 @@ public class TMMessageSubmitter {
       }
 
       // Send SOAP Message to SOAP Server
-      System.out.println(urlStart);
-      System.out.println(urlEnd);
       SOAPMessage soapRequest = soapConnection.call(message, urlStart + urlEnd);
 
       // Print the SOAP Response
