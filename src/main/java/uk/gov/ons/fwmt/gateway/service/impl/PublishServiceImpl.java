@@ -108,7 +108,6 @@ public class PublishServiceImpl implements PublishService {
     try {
       // TODO re-enable this once TM support is enabled
       // sendJobRequest(createJobRequest, "\\OPTIMISE\\INPUT");
-      sendJobRequest(createJobRequest, "\\OPTIMISE\\INPUT");
     } catch (Exception e) {
       // something errored do something here
       e.printStackTrace();
@@ -126,7 +125,8 @@ public class PublishServiceImpl implements PublishService {
     String tmUsername = legacyUsersRepo.findByAuthNo(reallocationEntity.getAuthNo()).getTmUsername();
     UpdateJobHeaderRequest updateJobHeaderRequest = LegacyUpdateJobHeaderRequestFactory.reallocate(tmJobId, tmUsername);
     try {
-      sendUpdateJobRequest(updateJobHeaderRequest, "\\OPTIMISE\\INPUT");
+      // TODO re-enable this once TM support is enabled
+      // sendUpdateJobRequest(updateJobHeaderRequest, "\\OPTIMISE\\INPUT");
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
