@@ -71,3 +71,12 @@ databaseChangeLog:
           path: 8_Autoincrement_Sample_Primary_Key.sql
           relativeToChangelogFile: true
           splitStatements: false
+ - changeSet:
+    id: v9
+    author: Thomas Poot
+    comment: Made a new primary key for the users table
+    changes:
+      - sqlFile:
+          path: 9_Add_Id_to_Users.sql
+          relativeToChangelogFile: true
+          splitStatements: false

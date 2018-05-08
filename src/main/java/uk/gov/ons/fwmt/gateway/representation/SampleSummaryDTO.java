@@ -2,7 +2,6 @@ package uk.gov.ons.fwmt.gateway.representation;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import uk.gov.ons.fwmt.gateway.utility.readers.UnprocessedCSVRow;
 
 import java.util.List;
 
@@ -11,6 +10,6 @@ import java.util.List;
 public class SampleSummaryDTO {
   private final String filename;
   private final int processedRows;
-  private final List<UnprocessedCSVRow> unprocessedRows;
+  private final List<UnprocessedCSVRowDTO> unprocessedRows;
 
 }

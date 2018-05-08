@@ -1,6 +1,5 @@
 package uk.gov.ons.fwmt.gateway.utility.csvconverter;
 
-import com.consiliumtechnologies.schemas.mobile._2009._03.commontypes.ObjectFactory;
 import com.consiliumtechnologies.schemas.mobile._2009._03.visitstypes.AdditionalPropertyCollectionType;
 import com.consiliumtechnologies.schemas.mobile._2009._03.visitstypes.AdditionalPropertyType;
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.CreateJobRequest;

@@ -4,8 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
-
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
 
 public class LegacyGFFSampleReaderTest {
   /// We test the CSV parser by creating a CSV with valid headers and a list of field names, then using comparisons to

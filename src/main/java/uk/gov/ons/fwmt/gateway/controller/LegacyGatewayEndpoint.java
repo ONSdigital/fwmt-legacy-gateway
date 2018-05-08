@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
-import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
 import uk.gov.ons.fwmt.gateway.error.GatewayCommonErrorDTO;
 import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.gateway.error.MediaTypeNotSupportedException;
@@ -24,12 +22,12 @@ import uk.gov.ons.fwmt.gateway.representation.SampleSummaryDTO;
 import uk.gov.ons.fwmt.gateway.representation.StaffSummaryDTO;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
 import uk.gov.ons.fwmt.gateway.utility.FileValidation;
-import uk.gov.ons.fwmt.gateway.utility.readers.*;
+import uk.gov.ons.fwmt.gateway.utility.readers.LegacyGFFSampleReader;
+import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
+import uk.gov.ons.fwmt.gateway.utility.readers.LegacyReaderBase;
+import uk.gov.ons.fwmt.gateway.utility.readers.LegacyStaffReader;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Class for file upload controller
@@ -63,7 +61,7 @@ public class LegacyGatewayEndpoint {
       throws IOException, InvalidFileNameException, MediaTypeNotSupportedException {
     log.error("Started REST endpoint");
 
-    SampleReader reader;
+    LegacyReaderBase reader;
 
     fileValidation.assertValidFilename(file.getOriginalFilename(), "sample");
     fileValidation.assertValidFileMetadata(file);
@@ -77,19 +75,16 @@ public class LegacyGatewayEndpoint {
       throw new InvalidFileNameException(file.getOriginalFilename(), "Invalid survey type");
     }
 
-    Iterator<LegacySampleEntity> iterator = reader.iterator();
-    ingesterService.ingestLegacySample(iterator);
+    ingesterService.ingestLegacySample(reader);
 
     if (reader.getUnprocessedCSVRows().size() != 0) {
-      // TODO handle errors
+      // errors are reported back
       log.error("Found a CSV parsing error");
     }
-    // pull the unprocessed entries out from the exceptions stored in the legacySampleReader
-    List<UnprocessedCSVRow> unprocessedEntries = reader.getUnprocessedCSVRows().stream().collect(Collectors.toList());
 
     // create the response object
     SampleSummaryDTO sampleSummaryDTO = new SampleSummaryDTO(file.getOriginalFilename(), reader.getSuccessCount(),
-        unprocessedEntries);
+        reader.getUnprocessedCSVRows());
     return ResponseEntity.ok(sampleSummaryDTO);
   }
 
@@ -107,12 +102,11 @@ public class LegacyGatewayEndpoint {
 
     // add data to reception table
     LegacyStaffReader legacyStaffReader = new LegacyStaffReader(file.getInputStream());
-    Iterator<LegacyStaffEntity> iterator = legacyStaffReader.iterator();
 
-    ingesterService.ingestLegacyStaff(iterator);
+    ingesterService.ingestLegacyStaff(legacyStaffReader);
 
     StaffSummaryDTO staffSummaryDTO = new StaffSummaryDTO(file.getOriginalFilename(),
-        legacyStaffReader.getProcessedCount());
+        legacyStaffReader.getSuccessCount());
     return ResponseEntity.ok(staffSummaryDTO);
   }
 }

@@ -1,13 +1,9 @@
 package uk.gov.ons.fwmt.gateway.utility.csvconverter;
 
-import java.util.List;
-
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.UpdateJobHeaderRequest;
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.JobHeaderType;
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.JobIdentityType;
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.ResourceIdentityType;
-
-import uk.gov.ons.fwmt.gateway.entity.LegacyUserEntity;
 
 public class LegacyUpdateJobHeaderRequestFactory {
 

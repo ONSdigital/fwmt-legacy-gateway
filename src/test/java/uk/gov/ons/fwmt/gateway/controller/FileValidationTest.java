@@ -1,11 +1,10 @@
 package uk.gov.ons.fwmt.gateway.controller;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import uk.gov.ons.fwmt.gateway.utility.FileValidation;
+
+import static org.junit.Assert.assertEquals;
 
 public class FileValidationTest {
   

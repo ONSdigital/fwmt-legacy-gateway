@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -16,8 +13,17 @@ import javax.persistence.Table;
 @Table(name = "users")
 public class LegacyUserEntity {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  public Long id;
+
+  @Column(nullable = false)
   public String authNo;
 
   @Column(nullable = false)
   public String tmUsername;
+
+  public LegacyUserEntity(LegacyStaffEntity staff, String tmUsername) {
+    this.setAuthNo(staff.getAuthNo());
+    this.setTmUsername(tmUsername);
+  }
 }

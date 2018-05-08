@@ -44,4 +44,10 @@ public class RestExceptionHandler {
     return makeCommonError(request, exception, HttpStatus.BAD_REQUEST, "Invalid CSV File Name", exception.toString());
   }
 
+  @ExceptionHandler(UnknownUserException.class)
+  public ResponseEntity<GatewayCommonErrorDTO> handleInvalidFileNameException(HttpServletRequest request,
+      UnknownUserException exception) {
+    return makeCommonError(request, exception, HttpStatus.INTERNAL_SERVER_ERROR, "Unknown user", exception.toString());
+  }
+
 }

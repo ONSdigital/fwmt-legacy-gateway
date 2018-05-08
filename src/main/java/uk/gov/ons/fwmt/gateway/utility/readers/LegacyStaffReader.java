@@ -1,63 +1,59 @@
 package uk.gov.ons.fwmt.gateway.utility.readers;
 
-import com.opencsv.bean.ColumnPositionMappingStrategy;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.csv.CSVRecord;
 import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
+import uk.gov.ons.fwmt.gateway.error.CSVParsingException;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
-@Slf4j
-public class LegacyStaffReader {
-  private static final String EMPLOYEENO = "employeeNo";
-  private static final String AUTHNO = "authNo";
-  private static final String FORENAME = "forename";
-  private static final String SURNAME = "surname";
-  private static final String JOB_TITLE = "jobTitle";
-  private static final String EMAIL = "email";
-  private static final String PHONE = "phone";
-  private static final String USER_TYPE = "userType";
-  private static final String[] NEW_USER_COLUMNS = new String[] {EMPLOYEENO, AUTHNO, FORENAME, SURNAME, JOB_TITLE,
-      EMAIL, PHONE, USER_TYPE};
+public class LegacyStaffReader extends LegacyReaderBase<LegacyStaffEntity> {
+  private static final String[] CSV_HEADERS = {
+      "Transmission_Date", "EmployeeNo", "intnum", "Title", "firstname", "Surname", "sex", "add1", "add2", "add3",
+      "add4", "postcode", "tel", "tel2", "mob_tel", "emerg_tel", "email_add", "GOR", "county", "grid_ref", "Easting",
+      "Northing", "fieldmanager", "Manager_EmployeeNo", "Manager_Auth", "Manager_Firstname", "Manager_Surname",
+      "Region", "regionName", "RM_EmployeeNo", "RM_Firstname", "RM_Surname"
+  };
 
-  private CsvToBean<LegacyStaffEntity> csvToBean;
-  // TODO this means is a bit old, see LegacyLFSSampleReader
-  @Getter private int processedCount;
+  private static final String[] requiredFields = {"Transmission_Date", "Title", "firstname", "Surname", "add1",
+      "postcode", "EmployeeNo"};
 
-  public LegacyStaffReader(InputStream stream) {
-    ColumnPositionMappingStrategy<LegacyStaffEntity> strategy = new ColumnPositionMappingStrategy<>();
-    strategy.setType(LegacyStaffEntity.class);
-    strategy.setColumnMapping(NEW_USER_COLUMNS);
-    CsvToBeanBuilder<LegacyStaffEntity> builder = new CsvToBeanBuilder<>(new InputStreamReader(stream));
-    csvToBean = builder
-        .withMappingStrategy(strategy)
-        .withSkipLines(1)
-        .build();
+  public LegacyStaffReader(InputStream stream) throws IOException {
+    super(new InputStreamReader(stream));
   }
 
-  public Iterator<LegacyStaffEntity> iterator() {
-    return new LegacyStaffIterator(csvToBean.iterator());
+  @Override String[] getCSVHeaders() {
+    return CSV_HEADERS;
   }
 
-  // We implement this pass-through iterator purely to give us a running count of the number of processed entries
-  class LegacyStaffIterator implements Iterator<LegacyStaffEntity> {
-    private Iterator<LegacyStaffEntity> rawIterator;
-
-    public LegacyStaffIterator(Iterator<LegacyStaffEntity> rawIterator) {
-      this.rawIterator = rawIterator;
+  @Override LegacyStaffEntity parseRecord(CSVRecord record) throws CSVParsingException {
+    for (String fieldName : requiredFields) {
+      String field = record.get(fieldName);
+      if (field == null) {
+        List<String> rows = new ArrayList<>();
+        record.iterator().forEachRemaining(rows::add);
+        throw new CSVParsingException(field + " could not be found, but is required", rows);
+      }
+      if (field.length() == 0) {
+        List<String> rows = new ArrayList<>();
+        record.iterator().forEachRemaining(rows::add);
+        throw new CSVParsingException(field + " could not be found, but is required", rows);
+      }
     }
-
-    @Override public boolean hasNext() {
-      return rawIterator.hasNext();
-    }
-
-    @Override public LegacyStaffEntity next() {
-      processedCount++;
-      return rawIterator.next();
-    }
+    LegacyStaffEntity entity = new LegacyStaffEntity();
+    entity.setEmployeeNo(record.get("EmployeeNo"));
+    // TODO THIS IS TEMPORARY, IT SHOULD READ 'Auth'
+    entity.setAuthNo(record.get("intnum"));
+    entity.setForename(record.get("firstname"));
+    entity.setSurname(record.get("Surname"));
+    entity.setJobTitle("Interviewer");
+    entity.setEmail(record.get("email_add"));
+    entity.setPhone(record.get("tel"));
+    // TODO What is this?
+    entity.setUserType("?");
+    return entity;
   }
 }
