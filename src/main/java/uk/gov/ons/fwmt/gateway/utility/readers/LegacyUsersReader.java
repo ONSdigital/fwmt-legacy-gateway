@@ -10,8 +10,8 @@ public class LegacyUsersReader  extends CsvToBean<LegacyUserEntity>{
     public static LegacyUserEntity createUserEntity(LegacyStaffEntity staff, String tmUsername) {
         LegacyUserEntity legacyUserEntity = new LegacyUserEntity();
         
-        legacyUserEntity.setAuthNo(staff.getAuthno());
-        legacyUserEntity.setTmusername(tmUsername);
+        legacyUserEntity.setAuthNo(staff.getAuthNo());
+        legacyUserEntity.setTmUsername(tmUsername);
         
         return legacyUserEntity;
     }

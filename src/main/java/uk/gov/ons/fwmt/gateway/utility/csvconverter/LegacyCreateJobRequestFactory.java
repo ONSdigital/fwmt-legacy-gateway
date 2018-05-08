@@ -53,15 +53,15 @@ public class LegacyCreateJobRequestFactory {
     // location
     LocationType location = request.getJob().getLocation();
     List<String> addressLines = location.getAddressDetail().getLines().getAddressLine();
-    addressLines.add(entry.getAddressline1());
-    addressLines.add(entry.getAddressline2());
-    addressLines.add(entry.getAddressline3());
-    addressLines.add(entry.getAddressline4());
+    addressLines.add(entry.getAddressLine1());
+    addressLines.add(entry.getAddressLine2());
+    addressLines.add(entry.getAddressLine3());
+    addressLines.add(entry.getAddressLine4());
     location.getAddressDetail().setPostCode(entry.getPostcode());
     location.setReference(entry.getSerno());
 
-    Float geoX = Float.parseFloat(entry.getOsgridref().substring(0, 6));
-    Float geoY = Float.parseFloat(entry.getOsgridref().substring(7));
+    Float geoX = Float.parseFloat(entry.getOsGridRef().substring(0, 6));
+    Float geoY = Float.parseFloat(entry.getOsGridRef().substring(7));
 
     request.getJob().getLocation().getAddressDetail().setGeoX(factory.createAddressTypeGeoX(geoX));
     request.getJob().getLocation().getAddressDetail().setGeoY(factory.createAddressTypeGeoX(geoY));
@@ -112,10 +112,10 @@ public class LegacyCreateJobRequestFactory {
   public static String composeReference(LegacySampleEntity entry) {
     String reference;
     if (entry.getTla().equals("LFS")) {
-      reference = entry.getQuota() + entry.getWeek() + entry.getW1yr() + entry.getQrtr() + entry.getAddressno()
+      reference = entry.getQuota() + entry.getWeek() + entry.getW1yr() + entry.getQrtr() + entry.getAddressNo()
           + entry.getWavfnd() + entry.getHhld() + entry.getChklet();
     } else {
-      reference = entry.getQuota() + "-" + entry.getAddressno() + "-" + entry.getFp();
+      reference = entry.getQuota() + "-" + entry.getAddressNo() + "-" + entry.getFp();
     }
     return reference;
   }

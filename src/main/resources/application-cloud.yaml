@@ -21,7 +21,7 @@ spring:
 liquibase:
   user: ${cloud.services.postgresql.connection.username}
   password: ${cloud.services.postgresql.connection.password}
-  default-schema: gateway
+  default-schema:
   url: ${cloud.services.postgresql.connection.jdbcurl}
   changeLog: classpath:db/changelog/db.changelog-master.yaml
 
