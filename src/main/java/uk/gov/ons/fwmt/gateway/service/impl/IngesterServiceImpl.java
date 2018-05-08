@@ -34,7 +34,7 @@ public class IngesterServiceImpl implements IngesterService {
     while (iter.hasNext()) {
       legacySampleRepository.save(iter.next());
     }
-    publishService.publishNewJobsAndReallocations();
+    publishService.publishNewJobsReallocationsAndReissues();
   }
 
   @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
