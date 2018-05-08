@@ -23,18 +23,20 @@ public class FileValidation {
     //  'B_C_D.csv' if endpoint is 'sample'
     //  'B_D.csv' if endpoint is 'staff'
     String[] nameParts = filenameParts[0].split("_");
-    String fileEndpoint; // B
+    String fileEndpoint = nameParts[0]; // B
     String surveyTla; // C, null if endpoint is 'staff'
     String timestamp; // D
+    // Ensure that section 'B' matches our endpoint
+    if (!endpoint.equals(fileEndpoint))
+      throw new InvalidFileNameException(filename, "Invalid endpoint declaration");
+    // Check sections C and D
     if ("staff".equals(endpoint)) {
       if (nameParts.length != 2)
         throw new InvalidFileNameException(filename, "Invalid number of underscore-delimited sections, there should be two");
-      fileEndpoint = nameParts[0];
       timestamp = nameParts[1];
     } else if ("sample".equals(endpoint)) {
       if (nameParts.length != 3)
         throw new InvalidFileNameException(filename, "Invalid number of underscore-delimited sections, there should be three");
-      fileEndpoint = nameParts[0];
       surveyTla = nameParts[1]; // C
       timestamp = nameParts[2];
       // Ensure that section 'C' is a three-character survey name
@@ -43,9 +45,6 @@ public class FileValidation {
     } else {
       throw new IllegalArgumentException("Invalid endpoint - was not 'staff' or 'sample'");
     }
-    // Ensure that section 'B' matches our endpoint
-    if (!endpoint.equals(fileEndpoint))
-      throw new InvalidFileNameException(filename, "Invalid endpoint declaration");
     // Ensure that section 'D' is a valid timestamp
     DateTimeFormatter formatterISO = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
     DateTimeFormatter formatterISOWindows = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
