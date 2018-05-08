@@ -9,7 +9,7 @@ import uk.gov.ons.fwmt.gateway.utility.FileValidation;
 
 public class FileValidationTest {
   
-  FileValidation fileValidation;
+  private FileValidation fileValidation;
   
   @Autowired
   public FileValidationTest(FileValidation fileValidation) {
