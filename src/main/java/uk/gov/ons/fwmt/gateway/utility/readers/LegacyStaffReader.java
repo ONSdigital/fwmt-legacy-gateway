@@ -35,12 +35,12 @@ public class LegacyStaffReader extends LegacyReaderBase<LegacyStaffEntity> {
       if (field == null) {
         List<String> rows = new ArrayList<>();
         record.iterator().forEachRemaining(rows::add);
-        throw new CSVParsingException(field + " could not be found, but is required", rows);
+        throw new CSVParsingException(fieldName + " could not be found, but is required", rows);
       }
       if (field.length() == 0) {
         List<String> rows = new ArrayList<>();
         record.iterator().forEachRemaining(rows::add);
-        throw new CSVParsingException(field + " could not be found, but is required", rows);
+        throw new CSVParsingException(fieldName + " could not be found, but is required", rows);
       }
     }
     LegacyStaffEntity entity = new LegacyStaffEntity();

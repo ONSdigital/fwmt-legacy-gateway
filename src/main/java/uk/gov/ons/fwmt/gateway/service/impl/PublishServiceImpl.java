@@ -109,8 +109,7 @@ public class PublishServiceImpl implements PublishService {
     LegacyJobEntity legacyJobEntity = new LegacyJobEntity(createJobRequest);
     legacyJobsRepo.save(legacyJobEntity);
     try {
-      // TODO re-enable this once TM support is enabled
-      // sendJobRequest(createJobRequest, "\\OPTIMISE\\INPUT");
+      sendJobRequest(createJobRequest, "\\OPTIMISE\\INPUT");
     } catch (Exception e) {
       // something errored do something here
       e.printStackTrace();

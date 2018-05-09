@@ -80,14 +80,21 @@ public class TMMessageSubmitter {
     oddMessageNames = messageNames;
   }
 
-  @Value("${totalmobile.url}")
-  private String urlStart;
-  @Value("${totalmobile.message-queue-service}")
-  private String urlEnd;
-  @Value("${totalmobile.username}")
-  private String username;
-  @Value("${totalmobile.password}")
-  private String password;
+  private final String urlStart;
+  private final String urlEnd;
+  private final String username;
+  private final String password;
+
+  public TMMessageSubmitter(
+      @Value("${totalmobile.url}") String urlStart,
+      @Value("${totalmobile.message-queue-service}") String urlEnd,
+      @Value("${totalmobile.username}") String username,
+      @Value("${totalmobile.password}") String password) {
+    this.urlStart = urlStart;
+    this.urlEnd = urlEnd;
+    this.username = username;
+    this.password = password;
+  }
 
   /**
    * Takes a visit request in order to return a complete XML document from the CSV

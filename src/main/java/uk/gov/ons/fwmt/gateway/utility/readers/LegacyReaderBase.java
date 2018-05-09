@@ -24,7 +24,7 @@ public abstract class LegacyReaderBase<T> implements Iterator<T> {
 
   public LegacyReaderBase(Reader in) throws IOException {
     this.parser = CSVFormat.DEFAULT
-        .withHeader(getCSVHeaders())
+        .withHeader()
         .parse(in);
     this.iter = parser.iterator();
   }
