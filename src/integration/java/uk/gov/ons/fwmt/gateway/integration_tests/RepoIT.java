@@ -10,7 +10,6 @@ import uk.gov.ons.fwmt.gateway.entity.*;
 import uk.gov.ons.fwmt.gateway.repo.monitoring.LegacyJobsRepo;
 import uk.gov.ons.fwmt.gateway.repo.monitoring.LegacyUsersRepo;
 import uk.gov.ons.fwmt.gateway.repo.reception.LegacyLeaversRepo;
-import uk.gov.ons.fwmt.gateway.repo.reception.LegacySampleRepo;
 import uk.gov.ons.fwmt.gateway.repo.reception.LegacyStaffRepo;
 
 import javax.transaction.Transactional;
@@ -22,7 +21,6 @@ import static junit.framework.TestCase.fail;
 public class RepoIT {
   @Autowired private LegacyJobsRepo legacyJobRepo;
   @Autowired private LegacyLeaversRepo legacyLeaversRepo;
-  @Autowired private LegacySampleRepo legacySampleRepo;
   @Autowired private LegacyStaffRepo legacyStaffRepo;
   @Autowired private LegacyUsersRepo legacyUsersRepo;
 
@@ -46,8 +44,7 @@ public class RepoIT {
       LegacySampleEntity legacySampleEntity = new LegacySampleEntity();
       legacySampleEntity.setSerno("<no>");
       legacySampleEntity.setPrimaryKey(1L);
-      legacySampleRepo.save(legacySampleEntity);
-      legacySampleRepo.delete(legacySampleEntity);
+
 
       LegacyStaffEntity legacyStaffEntity = new LegacyStaffEntity();
       legacyStaffEntity.setEmployeeNo("<no>");

@@ -14,7 +14,6 @@ import uk.gov.ons.fwmt.gateway.entity.LegacyUserEntity;
 import uk.gov.ons.fwmt.gateway.error.UnknownUserException;
 import uk.gov.ons.fwmt.gateway.repo.monitoring.LegacyJobsRepo;
 import uk.gov.ons.fwmt.gateway.repo.monitoring.LegacyUsersRepo;
-import uk.gov.ons.fwmt.gateway.repo.reception.LegacySampleRepo;
 import uk.gov.ons.fwmt.gateway.repo.reception.LegacyStaffRepo;
 import uk.gov.ons.fwmt.gateway.service.PublishService;
 import uk.gov.ons.fwmt.gateway.utility.TMMessageSubmitter;
@@ -30,7 +29,6 @@ import java.util.List;
 public class PublishServiceImpl implements PublishService {
 
   private TMMessageSubmitter submitter;
-  private LegacySampleRepo legacySampleRepository;
   private LegacyStaffRepo legacyStaffRepo;
   private LegacyJobsRepo legacyJobsRepo;
   private LegacyUsersRepo legacyUsersRepo;
@@ -39,10 +37,9 @@ public class PublishServiceImpl implements PublishService {
   private List<String> successfullySentIds;
 
   @Autowired
-  public PublishServiceImpl(TMMessageSubmitter submitter, LegacySampleRepo legacySampleRepository,
+  public PublishServiceImpl(TMMessageSubmitter submitter,
       LegacyStaffRepo legacyStaffRepo, LegacyJobsRepo legacyJobsRepo, LegacyUsersRepo legacyUsersRepo) {
     this.submitter = submitter;
-    this.legacySampleRepository = legacySampleRepository;
     this.legacyStaffRepo = legacyStaffRepo;
     this.legacyJobsRepo = legacyJobsRepo;
     this.legacyUsersRepo = legacyUsersRepo;
@@ -82,21 +79,22 @@ public class PublishServiceImpl implements PublishService {
   }
 
   @Override
-  public void publishNewJobsReallocationsAndReissues() {
-    legacySampleRepository.findAll().forEach(entity -> {
-      if (legacyUsersRepo.existsByAuthNo(entity.getAuthNo())) {
-        if (legacyJobsRepo.existsByLegacyJobId(entity.getLegacyJobId())) {
-          if (executeReallocateJob(entity)) {
-            legacySampleRepository.deleteByLegacyJobId(entity.getLegacyJobId());
+  public void publishNewJobsReallocationsAndReissues(Iterator<LegacySampleEntity> iter) {
+    while(iter.hasNext()){
+      LegacySampleEntity legacySampleEntity = iter.next();
+      if (legacyUsersRepo.existsByAuthNo(legacySampleEntity.getAuthNo())) {
+        if (legacyJobsRepo.existsByLegacyJobId(iter.next().getLegacyJobId())) {
+          if (!executeReallocateJob(legacySampleEntity)) {
+            // TODO handle error
           }
         } else {
           // may need to identify reissues in order to reference previous jobs
-          if (executeNewJob(entity)) {
-            legacySampleRepository.deleteByLegacyJobId(entity.getLegacyJobId());
+          if (!executeNewJob(iter.next())) {
+            // TODO handle error
           }
         }
       }
-    });
+    }
   }
 
   public boolean executeNewJob(LegacySampleEntity newJobEntity) {
