@@ -33,7 +33,7 @@ public class CSVWriter {
     }
 
     try {
-      copyManager.copyOut("COPY (" + psqlQuery + ") TO STDOUT WITH (FORMAT CSV)", fileOutputStream);
+      copyManager.copyOut("COPY (" + psqlQuery + ") TO STDOUT WITH HEADER CSV", fileOutputStream);
     } catch (SQLException | IOException e) {
       e.printStackTrace();
     }
