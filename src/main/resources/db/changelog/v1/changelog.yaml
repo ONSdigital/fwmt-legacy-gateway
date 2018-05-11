@@ -80,3 +80,4 @@ databaseChangeLog:
           path: 9_Add_Id_to_Users.sql
           relativeToChangelogFile: true
           splitStatements: false
+
