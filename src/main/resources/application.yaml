@@ -55,4 +55,6 @@ totalmobile:
   username: "..."
   password: "..."
   url: "https://ons.totalmobile.co.uk"
-  message-queue-service: "/Live/Services/TM/v20/Messaging/MessageQueueWs.asmx"
+  message-queue-path: "/Live/Services/TM/v20/Messaging/MessageQueueWs.asmx"
+  message-queue-wsdl-path: "src/main/resources/wsdl/Messaging_MessageQueueWs.wsdl"
+  namespace: "http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/"

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Deprecated
 @Slf4j
 @Service
 public class PublishServiceImpl implements PublishService {

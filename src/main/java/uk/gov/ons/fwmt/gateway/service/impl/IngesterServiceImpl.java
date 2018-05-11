@@ -12,6 +12,7 @@ import uk.gov.ons.fwmt.gateway.service.PublishService;
 
 import java.util.Iterator;
 
+@Deprecated
 @Service
 public class IngesterServiceImpl implements IngesterService {
 

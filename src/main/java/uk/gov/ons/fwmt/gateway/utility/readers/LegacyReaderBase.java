@@ -5,7 +5,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import uk.gov.ons.fwmt.gateway.error.CSVParsingException;
-import uk.gov.ons.fwmt.gateway.representation.UnprocessedCSVRowDTO;
+import uk.gov.ons.fwmt.gateway.entity.internal.csv.UnprocessedCSVRow;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -18,7 +18,7 @@ public abstract class LegacyReaderBase<T> implements Iterator<T> {
   protected CSVParser parser;
   protected Iterator<CSVRecord> iter;
 
-  @Getter List<UnprocessedCSVRowDTO> unprocessedCSVRows = new ArrayList<>();
+  @Getter List<UnprocessedCSVRow> unprocessedCSVRows = new ArrayList<>();
   @Getter private int unprocessedCount = 0;
   @Getter private int successCount = 0;
 
@@ -54,9 +54,9 @@ public abstract class LegacyReaderBase<T> implements Iterator<T> {
         List<String> columns = new ArrayList<>();
         record.iterator().forEachRemaining(columns::add);
         if (exception == null) {
-          unprocessedCSVRows.add(new UnprocessedCSVRowDTO((int) record.getRecordNumber(), "Unable to process"));
+          unprocessedCSVRows.add(new UnprocessedCSVRow((int) record.getRecordNumber(), "Unable to process"));
         } else {
-          unprocessedCSVRows.add(new UnprocessedCSVRowDTO((int) record.getRecordNumber(), exception.toString()));
+          unprocessedCSVRows.add(new UnprocessedCSVRow((int) record.getRecordNumber(), exception.toString()));
         }
       } else {
         successCount++;

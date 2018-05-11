@@ -25,6 +25,7 @@ import java.util.*;
  * @author James Berry
  * @author Jacob Harrison
  */
+@Deprecated
 @Component
 public class TMMessageSubmitter {
   private static final boolean debug_on = true;

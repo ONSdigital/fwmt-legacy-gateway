@@ -9,6 +9,7 @@ import javax.persistence.*;
 /**
  * This class corresponds to a single row of resources/sampledata/test.csv
  */
+@Deprecated
 @Data
 @Entity
 @AllArgsConstructor

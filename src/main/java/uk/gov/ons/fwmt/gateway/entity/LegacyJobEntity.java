@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
+@Deprecated
 @Data
 @Entity
 @AllArgsConstructor

@@ -2,24 +2,24 @@ package uk.gov.ons.fwmt.gateway.controller;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import uk.gov.ons.fwmt.gateway.utility.FileValidation;
+import uk.gov.ons.fwmt.gateway.utility.LegacyFilename;
 
 import static org.junit.Assert.assertEquals;
 
-public class FileValidationTest {
+public class LegacyFilenameParserTest {
   
-  private FileValidation fileValidation;
+  private LegacyFilename legacyFilename;
   
   @Autowired
-  public FileValidationTest(FileValidation fileValidation) {
-    this.fileValidation = fileValidation;
+  public LegacyFilenameParserTest(LegacyFilename legacyFilename) {
+    this.legacyFilename = legacyFilename;
   }
 
   @Test
   public void assertValidFilenameSampleTrue() {
     Boolean actual;
     try{
-      fileValidation.assertValidFilename("sample_GFF_2018-04-24T19:09:54Z.csv", "sample");
+      LegacyFilename.assertValidFilename("sample_GFF_2018-04-24T19:09:54Z.csv", "sample");
       actual = true;
     } catch (Exception e) {
       actual = false;
@@ -32,7 +32,7 @@ public class FileValidationTest {
   public void assertValidFilenameSampleFalse() {
     Boolean actual;
     try{
-      fileValidation.assertValidFilename("BLAH_BLAH-THISIS_WRONG", "sample");
+      LegacyFilename.assertValidFilename("BLAH_BLAH-THISIS_WRONG", "sample");
       actual = true;
     } catch (Exception e) {
       actual = false;
@@ -45,7 +45,7 @@ public class FileValidationTest {
   public void assertValidFilenameStaffTrue() {
     Boolean actual;
     try{
-      fileValidation.assertValidFilename("staff_GFF_2018-04-24T19:09:54Z.csv", "staff");
+      LegacyFilename.assertValidFilename("staff_GFF_2018-04-24T19:09:54Z.csv", "staff");
       actual = true;
     } catch (Exception e) {
       actual = false;
@@ -58,7 +58,7 @@ public class FileValidationTest {
   public void assertValidFilenameStaffFalse() {
     Boolean actual;
     try{
-      fileValidation.assertValidFilename("BLAH_BLAH-THISIS_WRONG", "staff");
+      LegacyFilename.assertValidFilename("BLAH_BLAH-THISIS_WRONG", "staff");
       actual = true;
     } catch (Exception e) {
       actual = false;

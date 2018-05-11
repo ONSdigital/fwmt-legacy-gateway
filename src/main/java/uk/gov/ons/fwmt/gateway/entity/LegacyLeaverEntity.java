@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+@Deprecated
 @Data
 @Entity
 @AllArgsConstructor

@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.gateway.entity.legacy.csv;
+package uk.gov.ons.fwmt.gateway.entity.legacy;
 
 import lombok.Data;
 import org.apache.commons.csv.CSVRecord;
@@ -7,25 +7,31 @@ import org.apache.commons.csv.CSVRecord;
 public class JobIngest {
   // All: taken from the 'TransmissionDate' field
   // TODO is this 'Transmission_Date'?
+  // mandatory
   private final String timestamp;
 
   // GFF: taken from the 'Serno' field
   // LFS: taken from the 'SERNO' field
+  // mandatory
   private final String serNo;
 
   // All: taken from the 'TLA' field
+  // mandatory
   private final String tla;
 
   // GFF: taken from the 'Stage' field
   // LFS: taken from the 'FP' field
+  // mandatory
   private final String stage;
 
   // GFF: taken from the 'Wave' field
   // LFS: taken from the 'THISWV' field
+  // mandatory
   private final String wave;
 
   // GFF: taken from the 'Prem1' field
   // LFS: taken from the 'PREM1' field
+  // mandatory
   private final String addressLine1;
 
   // GFF: taken from the 'Prem2' field
@@ -50,6 +56,7 @@ public class JobIngest {
 
   // GFF: taken from the 'Postcode' field
   // LFS: taken from the 'POSTCODE' field
+  // mandatory
   private final String postcode;
 
   // GFF: taken from the 'Quota' field
@@ -81,9 +88,11 @@ public class JobIngest {
   private final String part;
 
   // All: taken from the 'EmployeeNo' field
+  // mandatory
   private final String employeeNo;
 
   // All: taken from the 'Auth' field
+  // mandatory
   private final String auth;
 
   // All: taken from the 'Last_Updated' field
@@ -101,13 +110,13 @@ public class JobIngest {
   public JobIngest(CSVRecord record, SurveyType surveyType) {
     this.timestamp = record.get("TransmissionDate");
     this.tla = record.get("TLA");
-    this.year = record.get("Year");
-    this.month = record.get("Month");
-    this.issueNo = record.get("Issue_No");
-    this.part = record.get("Part");
+    this.year = (record.isSet("Year")) ? record.get("Year") : null;
+    this.month = (record.isSet("Month")) ? record.get("Month") : null;
+    this.issueNo = (record.isSet("Issue_No")) ? record.get("Issue_No") : null;
+    this.part = (record.isSet("Part")) ? record.get("Part") : null;
     this.employeeNo = record.get("EmployeeNo");
     this.auth = record.get("Auth");
-    this.lastUpdated = record.get("Last_Updated");
+    this.lastUpdated = (record.isSet("Last_Updated")) ? record.get("Last_Updated") : null;
 
     switch (surveyType) {
     case GFF:
@@ -115,16 +124,16 @@ public class JobIngest {
       this.stage = record.get("Stage");
       this.wave = record.get("Wave");
       this.addressLine1 = record.get("Prem1");
-      this.addressLine2 = record.get("Prem2");
-      this.addressLine3 = record.get("Prem3");
-      this.addressLine4 = record.get("Prem4");
-      this.district = record.get("District");
-      this.postTown = record.get("PostTown");
+      this.addressLine2 = (record.isSet("Prem2")) ? record.get("Prem2") : null;
+      this.addressLine3 = (record.isSet("Prem3")) ? record.get("Prem3") : null;
+      this.addressLine4 = (record.isSet("Prem4")) ? record.get("Prem4") : null;
+      this.district = (record.isSet("District")) ? record.get("District") : null;
+      this.postTown = (record.isSet("PostTown")) ? record.get("PostTown") : null;
       this.postcode = record.get("Postcode");
-      this.quota = record.get("Quota");
-      this.addressNo = record.get("AddressNo");
-      this.osGridRef = record.get("OSGridRef");
-      this.telNo = record.get("Telno");
+      this.quota = (record.isSet("Quota")) ? record.get("Quota") : null;
+      this.addressNo = (record.isSet("AddressNo")) ? record.get("AddressNo") : null;
+      this.osGridRef = (record.isSet("OSGridRef")) ? record.get("OSGridRef") : null;
+      this.telNo = (record.isSet("Telno")) ? record.get("Telno") : null;
 
       this.surveyType = SurveyType.GFF;
       this.gffData = new JobGFFDataIngest(record);
@@ -136,16 +145,16 @@ public class JobIngest {
       this.stage = record.get("FP");
       this.wave = record.get("THISWV");
       this.addressLine1 = record.get("PREM1");
-      this.addressLine2 = record.get("PREM2");
-      this.addressLine3 = record.get("PREM3");
-      this.addressLine4 = record.get("PREM4");
-      this.district = record.get("DISTRICT");
-      this.postTown = record.get("POSTTOWN");
+      this.addressLine2 = (record.isSet("PREM2")) ? record.get("PREM2") : null;
+      this.addressLine3 = (record.isSet("PREM3")) ? record.get("PREM3") : null;
+      this.addressLine4 = (record.isSet("PREM4")) ? record.get("PREM4") : null;
+      this.district = (record.isSet("DISTRICT")) ? record.get("DISTRICT") : null;
+      this.postTown = (record.isSet("POSTTOWN")) ? record.get("POSTTOWN") : null;
       this.postcode = record.get("POSTCODE");
-      this.quota = record.get("QUOTA");
-      this.addressNo = record.get("ADDR");
-      this.osGridRef = record.get("OSGRIDREF");
-      this.telNo = record.get("TELNO");
+      this.quota = (record.isSet("QUOTA")) ? record.get("QUOTA") : null;
+      this.addressNo = (record.isSet("ADDR")) ? record.get("ADDR") : null;
+      this.osGridRef = (record.isSet("OSGRIDREF")) ? record.get("OSGRIDREF") : null;
+      this.telNo = (record.isSet("TELNO")) ? record.get("TELNO") : null;
 
       this.surveyType = SurveyType.LFS;
       this.gffData = null;

@@ -6,6 +6,7 @@ import uk.gov.ons.fwmt.gateway.entity.LegacyStaffEntity;
 
 import java.util.Iterator;
 
+@Deprecated
 @Service
 public interface IngesterService {
     void ingestLegacySample(Iterator<LegacySampleEntity> iter);

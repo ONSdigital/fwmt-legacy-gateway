@@ -21,7 +21,7 @@ import uk.gov.ons.fwmt.gateway.error.MediaTypeNotSupportedException;
 import uk.gov.ons.fwmt.gateway.representation.SampleSummaryDTO;
 import uk.gov.ons.fwmt.gateway.representation.StaffSummaryDTO;
 import uk.gov.ons.fwmt.gateway.service.IngesterService;
-import uk.gov.ons.fwmt.gateway.utility.FileValidation;
+import uk.gov.ons.fwmt.gateway.utility.LegacyFilename;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyGFFSampleReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyLFSSampleReader;
 import uk.gov.ons.fwmt.gateway.utility.readers.LegacyReaderBase;
@@ -42,12 +42,12 @@ import java.io.IOException;
 public class LegacyGatewayEndpoint {
 
   private final IngesterService ingesterService;
-  private FileValidation fileValidation;
+  private LegacyFilename legacyFilename;
 
   @Autowired
-  public LegacyGatewayEndpoint(IngesterService ingesterService, FileValidation fileValidation) {
+  public LegacyGatewayEndpoint(IngesterService ingesterService, LegacyFilename legacyFilename) {
     this.ingesterService = ingesterService;
-    this.fileValidation = fileValidation;
+    this.legacyFilename = legacyFilename;
   }
 
   @RequestMapping(value = "/samples", method = RequestMethod.POST, produces = "application/json")
@@ -59,12 +59,11 @@ public class LegacyGatewayEndpoint {
   public ResponseEntity<SampleSummaryDTO> sampleREST(@RequestParam("file") MultipartFile file,
       RedirectAttributes redirectAttributes)
       throws IOException, InvalidFileNameException, MediaTypeNotSupportedException {
-    log.error("Started REST endpoint");
+    log.info("Entered sample endpoint");
 
     LegacyReaderBase reader;
 
-    fileValidation.assertValidFilename(file.getOriginalFilename(), "sample");
-    fileValidation.assertValidFileMetadata(file);
+    LegacyFilename filename = new LegacyFilename(file, "sample");
 
     // add data to reception table
     if (file.getOriginalFilename().contains("LFS")) {
@@ -96,9 +95,9 @@ public class LegacyGatewayEndpoint {
   })
   public ResponseEntity<StaffSummaryDTO> staffREST(@RequestParam("file") MultipartFile file,
       RedirectAttributes redirectAttributes) throws Exception {
+    log.info("Entered staff endpoint");
 
-    fileValidation.assertValidFilename(file.getOriginalFilename(), "staff");
-    fileValidation.assertValidFileMetadata(file);
+    LegacyFilename filename = new LegacyFilename(file, "sample");
 
     // add data to reception table
     LegacyStaffReader legacyStaffReader = new LegacyStaffReader(file.getInputStream());

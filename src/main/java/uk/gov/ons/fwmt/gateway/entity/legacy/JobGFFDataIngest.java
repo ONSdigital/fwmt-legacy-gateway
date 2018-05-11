@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.gateway.entity.legacy.csv;
+package uk.gov.ons.fwmt.gateway.entity.legacy;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -85,30 +85,30 @@ public class JobGFFDataIngest {
   private final String oldSerial;
 
   public JobGFFDataIngest(CSVRecord record) {
-    this.name = record.get("name");
-    this.laua = record.get("LAUA");
-    this.lauaName = record.get("LAUA_Name");
-    this.subSample = record.get("SubSample");
-    this.rand = record.get("Rand");
-    this.adult2 = record.get("ADULT2");
-    this.adult3 = record.get("ADULT3");
-    this.adult4 = record.get("ADULT4");
-    this.adult5 = record.get("ADULT5");
-    this.adult6 = record.get("ADULT6");
-    this.adult7 = record.get("ADULT7");
-    this.adult8 = record.get("ADULT8");
-    this.adult9 = record.get("ADULT9");
-    this.adult10 = record.get("ADULT10");
-    this.adult11 = record.get("ADULT11");
-    this.adult12 = record.get("ADULT12");
-    this.adult13 = record.get("ADULT13");
-    this.adult14 = record.get("ADULT14");
-    //this.ward = record.get("Ward");
-    //this.wardName = record.get("Ward_Name");
-    //this.mo = record.get("MO");
-    //this.divAddInd = record.get("DivAddInd");
-    //this.gffmu = record.get("GFFMU");
-    this.oldSerial = record.get("OldSerial");
+    this.name = (record.isSet("name")) ? record.get("name") : null;
+    this.laua = (record.isSet("LAUA")) ? record.get("LAUA") : null;
+    this.lauaName = (record.isSet("LAUA_Name")) ? record.get("LAUA_Name") : null;
+    this.subSample = (record.isSet("SubSample")) ? record.get("SubSample") : null;
+    this.rand = (record.isSet("Rand")) ? record.get("Rand") : null;
+    this.adult2 = (record.isSet("ADULT2")) ? record.get("ADULT2") : null;
+    this.adult3 = (record.isSet("ADULT3")) ? record.get("ADULT3") : null;
+    this.adult4 = (record.isSet("ADULT4")) ? record.get("ADULT4") : null;
+    this.adult5 = (record.isSet("ADULT5")) ? record.get("ADULT5") : null;
+    this.adult6 = (record.isSet("ADULT6")) ? record.get("ADULT6") : null;
+    this.adult7 = (record.isSet("ADULT7")) ? record.get("ADULT7") : null;
+    this.adult8 = (record.isSet("ADULT8")) ? record.get("ADULT8") : null;
+    this.adult9 = (record.isSet("ADULT9")) ? record.get("ADULT9") : null;
+    this.adult10 = (record.isSet("ADULT10")) ? record.get("ADULT10") : null;
+    this.adult11 = (record.isSet("ADULT11")) ? record.get("ADULT11") : null;
+    this.adult12 = (record.isSet("ADULT12")) ? record.get("ADULT12") : null;
+    this.adult13 = (record.isSet("ADULT13")) ? record.get("ADULT13") : null;
+    this.adult14 = (record.isSet("ADULT14")) ? record.get("ADULT14") : null;
+    //this.ward = (record.isSet("Ward")) ? record.get("Ward") : null;
+    //this.wardName = (record.isSet("Ward_Name")) ? record.get("Ward_Name") : null;
+    //this.mo = (record.isSet("MO")) ? record.get("MO") : null;
+    //this.divAddInd = (record.isSet("DivAddInd")) ? record.get("DivAddInd") : null;
+    //this.gffmu = (record.isSet("GFFMU")) ? record.get("GFFMU") : null;
+    this.oldSerial = (record.isSet("OldSerial")) ? record.get("OldSerial") : null;
   }
 
 }

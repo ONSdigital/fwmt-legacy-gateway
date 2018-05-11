@@ -5,6 +5,7 @@ import uk.gov.ons.fwmt.gateway.entity.LegacySampleEntity;
 
 import java.util.Iterator;
 
+@Deprecated
 @Service
 public interface PublishService {
     void publishNewJobsReallocationsAndReissues(
