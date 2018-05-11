@@ -1,13 +1,16 @@
 package uk.gov.ons.fwmt.gateway.utility;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
+import uk.gov.ons.fwmt.gateway.entity.legacy.SurveyType;
 import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.gateway.error.MediaTypeNotSupportedException;
 
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 /**
  * Legacy systems use the filenames of uploaded samples and staff files to pass data
@@ -16,6 +19,7 @@ import java.time.format.DateTimeFormatter;
  * Timestamps are expected to be of the form 'YYYY-MM-DDTHH:MM:SSZ', or 'YYYY-MM-DDTHH-MM-SSZ'
  */
 @Data
+@Slf4j
 public class LegacyFilename {
   private static final DateTimeFormatter TIMESTAMP_FORMAT_LINUX = DateTimeFormatter
       .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -23,50 +27,69 @@ public class LegacyFilename {
       .ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
 
   private final String endpoint;
-  private final String tla;
+  private final Optional<SurveyType> tla;
   private final String timestamp;
 
   public LegacyFilename(MultipartFile file, String expectedEndpoint)
       throws InvalidFileNameException, MediaTypeNotSupportedException {
+    log.info("Beginning a file parse for " + file.getOriginalFilename() + " with content " + file.getContentType());
+
     // // // Check metadata
     if (!"text/csv".equals(file.getContentType())) {
       throw new MediaTypeNotSupportedException(file.getContentType(), "text/csv");
     }
+
     // // // Check filename
     String filename = file.getOriginalFilename();
+
     // // Check extension
     String[] dotSplit = filename.split("\\.");
-    if (dotSplit.length != 2 || !("csv".equals(dotSplit[1])))
+    if (dotSplit.length != 2 || !("csv".equals(dotSplit[1]))) {
       throw new InvalidFileNameException(filename, "No 'csv' extension");
+    }
+
     // // Extract the endpoint
     String[] underscoreSplit = dotSplit[0].split("_");
     endpoint = underscoreSplit[0];
+    log.info("File endpoint detected as " + endpoint);
+
     // // Check the endpoint against expectations
     // Ensure that section 'B' matches our endpoint
-    if (!expectedEndpoint.equals(endpoint))
+    if (!expectedEndpoint.equals(endpoint)) {
       throw new InvalidFileNameException(filename, "File had an incorrect endpoint of " + endpoint);
+    }
     switch (endpoint) {
     case "staff":
       if (underscoreSplit.length != 2)
         throw new InvalidFileNameException(filename, "File names for staff should contain one underscore");
-      tla = null;
+      log.info("File has no TLA");
+      tla = Optional.empty();
       timestamp = underscoreSplit[1];
       break;
     case "sample":
       if (underscoreSplit.length != 3)
         throw new InvalidFileNameException(filename, "File names for samples should contain two underscores");
-      tla = underscoreSplit[1];
+      String tlaString = underscoreSplit[1];
+      log.info("File TLA detected as " + tlaString);
+      // // Validate the TLA
+      switch (tlaString) {
+      case "LFS":
+        tla = Optional.of(SurveyType.LFS);
+        break;
+      case "GFF":
+        tla = Optional.of(SurveyType.GFF);
+        break;
+      default:
+        throw new IllegalArgumentException("File had an unrecognized TLA of " + tlaString);
+      }
       timestamp = underscoreSplit[2];
       break;
     default:
       throw new IllegalArgumentException("File had an unrecognized endpoint of " + endpoint);
     }
-    // // Validate the TLA, if it exists
-    if (tla != null) {
-      if (tla.length() != 3)
-        throw new InvalidFileNameException(filename, "Survey TLA must be three characters long");
-    }
+
     // // Validate the timestamp
+    log.info("File timestamp detected as " + timestamp);
     try {
       LocalDateTime.parse(timestamp, TIMESTAMP_FORMAT_LINUX);
     } catch (DateTimeException e) {
@@ -76,6 +99,7 @@ public class LegacyFilename {
         throw new InvalidFileNameException(filename, "Invalid timestamp of " + timestamp);
       }
     }
+    log.info("Parsed a valid file name as " + this.toString());
   }
 
 }

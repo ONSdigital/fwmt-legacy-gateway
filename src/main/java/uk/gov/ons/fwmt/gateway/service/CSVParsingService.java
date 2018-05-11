@@ -9,7 +9,7 @@ import java.io.Reader;
 
 @Service
 public interface CSVParsingService {
-  CSVParseResult parseJobs(Reader reader, SurveyType surveyType) throws IOException;
+  CSVParseResult parseLegacySample(Reader reader, SurveyType surveyType) throws IOException;
 
-  CSVParseResult parseStaff(Reader reader) throws IOException;
+  CSVParseResult parseLegacyStaff(Reader reader) throws IOException;
 }

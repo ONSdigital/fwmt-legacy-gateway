@@ -19,4 +19,7 @@ public class TMUserEntity {
 
   @Column(nullable = false)
   public String tmUsername;
+
+  @Column(nullable = false)
+  public boolean active;
 }

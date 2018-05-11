@@ -7,10 +7,12 @@ import org.apache.commons.csv.CSVRecord;
 public class StaffIngest {
     // taken from the 'TransmissionDate' field
     // mandatory
+    // TODO is this 'Transmission_Date'?
     private final String timestamp;
 
     // taken from the 'Auth' field
     // mandatory
+    // TODO is this 'intnum'?
     private final String auth;
 
     // taken from the 'sex' field

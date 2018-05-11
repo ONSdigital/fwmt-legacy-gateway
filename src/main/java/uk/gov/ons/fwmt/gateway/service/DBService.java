@@ -1,6 +1,7 @@
 package uk.gov.ons.fwmt.gateway.service;
 
 import org.springframework.stereotype.Service;
+import uk.gov.ons.fwmt.gateway.entity.tm.TMJobEntity;
 
 /**
  * This service handles all of the interactions between us and our database
@@ -8,8 +9,10 @@ import org.springframework.stereotype.Service;
 @Service
 public interface DBService {
   void registerUser();
+
   boolean doesUserExist();
 
-  void registerJob();
-  boolean doesJobExist();
+  void registerJob(String tmJobId);
+
+  boolean doesJobExist(String tmJobId);
 }

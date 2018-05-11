@@ -15,8 +15,6 @@ import uk.gov.ons.fwmt.gateway.error.UnknownUserException;
 import uk.gov.ons.fwmt.gateway.repo.monitoring.LegacyJobsRepo;
 import uk.gov.ons.fwmt.gateway.repo.monitoring.LegacyUsersRepo;
 import uk.gov.ons.fwmt.gateway.repo.reception.LegacyStaffRepo;
-import uk.gov.ons.fwmt.gateway.service.PublishService;
-import uk.gov.ons.fwmt.gateway.utility.TMMessageSubmitter;
 import uk.gov.ons.fwmt.gateway.utility.csvconverter.LegacyCreateJobRequestFactory;
 import uk.gov.ons.fwmt.gateway.utility.csvconverter.LegacyUpdateJobHeaderRequestFactory;
 
@@ -27,26 +25,20 @@ import java.util.List;
 @Deprecated
 @Slf4j
 @Service
-public class PublishServiceImpl implements PublishService {
+public class PublishServiceImpl {
 
-  private TMMessageSubmitter submitter;
   private LegacyStaffRepo legacyStaffRepo;
   private LegacyJobsRepo legacyJobsRepo;
   private LegacyUsersRepo legacyUsersRepo;
 
-  // TODO refactor this, it's local state and should be in a local variable passed between functions
-  private List<String> successfullySentIds;
-
   @Autowired
-  public PublishServiceImpl(TMMessageSubmitter submitter,
-      LegacyStaffRepo legacyStaffRepo, LegacyJobsRepo legacyJobsRepo, LegacyUsersRepo legacyUsersRepo) {
-    this.submitter = submitter;
+  public PublishServiceImpl(LegacyStaffRepo legacyStaffRepo, LegacyJobsRepo legacyJobsRepo,
+      LegacyUsersRepo legacyUsersRepo) {
     this.legacyStaffRepo = legacyStaffRepo;
     this.legacyJobsRepo = legacyJobsRepo;
     this.legacyUsersRepo = legacyUsersRepo;
   }
 
-  @Override
   public void publishUpdateUsers() {
     legacyStaffRepo.findAll().forEach(staff -> {
       if (!legacyUsersRepo.existsByAuthNo(staff.getAuthNo())) {
@@ -79,9 +71,8 @@ public class PublishServiceImpl implements PublishService {
     legacyStaffRepo.deleteAll();
   }
 
-  @Override
   public void publishNewJobsReallocationsAndReissues(Iterator<LegacySampleEntity> iter) {
-    while(iter.hasNext()){
+    while (iter.hasNext()) {
       LegacySampleEntity legacySampleEntity = iter.next();
       if (legacyUsersRepo.existsByAuthNo(legacySampleEntity.getAuthNo())) {
         if (legacyJobsRepo.existsByLegacyJobId(iter.next().getLegacyJobId())) {
@@ -129,7 +120,6 @@ public class PublishServiceImpl implements PublishService {
     try {
       // TODO re-enable this once TM support is enabled
       // sendUpdateJobRequest(updateJobHeaderRequest, "\\OPTIMISE\\INPUT");
-      successfullySentIds.add(reallocationEntity.getLegacyJobId());
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -181,10 +171,5 @@ public class PublishServiceImpl implements PublishService {
     message.getSendMessageRequestInfo().setKey(request.getJobHeader().getJobIdentity().getReference());
 
     submitter.sendAll(messages);
-  }
-
-  private String getProposedTMUsername(String email) {
-    String username = email.split("@")[0];
-    return username;
   }
 }
