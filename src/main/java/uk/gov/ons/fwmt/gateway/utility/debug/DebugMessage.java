@@ -75,7 +75,7 @@ public class DebugMessage {
     job.setEmergency(false);
 
     GregorianCalendar cal = new GregorianCalendar();
-    cal.setTime(new Date(118, 4, 1));
+    cal.set(118, 4, 1);
     XMLGregorianCalendar startDate =
         DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
     job.setDueStart(startDate);
@@ -87,12 +87,12 @@ public class DebugMessage {
     // job.setDispatchDate(startDate);
 
     GregorianCalendar cal3 = new GregorianCalendar();
-    cal3.setTime(new Date(118, 4, 30));
+    cal3.set(118, 4, 30);
     XMLGregorianCalendar endDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal3);
     job.setDueEnd(endDate);
 
     GregorianCalendar cal2 = new GregorianCalendar();
-    cal2.setTime(new Date(118, 4, 30));
+    cal2.set(118, 4, 30);
     XMLGregorianCalendar due = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal2);
     job.setDueDate(due);
 

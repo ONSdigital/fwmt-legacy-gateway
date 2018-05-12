@@ -80,4 +80,22 @@ databaseChangeLog:
           path: 9_Add_Id_to_Users.sql
           relativeToChangelogFile: true
           splitStatements: false
+ - changeSet:
+    id: v10
+    author: Jacob Harrison
+    comment: Removed the sample table
+    changes:
+      - sqlFile:
+          path: 10_Drop_Sample_Table.sql
+          relativeToChangelogFile: true
+          splitStatements: false
+ - changeSet:
+    id: v11
+    author: Thomas Poot
+    comment: Dropped remaining un-needed tables and set up new Legacy storage tables
+    changes:
+      - sqlFile:
+          path: 11_Rework_Gateway.sql
+          relativeToChangelogFile: true
+          splitStatements: false
 
