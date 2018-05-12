@@ -1,25 +1,25 @@
-package uk.gov.ons.fwmt.legacy_gateway.controller;
+package uk.gov.ons.fwmt.legacy_gateway.service;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import uk.gov.ons.fwmt.legacy_gateway.utility.LegacyFilename;
+import uk.gov.ons.fwmt.legacy_gateway.service.FileIngestService;
 
 import static org.junit.Assert.assertEquals;
 
 public class LegacyFilenameParserTest {
-  
-  private LegacyFilename legacyFilename;
+
+  private FileIngestService fileIngestService;
   
   @Autowired
-  public LegacyFilenameParserTest(LegacyFilename legacyFilename) {
-    this.legacyFilename = legacyFilename;
+  public LegacyFilenameParserTest(FileIngestService fileIngestService) {
+    this.fileIngestService = fileIngestService;
   }
 
   @Test
   public void assertValidFilenameSampleTrue() {
     Boolean actual;
     try{
-      new LegacyFilename("sample_GFF_2018-04-24T19:09:54Z.csv", "sample");
+      fileIngestService.verifyCSVFilename("sample_GFF_2018-04-24T19:09:54Z.csv", "sample");
       actual = true;
     } catch (Exception e) {
       actual = false;
@@ -32,7 +32,7 @@ public class LegacyFilenameParserTest {
   public void assertValidFilenameSampleFalse() {
     Boolean actual;
     try{
-      new LegacyFilename("BLAH_BLAH-THISIS_WRONG", "sample");
+      fileIngestService.verifyCSVFilename("BLAH_BLAH-THISIS_WRONG", "sample");
       actual = true;
     } catch (Exception e) {
       actual = false;
@@ -45,7 +45,7 @@ public class LegacyFilenameParserTest {
   public void assertValidFilenameStaffTrue() {
     Boolean actual;
     try{
-      new LegacyFilename("staff_GFF_2018-04-24T19:09:54Z.csv", "staff");
+      fileIngestService.verifyCSVFilename("staff_GFF_2018-04-24T19:09:54Z.csv", "staff");
       actual = true;
     } catch (Exception e) {
       actual = false;
@@ -58,7 +58,7 @@ public class LegacyFilenameParserTest {
   public void assertValidFilenameStaffFalse() {
     Boolean actual;
     try{
-      new LegacyFilename("BLAH_BLAH-THISIS_WRONG", "staff");
+      fileIngestService.verifyCSVFilename("BLAH_BLAH-THISIS_WRONG", "staff");
       actual = true;
     } catch (Exception e) {
       actual = false;

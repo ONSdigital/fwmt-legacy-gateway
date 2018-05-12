@@ -15,17 +15,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import uk.gov.ons.fwmt.legacy_gateway.data.csv_parser.CSVParseResult;
 import uk.gov.ons.fwmt.legacy_gateway.error.GatewayCommonErrorDTO;
 import uk.gov.ons.fwmt.legacy_gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.legacy_gateway.error.MediaTypeNotSupportedException;
-import uk.gov.ons.fwmt.legacy_gateway.representation.SampleSummaryDTO;
-import uk.gov.ons.fwmt.legacy_gateway.representation.StaffSummaryDTO;
-import uk.gov.ons.fwmt.legacy_gateway.service.CSVParsingService;
-import uk.gov.ons.fwmt.legacy_gateway.utility.LegacyFilename;
+import uk.gov.ons.fwmt.legacy_gateway.data.dto.SampleSummaryDTO;
+import uk.gov.ons.fwmt.legacy_gateway.data.dto.StaffSummaryDTO;
+import uk.gov.ons.fwmt.legacy_gateway.service.FileIngestService;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
  * Class for file upload controller
@@ -38,12 +35,11 @@ import java.io.InputStreamReader;
 @Slf4j
 @RestController
 public class LegacyGatewayEndpoint {
-
-  private final CSVParsingService csvParsingService;
+  private final FileIngestService fileIngestService;
 
   @Autowired
-  public LegacyGatewayEndpoint(CSVParsingService csvParsingService) {
-    this.csvParsingService = csvParsingService;
+  public LegacyGatewayEndpoint(FileIngestService fileIngestService) {
+    this.fileIngestService = fileIngestService;
   }
 
   @RequestMapping(value = "/samples", method = RequestMethod.POST, produces = "application/json")
@@ -56,22 +52,10 @@ public class LegacyGatewayEndpoint {
       RedirectAttributes redirectAttributes)
       throws IOException, InvalidFileNameException, MediaTypeNotSupportedException {
     log.info("Entered sample endpoint");
-
-    // check filename
-    // TODO check metadata
-    LegacyFilename filename = new LegacyFilename(file.getOriginalFilename(), "sample");
-
-    // parse csv
-    // lines are sent to TM and recorded in the database
-    CSVParseResult result = csvParsingService
-        .parseLegacySample(new InputStreamReader(file.getInputStream()), filename.getTla().get());
-
-    // construct reply
-    SampleSummaryDTO sampleSummaryDTO =
-        new SampleSummaryDTO(file.getOriginalFilename(), result.getParsedCount(), result.getUnprocessedCSVRows());
-
+    SampleSummaryDTO summary = fileIngestService.ingestSampleFile(file);
     log.info("Exited sample endpoint");
-    return ResponseEntity.ok(sampleSummaryDTO);
+    return ResponseEntity.ok(summary);
+
   }
 
   @RequestMapping(value = "/staff", method = RequestMethod.POST, produces = "application/json")
@@ -81,22 +65,11 @@ public class LegacyGatewayEndpoint {
       @ApiResponse(code = 500, message = "Internal Server Error", response = GatewayCommonErrorDTO.class),
   })
   public ResponseEntity<StaffSummaryDTO> staffREST(@RequestParam("file") MultipartFile file,
-      RedirectAttributes redirectAttributes) throws Exception {
+      RedirectAttributes redirectAttributes)
+      throws IOException, InvalidFileNameException, MediaTypeNotSupportedException {
     log.info("Entered staff endpoint");
-
-    // check filename
-    // TODO check metadata
-    LegacyFilename filename = new LegacyFilename(file.getOriginalFilename(), "sample");
-
-    // parse csv
-    // lines are recorded in the database
-    // TODO determine where the 'result' of the staff delta goes
-    CSVParseResult result = csvParsingService.parseLegacyStaff(new InputStreamReader(file.getInputStream()));
-
-    // construct reply
-    StaffSummaryDTO staffSummaryDTO = new StaffSummaryDTO(file.getOriginalFilename(), result.getParsedCount());
-
+    StaffSummaryDTO summary = fileIngestService.ingestStaffFile(file);
     log.info("Exited staff endpoint");
-    return ResponseEntity.ok(staffSummaryDTO);
+    return ResponseEntity.ok(summary);
   }
 }

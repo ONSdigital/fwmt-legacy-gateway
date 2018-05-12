@@ -34,37 +34,6 @@ public class CSVParsingService {
     this.legacyJobPublishService = legacyJobPublishService;
   }
 
-  private CSVFormat getCSVFormat() {
-    return CSVFormat.DEFAULT.withHeader();
-  }
-
-  private <T> CSVParseResult parse(Reader reader, BiFunction<Integer, CSVRecord, Optional<UnprocessedCSVRow>> recordHandler)
-      throws IOException {
-    CSVParser parser = getCSVFormat().parse(reader);
-
-    Iterator<CSVRecord> iterator = parser.iterator();
-
-    int rowNumber = 0;
-    int parsedCount = 0;
-    int unparsedCount = 0;
-    List<UnprocessedCSVRow> unprocessedCSVRows = new ArrayList<>();
-
-    while (iterator.hasNext()) {
-      Optional<UnprocessedCSVRow> unprocessed = recordHandler.apply(rowNumber, iterator.next());
-      if (unprocessed.isPresent()) {
-        unparsedCount++;
-        unprocessedCSVRows.add(unprocessed.get());
-      } else {
-        parsedCount++;
-      }
-      rowNumber++;
-    }
-
-    reader.close();
-
-    return new CSVParseResult(unprocessedCSVRows, parsedCount, unparsedCount);
-  }
-
   /**
    * Sends each staff entity to the LegacyJobPublishService
    *
@@ -119,4 +88,36 @@ public class CSVParsingService {
     legacyStaffPublishService.publishStaff(staff);
     return result;
   }
+
+  private CSVFormat getCSVFormat() {
+    return CSVFormat.DEFAULT.withHeader();
+  }
+
+  private <T> CSVParseResult parse(Reader reader, BiFunction<Integer, CSVRecord, Optional<UnprocessedCSVRow>> recordHandler)
+      throws IOException {
+    CSVParser parser = getCSVFormat().parse(reader);
+
+    Iterator<CSVRecord> iterator = parser.iterator();
+
+    int rowNumber = 0;
+    int parsedCount = 0;
+    int unparsedCount = 0;
+    List<UnprocessedCSVRow> unprocessedCSVRows = new ArrayList<>();
+
+    while (iterator.hasNext()) {
+      Optional<UnprocessedCSVRow> unprocessed = recordHandler.apply(rowNumber, iterator.next());
+      if (unprocessed.isPresent()) {
+        unparsedCount++;
+        unprocessedCSVRows.add(unprocessed.get());
+      } else {
+        parsedCount++;
+      }
+      rowNumber++;
+    }
+
+    reader.close();
+
+    return new CSVParseResult(unprocessedCSVRows, parsedCount, unparsedCount);
+  }
+
 }
