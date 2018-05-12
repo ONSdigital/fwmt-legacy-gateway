@@ -1,12 +1,11 @@
-package uk.gov.ons.fwmt.gateway.entity.legacy;
+package uk.gov.ons.fwmt.gateway.data.legacy_ingest;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.apache.commons.csv.CSVRecord;
-import uk.gov.ons.fwmt.gateway.entity.csv_parser.CSVColumn;
+import uk.gov.ons.fwmt.gateway.data.csv_parser.CSVColumn;
 
 @Data
-public class SampleLFSDataIngest {
+public class LegacySampleLFSDataIngest {
   //@CSVColumn(value = "Quota_No", ignored = true)
   //private final String quotaNo;
 
@@ -663,7 +662,7 @@ public class SampleLFSDataIngest {
 
 
 
-  public SampleLFSDataIngest(CSVRecord record) {
+  public LegacySampleLFSDataIngest(CSVRecord record) {
     //this.quotaNo = record.get("Quota_No");
     this.refDate = (record.isSet("RefDate")) ? record.get("RefDate") : null;
     this.lstho = (record.isSet("LSTHO")) ? record.get("LSTHO") : null;

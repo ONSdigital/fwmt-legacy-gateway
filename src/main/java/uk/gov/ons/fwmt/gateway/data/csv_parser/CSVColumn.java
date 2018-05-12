@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.gateway.entity.csv_parser;
+package uk.gov.ons.fwmt.gateway.data.csv_parser;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

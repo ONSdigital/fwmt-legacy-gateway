@@ -3,7 +3,7 @@ package uk.gov.ons.fwmt.gateway.utility;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
-import uk.gov.ons.fwmt.gateway.entity.legacy.SampleSurveyType;
+import uk.gov.ons.fwmt.gateway.data.legacy_ingest.LegacySampleSurveyType;
 import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.gateway.error.MediaTypeNotSupportedException;
 
@@ -27,7 +27,7 @@ public class LegacyFilename {
       .ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
 
   private final String endpoint;
-  private final Optional<SampleSurveyType> tla;
+  private final Optional<LegacySampleSurveyType> tla;
   private final String timestamp;
 
   // TODO move
@@ -77,10 +77,10 @@ public class LegacyFilename {
       // // Validate the TLA
       switch (tlaString) {
       case "LFS":
-        tla = Optional.of(SampleSurveyType.LFS);
+        tla = Optional.of(LegacySampleSurveyType.LFS);
         break;
       case "GFF":
-        tla = Optional.of(SampleSurveyType.GFF);
+        tla = Optional.of(LegacySampleSurveyType.GFF);
         break;
       default:
         throw new IllegalArgumentException("File had an unrecognized TLA of " + tlaString);

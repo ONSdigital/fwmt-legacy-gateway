@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import uk.gov.ons.fwmt.gateway.entity.csv_parser.CSVParseResult;
+import uk.gov.ons.fwmt.gateway.data.csv_parser.CSVParseResult;
 import uk.gov.ons.fwmt.gateway.error.GatewayCommonErrorDTO;
 import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.gateway.error.MediaTypeNotSupportedException;

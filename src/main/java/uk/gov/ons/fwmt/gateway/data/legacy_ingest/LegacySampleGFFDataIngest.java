@@ -1,12 +1,11 @@
-package uk.gov.ons.fwmt.gateway.entity.legacy;
+package uk.gov.ons.fwmt.gateway.data.legacy_ingest;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.apache.commons.csv.CSVRecord;
-import uk.gov.ons.fwmt.gateway.entity.csv_parser.CSVColumn;
+import uk.gov.ons.fwmt.gateway.data.csv_parser.CSVColumn;
 
 @Data
-public class SampleGFFDataIngest {
+public class LegacySampleGFFDataIngest {
   @CSVColumn("name")
   // TODO is this 'Name'?
   private final String name;
@@ -80,7 +79,7 @@ public class SampleGFFDataIngest {
   @CSVColumn("OldSerial")
   private final String oldSerial;
 
-  public SampleGFFDataIngest(CSVRecord record) {
+  public LegacySampleGFFDataIngest(CSVRecord record) {
     this.name = (record.isSet("name")) ? record.get("name") : null;
     this.laua = (record.isSet("LAUA")) ? record.get("LAUA") : null;
     this.lauaName = (record.isSet("LAUA_Name")) ? record.get("LAUA_Name") : null;

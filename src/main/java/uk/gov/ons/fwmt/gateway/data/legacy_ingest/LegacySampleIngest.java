@@ -1,11 +1,11 @@
-package uk.gov.ons.fwmt.gateway.entity.legacy;
+package uk.gov.ons.fwmt.gateway.data.legacy_ingest;
 
 import lombok.Data;
 import org.apache.commons.csv.CSVRecord;
-import uk.gov.ons.fwmt.gateway.entity.csv_parser.CSVColumn;
+import uk.gov.ons.fwmt.gateway.data.csv_parser.CSVColumn;
 
 @Data
-public class SampleIngest {
+public class LegacySampleIngest {
   // TODO is this 'Transmission_Date'?
   @CSVColumn(value = "TransmissionDate", mandatory = true)
   private final String timestamp;
@@ -119,15 +119,15 @@ public class SampleIngest {
   private final String lastUpdated;
 
   // Data that is specific surveys
-  private final SampleSurveyType sampleSurveyType;
-  private final SampleGFFDataIngest gffData;
-  private final SampleLFSDataIngest lfsData;
+  private final LegacySampleSurveyType legacySampleSurveyType;
+  private final LegacySampleGFFDataIngest gffData;
+  private final LegacySampleLFSDataIngest lfsData;
 
   // // // TODO what are these?
   public String tmJobId;
   public String legacyJobId;
 
-  public SampleIngest(CSVRecord record, SampleSurveyType sampleSurveyType) {
+  public LegacySampleIngest(CSVRecord record, LegacySampleSurveyType legacySampleSurveyType) {
     this.timestamp = record.get("TransmissionDate");
     this.tla = record.get("TLA");
     this.year = (record.isSet("Year")) ? record.get("Year") : null;
@@ -138,7 +138,7 @@ public class SampleIngest {
     this.auth = record.get("Auth");
     this.lastUpdated = (record.isSet("Last_Updated")) ? record.get("Last_Updated") : null;
 
-    switch (sampleSurveyType) {
+    switch (legacySampleSurveyType) {
     case GFF:
       this.serNo = record.get("Serno");
       this.stage = record.get("Stage");
@@ -155,8 +155,8 @@ public class SampleIngest {
       this.osGridRef = (record.isSet("OSGridRef")) ? record.get("OSGridRef") : null;
       this.telNo = (record.isSet("Telno")) ? record.get("Telno") : null;
 
-      this.sampleSurveyType = SampleSurveyType.GFF;
-      this.gffData = new SampleGFFDataIngest(record);
+      this.legacySampleSurveyType = LegacySampleSurveyType.GFF;
+      this.gffData = new LegacySampleGFFDataIngest(record);
       this.lfsData = null;
 
       break;
@@ -176,9 +176,9 @@ public class SampleIngest {
       this.osGridRef = (record.isSet("OSGRIDREF")) ? record.get("OSGRIDREF") : null;
       this.telNo = (record.isSet("TELNO")) ? record.get("TELNO") : null;
 
-      this.sampleSurveyType = SampleSurveyType.LFS;
+      this.legacySampleSurveyType = LegacySampleSurveyType.LFS;
       this.gffData = null;
-      this.lfsData = new SampleLFSDataIngest(record);
+      this.lfsData = new LegacySampleLFSDataIngest(record);
 
       break;
     default:

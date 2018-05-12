@@ -14,7 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
- * Purpose of class
+ * Main entry point into the Legacy Gateway
  *
  * @author Thomas Poot
  * @author James Berry

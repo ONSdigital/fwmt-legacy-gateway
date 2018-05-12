@@ -6,11 +6,11 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.gov.ons.fwmt.gateway.entity.csv_parser.CSVParseResult;
-import uk.gov.ons.fwmt.gateway.entity.csv_parser.UnprocessedCSVRow;
-import uk.gov.ons.fwmt.gateway.entity.legacy.SampleIngest;
-import uk.gov.ons.fwmt.gateway.entity.legacy.StaffIngest;
-import uk.gov.ons.fwmt.gateway.entity.legacy.SampleSurveyType;
+import uk.gov.ons.fwmt.gateway.data.csv_parser.CSVParseResult;
+import uk.gov.ons.fwmt.gateway.data.csv_parser.UnprocessedCSVRow;
+import uk.gov.ons.fwmt.gateway.data.legacy_ingest.LegacySampleIngest;
+import uk.gov.ons.fwmt.gateway.data.legacy_ingest.LegacyStaffIngest;
+import uk.gov.ons.fwmt.gateway.data.legacy_ingest.LegacySampleSurveyType;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -72,12 +72,12 @@ public class CSVParsingService {
    * @return A structure denoting any issues encountered while parsing the CSV
    * @throws IOException If the file provided fails to provide content
    */
-  public CSVParseResult parseLegacySample(Reader reader, SampleSurveyType sampleSurveyType) throws IOException {
+  public CSVParseResult parseLegacySample(Reader reader, LegacySampleSurveyType legacySampleSurveyType) throws IOException {
     log.info("Began parsing a sample CSV file");
     return parse(reader,
         (index, record) -> {
           try {
-            SampleIngest job = new SampleIngest(record, sampleSurveyType);
+            LegacySampleIngest job = new LegacySampleIngest(record, legacySampleSurveyType);
             legacyJobPublishService.publishJob(job);
             return Optional.empty();
           } catch (IllegalStateException e) {
@@ -100,11 +100,11 @@ public class CSVParsingService {
    */
   public CSVParseResult parseLegacyStaff(Reader reader) throws IOException {
     log.info("Began parsing a staff CSV file");
-    List<StaffIngest> staff = new ArrayList<>();
+    List<LegacyStaffIngest> staff = new ArrayList<>();
     CSVParseResult result = parse(reader,
         (index, record) -> {
           try {
-            StaffIngest job = new StaffIngest(record);
+            LegacyStaffIngest job = new LegacyStaffIngest(record);
             staff.add(job);
             return Optional.empty();
           } catch (IllegalStateException e) {

@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.gateway.entity.tm;
+package uk.gov.ons.fwmt.gateway.entity;
 
 import lombok.AccessLevel;
 import lombok.Data;

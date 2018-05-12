@@ -3,9 +3,9 @@ package uk.gov.ons.fwmt.gateway.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.gov.ons.fwmt.gateway.entity.legacy.StaffIngest;
-import uk.gov.ons.fwmt.gateway.entity.tm.TMUserEntity;
-import uk.gov.ons.fwmt.gateway.repo.tm.TMUserRepo;
+import uk.gov.ons.fwmt.gateway.data.legacy_ingest.LegacyStaffIngest;
+import uk.gov.ons.fwmt.gateway.entity.TMUserEntity;
+import uk.gov.ons.fwmt.gateway.repo.TMUserRepo;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,17 +22,17 @@ public class LegacyStaffPublishService {
     this.tmService = tmService;
   }
 
-  private static String makeTMUsername(StaffIngest staff) {
+  private static String makeTMUsername(LegacyStaffIngest staff) {
     return staff.getEmail().split("@")[0];
   }
 
-  public void publishStaff(List<StaffIngest> staff) {
+  public void publishStaff(List<LegacyStaffIngest> staff) {
     // get a list of all the new auth numbers
     List<String> staffAuthNoList = staff.stream()
-        .map(StaffIngest::getAuth)
+        .map(LegacyStaffIngest::getAuth)
         .collect(Collectors.toList());
 
-    for (StaffIngest staffMember : staff) {
+    for (LegacyStaffIngest staffMember : staff) {
       if (!tmUserRepo.existsByAuthNo(staffMember.getAuth())) {
         // Staff member does not exist - they will be created
         createStaff(staffMember);
@@ -45,11 +45,11 @@ public class LegacyStaffPublishService {
     List<String> authNosToUpdate = tmUserRepo.findByAuthNoIn(staffAuthNoList).stream()
         .map(TMUserEntity::getAuthNo)
         .collect(Collectors.toList());
-    List<StaffIngest> staffToUpdate = staff.stream()
+    List<LegacyStaffIngest> staffToUpdate = staff.stream()
         .filter(s -> authNosToUpdate.contains(s.getAuth()))
         .collect(Collectors.toList());
     // find all of the database entries that exist in our list of auth numbers
-    for (StaffIngest staffMember : staffToUpdate) {
+    for (LegacyStaffIngest staffMember : staffToUpdate) {
       updateStaff(staffMember);
     }
 
@@ -62,15 +62,15 @@ public class LegacyStaffPublishService {
     }
   }
 
-  private void createStaff(StaffIngest staff) {
+  private void createStaff(LegacyStaffIngest staff) {
     // TODO
   }
 
-  private void updateStaff(StaffIngest staff) {
+  private void updateStaff(LegacyStaffIngest staff) {
     // TODO
   }
 
-  private void deleteStaff(StaffIngest staff) {
+  private void deleteStaff(LegacyStaffIngest staff) {
     // TODO
   }
 

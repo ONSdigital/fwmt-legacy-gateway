@@ -1,11 +1,11 @@
-package uk.gov.ons.fwmt.gateway.entity.legacy;
+package uk.gov.ons.fwmt.gateway.data.legacy_ingest;
 
 import lombok.Data;
 import org.apache.commons.csv.CSVRecord;
-import uk.gov.ons.fwmt.gateway.entity.csv_parser.CSVColumn;
+import uk.gov.ons.fwmt.gateway.data.csv_parser.CSVColumn;
 
 @Data
-public class StaffIngest {
+public class LegacyStaffIngest {
     // TODO is this 'Transmission_Date'?
     @CSVColumn(value = "TransmissionDate", mandatory = true)
     private final String timestamp;
@@ -112,7 +112,7 @@ public class StaffIngest {
     //@CSVColumn(value = "RM_Surname", ignored = true)
     //private final String rmSurname;
 
-    public StaffIngest(CSVRecord record) {
+    public LegacyStaffIngest(CSVRecord record) {
         this.timestamp = record.get("TransmissionDate");
         this.auth = record.get("Auth");
         //this.sex = (record.isSet("sex")) ? record.get("sex") : null;

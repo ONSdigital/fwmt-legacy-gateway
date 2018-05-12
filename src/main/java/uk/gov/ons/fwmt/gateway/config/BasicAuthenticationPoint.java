@@ -21,7 +21,7 @@ public class BasicAuthenticationPoint extends BasicAuthenticationEntryPoint {
   }
   @Override
   public void afterPropertiesSet() throws Exception {
-    setRealmName("fwmt-legacy-gateway");
+    setRealmName("fwmt-legacy_ingest-gateway");
     super.afterPropertiesSet();
   }
 }

@@ -1,7 +1,7 @@
 package uk.gov.ons.fwmt.gateway.service;
 
 import org.springframework.stereotype.Service;
-import uk.gov.ons.fwmt.gateway.entity.legacy.SampleIngest;
+import uk.gov.ons.fwmt.gateway.data.legacy_ingest.LegacySampleIngest;
 
 @Service
 public class LegacyJobPublishService {
@@ -11,7 +11,7 @@ public class LegacyJobPublishService {
     this.tmService = tmService;
   }
 
-  public void publishJob(SampleIngest job) {
+  public void publishJob(LegacySampleIngest job) {
     // TODO
     // Logic:
     // If jobid does not exist in database:
@@ -31,15 +31,15 @@ public class LegacyJobPublishService {
     //   reallocation, update the user
   }
 
-  private void reissueJob(SampleIngest job) {
+  private void reissueJob(LegacySampleIngest job) {
     // TODO
   }
 
-  private void reallocateJob(SampleIngest job) {
+  private void reallocateJob(LegacySampleIngest job) {
     // TODO
   }
 
-  private void createJob(SampleIngest job) {
+  private void createJob(LegacySampleIngest job) {
     // TODO
   }
 }

@@ -1,8 +1,8 @@
-package uk.gov.ons.fwmt.gateway.repo.tm;
+package uk.gov.ons.fwmt.gateway.repo;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import uk.gov.ons.fwmt.gateway.entity.tm.TMUserEntity;
+import uk.gov.ons.fwmt.gateway.entity.TMUserEntity;
 
 import java.util.List;
 
