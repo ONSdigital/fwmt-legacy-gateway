@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.legacy_gateway.representation;
+package uk.gov.ons.fwmt.legacy_gateway.data.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

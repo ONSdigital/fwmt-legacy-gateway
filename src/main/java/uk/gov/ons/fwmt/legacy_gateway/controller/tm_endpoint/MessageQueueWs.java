@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.legacy_gateway.tm.endpoint;
+package uk.gov.ons.fwmt.legacy_gateway.controller.tm_endpoint;
 
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.*;
 import lombok.extern.slf4j.Slf4j;

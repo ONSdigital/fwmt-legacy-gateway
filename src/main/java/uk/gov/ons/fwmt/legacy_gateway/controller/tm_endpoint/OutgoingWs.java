@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.legacy_gateway.tm.endpoint;
+package uk.gov.ons.fwmt.legacy_gateway.controller.tm_endpoint;
 
 import com.consiliumtechnologies.schemas.mobile._2008._10.locationmessages.SubmitLocationRequest;
 import com.consiliumtechnologies.schemas.mobile._2009._03.commonmessages.SubmitDocumentRequest;
