@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
-import uk.gov.ons.fwmt.gateway.utility.TMMessageSubmitter;
+import uk.gov.ons.fwmt.gateway.service.TMService;
 
 import javax.annotation.PostConstruct;
 import javax.xml.bind.JAXBElement;
@@ -26,23 +26,23 @@ public class TMPollTask {
 
     @Value("${totalmobile.url}")
     private String urlStart;
-    @Value("${totalmobile.message-queue-service}")
+    @Value("${totalmobile.message-queue-path}")
     private String urlEnd;
     @Value("${totalmobile.username}")
     private String username;
     @Value("${totalmobile.password}")
     private String password;
 
-    private RestTemplate rest;
-    private HttpHeaders headers;
-    private TMMessageSubmitter submitter;
+    private final RestTemplate rest;
+    private final HttpHeaders headers;
+    private final TMService tmService;
 
     @Autowired
-    TMPollTask(TMMessageSubmitter submitter) {
+    TMPollTask(TMService tmService) {
         this.rest = new RestTemplate();
         this.headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
-        this.submitter = submitter;
+        this.tmService = tmService;
     }
 
     @PostConstruct
@@ -76,7 +76,7 @@ public class TMPollTask {
         errorCriteria.setParseAs(ParseAsType.STRING);
         query.getCriteria().getCriterion().add(errorCriteria);
         // Send
-        JAXBElement<QueryMessagesResponse> response = submitter.send(objectFactory.createQueryMessagesRequest(query));
+        JAXBElement<QueryMessagesResponse> response = tmService.send(objectFactory.createQueryMessagesRequest(query));
         return response.getValue().getMessages().getMessage().size() == 0;
     }
 

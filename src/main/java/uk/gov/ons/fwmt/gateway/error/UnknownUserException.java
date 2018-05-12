@@ -3,6 +3,8 @@ package uk.gov.ons.fwmt.gateway.error;
 import lombok.Getter;
 
 public class UnknownUserException extends RuntimeException {
+  static final long serialVersionUID = 0L;
+
   @Getter private String username;
 
   public UnknownUserException(String username) {

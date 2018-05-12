@@ -3,7 +3,7 @@ package uk.gov.ons.fwmt.gateway.error;
 import lombok.Getter;
 
 public class InvalidFileNameException extends Exception {
-  static final long serialVersionUID = 7457074360543L;
+  static final long serialVersionUID = 0L;
 
   @Getter private final String name;
   @Getter private final String reason;

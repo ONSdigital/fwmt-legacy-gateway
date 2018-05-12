@@ -3,88 +3,84 @@ package uk.gov.ons.fwmt.gateway.entity.legacy;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.csv.CSVRecord;
+import uk.gov.ons.fwmt.gateway.entity.csv_parser.CSVColumn;
 
 @Data
-public class JobGFFDataIngest {
-  // taken from the 'name' field
+public class SampleGFFDataIngest {
+  @CSVColumn("name")
   // TODO is this 'Name'?
   private final String name;
 
-  // taken from the 'LAUA' field
+  @CSVColumn("LAUA")
   private final String laua;
 
-  // taken from the 'LAUA_Name' field
+  @CSVColumn("LAUA_Name")
   private final String lauaName;
 
-  // taken from the 'SubSample' field
+  @CSVColumn("SubSample")
   private final String subSample;
 
-  // taken from the 'Rand' field
+  @CSVColumn("Rand")
   private final String rand;
 
-  // taken from the 'ADULT2' field
+  @CSVColumn("ADULT2")
   private final String adult2;
 
-  // taken from the 'ADULT3' field
+  @CSVColumn("ADULT3")
   private final String adult3;
 
-  // taken from the 'ADULT4' field
+  @CSVColumn("ADULT4")
   private final String adult4;
 
-  // taken from the 'ADULT5' field
+  @CSVColumn("ADULT5")
   private final String adult5;
 
-  // taken from the 'ADULT6' field
+  @CSVColumn("ADULT6")
   private final String adult6;
 
-  // taken from the 'ADULT7' field
+  @CSVColumn("ADULT7")
   private final String adult7;
 
-  // taken from the 'ADULT8' field
+  @CSVColumn("ADULT8")
   private final String adult8;
 
-  // taken from the 'ADULT9' field
+  @CSVColumn("ADULT9")
   private final String adult9;
 
-  // taken from the 'ADULT10' field
+  @CSVColumn("ADULT10")
   private final String adult10;
 
-  // taken from the 'ADULT11' field
+  @CSVColumn("ADULT11")
   private final String adult11;
 
-  // taken from the 'ADULT12' field
+  @CSVColumn("ADULT12")
   private final String adult12;
 
-  // taken from the 'ADULT13' field
+  @CSVColumn("ADULT13")
   private final String adult13;
 
-  // taken from the 'ADULT14' field
+  @CSVColumn("ADULT14")
   private final String adult14;
 
-  // taken from the 'Ward' field
-  // ignored
+  //@CSVColumn(value = "Ward", ignored = true)
   //private final String ward;
 
-  // taken from the 'Ward_Name' field
-  // ignored
+  //@CSVColumn(value = "Ward_Name", ignored = true)
   //private final String wardName;
 
-  // taken from the 'MO' field
-  // ignored
+  //@CSVColumn(value = "MO", ignored = true)
   //private final String mo;
 
-  // taken from the 'DivAddInd' field
-  // ignored
+  //@CSVColumn(value = "DivAddInd", ignored = true)
   //private final String divAddInd;
 
-  // taken from the 'GFFMU' field
-  // ignored
+  //@CSVColumn(value = "GFFMU", ignored = true)
   //private final String gffmu;
 
-  // taken from the 'OldSerial' field
+  @CSVColumn("OldSerial")
   private final String oldSerial;
 
-  public JobGFFDataIngest(CSVRecord record) {
+  public SampleGFFDataIngest(CSVRecord record) {
     this.name = (record.isSet("name")) ? record.get("name") : null;
     this.laua = (record.isSet("LAUA")) ? record.get("LAUA") : null;
     this.lauaName = (record.isSet("LAUA_Name")) ? record.get("LAUA_Name") : null;

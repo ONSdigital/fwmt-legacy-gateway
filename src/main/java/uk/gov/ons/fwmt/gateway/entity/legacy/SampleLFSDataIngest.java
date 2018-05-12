@@ -3,769 +3,667 @@ package uk.gov.ons.fwmt.gateway.entity.legacy;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.csv.CSVRecord;
+import uk.gov.ons.fwmt.gateway.entity.csv_parser.CSVColumn;
 
 @Data
-public class JobLFSDataIngest {
-  // taken from the 'Quota_No' field
-  // ignored
+public class SampleLFSDataIngest {
+  //@CSVColumn(value = "Quota_No", ignored = true)
   //private final String quotaNo;
 
-  // taken from the 'RefDate' field
+  @CSVColumn("RefDate")
   private final String refDate;
 
-  // taken from the 'LSTHO' field
+  @CSVColumn("LSTHO")
   private final String lstho;
 
-  // taken from the 'MAIN' field
+  @CSVColumn("MAIN")
   private final String main;
 
-  // taken from the 'NUMHHLD' field
+  @CSVColumn("NUMHHLD")
   private final String numberHouseholds;
 
-  // taken from the 'HHLDDESC' field
+  @CSVColumn("HHLDDESC")
   private final String householdsDesc;
 
   // // // Names
 
-  // taken from the 'QRES_LINE_NAME_1' field
+  @CSVColumn("QRES_LINE_NAME_1")
   private final String respondentName1;
 
-  // taken from the 'QRES_LINE_NAME_2' field
+  @CSVColumn("QRES_LINE_NAME_2")
   private final String respondentName2;
 
-  // taken from the 'QRES_LINE_NAME_3' field
+  @CSVColumn("QRES_LINE_NAME_3")
   private final String respondentName3;
 
-  // taken from the 'QRES_LINE_NAME_4' field
+  @CSVColumn("QRES_LINE_NAME_4")
   private final String respondentName4;
 
-  // taken from the 'QRES_LINE_NAME_5' field
+  @CSVColumn("QRES_LINE_NAME_5")
   private final String respondentName5;
 
-  // taken from the 'QRES_LINE_NAME_6' field
+  @CSVColumn("QRES_LINE_NAME_6")
   private final String respondentName6;
 
-  // taken from the 'QRES_LINE_NAME_7' field
+  @CSVColumn("QRES_LINE_NAME_7")
   private final String respondentName7;
 
-  // taken from the 'QRES_LINE_NAME_8' field
+  @CSVColumn("QRES_LINE_NAME_8")
   private final String respondentName8;
 
-  // taken from the 'QRES_LINE_NAME_9' field
+  @CSVColumn("QRES_LINE_NAME_9")
   private final String respondentName9;
 
-  // taken from the 'QRES_LINE_NAME_10' field
+  @CSVColumn("QRES_LINE_NAME_10")
   private final String respondentName10;
 
-  // taken from the 'QRES_LINE_NAME_11' field
+  @CSVColumn("QRES_LINE_NAME_11")
   private final String respondentName11;
 
-  // taken from the 'QRES_LINE_NAME_12' field
+  @CSVColumn("QRES_LINE_NAME_12")
   private final String respondentName12;
 
-  // taken from the 'QRES_LINE_NAME_13' field
+  @CSVColumn("QRES_LINE_NAME_13")
   private final String respondentName13;
 
-  // taken from the 'QRES_LINE_NAME_14' field
+  @CSVColumn("QRES_LINE_NAME_14")
   private final String respondentName14;
 
-  // taken from the 'QRES_LINE_NAME_15' field
+  @CSVColumn("QRES_LINE_NAME_15")
   private final String respondentName15;
 
-  // taken from the 'QRES_LINE_NAME_16' field
+  @CSVColumn("QRES_LINE_NAME_16")
   private final String respondentName16;
 
   // // // Ages
 
-  // taken from the 'QRES_LINE_AGE_1' field
+  @CSVColumn("QRES_LINE_AGE_1")
   private final String respondentAge1;
 
-  // taken from the 'QRES_LINE_AGE_2' field
+  @CSVColumn("QRES_LINE_AGE_2")
   private final String respondentAge2;
 
-  // taken from the 'QRES_LINE_AGE_3' field
+  @CSVColumn("QRES_LINE_AGE_3")
   private final String respondentAge3;
 
-  // taken from the 'QRES_LINE_AGE_4' field
+  @CSVColumn("QRES_LINE_AGE_4")
   private final String respondentAge4;
 
-  // taken from the 'QRES_LINE_AGE_5' field
+  @CSVColumn("QRES_LINE_AGE_5")
   private final String respondentAge5;
 
-  // taken from the 'QRES_LINE_AGE_6' field
+  @CSVColumn("QRES_LINE_AGE_6")
   private final String respondentAge6;
 
-  // taken from the 'QRES_LINE_AGE_7' field
+  @CSVColumn("QRES_LINE_AGE_7")
   private final String respondentAge7;
 
-  // taken from the 'QRES_LINE_AGE_8' field
+  @CSVColumn("QRES_LINE_AGE_8")
   private final String respondentAge8;
 
-  // taken from the 'QRES_LINE_AGE_9' field
+  @CSVColumn("QRES_LINE_AGE_9")
   private final String respondentAge9;
 
-  // taken from the 'QRES_LINE_AGE_10' field
+  @CSVColumn("QRES_LINE_AGE_10")
   private final String respondentAge10;
 
-  // taken from the 'QRES_LINE_AGE_11' field
+  @CSVColumn("QRES_LINE_AGE_11")
   private final String respondentAge11;
 
-  // taken from the 'QRES_LINE_AGE_12' field
+  @CSVColumn("QRES_LINE_AGE_12")
   private final String respondentAge12;
 
-  // taken from the 'QRES_LINE_AGE_13' field
+  @CSVColumn("QRES_LINE_AGE_13")
   private final String respondentAge13;
 
-  // taken from the 'QRES_LINE_AGE_14' field
+  @CSVColumn("QRES_LINE_AGE_14")
   private final String respondentAge14;
 
-  // taken from the 'QRES_LINE_AGE_15' field
+  @CSVColumn("QRES_LINE_AGE_15")
   private final String respondentAge15;
 
-  // taken from the 'QRES_LINE_AGE_16' field
+  @CSVColumn("QRES_LINE_AGE_16")
   private final String respondentAge16;
 
   // // // Indicators
 
   // // Respondent 1
 
-  // taken from the 'QINDIV_1_WRKING' field
+  @CSVColumn("QINDIV_1_WRKING")
   private final String respondentWorkIndicator1;
 
-  // taken from the 'QINDIV_1_JBAWAY' field
-  // ignored
+  //@CSVColumn(value = "QINDIV_1_JBAWAY", ignored = true)
   //private final String qindiv1Jbaway;
 
-  // taken from the 'QINDIV_1_OWNBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_1_OWNBUS", ignored = true)
   //private final String qindiv1Ownbus;
 
-  // taken from the 'QINDIV_1_RELBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_1_RELBUS", ignored = true)
   //private final String qindiv1Relbus;
 
-  // taken from the 'QINDIV_1_LOOK4' field
+  @CSVColumn("QINDIV_1_LOOK4")
   private final String respondentLookingForWork1;
 
-  // taken from the 'QINDIV_1_DIFJOB' field
-  // ignored
+  //CSVColumn(value = "QINDIV_1_DIFJOB", ignored = true)
   //private final String qindiv1Difjob;
 
-  // taken from the 'QINDIV_1_INDOUT' field
+  @CSVColumn("QINDIV_1_INDOUT")
   private final String respondentInterviewType1;
 
   // // Respondent 2
 
-  // taken from the 'QINDIV_2_WRKING' field
+  @CSVColumn("QINDIV_2_WRKING")
   private final String respondentWorkIndicator2;
 
-  // taken from the 'QINDIV_2_JBAWAY' field
-  // ignored
+  //CSVColumn(value = "QINDIV_2_JBAWAY", ignored = true)
   //private final String qindiv2Jbaway;
 
-  // taken from the 'QINDIV_2_OWNBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_2_OWNBUS", ignored = true)
   //private final String qindiv2Ownbus;
 
-  // taken from the 'QINDIV_2_RELBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_2_RELBUS", ignored = true)
   //private final String qindiv2Relbus;
 
-  // taken from the 'QINDIV_2_LOOK4' field
+  @CSVColumn("QINDIV_2_LOOK4")
   private final String respondentLookingForWork2;
 
-  // taken from the 'QINDIV_2_DIFJOB' field
-  // ignored
+  //CSVColumn(value = "QINDIV_2_DIFJOB", ignored = true)
   //private final String qindiv2Difjob;
 
-  // taken from the 'QINDIV_2_INDOUT' field
+  @CSVColumn("QINDIV_2_INDOUT")
   private final String respondentInterviewType2;
 
   // // Respondent 3
 
-  // taken from the 'QINDIV_3_WRKING' field
+  @CSVColumn("QINDIV_3_WRKING")
   private final String respondentWorkIndicator3;
 
-  // taken from the 'QINDIV_3_JBAWAY' field
-  // ignored
+  //CSVColumn(value = "QINDIV_3_JBAWAY", ignored = true)
   //private final String qindiv3Jbaway;
 
-  // taken from the 'QINDIV_3_OWNBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_3_OWNBUS", ignored = true)
   //private final String qindiv3Ownbus;
 
-  // taken from the 'QINDIV_3_RELBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_3_RELBUS", ignored = true)
   //private final String qindiv3Relbus;
 
-  // taken from the 'QINDIV_3_LOOK4' field
+  @CSVColumn("QINDIV_3_LOOK4")
   private final String respondentLookingForWork3;
 
-  // taken from the 'QINDIV_3_DIFJOB' field
-  // ignored
+  //CSVColumn(value = "QINDIV_3_DIFJOB", ignored = true)
   //private final String qindiv3Difjob;
 
-  // taken from the 'QINDIV_3_INDOUT' field
+  @CSVColumn("QINDIV_3_INDOUT")
   private final String respondentInterviewType3;
 
   // // Respondent 4
 
-  // taken from the 'QINDIV_4_WRKING' field
+  @CSVColumn("QINDIV_4_WRKING")
   private final String respondentWorkIndicator4;
 
-  // taken from the 'QINDIV_4_JBAWAY' field
-  // ignored
+  //CSVColumn(value = "QINDIV_4_JBAWAY", ignored = true)
   //private final String qindiv4Jbaway;
 
-  // taken from the 'QINDIV_4_OWNBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_4_OWNBUS", ignored = true)
   //private final String qindiv4Ownbus;
 
-  // taken from the 'QINDIV_4_RELBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_4_RELBUS", ignored = true)
   //private final String qindiv4Relbus;
 
-  // taken from the 'QINDIV_4_LOOK4' field
+  @CSVColumn("QINDIV_4_LOOK4")
   private final String respondentLookingForWork4;
 
-  // taken from the 'QINDIV_4_DIFJOB' field
-  // ignored
+  //CSVColumn(value = "QINDIV_4_DIFJOB", ignored = true)
   //private final String qindiv4Difjob;
 
-  // taken from the 'QINDIV_4_INDOUT' field
+  @CSVColumn("QINDIV_4_INDOUT")
   private final String respondentInterviewType4;
 
   // // Respondent 5
 
-  // taken from the 'QINDIV_5_WRKING' field
+  @CSVColumn("QINDIV_5_WRKING")
   private final String respondentWorkIndicator5;
 
-  // taken from the 'QINDIV_5_JBAWAY' field
-  // ignored
+  //CSVColumn(value = "QINDIV_5_JBAWAY", ignored = true)
   //private final String qindiv5Jbaway;
 
-  // taken from the 'QINDIV_5_OWNBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_5_OWNBUS", ignored = true)
   //private final String qindiv5Ownbus;
 
-  // taken from the 'QINDIV_5_RELBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_5_RELBUS", ignored = true)
   //private final String qindiv5Relbus;
 
-  // taken from the 'QINDIV_5_LOOK4' field
+  @CSVColumn("QINDIV_5_LOOK4")
   private final String respondentLookingForWork5;
 
-  // taken from the 'QINDIV_5_DIFJOB' field
-  // ignored
+  //CSVColumn(value = "QINDIV_5_DIFJOB", ignored = true)
   //private final String qindiv5Difjob;
 
-  // taken from the 'QINDIV_5_INDOUT' field
+  @CSVColumn("QINDIV_5_INDOUT")
   private final String respondentInterviewType5;
 
   // // Respondent 6
 
-  // taken from the 'QINDIV_6_WRKING' field
+  @CSVColumn("QINDIV_6_WRKING")
   private final String respondentWorkIndicator6;
 
-  // taken from the 'QINDIV_6_JBAWAY' field
-  // ignored
+  //CSVColumn(value = "QINDIV_6_JBAWAY", ignored = true)
   //private final String qindiv6Jbaway;
 
-  // taken from the 'QINDIV_6_OWNBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_6_OWNBUS", ignored = true)
   //private final String qindiv6Ownbus;
 
-  // taken from the 'QINDIV_6_RELBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_6_RELBUS", ignored = true)
   //private final String qindiv6Relbus;
 
-  // taken from the 'QINDIV_6_LOOK4' field
+  @CSVColumn("QINDIV_6_LOOK4")
   private final String respondentLookingForWork6;
 
-  // taken from the 'QINDIV_6_DIFJOB' field
-  // ignored
+  //CSVColumn(value = "QINDIV_6_DIFJOB", ignored = true)
   //private final String qindiv6Difjob;
 
-  // taken from the 'QINDIV_6_INDOUT' field
+  @CSVColumn("QINDIV_6_INDOUT")
   private final String respondentInterviewType6;
 
   // // Respondent 7
 
-  // taken from the 'QINDIV_7_WRKING' field
+  @CSVColumn("QINDIV_7_WRKING")
   private final String respondentWorkIndicator7;
 
-  // taken from the 'QINDIV_7_JBAWAY' field
-  // ignored
+  //CSVColumn(value = "QINDIV_7_JBAWAY", ignored = true)
   //private final String qindiv7Jbaway;
 
-  // taken from the 'QINDIV_7_OWNBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_7_OWNBUS", ignored = true)
   //private final String qindiv7Ownbus;
 
-  // taken from the 'QINDIV_7_RELBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_7_RELBUS", ignored = true)
   //private final String qindiv7Relbus;
 
-  // taken from the 'QINDIV_7_LOOK4' field
+  @CSVColumn("QINDIV_7_LOOK4")
   private final String respondentLookingForWork7;
 
-  // taken from the 'QINDIV_7_DIFJOB' field
-  // ignored
+  //CSVColumn(value = "QINDIV_7_DIFJOB", ignored = true)
   //private final String qindiv7Difjob;
 
-  // taken from the 'QINDIV_7_INDOUT' field
+  @CSVColumn("QINDIV_7_INDOUT")
   private final String respondentInterviewType7;
 
   // // Respondent 8
 
-  // taken from the 'QINDIV_8_WRKING' field
+  @CSVColumn("QINDIV_8_WRKING")
   private final String respondentWorkIndicator8;
 
-  // taken from the 'QINDIV_8_JBAWAY' field
-  // ignored
+  //CSVColumn(value = "QINDIV_8_JBAWAY", ignored = true)
   //private final String qindiv8Jbaway;
 
-  // taken from the 'QINDIV_8_OWNBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_8_OWNBUS", ignored = true)
   //private final String qindiv8Ownbus;
 
-  // taken from the 'QINDIV_8_RELBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_8_RELBUS", ignored = true)
   //private final String qindiv8Relbus;
 
-  // taken from the 'QINDIV_8_LOOK4' field
+  @CSVColumn("QINDIV_8_LOOK4")
   private final String respondentLookingForWork8;
 
-  // taken from the 'QINDIV_8_DIFJOB' field
-  // ignored
+  //CSVColumn(value = "QINDIV_8_DIFJOB", ignored = true)
   //private final String qindiv8Difjob;
 
-  // taken from the 'QINDIV_8_INDOUT' field
+  @CSVColumn("QINDIV_8_INDOUT")
   private final String respondentInterviewType8;
 
   // // Respondent 9
 
-  // taken from the 'QINDIV_9_WRKING' field
+  @CSVColumn("QINDIV_9_WRKING")
   private final String respondentWorkIndicator9;
 
-  // taken from the 'QINDIV_9_JBAWAY' field
-  // ignored
+  //CSVColumn(value = "QINDIV_9_JBAWAY", ignored = true)
   //private final String qindiv9Jbaway;
 
-  // taken from the 'QINDIV_9_OWNBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_9_OWNBUS", ignored = true)
   //private final String qindiv9Ownbus;
 
-  // taken from the 'QINDIV_9_RELBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_9_RELBUS", ignored = true)
   //private final String qindiv9Relbus;
 
-  // taken from the 'QINDIV_9_LOOK4' field
+  @CSVColumn("QINDIV_9_LOOK4")
   private final String respondentLookingForWork9;
 
-  // taken from the 'QINDIV_9_DIFJOB' field
-  // ignored
+  //CSVColumn(value = "QINDIV_9_DIFJOB", ignored = true)
   //private final String qindiv9Difjob;
 
-  // taken from the 'QINDIV_9_INDOUT' field
+  @CSVColumn("QINDIV_9_INDOUT")
   private final String respondentInterviewType9;
 
   // // Respondent 10
 
-  // taken from the 'QINDIV_10_WRKING' field
+  @CSVColumn("QINDIV_10_WRKING")
   private final String respondentWorkIndicator10;
 
-  // taken from the 'QINDIV_10_JBAWAY' field
-  // ignored
+  //CSVColumn(value = "QINDIV_10_JBAWAY", ignored = true)
   //private final String qindiv10Jbaway;
 
-  // taken from the 'QINDIV_10_OWNBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_10_OWNBUS", ignored = true)
   //private final String qindiv10Ownbus;
 
-  // taken from the 'QINDIV_10_RELBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_10_RELBUS", ignored = true)
   //private final String qindiv10Relbus;
 
-  // taken from the 'QINDIV_10_LOOK4' field
+  @CSVColumn("QINDIV_10_LOOK4")
   private final String respondentLookingForWork10;
 
-  // taken from the 'QINDIV_10_DIFJOB' field
-  // ignored
+  //CSVColumn(value = "QINDIV_10_DIFJOB", ignored = true)
   //private final String qindiv10Difjob;
 
-  // taken from the 'QINDIV_10_INDOUT' field
+  @CSVColumn("QINDIV_10_INDOUT")
   private final String respondentInterviewType10;
 
   // // Respondent 11
 
-  // taken from the 'QINDIV_11_WRKING' field
+  @CSVColumn("QINDIV_11_WRKING")
   private final String respondentWorkIndicator11;
 
-  // taken from the 'QINDIV_11_JBAWAY' field
-  // ignored
+  //CSVColumn(value = "QINDIV_11_JBAWAY", ignored = true)
   //private final String qindiv11Jbaway;
 
-  // taken from the 'QINDIV_11_OWNBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_11_OWNBUS", ignored = true)
   //private final String qindiv11Ownbus;
 
-  // taken from the 'QINDIV_11_RELBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_11_RELBUS", ignored = true)
   //private final String qindiv11Relbus;
 
-  // taken from the 'QINDIV_11_LOOK4' field
+  @CSVColumn("QINDIV_11_LOOK4")
   private final String respondentLookingForWork11;
 
-  // taken from the 'QINDIV_11_DIFJOB' field
-  // ignored
+  //CSVColumn(value = "QINDIV_11_DIFJOB", ignored = true)
   //private final String qindiv11Difjob;
 
-  // taken from the 'QINDIV_11_INDOUT' field
+  @CSVColumn("QINDIV_11_INDOUT")
   private final String respondentInterviewType11;
 
   // // Respondent 12
 
-  // taken from the 'QINDIV_12_WRKING' field
+  @CSVColumn("QINDIV_12_WRKING")
   private final String respondentWorkIndicator12;
 
-  // taken from the 'QINDIV_12_JBAWAY' field
-  // ignored
+  //CSVColumn(value = "QINDIV_12_JBAWAY", ignored = true)
   //private final String qindiv12Jbaway;
 
-  // taken from the 'QINDIV_12_OWNBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_12_OWNBUS", ignored = true)
   //private final String qindiv12Ownbus;
 
-  // taken from the 'QINDIV_12_RELBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_12_RELBUS", ignored = true)
   //private final String qindiv12Relbus;
 
-  // taken from the 'QINDIV_12_LOOK4' field
+  @CSVColumn("QINDIV_12_LOOK4")
   private final String respondentLookingForWork12;
 
-  // taken from the 'QINDIV_12_DIFJOB' field
-  // ignored
+  //CSVColumn(value = "QINDIV_12_DIFJOB", ignored = true)
   //private final String qindiv12Difjob;
 
-  // taken from the 'QINDIV_12_INDOUT' field
+  @CSVColumn("QINDIV_12_INDOUT")
   private final String respondentInterviewType12;
 
   // // Respondent 13
 
-  // taken from the 'QINDIV_13_WRKING' field
+  @CSVColumn("QINDIV_13_WRKING")
   private final String respondentWorkIndicator13;
 
-  // taken from the 'QINDIV_13_JBAWAY' field
-  // ignored
+  //CSVColumn(value = "QINDIV_13_JBAWAY", ignored = true)
   //private final String qindiv13Jbaway;
 
-  // taken from the 'QINDIV_13_OWNBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_13_OWNBUS", ignored = true)
   //private final String qindiv13Ownbus;
 
-  // taken from the 'QINDIV_13_RELBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_13_RELBUS", ignored = true)
   //private final String qindiv13Relbus;
 
-  // taken from the 'QINDIV_13_LOOK4' field
+  @CSVColumn("QINDIV_13_LOOK4")
   private final String respondentLookingForWork13;
 
-  // taken from the 'QINDIV_13_DIFJOB' field
-  // ignored
+  //CSVColumn(value = "QINDIV_13_DIFJOB", ignored = true)
   //private final String qindiv13Difjob;
 
-  // taken from the 'QINDIV_13_INDOUT' field
+  @CSVColumn("QINDIV_13_INDOUT")
   private final String respondentInterviewType13;
 
   // // Respondent 14
 
-  // taken from the 'QINDIV_14_WRKING' field
+  @CSVColumn("QINDIV_14_WRKING")
   private final String respondentWorkIndicator14;
 
-  // taken from the 'QINDIV_14_JBAWAY' field
-  // ignored
+  //CSVColumn(value = "QINDIV_14_JBAWAY", ignored = true)
   //private final String qindiv14Jbaway;
 
-  // taken from the 'QINDIV_14_OWNBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_14_OWNBUS", ignored = true)
   //private final String qindiv14Ownbus;
 
-  // taken from the 'QINDIV_14_RELBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_14_RELBUS", ignored = true)
   //private final String qindiv14Relbus;
 
-  // taken from the 'QINDIV_14_LOOK4' field
+  @CSVColumn("QINDIV_14_LOOK4")
   private final String respondentLookingForWork14;
 
-  // taken from the 'QINDIV_14_DIFJOB' field
-  // ignored
+  //CSVColumn(value = "QINDIV_14_DIFJOB", ignored = true)
   //private final String qindiv14Difjob;
 
-  // taken from the 'QINDIV_14_INDOUT' field
+  @CSVColumn("QINDIV_14_INDOUT")
   private final String respondentInterviewType14;
 
   // // Respondent 15
 
-  // taken from the 'QINDIV_15_WRKING' field
+  @CSVColumn("QINDIV_15_WRKING")
   private final String respondentWorkIndicator15;
 
-  // taken from the 'QINDIV_15_JBAWAY' field
-  // ignored
+  //CSVColumn(value = "QINDIV_15_JBAWAY", ignored = true)
   //private final String qindiv15Jbaway;
 
-  // taken from the 'QINDIV_15_OWNBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_15_OWNBUS", ignored = true)
   //private final String qindiv15Ownbus;
 
-  // taken from the 'QINDIV_15_RELBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_15_RELBUS", ignored = true)
   //private final String qindiv15Relbus;
 
-  // taken from the 'QINDIV_15_LOOK4' field
+  @CSVColumn("QINDIV_15_LOOK4")
   private final String respondentLookingForWork15;
 
-  // taken from the 'QINDIV_15_DIFJOB' field
-  // ignored
+  //CSVColumn(value = "QINDIV_15_DIFJOB", ignored = true)
   //private final String qindiv15Difjob;
 
-  // taken from the 'QINDIV_15_INDOUT' field
+  @CSVColumn("QINDIV_15_INDOUT")
   private final String respondentInterviewType15;
 
   // // Respondent 16
 
-  // taken from the 'QINDIV_16_WRKING' field
+  @CSVColumn("QINDIV_16_WRKING")
   private final String respondentWorkIndicator16;
 
-  // taken from the 'QINDIV_16_JBAWAY' field
-  // ignored
+  //CSVColumn(value = "QINDIV_16_JBAWAY", ignored = true)
   //private final String qindiv16Jbaway;
 
-  // taken from the 'QINDIV_16_OWNBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_16_OWNBUS", ignored = true)
   //private final String qindiv16Ownbus;
 
-  // taken from the 'QINDIV_16_RELBUS' field
-  // ignored
+  //CSVColumn(value = "QINDIV_16_RELBUS", ignored = true)
   //private final String qindiv16Relbus;
 
-  // taken from the 'QINDIV_16_LOOK4' field
+  @CSVColumn("QINDIV_16_LOOK4")
   private final String respondentLookingForWork16;
 
-  // taken from the 'QINDIV_16_DIFJOB' field
-  // ignored
+  //CSVColumn(value = "QINDIV_16_DIFJOB", ignored = true)
   //private final String qindiv16Difjob;
 
-  // taken from the 'QINDIV_16_INDOUT' field
+  @CSVColumn("QINDIV_16_INDOUT")
   private final String respondentInterviewType16;
 
   // // // Notes?
 
-  // taken from the 'tba' field
+  //@CSVColumn(value = "tba", ignored = true)
   // TODO is this just a mis-spelling?
-  // ignored
   //private final String briefNotes;
 
   // // // Other
 
-  // taken from the 'WEEK' field
-  // ignored
+  //CSVColumn(value = "WEEK", ignored = true)
   //private final String week;
 
-  // taken from the 'W1YR' field
-  // ignored
+  //CSVColumn(value = "W1YR", ignored = true)
   //private final String w1yr;
 
-  // taken from the 'QRTR' field
-  // ignored
+  //CSVColumn(value = "QRTR", ignored = true)
   //private final String qrtr;
 
-  // taken from the 'WAVFND' field
-  // ignored
+  //CSVColumn(value = "WAVFND", ignored = true)
   //private final String wavfnd;
 
-  // taken from the 'HHLD' field
-  // ignored
+  //CSVColumn(value = "HHLD", ignored = true)
   //private final String hhld;
 
-  // taken from the 'CHKLET' field
-  // ignored
+  //CSVColumn(value = "CHKLET", ignored = true)
   //private final String chklet;
 
-  // taken from the 'DIVADDIND' field
-  // ignored
+  //CSVColumn(value = "DIVADDIND", ignored = true)
   //private final String divAddInd;
 
-  // taken from the 'MO' field
-  // ignored
+  //CSVColumn(value = "MO", ignored = true)
   //private final String mo;
 
-  // taken from the 'HOUT' field
-  // ignored
+  //CSVColumn(value = "HOUT", ignored = true)
   //private final String hOut;
 
-  // taken from the 'LSTHO' field
-  // ignored
+  //CSVColumn(value = "LSTHO", ignored = true)
   //private final String lstho;
 
-  // taken from the 'LFSSAMP' field
-  // ignored
+  //CSVColumn(value = "LFSSAMP", ignored = true)
   //private final String lfsSamp;
 
-  // taken from the 'THANKS' field
-  // ignored
+  //CSVColumn(value = "THANKS", ignored = true)
   //private final String thanks;
 
-  // taken from the 'THANKE' field
-  // ignored
+  //CSVColumn(value = "THANKE", ignored = true)
   //private final String thanke;
 
-  // taken from the 'RECPHONE' field
-  // ignored
+  //CSVColumn(value = "RECPHONE", ignored = true)
   //private final String recPhone;
 
-  // taken from the 'COUNTRY' field
-  // ignored
+  //CSVColumn(value = "COUNTRY", ignored = true)
   //private final String country;
 
-  // taken from the 'NUMPER' field
-  // ignored
+  //CSVColumn(value = "NUMPER", ignored = true)
   //private final String numper;
 
-  // taken from the 'NUMPER' field
-  // ignored
+  //CSVColumn(value = "NUMPER", ignored = true)
   //private final String numper;
 
   // // // Comments
 
   // // Respondent 1
 
-  // taken from the 'COMMENT_1_REFDTE' field
-  // ignored
+  //CSVColumn(value = "COMMENT_1_REFDTE", ignored = true)
   //private final String comment1RefDate;
 
-  // taken from the 'COMMENT_1_INTVNO' field
+  @CSVColumn("COMMENT_1_INTVNO")
   private final String comment1InterviewerNo;
 
-  // taken from the 'COMMENT_1_BriefSDC1' field
-  // ignored
+  //CSVColumn(value = "COMMENT_1_BriefSDC1", ignored = true)
   //private final String comment1BriefSDC1;
 
-  // taken from the 'COMMENT_1_BriefSDC2' field
-  // ignored
+  //CSVColumn(value = "COMMENT_1_BriefSDC2", ignored = true)
   //private final String comment1BriefSDC2;
 
-  // taken from the 'COMMENT_1_BriefSDC3' field
-  // ignored
+  //CSVColumn(value = "COMMENT_1_BriefSDC3", ignored = true)
   //private final String comment1BriefSDC3;
 
-  // taken from the 'COMMENT_1_BRIEF1' field
+  @CSVColumn("COMMENT_1_BRIEF1")
   private final String comment1BriefNotes1;
 
   // // Respondent 2
 
-  // taken from the 'COMMENT_2_REFDTE' field
-  // ignored
+  //CSVColumn(value = "COMMENT_2_REFDTE", ignored = true)
   //private final String comment2RefDate;
 
-  // taken from the 'COMMENT_2_INTVNO' field
+  @CSVColumn("COMMENT_2_INTVNO")
   private final String comment2InterviewerNo;
 
-  // taken from the 'COMMENT_2_BriefSDC1' field
-  // ignored
+  //CSVColumn(value = "COMMENT_2_BriefSDC1", ignored = true)
   //private final String comment2BriefSDC1;
 
-  // taken from the 'COMMENT_2_BriefSDC2' field
-  // ignored
+  //CSVColumn(value = "COMMENT_2_BriefSDC2", ignored = true)
   //private final String comment2BriefSDC2;
 
-  // taken from the 'COMMENT_2_BriefSDC3' field
-  // ignored
+  //CSVColumn(value = "COMMENT_2_BriefSDC3", ignored = true)
   //private final String comment2BriefSDC3;
 
-  // taken from the 'COMMENT_2_BRIEF1' field
+  @CSVColumn("COMMENT_2_BRIEF1")
   private final String comment2BriefNotes1;
 
   // // Respondent 3
 
-  // taken from the 'COMMENT_3_REFDTE' field
-  // ignored
+  //CSVColumn(value = "COMMENT_3_REFDTE", ignored = true)
   //private final String comment3RefDate;
 
-  // taken from the 'COMMENT_3_INTVNO' field
+  @CSVColumn("COMMENT_3_INTVNO")
   private final String comment3InterviewerNo;
 
-  // taken from the 'COMMENT_3_BriefSDC1' field
-  // ignored
+  //CSVColumn(value = "COMMENT_3_BriefSDC1", ignored = true)
   //private final String comment3BriefSDC1;
 
-  // taken from the 'COMMENT_3_BriefSDC2' field
-  // ignored
+  //CSVColumn(value = "COMMENT_3_BriefSDC2", ignored = true)
   //private final String comment3BriefSDC2;
 
-  // taken from the 'COMMENT_3_BriefSDC3' field
-  // ignored
+  //CSVColumn(value = "COMMENT_3_BriefSDC3", ignored = true)
   //private final String comment3BriefSDC3;
 
-  // taken from the 'COMMENT_3_BRIEF1' field
+  @CSVColumn("COMMENT_3_BRIEF1")
   private final String comment3BriefNotes1;
 
   // // Respondent 4
 
-  // taken from the 'COMMENT_4_REFDTE' field
-  // ignored
+  //CSVColumn(value = "COMMENT_4_REFDTE", ignored = true)
   //private final String comment4RefDate;
 
-  // taken from the 'COMMENT_4_INTVNO' field
+  @CSVColumn("COMMENT_4_INTVNO")
   private final String comment4InterviewerNo;
 
-  // taken from the 'COMMENT_4_BriefSDC1' field
-  // ignored
+  //CSVColumn(value = "COMMENT_4_BriefSDC1", ignored = true)
   //private final String comment4BriefSDC1;
 
-  // taken from the 'COMMENT_4_BriefSDC2' field
-  // ignored
+  //CSVColumn(value = "COMMENT_4_BriefSDC2", ignored = true)
   //private final String comment4BriefSDC2;
 
-  // taken from the 'COMMENT_4_BriefSDC3' field
-  // ignored
+  //CSVColumn(value = "COMMENT_4_BriefSDC3", ignored = true)
   //private final String comment4BriefSDC3;
 
-  // taken from the 'COMMENT_4_BRIEF1' field
+  @CSVColumn("COMMENT_4_BRIEF1")
   private final String comment4BriefNotes1;
 
   // // Respondent 5
 
-  // taken from the 'COMMENT_5_REFDTE' field
-  // ignored
+  //CSVColumn(value = "COMMENT_5_REFDTE", ignored = true)
   //private final String comment5RefDate;
 
-  // taken from the 'COMMENT_5_INTVNO' field
+  @CSVColumn("COMMENT_5_INTVNO")
   private final String comment5InterviewerNo;
 
-  // taken from the 'COMMENT_5_BriefSDC1' field
-  // ignored
+  //CSVColumn(value = "COMMENT_5_BriefSDC1", ignored = true)
   //private final String comment5BriefSDC1;
 
-  // taken from the 'COMMENT_5_BriefSDC2' field
-  // ignored
+  //CSVColumn(value = "COMMENT_5_BriefSDC2", ignored = true)
   //private final String comment5BriefSDC2;
 
-  // taken from the 'COMMENT_5_BriefSDC3' field
-  // ignored
+  //CSVColumn(value = "COMMENT_5_BriefSDC3", ignored = true)
   //private final String comment5BriefSDC3;
 
-  // taken from the 'COMMENT_5_BRIEF1' field
+  @CSVColumn("COMMENT_5_BRIEF1")
   private final String comment5BriefNotes1;
 
   // // // Other
 
-  // taken from the 'DIRECTION' field
+  @CSVColumn("DIRECTION")
   private final String direction;
 
 
 
-  public JobLFSDataIngest(CSVRecord record) {
+  public SampleLFSDataIngest(CSVRecord record) {
     //this.quotaNo = record.get("Quota_No");
     this.refDate = (record.isSet("RefDate")) ? record.get("RefDate") : null;
     this.lstho = (record.isSet("LSTHO")) ? record.get("LSTHO") : null;

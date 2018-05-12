@@ -3,7 +3,7 @@ package uk.gov.ons.fwmt.gateway.utility;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
-import uk.gov.ons.fwmt.gateway.entity.legacy.SurveyType;
+import uk.gov.ons.fwmt.gateway.entity.legacy.SampleSurveyType;
 import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.gateway.error.MediaTypeNotSupportedException;
 
@@ -27,20 +27,23 @@ public class LegacyFilename {
       .ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
 
   private final String endpoint;
-  private final Optional<SurveyType> tla;
+  private final Optional<SampleSurveyType> tla;
   private final String timestamp;
 
-  public LegacyFilename(MultipartFile file, String expectedEndpoint)
-      throws InvalidFileNameException, MediaTypeNotSupportedException {
-    log.info("Beginning a file parse for " + file.getOriginalFilename() + " with content " + file.getContentType());
+  // TODO move
+  public static void checkMetaData(MultipartFile file) throws MediaTypeNotSupportedException {
+    log.info(
+        "Beginning a file metadata check for " + file.getOriginalFilename() + " with content " + file.getContentType());
 
     // // // Check metadata
     if (!"text/csv".equals(file.getContentType())) {
       throw new MediaTypeNotSupportedException(file.getContentType(), "text/csv");
     }
+  }
 
-    // // // Check filename
-    String filename = file.getOriginalFilename();
+  public LegacyFilename(String filename, String expectedEndpoint)
+      throws InvalidFileNameException {
+    log.info("Beginning a filename parse for " + filename);
 
     // // Check extension
     String[] dotSplit = filename.split("\\.");
@@ -74,10 +77,10 @@ public class LegacyFilename {
       // // Validate the TLA
       switch (tlaString) {
       case "LFS":
-        tla = Optional.of(SurveyType.LFS);
+        tla = Optional.of(SampleSurveyType.LFS);
         break;
       case "GFF":
-        tla = Optional.of(SurveyType.GFF);
+        tla = Optional.of(SampleSurveyType.GFF);
         break;
       default:
         throw new IllegalArgumentException("File had an unrecognized TLA of " + tlaString);

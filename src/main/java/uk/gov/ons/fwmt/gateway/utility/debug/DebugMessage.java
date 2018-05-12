@@ -19,159 +19,159 @@ import java.util.GregorianCalendar;
 import com.consiliumtechnologies.schemas.mobile._2009._03.commontypes.ObjectFactory;
 
 public class DebugMessage {
-    public static SendCreateJobRequestMessage createSendCreateJobRequestMessage(String username, String[] addressLines,
-            String postcode, String quota, String survey) throws Exception {
-        SendCreateJobRequestMessage message = new SendCreateJobRequestMessage();
-        ObjectFactory factory = new ObjectFactory();
+  public static SendCreateJobRequestMessage createSendCreateJobRequestMessage(String username, String[] addressLines,
+      String postcode, String quota, String survey) throws Exception {
+    SendCreateJobRequestMessage message = new SendCreateJobRequestMessage();
+    ObjectFactory factory = new ObjectFactory();
 
-        message.setSendMessageRequestInfo(new SendMessageRequestInfo());
-        message.getSendMessageRequestInfo().setQueueName("\\OPTIMISE\\INPUT");
-        message.getSendMessageRequestInfo().setKey("Key");
+    message.setSendMessageRequestInfo(new SendMessageRequestInfo());
+    message.getSendMessageRequestInfo().setQueueName("\\OPTIMISE\\INPUT");
+    message.getSendMessageRequestInfo().setKey("Key");
 
-        CreateJobRequest request = new CreateJobRequest();
-        message.setCreateJobRequest(request);
+    CreateJobRequest request = new CreateJobRequest();
+    message.setCreateJobRequest(request);
 
-        JobType job = new JobType();
-        request.setJob(job);
+    JobType job = new JobType();
+    request.setJob(job);
 
-        job.setAllocatedTo(new ResourceIdentityType());
-        job.getAllocatedTo().setUsername(username);
+    job.setAllocatedTo(new ResourceIdentityType());
+    job.getAllocatedTo().setUsername(username);
 
-        job.setIdentity(new JobIdentityType());
-        job.getIdentity().setReference(quota);
+    job.setIdentity(new JobIdentityType());
+    job.getIdentity().setReference(quota);
 
-        job.setSkills(new SkillCollectionType());
-        job.getSkills().getSkill().add("Survey");
+    job.setSkills(new SkillCollectionType());
+    job.getSkills().getSkill().add("Survey");
 
-        job.setWorld(new WorldIdentityType());
-        job.getWorld().setReference("Default");
+    job.setWorld(new WorldIdentityType());
+    job.getWorld().setReference("Default");
 
-        job.setLocation(new LocationType());
-        job.getLocation().setAddressDetail(new AddressDetailType());
-        AddressDetailType.Lines lines = new AddressDetailType.Lines();
-        job.getLocation().getAddressDetail().setLines(lines);
-        for (String line : addressLines) {
-            lines.getAddressLine().add(line);
-        }
-        job.getLocation().getAddressDetail().setPostCode(postcode);
-
-        // TODO remove OR configure (this was used for address resolution tests)
-        // if (coordinates[0] != 0f) {
-        // System.out.println("setting coords X: "+coordinates[0] + " and Y: "+
-        // coordinates[1]);
-        // job.getLocation().getAddressDetail().setGeoX(factory.createAddressTypeGeoX(coordinates[0]));
-        // job.getLocation().getAddressDetail().setGeoY(factory.createAddressTypeGeoY(coordinates[1]));
-        // }
-
-        job.setContact(new ContactInfoType());
-        job.getContact().setName(postcode);
-
-        job.setWorkType("SS");
-        job.setDescription(survey);
-        job.setDuration(1);
-        job.setVisitComplete(false);
-        job.setDispatched(false);
-        job.setAppointmentPending(false);
-        job.setEmergency(false);
-
-         GregorianCalendar cal = new GregorianCalendar();
-         cal.setTime(new Date(118,4,1));
-         XMLGregorianCalendar startDate =
-         DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
-         job.setDueStart(startDate);
-
-        // GregorianCalendar cal = new GregorianCalendar();
-        // cal.setTime(new Date(2019, 3, 28));
-        // XMLGregorianCalendar startDate =
-        // DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
-        // job.setDispatchDate(startDate);
-
-        GregorianCalendar cal3 = new GregorianCalendar();
-        cal3.setTime(new Date(118, 4, 30));
-        XMLGregorianCalendar endDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal3);
-        job.setDueEnd(endDate);
-        
-        GregorianCalendar cal2 = new GregorianCalendar();
-        cal2.setTime(new Date(118, 4, 30));
-        XMLGregorianCalendar due = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal2);
-        job.setDueDate(due);
-
-        // ADD A5 INFORMATION
-        AdditionalPropertyCollectionType additionalPropertyCollectionType = new AdditionalPropertyCollectionType();
-        AdditionalPropertyType tlaProperty = new AdditionalPropertyType();
-        tlaProperty.setName("TLA");
-        tlaProperty.setValue("FRS");
-        AdditionalPropertyType laProperty = new AdditionalPropertyType();
-        laProperty.setName("Local Authority");
-        laProperty.setValue("Southampton Maybe");
-        additionalPropertyCollectionType.getAdditionalProperty().add(tlaProperty);
-        additionalPropertyCollectionType.getAdditionalProperty().add(laProperty);
-        job.setAdditionalProperties(additionalPropertyCollectionType);
-
-        return message;
+    job.setLocation(new LocationType());
+    job.getLocation().setAddressDetail(new AddressDetailType());
+    AddressDetailType.Lines lines = new AddressDetailType.Lines();
+    job.getLocation().getAddressDetail().setLines(lines);
+    for (String line : addressLines) {
+      lines.getAddressLine().add(line);
     }
+    job.getLocation().getAddressDetail().setPostCode(postcode);
 
-    public static JAXBElement<QueryMessagesRequest> createQueryMessagesRequest(String property, String value) {
-        com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ObjectFactory objectFactory = new com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ObjectFactory();
+    // TODO remove OR configure (this was used for address resolution tests)
+    // if (coordinates[0] != 0f) {
+    // System.out.println("setting coords X: "+coordinates[0] + " and Y: "+
+    // coordinates[1]);
+    // job.getLocation().getAddressDetail().setGeoX(factory.createAddressTypeGeoX(coordinates[0]));
+    // job.getLocation().getAddressDetail().setGeoY(factory.createAddressTypeGeoY(coordinates[1]));
+    // }
 
-        QueryMessagesRequest queryMessagesRequest = new QueryMessagesRequest();
-        ArrayOfCriteriaType arrayOfCriteriaType = new ArrayOfCriteriaType();
-        CriteriaType criteria = new CriteriaType();
+    job.setContact(new ContactInfoType());
+    job.getContact().setName(postcode);
 
-        criteria.setProperty(property);
-        criteria.setValue(value);
-        criteria.setParseAs(ParseAsType.STRING);
-        
-//        CriteriaType whoCriteria = new CriteriaType();
+    job.setWorkType("SS");
+    job.setDescription(survey);
+    job.setDuration(1);
+    job.setVisitComplete(false);
+    job.setDispatched(false);
+    job.setAppointmentPending(false);
+    job.setEmergency(false);
 
-//        whoCriteria.setProperty("");
-//        whoCriteria.setValue("tracyhobson");
-//        whoCriteria.setParseAs(ParseAsType.STRING);
+    GregorianCalendar cal = new GregorianCalendar();
+    cal.setTime(new Date(118, 4, 1));
+    XMLGregorianCalendar startDate =
+        DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+    job.setDueStart(startDate);
 
-        arrayOfCriteriaType.getCriterion().add(criteria);
-//        arrayOfCriteriaType.getCriterion().add(whoCriteria);
-        queryMessagesRequest.setCriteria(arrayOfCriteriaType);
+    // GregorianCalendar cal = new GregorianCalendar();
+    // cal.setTime(new Date(2019, 3, 28));
+    // XMLGregorianCalendar startDate =
+    // DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+    // job.setDispatchDate(startDate);
 
-        return objectFactory.createQueryMessagesRequest(queryMessagesRequest);
-    }
+    GregorianCalendar cal3 = new GregorianCalendar();
+    cal3.setTime(new Date(118, 4, 30));
+    XMLGregorianCalendar endDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal3);
+    job.setDueEnd(endDate);
 
-    public static JAXBElement<QueryMessagesRequest> createQueryMessagesUnallocatedRequest(String property,
-            String value) {
-        com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ObjectFactory objectFactory = new com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ObjectFactory();
+    GregorianCalendar cal2 = new GregorianCalendar();
+    cal2.setTime(new Date(118, 4, 30));
+    XMLGregorianCalendar due = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal2);
+    job.setDueDate(due);
 
-        QueryMessagesRequest queryMessagesRequest = new QueryMessagesRequest();
-        ArrayOfCriteriaType arrayOfCriteriaType = new ArrayOfCriteriaType();
-        CriteriaType criteria = new CriteriaType();
+    // ADD A5 INFORMATION
+    AdditionalPropertyCollectionType additionalPropertyCollectionType = new AdditionalPropertyCollectionType();
+    AdditionalPropertyType tlaProperty = new AdditionalPropertyType();
+    tlaProperty.setName("TLA");
+    tlaProperty.setValue("FRS");
+    AdditionalPropertyType laProperty = new AdditionalPropertyType();
+    laProperty.setName("Local Authority");
+    laProperty.setValue("Southampton Maybe");
+    additionalPropertyCollectionType.getAdditionalProperty().add(tlaProperty);
+    additionalPropertyCollectionType.getAdditionalProperty().add(laProperty);
+    job.setAdditionalProperties(additionalPropertyCollectionType);
 
-        criteria.setProperty(property);
-        criteria.setValue(value);
-        criteria.setParseAs(ParseAsType.STRING);
+    return message;
+  }
 
-        arrayOfCriteriaType.getCriterion().add(criteria);
-        queryMessagesRequest.setCriteria(arrayOfCriteriaType);
+  public static JAXBElement<QueryMessagesRequest> createQueryMessagesRequest(String property, String value) {
+    com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ObjectFactory objectFactory = new com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ObjectFactory();
 
-        return objectFactory.createQueryMessagesRequest(queryMessagesRequest);
-    }
+    QueryMessagesRequest queryMessagesRequest = new QueryMessagesRequest();
+    ArrayOfCriteriaType arrayOfCriteriaType = new ArrayOfCriteriaType();
+    CriteriaType criteria = new CriteriaType();
 
-    public static JAXBElement<GetMessageRequest> createGetMessageRequest(String id) {
-        com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ObjectFactory objectFactory = new com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ObjectFactory();
-        GetMessageRequest getMessageRequest = new GetMessageRequest();
-        getMessageRequest.setId(id);
-        getMessageRequest.setUseCDATA(false);
-        return objectFactory.createGetMessageRequest(getMessageRequest);
-    }
+    criteria.setProperty(property);
+    criteria.setValue(value);
+    criteria.setParseAs(ParseAsType.STRING);
 
-    public static SendDeleteJobRequestMessage createSendDeleteJobRequestMessage(String id) {
-        SendDeleteJobRequestMessage sendDeleteJobRequestMessage = new SendDeleteJobRequestMessage();
-        DeleteJobRequest deleteJobRequest = new DeleteJobRequest();
-        JobIdentityType jobIdentityType = new JobIdentityType();
-        jobIdentityType.setReference(id);
-        deleteJobRequest.setIdentity(jobIdentityType);
-        sendDeleteJobRequestMessage.setDeleteJobRequest(deleteJobRequest);
-        sendDeleteJobRequestMessage.setSendMessageRequestInfo(new SendMessageRequestInfo());
-        sendDeleteJobRequestMessage.getSendMessageRequestInfo().setQueueName("\\OPTIMISE\\INPUT");
-        sendDeleteJobRequestMessage.getSendMessageRequestInfo().setKey("Test");
+    //        CriteriaType whoCriteria = new CriteriaType();
 
-        return sendDeleteJobRequestMessage;
-    }
+    //        whoCriteria.setProperty("");
+    //        whoCriteria.setValue("tracyhobson");
+    //        whoCriteria.setParseAs(ParseAsType.STRING);
+
+    arrayOfCriteriaType.getCriterion().add(criteria);
+    //        arrayOfCriteriaType.getCriterion().add(whoCriteria);
+    queryMessagesRequest.setCriteria(arrayOfCriteriaType);
+
+    return objectFactory.createQueryMessagesRequest(queryMessagesRequest);
+  }
+
+  public static JAXBElement<QueryMessagesRequest> createQueryMessagesUnallocatedRequest(String property,
+      String value) {
+    com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ObjectFactory objectFactory = new com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ObjectFactory();
+
+    QueryMessagesRequest queryMessagesRequest = new QueryMessagesRequest();
+    ArrayOfCriteriaType arrayOfCriteriaType = new ArrayOfCriteriaType();
+    CriteriaType criteria = new CriteriaType();
+
+    criteria.setProperty(property);
+    criteria.setValue(value);
+    criteria.setParseAs(ParseAsType.STRING);
+
+    arrayOfCriteriaType.getCriterion().add(criteria);
+    queryMessagesRequest.setCriteria(arrayOfCriteriaType);
+
+    return objectFactory.createQueryMessagesRequest(queryMessagesRequest);
+  }
+
+  public static JAXBElement<GetMessageRequest> createGetMessageRequest(String id) {
+    com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ObjectFactory objectFactory = new com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ObjectFactory();
+    GetMessageRequest getMessageRequest = new GetMessageRequest();
+    getMessageRequest.setId(id);
+    getMessageRequest.setUseCDATA(false);
+    return objectFactory.createGetMessageRequest(getMessageRequest);
+  }
+
+  public static SendDeleteJobRequestMessage createSendDeleteJobRequestMessage(String id) {
+    SendDeleteJobRequestMessage sendDeleteJobRequestMessage = new SendDeleteJobRequestMessage();
+    DeleteJobRequest deleteJobRequest = new DeleteJobRequest();
+    JobIdentityType jobIdentityType = new JobIdentityType();
+    jobIdentityType.setReference(id);
+    deleteJobRequest.setIdentity(jobIdentityType);
+    sendDeleteJobRequestMessage.setDeleteJobRequest(deleteJobRequest);
+    sendDeleteJobRequestMessage.setSendMessageRequestInfo(new SendMessageRequestInfo());
+    sendDeleteJobRequestMessage.getSendMessageRequestInfo().setQueueName("\\OPTIMISE\\INPUT");
+    sendDeleteJobRequestMessage.getSendMessageRequestInfo().setKey("Test");
+
+    return sendDeleteJobRequestMessage;
+  }
 }

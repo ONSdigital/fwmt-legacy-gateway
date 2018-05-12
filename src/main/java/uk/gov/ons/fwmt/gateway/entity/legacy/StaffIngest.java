@@ -2,132 +2,114 @@ package uk.gov.ons.fwmt.gateway.entity.legacy;
 
 import lombok.Data;
 import org.apache.commons.csv.CSVRecord;
+import uk.gov.ons.fwmt.gateway.entity.csv_parser.CSVColumn;
 
 @Data
 public class StaffIngest {
-    // taken from the 'TransmissionDate' field
-    // mandatory
     // TODO is this 'Transmission_Date'?
+    @CSVColumn(value = "TransmissionDate", mandatory = true)
     private final String timestamp;
 
-    // taken from the 'Auth' field
-    // mandatory
     // TODO is this 'intnum'?
+    @CSVColumn(value = "Auth", mandatory = true)
     private final String auth;
 
-    // taken from the 'sex' field
-    // ignored
+    //@CSVColumn(value = "sex", ignored = true)
     //private final String sex;
 
-    // taken from the 'status' field
-    // mandatory
+    @CSVColumn(value = "status", mandatory = true)
     private final String title;
 
-    // taken from the 'firstname' field
-    // mandatory
+    @CSVColumn(value = "firstname", mandatory = true)
     private final String firstname;
 
-    // taken from the 'name' field
-    // mandatory
+    @CSVColumn(value = "name", mandatory = true)
     private final String surname;
 
-    // taken from the 'add1' field
-    // mandatory
+    @CSVColumn(value = "add1", mandatory = true)
     private final String addressLine1;
 
-    // taken from the 'add2' field
+    @CSVColumn("add2")
     private final String addressLine2;
 
-    // taken from the 'add3' field
+    @CSVColumn("add3")
     private final String addressLine3;
 
-    // taken from the 'add4' field
+    @CSVColumn("add4")
     private final String addressLine4;
 
-    // taken from the 'postcode' field
+    @CSVColumn("postcode")
     private final String postcode;
 
-    // taken from the 'tel' field
+    @CSVColumn("tel")
     private final String telNo;
 
-    // taken from the 'tel2' field
+    @CSVColumn("tel2")
     private final String telNo2;
 
-    // taken from the 'mob_tel' field
+    @CSVColumn("mob_tel")
     private final String telNoMobile;
 
-    // taken from the 'emerg_tel' field
+    @CSVColumn("emerg_tel")
     private final String telNoEmerg;
 
-    // taken from the 'email_add' field
-    // mandatory
+    @CSVColumn(value = "email_add", mandatory = true)
     private final String email;
 
-    // taken from the 'GOR' field
-    // ignored
+    //@CSVColumn(value = "GOR", ignored = true)
     //private final String gor;
 
-    // taken from the 'country' field
+    @CSVColumn("country")
     private final String country;
 
-    // taken from the 'grid_ref' field
+    @CSVColumn("grid_ref")
     private final String gridRef;
 
-    // taken from the 'birthdate' field
-    // ignored
+    //@CSVColumn(value = "birthdate", ignored = true)
     //private final String birthdate;
 
-    // taken from the 'inactiveno' field
-    // ignored
+    //@CSVColumn(value = "inactiveno", ignored = true)
     //private final String inactiveNo;
 
-    // taken from the 'EmployeeNo' field
-    // mandatory
+    @CSVColumn(value = "EmployeeNo", mandatory = true)
     private final String employeeNo;
 
-    // taken from the 'Easting' field
     // duplicates gridRef
+    @CSVColumn("Easting")
     private final String easting;
 
-    // taken from the 'Northing' field
     // duplicates gridRef
+    @CSVColumn("Northing")
     private final String northing;
 
-    // taken from the 'fieldmanager' field
+    @CSVColumn("fieldmanager")
     private final String fieldManager;
 
-    // taken from the 'Manager_EmployeeNo' field
-    // ignored
+    //@CSVColumn(value = "Manager_EmployeeNo", ignored = true)
     //private final String managerEmployeeNo;
 
-    // taken from the 'Manager_Auth' field
-    // ignored
+    //@CSVColumn(value = "Manager_Auth", ignored = true)
     //private final String managerAuth;
 
-    // taken from the 'Manager_Firstname' field
+    @CSVColumn("Manager_Firstname")
     private final String managerFirstname;
 
-    // taken from the 'Manager_Surname' field
+    @CSVColumn("Manager_Surname")
     private final String managerSurname;
 
-    // taken from the 'Region' field
-    // ignored
+    //@CSVColumn(value = "Region", ignored = true)
     //private final String region;
 
-    // taken from the 'regionName' field
-    // ignored
+    //@CSVColumn(value = "regionName", ignored = true)
     //private final String regionName;
 
-    // taken from the 'RM_EmployeeNo' field
-    // ignored
+    //@CSVColumn(value = "RM_EmployeeNo", ignored = true)
     //private final String rmEmployeeNo;
 
-    // taken from the 'RM_Firstname' field
-    // ignored
+    //@CSVColumn(value = "RM_Firstname", ignored = true)
     //private final String rmFirstname;
 
-    // taken from the 'RM_Surname' field
-    // ignored
+    //@CSVColumn(value = "RM_Surname", ignored = true)
     //private final String rmSurname;
 
     public StaffIngest(CSVRecord record) {

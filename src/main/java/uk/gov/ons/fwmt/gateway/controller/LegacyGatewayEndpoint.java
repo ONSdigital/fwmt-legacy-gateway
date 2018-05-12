@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import uk.gov.ons.fwmt.gateway.entity.internal.csv.CSVParseResult;
+import uk.gov.ons.fwmt.gateway.entity.csv_parser.CSVParseResult;
 import uk.gov.ons.fwmt.gateway.error.GatewayCommonErrorDTO;
 import uk.gov.ons.fwmt.gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.gateway.error.MediaTypeNotSupportedException;
@@ -58,7 +58,8 @@ public class LegacyGatewayEndpoint {
     log.info("Entered sample endpoint");
 
     // check filename
-    LegacyFilename filename = new LegacyFilename(file, "sample");
+    // TODO check metadata
+    LegacyFilename filename = new LegacyFilename(file.getOriginalFilename(), "sample");
 
     // parse csv
     // lines are sent to TM and recorded in the database
@@ -84,7 +85,8 @@ public class LegacyGatewayEndpoint {
     log.info("Entered staff endpoint");
 
     // check filename
-    LegacyFilename filename = new LegacyFilename(file, "sample");
+    // TODO check metadata
+    LegacyFilename filename = new LegacyFilename(file.getOriginalFilename(), "sample");
 
     // parse csv
     // lines are recorded in the database

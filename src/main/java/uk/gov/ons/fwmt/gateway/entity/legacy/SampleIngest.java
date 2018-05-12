@@ -2,112 +2,132 @@ package uk.gov.ons.fwmt.gateway.entity.legacy;
 
 import lombok.Data;
 import org.apache.commons.csv.CSVRecord;
+import uk.gov.ons.fwmt.gateway.entity.csv_parser.CSVColumn;
 
 @Data
-public class JobIngest {
-  // All: taken from the 'TransmissionDate' field
+public class SampleIngest {
   // TODO is this 'Transmission_Date'?
-  // mandatory
+  @CSVColumn(value = "TransmissionDate", mandatory = true)
   private final String timestamp;
 
-  // GFF: taken from the 'Serno' field
-  // LFS: taken from the 'SERNO' field
-  // mandatory
+  @CSVColumn(values = {
+    @CSVColumn.Mapping(value = "Serno", when = "GFF"),
+    @CSVColumn.Mapping(value = "SERNO", when = "LFS"),
+  }, mandatory = true)
   private final String serNo;
 
-  // All: taken from the 'TLA' field
-  // mandatory
+  @CSVColumn(value = "TLA", mandatory = true)
   private final String tla;
 
-  // GFF: taken from the 'Stage' field
-  // LFS: taken from the 'FP' field
-  // mandatory
+  @CSVColumn(values = {
+    @CSVColumn.Mapping(value = "Stage", when = "GFF"),
+    @CSVColumn.Mapping(value = "FP", when = "LFS"),
+  }, mandatory = true)
   private final String stage;
 
-  // GFF: taken from the 'Wave' field
-  // LFS: taken from the 'THISWV' field
-  // mandatory
+  @CSVColumn(values = {
+    @CSVColumn.Mapping(value = "Wave", when = "GFF"),
+    @CSVColumn.Mapping(value = "THISWV", when = "LFS"),
+  }, mandatory = true)
   private final String wave;
 
-  // GFF: taken from the 'Prem1' field
-  // LFS: taken from the 'PREM1' field
-  // mandatory
+  @CSVColumn(values = {
+    @CSVColumn.Mapping(value = "Prem1", when = "GFF"),
+    @CSVColumn.Mapping(value = "PREM1", when = "LFS"),
+  }, mandatory = true)
   private final String addressLine1;
 
-  // GFF: taken from the 'Prem2' field
-  // LFS: taken from the 'PREM2' field
+  @CSVColumn(values = {
+    @CSVColumn.Mapping(value = "Prem2", when = "GFF"),
+    @CSVColumn.Mapping(value = "PREM2", when = "LFS"),
+  })
   private final String addressLine2;
 
-  // GFF: taken from the 'Prem3' field
-  // LFS: taken from the 'PREM3' field
+  @CSVColumn(values = {
+    @CSVColumn.Mapping(value = "Prem3", when = "GFF"),
+    @CSVColumn.Mapping(value = "PREM3", when = "LFS"),
+  })
   private final String addressLine3;
 
-  // GFF: taken from the 'Prem4' field
-  // LFS: taken from the 'PREM4' field
+  @CSVColumn(values = {
+    @CSVColumn.Mapping(value = "Prem4", when = "GFF"),
+    @CSVColumn.Mapping(value = "PREM4", when = "LFS"),
+  })
   private final String addressLine4;
 
-  // GFF: taken from the 'District' field
-  // LFS: taken from the 'DISTRICT' field
+  @CSVColumn(values = {
+    @CSVColumn.Mapping(value = "District", when = "GFF"),
+    @CSVColumn.Mapping(value = "DISTRICT", when = "LFS"),
+  })
   private final String district;
 
-  // GFF: taken from the 'PostTown' field
-  // LFS: taken from the 'POSTTOWN' field
+  @CSVColumn(values = {
+    @CSVColumn.Mapping(value = "PostTown", when = "GFF"),
+    @CSVColumn.Mapping(value = "POSTTOWN", when = "LFS"),
+  })
   private final String postTown;
 
-  // GFF: taken from the 'Postcode' field
-  // LFS: taken from the 'POSTCODE' field
-  // mandatory
+  @CSVColumn(values = {
+    @CSVColumn.Mapping(value = "Postcode", when = "GFF"),
+    @CSVColumn.Mapping(value = "POSTCODE", when = "LFS"),
+  }, mandatory = true)
   private final String postcode;
 
-  // GFF: taken from the 'Quota' field
-  // LFS: taken from the 'QUOTA' field
+  @CSVColumn(values = {
+    @CSVColumn.Mapping(value = "Quota", when = "GFF"),
+    @CSVColumn.Mapping(value = "QUOTA", when = "LFS"),
+  })
   private final String quota;
 
-  // GFF: taken from the 'AddressNo' field
-  // LFS: taken from the 'ADDR' field
+  @CSVColumn(values = {
+    @CSVColumn.Mapping(value = "AddressNo", when = "GFF"),
+    @CSVColumn.Mapping(value = "ADDR", when = "LFS"),
+  })
   private final String addressNo;
 
-  // GFF: taken from the 'OSGridRef' field
-  // LFS: taken from the 'OSGRIDREF' field
+  @CSVColumn(values = {
+    @CSVColumn.Mapping(value = "OSGridRef", when = "GFF"),
+    @CSVColumn.Mapping(value = "OSGRIDREF", when = "LFS"),
+  })
   private final String osGridRef;
 
-  // All: taken from the 'Year' field
+  @CSVColumn("Year")
   private final String year;
 
-  // All: taken from the 'Month' field
+  @CSVColumn("Month")
   private final String month;
 
-  // GFF: taken from the 'Telno' field
-  // LFS: taken from the 'TELNO' field
+  @CSVColumn(values = {
+    @CSVColumn.Mapping(value = "Telno", when = "GFF"),
+    @CSVColumn.Mapping(value = "TELNO", when = "LFS"),
+  })
   private final String telNo;
 
-  // All: taken from the 'Issue_No' field
+  @CSVColumn("Issue_No")
   private final String issueNo;
 
-  // All: taken from the 'Part' field
+  @CSVColumn("Part")
   private final String part;
 
-  // All: taken from the 'EmployeeNo' field
-  // mandatory
+  @CSVColumn(value = "EmployeeNo", mandatory = true)
   private final String employeeNo;
 
-  // All: taken from the 'Auth' field
-  // mandatory
+  @CSVColumn(value = "Auth", mandatory = true)
   private final String auth;
 
-  // All: taken from the 'Last_Updated' field
+  @CSVColumn("Last_Updated")
   private final String lastUpdated;
 
   // Data that is specific surveys
-  private final SurveyType surveyType;
-  private final JobGFFDataIngest gffData;
-  private final JobLFSDataIngest lfsData;
+  private final SampleSurveyType sampleSurveyType;
+  private final SampleGFFDataIngest gffData;
+  private final SampleLFSDataIngest lfsData;
 
   // // // TODO what are these?
   public String tmJobId;
   public String legacyJobId;
 
-  public JobIngest(CSVRecord record, SurveyType surveyType) {
+  public SampleIngest(CSVRecord record, SampleSurveyType sampleSurveyType) {
     this.timestamp = record.get("TransmissionDate");
     this.tla = record.get("TLA");
     this.year = (record.isSet("Year")) ? record.get("Year") : null;
@@ -118,7 +138,7 @@ public class JobIngest {
     this.auth = record.get("Auth");
     this.lastUpdated = (record.isSet("Last_Updated")) ? record.get("Last_Updated") : null;
 
-    switch (surveyType) {
+    switch (sampleSurveyType) {
     case GFF:
       this.serNo = record.get("Serno");
       this.stage = record.get("Stage");
@@ -135,8 +155,8 @@ public class JobIngest {
       this.osGridRef = (record.isSet("OSGridRef")) ? record.get("OSGridRef") : null;
       this.telNo = (record.isSet("Telno")) ? record.get("Telno") : null;
 
-      this.surveyType = SurveyType.GFF;
-      this.gffData = new JobGFFDataIngest(record);
+      this.sampleSurveyType = SampleSurveyType.GFF;
+      this.gffData = new SampleGFFDataIngest(record);
       this.lfsData = null;
 
       break;
@@ -156,9 +176,9 @@ public class JobIngest {
       this.osGridRef = (record.isSet("OSGRIDREF")) ? record.get("OSGRIDREF") : null;
       this.telNo = (record.isSet("TELNO")) ? record.get("TELNO") : null;
 
-      this.surveyType = SurveyType.LFS;
+      this.sampleSurveyType = SampleSurveyType.LFS;
       this.gffData = null;
-      this.lfsData = new JobLFSDataIngest(record);
+      this.lfsData = new SampleLFSDataIngest(record);
 
       break;
     default:

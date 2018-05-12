@@ -2,7 +2,7 @@ package uk.gov.ons.fwmt.gateway.representation;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import uk.gov.ons.fwmt.gateway.entity.internal.csv.UnprocessedCSVRow;
+import uk.gov.ons.fwmt.gateway.entity.csv_parser.UnprocessedCSVRow;
 
 import java.util.List;
 

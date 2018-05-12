@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.gateway.entity.internal.csv;
+package uk.gov.ons.fwmt.gateway.entity.csv_parser;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
