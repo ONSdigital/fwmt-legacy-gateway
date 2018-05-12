@@ -8,7 +8,7 @@ info:
 
 spring:
   application:
-    name: fwmt-csv-uploader
+    name: fwmt-legacy-gateway
   jpa.properties.hibernate.default_schema: gateway
   datasource:
     username: ${cloud.services.postgresql.connection.username}
