@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.legacy_gateway.error;
+package uk.gov.ons.fwmt.legacy_gateway.data.dto;
 
 import lombok.Data;
 

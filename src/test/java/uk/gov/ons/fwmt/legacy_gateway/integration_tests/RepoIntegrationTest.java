@@ -12,7 +12,7 @@ import static junit.framework.TestCase.fail;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
-public class RepoIT {
+public class RepoIntegrationTest {
 //  @Autowired private LegacyJobsRepo legacyJobRepo;
 //  @Autowired private LegacyLeaversRepo legacyLeaversRepo;
 //  @Autowired private LegacyStaffRepo legacyStaffRepo;

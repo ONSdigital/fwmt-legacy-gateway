@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface TMUserRepo extends CrudRepository<TMUserEntity, Long> {
   List<TMUserEntity> findByActive(boolean active);
+  TMUserEntity findByAuthNo(String authNo);
   List<TMUserEntity> findByAuthNoIn(List<String> authNoList);
   List<TMUserEntity> findByAuthNoNotIn(List<String> authNoList);
   boolean existsByAuthNo(String authNo);

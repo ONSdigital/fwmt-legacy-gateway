@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.legacy_gateway.error;
+package uk.gov.ons.fwmt.legacy_gateway.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -6,6 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import uk.gov.ons.fwmt.legacy_gateway.data.dto.GatewayCommonErrorDTO;
+import uk.gov.ons.fwmt.legacy_gateway.error.InvalidFileNameException;
+import uk.gov.ons.fwmt.legacy_gateway.error.MediaTypeNotSupportedException;
+import uk.gov.ons.fwmt.legacy_gateway.error.UnknownUserException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalTime;

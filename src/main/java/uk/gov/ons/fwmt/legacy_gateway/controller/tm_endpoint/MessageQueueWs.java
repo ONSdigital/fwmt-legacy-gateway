@@ -11,7 +11,6 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import javax.xml.bind.JAXBElement;
 
 @Slf4j
-@SuppressWarnings("unused")
 @Endpoint
 public class MessageQueueWs {
     private static final String NAMESPACE_URI = "http://schemas.consiliumtechnologies.com/services/mobile/2007/07/messaging";

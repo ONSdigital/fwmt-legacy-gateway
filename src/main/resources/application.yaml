@@ -55,4 +55,5 @@ totalmobile:
   url: "https://ons.totalmobile.co.uk"
   message-queue-path: "/Live/Services/TM/v20/Messaging/MessageQueueWs.asmx"
   message-queue-wsdl-path: "src/main/resources/wsdl/Messaging_MessageQueueWs.wsdl"
-  namespace: "http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/"
+  message-queue-namespace: "http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/"
+  outgoing-ws-namespace: "http://schemas.consiliumtechnologies.com/services/mobile/2009/03/messaging"

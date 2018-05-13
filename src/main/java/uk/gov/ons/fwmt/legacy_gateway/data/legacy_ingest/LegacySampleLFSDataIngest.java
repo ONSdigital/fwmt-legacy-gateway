@@ -2,7 +2,7 @@ package uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest;
 
 import lombok.Data;
 import org.apache.commons.csv.CSVRecord;
-import uk.gov.ons.fwmt.legacy_gateway.data.csv_parser.CSVColumn;
+import uk.gov.ons.fwmt.legacy_gateway.data.annotation.CSVColumn;
 
 @Data
 public class LegacySampleLFSDataIngest {
@@ -496,9 +496,9 @@ public class LegacySampleLFSDataIngest {
 
   // // // Notes?
 
-  //@CSVColumn(value = "tba", ignored = true)
+  @CSVColumn(value = "tba")
   // TODO is this just a mis-spelling?
-  //private final String briefNotes;
+  private final String respondentBriefNotes;
 
   // // // Other
 
@@ -833,7 +833,8 @@ public class LegacySampleLFSDataIngest {
     //this.qindiv16Difjob = (record.isSet("QINDIV_16_DIFJOB")) ? record.get("QINDIV_16_DIFJOB") : null;
     this.respondentInterviewType16 = (record.isSet("QINDIV_16_INDOUT")) ? record.get("QINDIV_16_INDOUT") : null;
     // // // Notes?
-    //this.briefNotes = (record.isSet("tba")) ? record.get("tba") : null;
+    // TODO is this definitely under 'tba'?
+    this.respondentBriefNotes = (record.isSet("tba")) ? record.get("tba") : null;
     // // // Other
     //this.week = (record.isSet("WEEK")) ? record.get("WEEK") : null;
     //this.w1yr = (record.isSet("W1YR")) ? record.get("W1YR") : null;

@@ -23,8 +23,8 @@ import java.util.function.BiFunction;
 @Service
 @Slf4j
 public class CSVParsingService {
-  LegacyStaffPublishService legacyStaffPublishService;
-  LegacyJobPublishService legacyJobPublishService;
+  private LegacyStaffPublishService legacyStaffPublishService;
+  private LegacyJobPublishService legacyJobPublishService;
 
   @Autowired
   public CSVParsingService(
@@ -34,66 +34,19 @@ public class CSVParsingService {
     this.legacyJobPublishService = legacyJobPublishService;
   }
 
-  /**
-   * Sends each staff entity to the LegacyJobPublishService
-   *
-   * @param reader A reader into a CSV file
-   * @return A structure denoting any issues encountered while parsing the CSV
-   * @throws IOException If the file provided fails to provide content
-   */
-  public CSVParseResult parseLegacySample(Reader reader, LegacySampleSurveyType legacySampleSurveyType) throws IOException {
-    log.info("Began parsing a sample CSV file");
-    return parse(reader,
-        (index, record) -> {
-          try {
-            LegacySampleIngest job = new LegacySampleIngest(record, legacySampleSurveyType);
-            legacyJobPublishService.publishJob(job);
-            return Optional.empty();
-          } catch (IllegalStateException e) {
-            log.error("IllegalStateException during CSV parse", e);
-            return Optional.of(new UnprocessedCSVRow(index, "CSV may have been missing a header"));
-          } catch (Exception e) {
-            log.error("Unknown exception during CSV parse", e);
-            return Optional.of(new UnprocessedCSVRow(index, e.getMessage()));
-          }
-        }
-    );
-  }
-
-  /**
-   * Reads each staff entity into a list, then hand the list off to the LegacyStaffPublishService
-   *
-   * @param reader A reader into a CSV file containing staff as defined by
-   * @return A structure denoting any issues encountered while parsing the CSV
-   * @throws IOException If the file provided fails to provide content
-   */
-  public CSVParseResult parseLegacyStaff(Reader reader) throws IOException {
-    log.info("Began parsing a staff CSV file");
-    List<LegacyStaffIngest> staff = new ArrayList<>();
-    CSVParseResult result = parse(reader,
-        (index, record) -> {
-          try {
-            LegacyStaffIngest job = new LegacyStaffIngest(record);
-            staff.add(job);
-            return Optional.empty();
-          } catch (IllegalStateException e) {
-            log.error("IllegalStateException during CSV parse", e);
-            return Optional.of(new UnprocessedCSVRow(index, "CSV may have been missing a header"));
-          } catch (Exception e) {
-            log.error("Unknown exception during CSV parse", e);
-            return Optional.of(new UnprocessedCSVRow(index, e.getMessage()));
-          }
-        }
-    );
-    legacyStaffPublishService.publishStaff(staff);
-    return result;
-  }
-
   private CSVFormat getCSVFormat() {
     return CSVFormat.DEFAULT.withHeader();
   }
 
-  private <T> CSVParseResult parse(Reader reader, BiFunction<Integer, CSVRecord, Optional<UnprocessedCSVRow>> recordHandler)
+  /**
+   * @param reader        A reader holding the contents of a CSV file, header included
+   * @param recordHandler An anonymous function that:
+   *                      Receives integer representing the number of rows and a CSV record
+   *                      If an error occurs, it returns an UnprocessedCSVRow
+   * @return A structure containing information on the rows that were processed and a list of errors
+   * @throws IOException In the event of an error within the 'reader' parameter
+   */
+  private CSVParseResult parse(Reader reader, BiFunction<Integer, CSVRecord, Optional<UnprocessedCSVRow>> recordHandler)
       throws IOException {
     CSVParser parser = getCSVFormat().parse(reader);
 
@@ -118,6 +71,81 @@ public class CSVParsingService {
     reader.close();
 
     return new CSVParseResult(unprocessedCSVRows, parsedCount, unparsedCount);
+  }
+
+  /**
+   * Sends each job entity to the LegacyJobPublishService
+   *
+   * @param reader A reader into a CSV file
+   * @return A structure containing information on the rows that were processed and a list of errors
+   * @throws IOException In the event of an error within the 'reader' parameter
+   */
+  public CSVParseResult parseLegacySample(Reader reader, LegacySampleSurveyType legacySampleSurveyType)
+      throws IOException {
+    log.info("Began a legacy sample CSV parse");
+
+    CSVParseResult result = parse(reader,
+        (index, record) -> {
+          try {
+            log.debug("Began parsing job record " + index.toString());
+            LegacySampleIngest job = new LegacySampleIngest(record, legacySampleSurveyType);
+            log.debug("Parsed job record " + index.toString());
+            log.debug("Sending job record " + index.toString() + " to the LegacyJobPublishService");
+            legacyJobPublishService.publishJob(job);
+            log.debug("Finished sending job record " + index.toString() + " to the LegacyJobPublishService");
+            return Optional.empty();
+          } catch (IllegalStateException e) {
+            log.error("IllegalStateException during CSV parse", e);
+            return Optional.of(new UnprocessedCSVRow(index, "CSV may have been missing a header"));
+          } catch (Exception e) {
+            log.error("Unknown exception during CSV parse", e);
+            return Optional.of(new UnprocessedCSVRow(index, e.getMessage()));
+          }
+        }
+    );
+
+    log.info("Ended a legacy sample CSV parse");
+
+    return result;
+  }
+
+  /**
+   * Reads each staff entity into a list, then hand the list off to the LegacyStaffPublishService
+   *
+   * @param reader A reader into a CSV file containing staff as defined by
+   * @return A structure containing information on the rows that were processed and a list of errors
+   * @throws IOException In the event of an error within the 'reader' parameter
+   */
+  public CSVParseResult parseLegacyStaff(Reader reader) throws IOException {
+    log.info("Began a legacy staff CSV parse");
+
+    List<LegacyStaffIngest> staff = new ArrayList<>();
+
+    CSVParseResult result = parse(reader,
+        (index, record) -> {
+          try {
+            log.debug("Began parsing record " + index.toString());
+            LegacyStaffIngest job = new LegacyStaffIngest(record);
+            log.debug("Parsed record " + index.toString());
+            staff.add(job);
+            return Optional.empty();
+          } catch (IllegalStateException e) {
+            log.error("IllegalStateException during CSV parse", e);
+            return Optional.of(new UnprocessedCSVRow(index, "CSV may have been missing a header"));
+          } catch (Exception e) {
+            log.error("Unknown exception during CSV parse", e);
+            return Optional.of(new UnprocessedCSVRow(index, e.getMessage()));
+          }
+        }
+    );
+
+    log.debug("Sending " + staff.size() + " staff records to the LegacyJobPublishService");
+    legacyStaffPublishService.publishStaff(staff);
+    log.debug("Finished sending staff records to the LegacyJobPublishService");
+
+    log.info("Ended a legacy staff CSV parse");
+
+    return result;
   }
 
 }

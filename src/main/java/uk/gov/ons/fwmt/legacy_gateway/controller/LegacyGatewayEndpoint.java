@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import uk.gov.ons.fwmt.legacy_gateway.error.GatewayCommonErrorDTO;
+import uk.gov.ons.fwmt.legacy_gateway.data.dto.GatewayCommonErrorDTO;
 import uk.gov.ons.fwmt.legacy_gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.legacy_gateway.error.MediaTypeNotSupportedException;
 import uk.gov.ons.fwmt.legacy_gateway.data.dto.SampleSummaryDTO;

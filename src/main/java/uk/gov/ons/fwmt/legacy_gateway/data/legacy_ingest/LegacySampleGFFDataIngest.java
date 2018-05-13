@@ -2,7 +2,7 @@ package uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest;
 
 import lombok.Data;
 import org.apache.commons.csv.CSVRecord;
-import uk.gov.ons.fwmt.legacy_gateway.data.csv_parser.CSVColumn;
+import uk.gov.ons.fwmt.legacy_gateway.data.annotation.CSVColumn;
 
 @Data
 public class LegacySampleGFFDataIngest {

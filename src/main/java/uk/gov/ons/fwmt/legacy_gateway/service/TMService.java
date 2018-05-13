@@ -80,7 +80,7 @@ public class TMService extends WebServiceGatewaySupport {
       @Value("${totalmobile.url}") String url,
       @Value("${totalmobile.message-queue-path}") String messageQueuePath,
       @Value("${totalmobile.message-queue-wsdl-path}") String messageQueueWSDLPath,
-      @Value("${totalmobile.namespace}") String namespace,
+      @Value("${totalmobile.message-queue-namespace}") String namespace,
       @Value("${totalmobile.username}") String username,
       @Value("${totalmobile.password}") String password) {
     this.messageQueueUrl = url + messageQueuePath;
@@ -120,6 +120,10 @@ public class TMService extends WebServiceGatewaySupport {
       throw new IllegalArgumentException("Message received from TM that does not match any TotalMobile message");
     }
     return response;
+  }
+
+  public void sendCreateJobRequest() {
+
   }
 
 }

@@ -14,9 +14,9 @@ import uk.gov.ons.fwmt.legacy_gateway.error.MediaTypeNotSupportedException;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /**
  * This service handles the checking of file attributes, media types and filenames
@@ -25,9 +25,9 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 @Service
 public class FileIngestService {
-  private static final DateTimeFormatter TIMESTAMP_FORMAT_LINUX = DateTimeFormatter
+  public static final DateTimeFormatter TIMESTAMP_FORMAT_LINUX = DateTimeFormatter
       .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-  private static final DateTimeFormatter TIMESTAMP_FORMAT_WINDOWS = DateTimeFormatter
+  public static final DateTimeFormatter TIMESTAMP_FORMAT_WINDOWS = DateTimeFormatter
       .ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
 
   private CSVParsingService csvParsingService;
@@ -44,7 +44,7 @@ public class FileIngestService {
   private static class Filename {
     private String endpoint;
     private LegacySampleSurveyType tla;
-    private String timestamp;
+    private LocalDateTime timestamp;
   }
 
   protected void verifyCSVFileMetadata(MultipartFile file) throws MediaTypeNotSupportedException {
@@ -116,18 +116,21 @@ public class FileIngestService {
 
     // // Validate the timestamp
     // The timestamp is always the last part of the underscore-delimited section
-    filename.setTimestamp(underscoreSplit[underscoreSplit.length - 1]);
-    log.debug("File timestamp detected as " + filename.getTimestamp());
+    String rawTimestamp = underscoreSplit[underscoreSplit.length - 1];
+    log.debug("File timestamp detected as " + rawTimestamp);
     try {
-      LocalDateTime.parse(filename.getTimestamp(), TIMESTAMP_FORMAT_WINDOWS);
-    } catch (DateTimeException e) {
-      log.error("Failed to parse a windows timestamp", e);
+      LocalDateTime time = LocalDateTime.parse(rawTimestamp, TIMESTAMP_FORMAT_WINDOWS);
+      filename.setTimestamp(time);
+    } catch (DateTimeParseException e) {
+      log.warn("Failed to parse a windows timestamp, trying a linux timestamp");
       try {
-        LocalDateTime.parse(filename.getTimestamp(), TIMESTAMP_FORMAT_LINUX);
-      } catch (DateTimeException f) {
+        LocalDateTime time = LocalDateTime.parse(rawTimestamp, TIMESTAMP_FORMAT_LINUX);
+        filename.setTimestamp(time);
+      } catch (DateTimeParseException f) {
+        log.error("Failed to parse a windows timestamp", e);
         log.error("Failed to parse a linux timestamp", f);
         // we throw the exception with cause 'e', only because it is the more likely of the two to have been intended
-        throw new InvalidFileNameException(rawFilename, "Invalid timestamp of " + filename.getTimestamp(), e);
+        throw new InvalidFileNameException(rawFilename, "Invalid timestamp of " + rawTimestamp, e);
       }
     }
 

@@ -1,31 +1,22 @@
 package uk.gov.ons.fwmt.legacy_gateway.error;
 
-import lombok.Getter;
-
 public class InvalidFileNameException extends Exception {
   static final long serialVersionUID = 0L;
 
-  @Getter private final String name;
-  @Getter private final String reason;
+  private static String makeMessage(String name, String reason) {
+    return "'" + name + "' is not a valid file name" +
+        ((reason == null) ? "." : ": " + reason + ".");
+  }
 
   public InvalidFileNameException(String name) {
-    this.name = name;
-    this.reason = null;
+    super(makeMessage(name, null));
   }
 
   public InvalidFileNameException(String name, String reason) {
-    this.name = name;
-    this.reason = reason;
+    super(makeMessage(name, reason));
   }
 
   public InvalidFileNameException(String name, String reason, Exception cause) {
-    this.initCause(cause);
-    this.name = name;
-    this.reason = reason;
-  }
-
-  @Override public String toString() {
-    return "'" + this.getName() + "' is not a valid file name" +
-        ((this.reason == null) ? "." : ": " + this.reason + ".");
+    super(makeMessage(name, reason), cause);
   }
 }
