@@ -283,17 +283,6 @@ public class LegacyJobPublishService {
     return info;
   }
 
-  protected void reissueJob(LegacySampleIngest ingest) {
-    String username = getUsername(ingest);
-    CreateJobRequest request = createJobRequestFromIngest(ingest, username);
-
-    SendCreateJobRequestMessage message = new SendCreateJobRequestMessage();
-    message.setSendMessageRequestInfo(makeSendMessageRequestInfo(ingest.getTmJobId()));
-    message.setCreateJobRequest(request);
-
-    tmService.send(message);
-  }
-
   protected void reallocateJob(LegacySampleIngest ingest) {
     String username = getUsername(ingest);
     UpdateJobHeaderRequest request = updateJobHeaderRequestFromIngest(ingest, username);
@@ -317,22 +306,6 @@ public class LegacyJobPublishService {
   }
 
   public void publishJob(LegacySampleIngest job) {
-    // Logic:
-    // If jobid does not exist in database:
-    //   if survey = gff:
-    //     jobid is quota-addressNo-FP
-    //     if substr(FP, 1, 3) > 12:
-    //       reissue with correct due date
-    //     else:
-    //       new case with correct due date
-    //   else if survey = lfs:
-    //     jobid is quota-week-w1yr-qrtr-addressNo-wavfnd-hhld-chklet-FP
-    //     calculate due date with to be decided lookup/calculation
-    //     TODO is this a new job?
-    //   else:
-    //     die
-    // else if jobid exists:
-    //   reallocation, update the user
     String jobId = job.getTmJobId();
     if (tmJobRepo.existsByTmJobId(jobId)) {
       // reallocate
@@ -342,7 +315,9 @@ public class LegacyJobPublishService {
       case GFF:
         if (job.isGffReissue()) {
           // reissue
-          reissueJob(job);
+          // the date was modified within LegacySampleIngest
+          // the rest of this code is identical to creating a new job
+          newJob(job);
         } else {
           // new job
           newJob(job);
@@ -350,7 +325,6 @@ public class LegacyJobPublishService {
         break;
       case LFS:
         // new job
-        // TODO is this definitely a new job?
         newJob(job);
         break;
       }
