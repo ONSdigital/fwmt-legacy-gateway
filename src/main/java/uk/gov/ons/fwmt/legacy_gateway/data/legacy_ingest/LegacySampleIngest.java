@@ -146,7 +146,8 @@ public class LegacySampleIngest {
   private final LegacySampleLFSDataIngest lfsData;
 
   // // // Derived Fields
-  // These are fields derived from the contents of the CSV, but do not map to a specific column
+  // These are fields derived from the contents of the CSV, but do not map to a
+  // specific column
 
   public final String tmJobId;
   public String legacyJobId;
@@ -165,8 +166,10 @@ public class LegacySampleIngest {
       return record.get("Quota") + "-" + record.get("AddressNo") + "-" + record.get("Stage");
     case LFS:
       // quota week w1yr qrtr addr wavfnd hhld chklet
-      return record.get("QUOTA") + record.get("WEEK") + record.get("W1YR") + record.get("QRTR") + record.get("ADDR")
-          + record.get("WAVFND") + record.get("HHLD") + record.get("CHKLET");
+      return record.get("QUOTA") + " " + record.get("WEEK") + " " + record.get("W1YR") + " " + record.get("QRTR") + " "
+          + record.get("ADDR")
+          + " " + record.get("WAVFND") + " " + record.get("HHLD") + " " + record.get("CHKLET") + " - "
+          + record.get("FP");
     default:
       throw new IllegalArgumentException("Invalid survey type");
     }
