@@ -23,12 +23,13 @@ public class FilenameParserTest {
 
   private final String[] validSampleFileNames = {
       "sample_GFF_2018-04-24T19:09:54Z.csv",
+      "sample_GFF_2018-04-24T19-09-54Z.csv",
       "sample_LFS_2018-04-24T19:31:25Z.csv",
       "sample_LFS_2018-04-24T19-31-25Z.csv",
   };
 
   private final String[] validStaffFileNames = {
-      "staff_2018-04-24T19:09:54Z.csv",
+      "staff_2016-04-24T19:09:54Z.csv",
       "staff_2018-04-24T19:31:25Z.csv",
       "staff_2018-04-24T19-31-25Z.csv",
   };
@@ -36,6 +37,7 @@ public class FilenameParserTest {
   private final String[] invalidSampleFileNames = {
       "BLAH_BLAH-THIS_IS_WRONG",
       "sample_2018-04-24T19-31-25Z.csv",
+      "sample_LFS_2018-04-24T19-31-25Z.csp",
   };
 
   private final String[] invalidStaffFileNames = {
@@ -44,6 +46,7 @@ public class FilenameParserTest {
       "staff_EG_2018-04-24L19-31-25Z.csv",
       "foo_LFS_2018-04-24L19-31-25Z.csv",
       "staff_LFS_2018-04-24T19-31-25Z.csv",
+      "staff_2018-04-24T19:31:25Z.csp",
   };
 
   @Test
