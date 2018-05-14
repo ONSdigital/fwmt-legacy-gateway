@@ -22,12 +22,7 @@ public class OutgoingWs {
   // mirrored in @Value("outgoing-ws-namespace")
   private static final String NAMESPACE_URI = "http://schemas.consiliumtechnologies.com/services/mobile/2009/03/messaging";
 
-  @Autowired
-  public OutgoingWs() {
-  }
-
   private void stub(String messageType) {
-    // temp implementation
     log.debug("OutgoingWs : Found message type > " + messageType);
   }
 

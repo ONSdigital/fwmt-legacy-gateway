@@ -14,29 +14,24 @@ import javax.xml.bind.JAXBElement;
 
 @Slf4j
 @Endpoint
-
 public class GenericOutgoingWs {
-    private static final String NAMESPACE_URI = "http://schemas.consiliumtechnologies.com/services/mobile/2009/03/messaging";
+  private static final String NAMESPACE_URI = "http://schemas.consiliumtechnologies.com/services/mobile/2009/03/messaging";
 
-    public static boolean printDebugging = true;
+  @Autowired
+  public GenericOutgoingWs() {
+  }
 
-    @Autowired
-    public GenericOutgoingWs() {
-    }
+  private void stub(String messageType) {
+    log.debug("Found message type > " + messageType);
+  }
 
-    private void stub(String messageType) {
-        if (printDebugging) {
-            // temp implementation
-            log.debug("Found message type > " + messageType);
-        }
-    }
-
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "request")
-    @ResponsePayload
-    public JAXBElement<SendMessageResponse> sendAdapterOutput(@RequestPayload JAXBElement<WebServiceAdapterOutputRequest> completeVisitRequest) {
-        stub("SendAdapterOutput");
-        SendMessageResponse response = new SendMessageResponse();
-        ObjectFactory objectFactory = new ObjectFactory();
-        return objectFactory.createSendMessageResponse(response);
-    }
+  @PayloadRoot(namespace = NAMESPACE_URI, localPart = "request")
+  @ResponsePayload
+  public JAXBElement<SendMessageResponse> sendAdapterOutput(
+      @RequestPayload JAXBElement<WebServiceAdapterOutputRequest> completeVisitRequest) {
+    stub("SendAdapterOutput");
+    SendMessageResponse response = new SendMessageResponse();
+    ObjectFactory objectFactory = new ObjectFactory();
+    return objectFactory.createSendMessageResponse(response);
+  }
 }

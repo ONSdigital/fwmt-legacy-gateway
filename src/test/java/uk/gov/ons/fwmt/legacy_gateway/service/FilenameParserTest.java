@@ -13,13 +13,12 @@ import uk.gov.ons.fwmt.legacy_gateway.service.FileIngestService;
 
 import static org.junit.Assert.*;
 
-public class LegacyFilenameParserTest {
-  private CSVParsingService csvParsingServiceMock;
+public class FilenameParserTest {
   private FileIngestService fileIngestService;
 
-  public LegacyFilenameParserTest() {
-    this.csvParsingServiceMock = Mockito.mock(CSVParsingService.class);
-    this.fileIngestService = new FileIngestService(this.csvParsingServiceMock);
+  public FilenameParserTest() {
+    CSVParsingService csvParsingServiceMock = Mockito.mock(CSVParsingService.class);
+    this.fileIngestService = new FileIngestService(csvParsingServiceMock);
   }
 
   private final String[] validSampleFileNames = {
@@ -69,7 +68,8 @@ public class LegacyFilenameParserTest {
         // we should throw an InvalidFileNameException before this point
         fail("False negative - filename '" + filename + "' should be invalid");
       } catch (InvalidFileNameException e) {
-        continue;
+        // junk assertion - if we reach this point we have passed
+        assertTrue(true);
       }
     }
   }
@@ -82,7 +82,8 @@ public class LegacyFilenameParserTest {
         // we should throw an InvalidFileNameException before this point
         fail("False negative - filename '" + filename + "' should be invalid");
       } catch (InvalidFileNameException e) {
-        continue;
+        // junk assertion - if we reach this point we have passed
+        assertTrue(true);
       }
     }
   }
