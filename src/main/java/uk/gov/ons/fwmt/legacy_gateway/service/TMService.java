@@ -10,6 +10,8 @@ import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
 import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,23 +76,26 @@ public class TMService extends WebServiceGatewaySupport {
 
   private final String messageQueueUrl;
   private final String namespace;
+  ObjectFactory objectFactory;
 
   @Autowired
   public TMService(
       @Value("${totalmobile.url}") String url,
       @Value("${totalmobile.message-queue-path}") String messageQueuePath,
-      @Value("${totalmobile.message-queue-wsdl-path}") String messageQueueWSDLPath,
+      @Value("${totalmobile.message-queue-package}") String messageQueuePackage,
       @Value("${totalmobile.message-queue-namespace}") String namespace,
       @Value("${totalmobile.username}") String username,
-      @Value("${totalmobile.password}") String password) {
+      @Value("${totalmobile.password}") String password) throws JAXBException {
     this.messageQueueUrl = url + messageQueuePath;
     this.namespace = namespace;
+    JAXBContext context = JAXBContext.newInstance(ObjectFactory.class);
     Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-    marshaller.setContextPath(messageQueueWSDLPath);
+    marshaller.setContextPath(messageQueuePackage);
     this.setMarshaller(marshaller);
     HttpComponentsMessageSender messageSender = new HttpComponentsMessageSender();
     messageSender.setCredentials(new UsernamePasswordCredentials(username, password));
     this.setMessageSender(messageSender);
+    this.objectFactory = new ObjectFactory();
   }
 
   /**
@@ -111,19 +116,28 @@ public class TMService extends WebServiceGatewaySupport {
     }
   }
 
+  // TODO can we assert that we return 'JAXBElement<?> or T'?
+  // TODO expand this to cover all messages that do not contain the needed @XMLRootElement
+  protected <T> Object jaxbWrap(T value) {
+    if (value instanceof SendMessageRequest) {
+      return objectFactory.createSendMessageRequest((SendMessageRequest) value);
+    } else if (value instanceof QueryMessagesRequest) {
+      return objectFactory.createQueryMessagesRequest((QueryMessagesRequest) value);
+    } else {
+      return value;
+    }
+  }
+
   public <I, O> O send(I message) {
     String soapAction = lookupSOAPAction(message.getClass());
+    Object wrapped = jaxbWrap(message);
     @SuppressWarnings("unchecked")
     O response = (O) getWebServiceTemplate()
-        .marshalSendAndReceive(messageQueueUrl, message, new SoapActionCallback(soapAction));
+        .marshalSendAndReceive(messageQueueUrl, wrapped, new SoapActionCallback(soapAction));
     if (!Arrays.asList(knownMessageNames).contains(response.getClass())) {
       throw new IllegalArgumentException("Message received from TM that does not match any TotalMobile message");
     }
     return response;
-  }
-
-  public void sendCreateJobRequest() {
-
   }
 
 }

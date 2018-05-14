@@ -65,8 +65,6 @@ public class TMPollTask {
     }
 
     public boolean checkErrors() throws Exception {
-        com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ObjectFactory objectFactory =
-                new com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.ObjectFactory();
         // Query
         QueryMessagesRequest query = new QueryMessagesRequest();
         query.setCriteria(new ArrayOfCriteriaType());
@@ -76,8 +74,12 @@ public class TMPollTask {
         errorCriteria.setParseAs(ParseAsType.STRING);
         query.getCriteria().getCriterion().add(errorCriteria);
         // Send
-        JAXBElement<QueryMessagesResponse> response = tmService.send(objectFactory.createQueryMessagesRequest(query));
-        return response.getValue().getMessages().getMessage().size() == 0;
+        QueryMessagesResponse response = tmService.send(query);
+        if (response != null) {
+            return response.getMessages().getMessage().size() == 0;
+        } else {
+            return false;
+        }
     }
 
     @Scheduled(fixedDelay = 60000)
