@@ -15,9 +15,10 @@ public class LegacySampleIngest {
   @CSVColumn(value = "Transmission_Date", mandatory = true)
   private final String timestamp;
 
+  // TODO should this be 'SERNO' for LFS?
   @CSVColumn(values = {
       @CSVColumn.Mapping(value = "Serno", when = "GFF"),
-      @CSVColumn.Mapping(value = "SERNO", when = "LFS"),
+      @CSVColumn.Mapping(value = "Serno", when = "LFS"),
   }, mandatory = true)
   @JobAdditionalProperty("serno")
   private final String serNo;
@@ -217,7 +218,6 @@ public class LegacySampleIngest {
     this.issueNo = (record.isSet("Issue_No")) ? record.get("Issue_No") : null;
     this.part = (record.isSet("Part")) ? record.get("Part") : null;
     this.employeeNo = record.get("EmployeeNo");
-    this.auth = record.get("Auth");
     this.lastUpdated = (record.isSet("Last_Updated")) ? record.get("Last_Updated") : null;
 
     this.tmJobId = constructTmJobId(record, surveyType);
@@ -225,6 +225,7 @@ public class LegacySampleIngest {
     switch (surveyType) {
     case GFF:
       this.serNo = record.get("Serno");
+      this.auth = record.get("Auth");
       this.stage = record.get("Stage");
       this.wave = record.get("Wave");
       this.addressLine1 = record.get("Prem1");
@@ -247,8 +248,9 @@ public class LegacySampleIngest {
 
       break;
     case LFS:
-      this.serNo = record.get("SERNO");
+      this.serNo = record.get("Serno");
       this.stage = record.get("FP");
+      this.auth = record.get("Auth");
       this.wave = record.get("THISWV");
       this.addressLine1 = record.get("PREM1");
       this.addressLine2 = (record.isSet("PREM2")) ? record.get("PREM2") : null;
@@ -276,7 +278,7 @@ public class LegacySampleIngest {
     // derive the coordinates
     if (this.osGridRef != null) {
       // TODO Confirm this is correct with new data map
-      String[] osGridRefSplit = this.getOsGridRef().split(",", 1);
+      String[] osGridRefSplit = this.getOsGridRef().split(",", 2);
       if (osGridRefSplit.length != 2) {
         throw new IllegalArgumentException("OS Grid Reference was not in the expected format");
       }

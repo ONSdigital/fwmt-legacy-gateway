@@ -1,29 +1,33 @@
 package uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.commons.csv.CSVRecord;
 import uk.gov.ons.fwmt.legacy_gateway.data.annotation.CSVColumn;
 
 @Data
+@AllArgsConstructor
 public class LegacyStaffIngest {
-    // TODO is this 'Transmission_Date'?
-    @CSVColumn(value = "TransmissionDate", mandatory = true)
+    // TODO should this be 'TransmissionDate'?
+    @CSVColumn(value = "Transmission_Date", mandatory = true)
     private final String timestamp;
 
-    // TODO is this 'intnum'?
-    @CSVColumn(value = "Auth", mandatory = true)
+    // TODO should this be 'Auth'?
+    @CSVColumn(value = "intnum", mandatory = true)
     private final String auth;
 
     //@CSVColumn(value = "sex", ignored = true)
     //private final String sex;
 
-    @CSVColumn(value = "status", mandatory = true)
+    // TODO should this be 'status'?
+    @CSVColumn(value = "Title", mandatory = true)
     private final String title;
 
     @CSVColumn(value = "firstname", mandatory = true)
     private final String firstname;
 
-    @CSVColumn(value = "name", mandatory = true)
+    // TODO should this be 'name'?
+    @CSVColumn(value = "Surname", mandatory = true)
     private final String surname;
 
     @CSVColumn(value = "add1", mandatory = true)
@@ -113,12 +117,12 @@ public class LegacyStaffIngest {
     //private final String rmSurname;
 
     public LegacyStaffIngest(CSVRecord record) {
-        this.timestamp = record.get("TransmissionDate");
-        this.auth = record.get("Auth");
+        this.timestamp = record.get("Transmission_Date");
+        this.auth = record.get("intnum");
         //this.sex = (record.isSet("sex")) ? record.get("sex") : null;
-        this.title = record.get("status");
+        this.title = record.get("Title");
         this.firstname = record.get("firstname");
-        this.surname = record.get("name");
+        this.surname = record.get("Surname");
         this.addressLine1 = record.get("add1");
         this.addressLine2 = (record.isSet("add2")) ? record.get("add2") : null;
         this.addressLine3 = (record.isSet("add3")) ? record.get("add3") : null;

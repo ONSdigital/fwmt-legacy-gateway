@@ -6,8 +6,8 @@ import uk.gov.ons.fwmt.legacy_gateway.data.annotation.CSVColumn;
 
 @Data
 public class LegacySampleGFFDataIngest {
-  @CSVColumn("name")
-  // TODO is this 'Name'?
+  // TODO should this be 'name'?
+  @CSVColumn("Name")
   private final String name;
 
   @CSVColumn("LAUA")
@@ -80,7 +80,7 @@ public class LegacySampleGFFDataIngest {
   private final String oldSerial;
 
   public LegacySampleGFFDataIngest(CSVRecord record) {
-    this.name = (record.isSet("name")) ? record.get("name") : null;
+    this.name = (record.isSet("Name")) ? record.get("Name") : null;
     this.laua = (record.isSet("LAUA")) ? record.get("LAUA") : null;
     this.lauaName = (record.isSet("LAUA_Name")) ? record.get("LAUA_Name") : null;
     this.subSample = (record.isSet("SubSample")) ? record.get("SubSample") : null;
