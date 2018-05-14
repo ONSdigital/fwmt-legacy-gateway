@@ -174,9 +174,15 @@ public class LegacySampleIngest {
   protected static Date convertToGFFDate(String stage) {
     int year = Integer.parseInt(stage.substring(0, 1));
     int month = Integer.parseInt(stage.substring(1, 3));
+    // if we are reissuing (month above 12), we minus 20 to get a normal month
     if (month > 12) {
       month = month - 20;
+      // add an extra month to the due date
+      month += 1;
+      // normalize the month in case we reached 13
+      month = ((month - 1) % 12) + 1;
     }
+    assert month > 0 && month < 13;
     Calendar cal = Calendar.getInstance();
     cal.set(2010 + year, month - 1, 1);
     cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DATE));
@@ -188,6 +194,7 @@ public class LegacySampleIngest {
   }
 
   // technically, 'stage' here is the field period 'fp'
+  // TODO double check to ensure that this is correct
   protected static Date convertToLFSDate(String stage) {
     int year = Integer.parseInt(stage.substring(0, 1));
     int quarter = Integer.parseInt(stage.substring(1, 2));

@@ -7,6 +7,8 @@ import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.Updat
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.ObjectFactory;
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.*;
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendCreateJobRequestMessage;
+import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendMessageRequest;
+import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendMessageRequestInfo;
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendUpdateJobHeaderRequestMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ public class LegacyJobPublishService {
   private static final String JOB_SKILL = "Survey";
   private static final String JOB_WORK_TYPE = "SS";
   private static final String JOB_WORLD = "Default";
+  private static final String JOB_QUEUE = "\\OPTIMISE\\INPUT";
 
   private final TMService tmService;
   private final TMJobRepo tmJobRepo;
@@ -273,24 +276,43 @@ public class LegacyJobPublishService {
     return request;
   }
 
-  protected void reissueJob(LegacySampleIngest job) {
-    // TODO
-    throw new RuntimeException("Unimplemented method");
+  protected SendMessageRequestInfo makeSendMessageRequestInfo(String key) {
+    SendMessageRequestInfo info = new SendMessageRequestInfo();
+    info.setQueueName(JOB_QUEUE);
+    info.setKey(key);
+    return info;
   }
 
-  protected void reallocateJob(LegacySampleIngest job) {
-    String username = getUsername(job);
-    UpdateJobHeaderRequest request = updateJobHeaderRequestFromIngest(job, username);
-    SendUpdateJobHeaderRequestMessage message = new SendUpdateJobHeaderRequestMessage();
-    message.setUpdateJobHeaderRequest(request);
+  protected void reissueJob(LegacySampleIngest ingest) {
+    String username = getUsername(ingest);
+    CreateJobRequest request = createJobRequestFromIngest(ingest, username);
+
+    SendCreateJobRequestMessage message = new SendCreateJobRequestMessage();
+    message.setSendMessageRequestInfo(makeSendMessageRequestInfo(ingest.getTmJobId()));
+    message.setCreateJobRequest(request);
+
     tmService.send(message);
   }
 
-  protected void newJob(LegacySampleIngest job) {
-    String username = getUsername(job);
-    CreateJobRequest request = createJobRequestFromIngest(job, username);
+  protected void reallocateJob(LegacySampleIngest ingest) {
+    String username = getUsername(ingest);
+    UpdateJobHeaderRequest request = updateJobHeaderRequestFromIngest(ingest, username);
+
+    SendUpdateJobHeaderRequestMessage message = new SendUpdateJobHeaderRequestMessage();
+    message.setSendMessageRequestInfo(makeSendMessageRequestInfo(ingest.getTmJobId()));
+    message.setUpdateJobHeaderRequest(request);
+
+    tmService.send(message);
+  }
+
+  protected void newJob(LegacySampleIngest ingest) {
+    String username = getUsername(ingest);
+    CreateJobRequest request = createJobRequestFromIngest(ingest, username);
+
     SendCreateJobRequestMessage message = new SendCreateJobRequestMessage();
+    message.setSendMessageRequestInfo(makeSendMessageRequestInfo(ingest.getTmJobId()));
     message.setCreateJobRequest(request);
+
     tmService.send(message);
   }
 
