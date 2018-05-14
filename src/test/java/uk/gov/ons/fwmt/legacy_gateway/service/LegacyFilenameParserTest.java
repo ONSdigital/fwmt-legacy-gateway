@@ -66,10 +66,11 @@ public class LegacyFilenameParserTest {
     for (String filename : invalidSampleFileNames) {
       try {
         assertNotNull(fileIngestService.verifyCSVFilename(filename, "sample"));
+        // we should throw an InvalidFileNameException before this point
+        fail("False negative - filename '" + filename + "' should be invalid");
       } catch (InvalidFileNameException e) {
         continue;
       }
-      fail("False negative - filename '" + filename + "' should be invalid");
     }
   }
 
@@ -78,10 +79,11 @@ public class LegacyFilenameParserTest {
     for (String filename : invalidStaffFileNames) {
       try {
         assertNotNull(fileIngestService.verifyCSVFilename(filename, "staff"));
+        // we should throw an InvalidFileNameException before this point
+        fail("False negative - filename '" + filename + "' should be invalid");
       } catch (InvalidFileNameException e) {
         continue;
       }
-      fail("False negative - filename '" + filename + "' should be invalid");
     }
   }
 }
