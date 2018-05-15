@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.legacy_gateway.integration_tests.Repo;
+package uk.gov.ons.fwmt.legacy_gateway.integration_tests.repo;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +17,7 @@ import static junit.framework.TestCase.fail;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
-public class RepoIntegrationTest {
+public class RepoIT {
   @Autowired private TMUserRepo tmUserRepo;
   @Autowired private TMJobRepo tmJobRepo;
 

@@ -8,7 +8,7 @@ import uk.gov.ons.fwmt.legacy_gateway.service.TMService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SpringIntegrationTestBase {
+public class SpringITBase {
   @MockBean
   private TMService tmService;
 }

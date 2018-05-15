@@ -1,14 +1,12 @@
 package uk.gov.ons.fwmt.legacy_gateway.integration_tests.legacy_csv;
 
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.CreateJobRequest;
-import cucumber.api.PendingException;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import uk.gov.ons.fwmt.legacy_gateway.integration_tests.helpers.SpringIntegrationTestBase;
+import uk.gov.ons.fwmt.legacy_gateway.integration_tests.helpers.SpringITBase;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMJobRepo;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMUserRepo;
 import uk.gov.ons.fwmt.legacy_gateway.service.TMService;
@@ -16,7 +14,7 @@ import uk.gov.ons.fwmt.legacy_gateway.service.TMService;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 
-public class LegacyCSVIntegrationTestSteps extends SpringIntegrationTestBase {
+public class LegacyCSVITSteps extends SpringITBase {
   @Autowired
   private TMJobRepo tmJobRepo;
 
