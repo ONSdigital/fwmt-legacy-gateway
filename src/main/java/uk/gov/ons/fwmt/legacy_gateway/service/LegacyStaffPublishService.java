@@ -37,7 +37,8 @@ public class LegacyStaffPublishService {
         // Staff member does not exist - they will be created
         createStaff(staffMember);
       } else if (!tmUserRepo.existsByAuthNoAndActive(staffMember.getAuth(), true)) {
-        // Staff member does exist, but is not active in TM - they will be recreated
+        // Staff member does exist, but is not active in TM - they will be
+        // recreated
         // TODO
       }
     }
@@ -56,14 +57,16 @@ public class LegacyStaffPublishService {
     List<String> authNosToDeactivate = tmUserRepo.findByAuthNoNotIn(staffAuthNoList).stream()
         .map(TMUserEntity::getAuthNo)
         .collect(Collectors.toList());
-    // find all of the database entries that don't exist in our list of auth numbers
+    // find all of the database entries that don't exist in our list of auth
+    // numbers
     for (String authNo : authNosToDeactivate) {
       deactivateStaff(authNo);
     }
   }
 
   private void createStaff(LegacyStaffIngest staff) {
-    // TODO
+    TMUserEntity tmUserEntity = new TMUserEntity(staff.getAuth(), getTmUsername(staff.getEmail()), true);
+    tmUserRepo.save(tmUserEntity);
   }
 
   private void updateStaff(LegacyStaffIngest staff) {
@@ -77,5 +80,9 @@ public class LegacyStaffPublishService {
   private void deactivateStaff(String authNo) {
     tmUserRepo.deactivateByAuthNo(authNo);
     // TODO
+  }
+
+  private String getTmUsername(String email) {
+    return email.split("@")[0];
   }
 }
