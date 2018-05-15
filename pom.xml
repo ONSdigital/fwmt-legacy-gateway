@@ -58,7 +58,6 @@
         <java.version>1.8</java.version>
         <maven-jaxb2-plugin.version>0.13.3</maven-jaxb2-plugin.version>
         <snakeyaml.version>1.18</snakeyaml.version>
-        <skipDocker>false</skipDocker>
     </properties>
 
     <dependencies>
@@ -106,6 +105,11 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
+        <!-- h2 -->
+        <!--<dependency>-->
+            <!--<groupId>com.h2database</groupId>-->
+            <!--<artifactId>h2</artifactId>-->
+        <!--</dependency>-->
         <!-- liquibase -->
         <dependency>
             <groupId>org.liquibase</groupId>
@@ -268,50 +272,6 @@
                     <!--<goal>update</goal>-->
                     <!--</goals>-->
                     <!--</execution>-->
-                </executions>
-            </plugin>
-            <!-- docker-maven-plugin -->
-            <!-- This plugin sets up and tears down a Postgres Docker container for integration tests in the verify fp -->
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.20.1</version>
-                <executions>
-                    <execution>
-                        <id>setup-postgres-database</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipDocker}</skip>
-                            <images>
-                                <image>
-                                    <name>postgres:9.5.4</name>
-                                    <alias>postgres-database</alias>
-                                    <run>
-                                        <ports>
-                                            <port>postgres-database.port:5432</port>
-                                        </ports>
-                                        <wait>
-                                            <log>database system is ready to accept connections</log>
-                                            <time>20000</time>
-                                        </wait>
-                                    </run>
-                                </image>
-                            </images>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>tear-down-postgres-database</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipDocker}</skip>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
             <!-- buildnumber-maven-plugin -->
