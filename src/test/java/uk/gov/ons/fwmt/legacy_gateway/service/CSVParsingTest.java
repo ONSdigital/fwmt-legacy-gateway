@@ -37,7 +37,7 @@ public class CSVParsingTest {
 
   @Test
   public void parseStaffCSV() throws Exception {
-    File testFile = new File("src/test/resources/sampledata/public/staffExample1.csv");
+    File testFile = new File("src/test/resources/sampledata/public/staffExampleAllRows.csv");
 
     try (FileInputStream testFileInputStream = new FileInputStream(testFile)) {
       csvParsingService.parseLegacyStaff(new InputStreamReader(testFileInputStream));
@@ -52,7 +52,7 @@ public class CSVParsingTest {
 
   @Test
   public void parseGFFSampleCSV() throws IOException {
-    File testFile = new File("src/test/resources/sampledata/public/sampleGFFExample1.csv");
+    File testFile = new File("src/test/resources/sampledata/public/sampleGFFExampleAllRows.csv");
 
     try (FileInputStream testFileInputStream = new FileInputStream(testFile)) {
       csvParsingService.parseLegacySample(new InputStreamReader(testFileInputStream), LegacySampleSurveyType.GFF);
@@ -112,7 +112,7 @@ public class CSVParsingTest {
 
   @Test
   public void parseLFSSampleCSV() throws IOException {
-    File testFile = new File("src/test/resources/sampledata/public/sampleLFSExample1.csv");
+    File testFile = new File("src/test/resources/sampledata/public/sampleLFSExampleAllRows.csv");
 
     try (FileInputStream testFileInputStream = new FileInputStream(testFile)) {
       csvParsingService.parseLegacySample(new InputStreamReader(testFileInputStream), LegacySampleSurveyType.LFS);

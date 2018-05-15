@@ -1,6 +1,7 @@
 package uk.gov.ons.fwmt.legacy_gateway.integration_tests.legacy_csv;
 
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.CreateJobRequest;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -32,7 +33,12 @@ public class LegacyCSVITSteps extends SpringITBase {
 
   @When("^the CSV '([a-zA-Z0-9_-]+)' is uploaded to the '([a-zA-Z]+)' endpoint$")
   public void theCSVIsUploadedToTheEndpoint(String filename, String endpoint) {
+    throw new PendingException();
+  }
 
+  @When("^the CSV '([a-zA-Z0-9_-]+)' is imported from sample '([a-zA-Z0-9_-]+)' and uploaded to the '([a-zA-Z]+)' endpoint$")
+  public void theCSVSample_LFS_TZIsImportedFromSampleSampleLFSExampleAllRowsCsvAndUploadedToTheSampleEndpoint(String csvName, String originalCsvName, String endpoint) throws Throwable {
+    throw new PendingException();
   }
 
   @Then("^the database should contain (\\d+) jobs$")
@@ -50,4 +56,5 @@ public class LegacyCSVITSteps extends SpringITBase {
     ArgumentCaptor<CreateJobRequest> argumentCaptor = ArgumentCaptor.forClass(CreateJobRequest.class);
     verify(tmService).send(argumentCaptor.capture());
   }
+
 }
