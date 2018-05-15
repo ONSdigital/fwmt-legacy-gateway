@@ -69,7 +69,7 @@ public class LegacyJobPublishService {
     request.setJob(job);
     job.setLocation(new LocationType());
     job.setIdentity(new JobIdentityType());
-    job.setMandatoryResource(new ResourceIdentityType());
+//    job.setMandatoryResource(new ResourceIdentityType());
     job.getLocation().setAddressDetail(new AddressDetailType());
     job.getLocation().getAddressDetail().setLines(new AddressDetailType.Lines());
     job.setContact(new ContactInfoType());
@@ -91,8 +91,8 @@ public class LegacyJobPublishService {
     addressLines.add(ingest.getAddressLine4());
     location.getAddressDetail().setPostCode(ingest.getPostcode());
     location.setReference(ingest.getSerNo());
-    request.getJob().getLocation().getAddressDetail().setGeoX(factory.createAddressDetailTypeGeoX(ingest.getGeoX()));
-    request.getJob().getLocation().getAddressDetail().setGeoY(factory.createAddressDetailTypeGeoY(ingest.getGeoY()));
+//    request.getJob().getLocation().getAddressDetail().setGeoX(factory.createAddressDetailTypeGeoX(ingest.getGeoX()));
+//    request.getJob().getLocation().getAddressDetail().setGeoY(factory.createAddressDetailTypeGeoY(ingest.getGeoY()));
 
     // Set the job contact
     request.getJob().getContact().setName(ingest.getPostcode());
@@ -110,6 +110,7 @@ public class LegacyJobPublishService {
     GregorianCalendar dueDateCalendar = new GregorianCalendar();
     dueDateCalendar.setTime(ingest.getDueDate());
     request.getJob().setDueDate(datatypeFactory.newXMLGregorianCalendar(dueDateCalendar));
+//    request.getJob().setDueDate("2018-05-31T00:00:00+01:00");
 
     // Set the job description
     request.getJob().setDescription(ingest.getTla());

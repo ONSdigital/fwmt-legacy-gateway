@@ -1,15 +1,12 @@
 package uk.gov.ons.fwmt.legacy_gateway.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Data
+@NoArgsConstructor
 @Entity
-@AllArgsConstructor
 @Table(name = "tm_users")
 public class TMUserEntity {
   @Id

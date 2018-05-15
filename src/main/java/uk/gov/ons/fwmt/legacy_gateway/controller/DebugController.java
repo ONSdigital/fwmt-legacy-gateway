@@ -5,7 +5,14 @@
 package uk.gov.ons.fwmt.legacy_gateway.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import uk.gov.ons.fwmt.legacy_gateway.entity.TMJobEntity;
+import uk.gov.ons.fwmt.legacy_gateway.entity.TMUserEntity;
+import uk.gov.ons.fwmt.legacy_gateway.repo.TMJobRepo;
+import uk.gov.ons.fwmt.legacy_gateway.repo.TMUserRepo;
 
 /**
  * A class for manually triggering various debugging actions
@@ -18,6 +25,11 @@ import org.springframework.stereotype.Controller;
 @Slf4j
 @Controller
 public class DebugController {
+  @Autowired
+  private TMJobRepo tmJobRepo;
+
+  @Autowired
+  private TMUserRepo tmUserRepo;
 
 //    @Autowired
 //    private TMMessageSubmitter sub;
@@ -234,4 +246,14 @@ public class DebugController {
 //
 //        return "redirect:/debug/";
 //    }
+
+  @PostMapping("/debug/clearUsers")
+  public void clearUsers(RedirectAttributes redirectAttributes) {
+    tmUserRepo.deleteAll();
+  }
+
+  @PostMapping("/debug/setupUsers")
+  public void setupUsers(RedirectAttributes redirectAttributes) {
+    tmUserRepo.save(new TMUserEntity("6310", "show.tell", true));
+  }
 }

@@ -1,6 +1,7 @@
 package uk.gov.ons.fwmt.legacy_gateway.service;
 
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +12,7 @@ import org.springframework.ws.soap.client.core.SoapActionCallback;
 import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import java.util.Map;
  * This interaction largely consists of sending messages in SOAP format
  */
 @Service
+@Slf4j
 public class TMService extends WebServiceGatewaySupport {
   // A lookup detailing the instances where the message name does not translate easily into a SOAP action
   // Normally, we assume that the SOAP action is equal to the class name with the word 'Response' at the end removed
@@ -85,15 +88,17 @@ public class TMService extends WebServiceGatewaySupport {
       @Value("${totalmobile.message-queue-package}") String messageQueuePackage,
       @Value("${totalmobile.message-queue-namespace}") String namespace,
       @Value("${totalmobile.username}") String username,
-      @Value("${totalmobile.password}") String password) throws JAXBException {
+      @Value("${totalmobile.password}") String password) throws Exception {
     this.messageQueueUrl = url + messageQueuePath;
     this.namespace = namespace;
     JAXBContext context = JAXBContext.newInstance(ObjectFactory.class);
     Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
     marshaller.setContextPath(messageQueuePackage);
     this.setMarshaller(marshaller);
+    this.setUnmarshaller(marshaller);
     HttpComponentsMessageSender messageSender = new HttpComponentsMessageSender();
     messageSender.setCredentials(new UsernamePasswordCredentials(username, password));
+    messageSender.afterPropertiesSet();
     this.setMessageSender(messageSender);
     this.objectFactory = new ObjectFactory();
   }
@@ -128,13 +133,24 @@ public class TMService extends WebServiceGatewaySupport {
     }
   }
 
+  // TODO can we assert that we return 'JAXBElement<?> or T'?
+  // TODO expand this to cover all messages that do not contain the needed @XMLRootElement
+  protected <T> Object jaxbUnwrap(T value) {
+    if (value instanceof JAXBElement) {
+      return ((JAXBElement) value).getValue();
+    } else {
+      return value;
+    }
+  }
+
   public <I, O> O send(I message) {
     String soapAction = lookupSOAPAction(message.getClass());
     Object wrapped = jaxbWrap(message);
     @SuppressWarnings("unchecked")
-    O response = (O) getWebServiceTemplate()
-        .marshalSendAndReceive(messageQueueUrl, wrapped, new SoapActionCallback(soapAction));
+    O response = (O) jaxbUnwrap(getWebServiceTemplate()
+        .marshalSendAndReceive(messageQueueUrl, wrapped, new SoapActionCallback(soapAction)));
     if (!Arrays.asList(knownMessageNames).contains(response.getClass())) {
+      log.error("Message received from TM that does not match any TotalMobile message", response);
       throw new IllegalArgumentException("Message received from TM that does not match any TotalMobile message");
     }
     return response;
