@@ -5,7 +5,7 @@ import uk.gov.ons.fwmt.legacy_gateway.data.tm.UserForm;
 import java.io.IOException;
 import java.util.List;
 
-public interface NewUserWebDriver {
+public interface TMWebDriver {
   void makeNewUser(UserForm userForm) throws IOException;
   void makeNewUsers(List<UserForm> userForms) throws IOException;
 }

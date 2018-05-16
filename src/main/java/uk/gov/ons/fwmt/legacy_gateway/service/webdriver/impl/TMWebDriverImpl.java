@@ -2,17 +2,21 @@ package uk.gov.ons.fwmt.legacy_gateway.service.webdriver.impl;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.ons.fwmt.legacy_gateway.data.tm.UserForm;
-import uk.gov.ons.fwmt.legacy_gateway.service.webdriver.NewUserWebDriver;
+import uk.gov.ons.fwmt.legacy_gateway.service.webdriver.TMWebDriver;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 
 @Service
-public class NewUserWebDriverImpl implements NewUserWebDriver {
+public class TMWebDriverImpl implements TMWebDriver {
+  private static int MAX_RETRIES = 1;
+
   @Value("${totalmobile.url}")
   private String baseUrl;
 
@@ -28,6 +32,11 @@ public class NewUserWebDriverImpl implements NewUserWebDriver {
   @Value("${totalmobile.password}")
   private String password;
 
+  // This class is a functional interface for actions which are retried
+  private interface Action {
+    boolean act() throws IOException;
+  }
+
   // This class holds state about an ongoing set of web API calls
   private class Context {
     private Map<String, String> cookies;
@@ -42,6 +51,7 @@ public class NewUserWebDriverImpl implements NewUserWebDriver {
       {
         Connection.Response response = Jsoup.connect(baseUrl + loginUrl).method(Connection.Method.GET).execute();
 
+        // we're not logged in, so it's okay to destroy the cookies
         cookies = response.cookies();
 
         token = response.parse().selectFirst("form input[name=__RequestVerificationToken]").attr("value");
@@ -68,30 +78,49 @@ public class NewUserWebDriverImpl implements NewUserWebDriver {
       }
     }
 
+    // Retry an operation several times
+    // If we receive true, we assume that the method completed correctly
+    // If we receive false, we assume that we must try to logon again
+    public void retry(Action method) throws IOException {
+      for (int i = 0; i <= MAX_RETRIES; i++) {
+        if (method.act()) {
+          return;
+        } else {
+          login();
+        }
+      }
+    }
+
     public void makeNewUser(UserForm form) throws IOException {
       // Use the previously defined verification token and cookies to create a user
-      Connection.Response response = Jsoup.connect(baseUrl + saveUserUrl)
-          .data(
-              "Comment", "",
-              "ProviderUserKey", "00000000-0000-0000-0000-000000000000",
-              "UserName", form.getUserName(),
-              "Password", form.getPassword(),
-              "Password2", form.getPassword(),
-              "Forename", form.getForename(),
-              "Surname", form.getSurname(),
-              "Email", form.getEmail(),
-              "Email2", form.getEmail(),
-              "ContactNo", form.getTelNo(),
-              "JobTitle", form.getJobTitle(),
-              "IsApproved", form.getIsApproved() ? "true" : "false",
-              "PasswordNeverExpires", form.getPasswordNeverExpires() ? "true" : "false"
-          )
-          .ignoreContentType(true)
-          .cookies(cookies)
-          .method(Connection.Method.POST)
-          .execute();
+      retry(() -> {
+        Connection.Response response = Jsoup.connect(baseUrl + saveUserUrl)
+            .data(
+                "Comment", "",
+                "ProviderUserKey", "00000000-0000-0000-0000-000000000000",
+                "UserName", form.getUserName(),
+                "Password", form.getPassword(),
+                "Password2", form.getPassword(),
+                "Forename", form.getForename(),
+                "Surname", form.getSurname(),
+                "Email", form.getEmail(),
+                "Email2", form.getEmail(),
+                "ContactNo", form.getTelNo(),
+                "JobTitle", form.getJobTitle(),
+                "IsApproved", form.getIsApproved() ? "true" : "false",
+                "PasswordNeverExpires", form.getPasswordNeverExpires() ? "true" : "false"
+            )
+            .ignoreContentType(true)
+            .cookies(cookies)
+            .method(Connection.Method.POST)
+            .execute();
 
-      // TODO verify success
+        Document document = response.parse();
+
+        // TODO verify success
+
+        return true;
+      });
     }
   }
 

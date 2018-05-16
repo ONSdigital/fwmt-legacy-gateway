@@ -6,16 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.ons.fwmt.legacy_gateway.data.tm.UserForm;
-import uk.gov.ons.fwmt.legacy_gateway.service.webdriver.NewUserWebDriver;
-import uk.gov.ons.fwmt.legacy_gateway.service.webdriver.impl.NewUserWebDriverImpl;
+import uk.gov.ons.fwmt.legacy_gateway.service.webdriver.TMWebDriver;
+import uk.gov.ons.fwmt.legacy_gateway.service.webdriver.impl.TMWebDriverImpl;
 
 import java.io.IOException;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {NewUserWebDriver.class, NewUserWebDriverImpl.class})
+@SpringBootTest(classes = {TMWebDriver.class, TMWebDriverImpl.class})
 public class NewUserWebDrivenTest {
   @Autowired
-  private NewUserWebDriver newUserWebDriver;
+  private TMWebDriver TMWebDriver;
 
   @Test
   public void test() throws IOException {
@@ -29,6 +29,6 @@ public class NewUserWebDrivenTest {
     userForm.setTelNo("0");
     userForm.setIsApproved(true);
     userForm.setPasswordNeverExpires(true);
-    newUserWebDriver.makeNewUser(userForm);
+    TMWebDriver.makeNewUser(userForm);
   }
 }
