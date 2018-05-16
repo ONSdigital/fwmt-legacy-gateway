@@ -34,11 +34,11 @@ import java.io.IOException;
 
 @Slf4j
 @RestController
-public class LegacyGatewayEndpoint {
+public class LegacyGatewayController {
   private final FileIngestService fileIngestService;
 
   @Autowired
-  public LegacyGatewayEndpoint(FileIngestService fileIngestService) {
+  public LegacyGatewayController(FileIngestService fileIngestService) {
     this.fileIngestService = fileIngestService;
   }
 
