@@ -100,21 +100,20 @@ databaseChangeLog:
           splitStatements: false
  - changeSet:
     id: v12
-    author: Thomas Poot
-    comment: Temporarily added in an alternative authno for users and a cache of the last authno seen for jobs
-    changes:
-      - sqlFile:
-          path: 12_Temp_Database_Fix.sql
-          relativeToChangelogFile: true
-          splitStatements: false
-
- - changeSet:
-    id: v12
     author: Soundararajan
     comment: Added new column to help loading users with new auth no
     changes:
       - sqlFile:
           path: 12_Add_AlternateAuthNo_to_Users.sql
+          relativeToChangelogFile: true
+          splitStatements: false
+ - changeSet:
+    id: v13
+    author: Thomas Poot
+    comment: Added a last known authno to the jobs table
+    changes:
+      - sqlFile:
+          path: 13_Add_LastAuthNo_to_Jobs.sql
           relativeToChangelogFile: true
           splitStatements: false
 
