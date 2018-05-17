@@ -40,7 +40,7 @@ public class RepoIT {
   @Test
   @Transactional
   public void storeJobInDb() {
-    TMJobEntity tmJobEntity = new TMJobEntity("testjob");
+    TMJobEntity tmJobEntity = new TMJobEntity("testjob", "2222");
     try {
       tmJobEntity.getTmJobId();
       tmJobRepo.save(tmJobEntity);
