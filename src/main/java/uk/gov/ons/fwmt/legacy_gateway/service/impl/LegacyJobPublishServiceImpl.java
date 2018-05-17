@@ -33,7 +33,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
   private static final String JOB_WORLD = "Default";
   private static final String JOB_QUEUE = "\\OPTIMISE\\INPUT";
 
-  private final TMService tmService;
+//  private final TMService tmService;
   private final TMJobRepo tmJobRepo;
   private final TMUserRepo tmUserRepo;
 
@@ -43,7 +43,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
   @Autowired
   public LegacyJobPublishServiceImpl(TMService tmService, TMJobRepo tmJobRepo, TMUserRepo tmUserRepo)
       throws DatatypeConfigurationException {
-    this.tmService = tmService;
+//    this.tmService = tmService;
     this.tmJobRepo = tmJobRepo;
     this.tmUserRepo = tmUserRepo;
   }
@@ -349,6 +349,8 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
         log.info("Job is a new LFS job");
         newJob(job, user.getTmUsername());
         break;
+      default:
+        throw new IllegalArgumentException("Unknown survey type");
       }
     }
   }

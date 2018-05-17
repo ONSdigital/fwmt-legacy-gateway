@@ -99,7 +99,7 @@ public class FileIngestServiceImpl implements FileIngestService {
 
     // // Validate the TLA
     // Only for the "sample" endpoint
-    if (filename.getEndpoint() == "sample") {
+    if (filename.getEndpoint().equals("sample")) {
       String tlaString = underscoreSplit[1];
       log.debug("File TLA detected as " + tlaString);
       switch (tlaString) {

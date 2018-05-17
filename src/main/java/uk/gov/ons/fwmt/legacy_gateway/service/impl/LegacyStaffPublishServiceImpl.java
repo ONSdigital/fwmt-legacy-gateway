@@ -16,12 +16,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class LegacyStaffPublishServiceImpl implements LegacyStaffPublishService {
   private final TMUserRepo tmUserRepo;
-  private final TMService tmService;
 
   @Autowired
-  public LegacyStaffPublishServiceImpl(TMUserRepo tmUserRepo, TMService tmService) {
+  public LegacyStaffPublishServiceImpl(TMUserRepo tmUserRepo) {
     this.tmUserRepo = tmUserRepo;
-    this.tmService = tmService;
   }
 
   public void publishStaff(List<LegacyStaffIngest> staff) {
