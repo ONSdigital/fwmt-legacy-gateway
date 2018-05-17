@@ -33,7 +33,7 @@ public class UploadUsersTrialTest {
   @Test
   @Ignore
   public void test() throws IOException, InterruptedException {
-    File file = new File("/Users/ThomasPoot/Documents/work/fwmt-legacy-gateway/src/test/resources/sampledata/trial/10-05-18_TM_Pilot_Group_Users.csv");
+    File file = new File("src/test/resources/sampledata/trial/10-05-18_TM_Pilot_Group_Users.csv");
     CSVParser parser = new CSVParser(new InputStreamReader(new FileInputStream(file)), CSVFormat.DEFAULT.withHeader());
     List<CSVRecord> records = parser.getRecords();
     for (CSVRecord record : records) {
