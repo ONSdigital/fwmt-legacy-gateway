@@ -3,8 +3,6 @@ package uk.gov.ons.fwmt.legacy_gateway.service.impl;
 import org.junit.Test;
 import org.mockito.Mockito;
 import uk.gov.ons.fwmt.legacy_gateway.error.InvalidFileNameException;
-import uk.gov.ons.fwmt.legacy_gateway.service.impl.CSVParsingServiceImpl;
-import uk.gov.ons.fwmt.legacy_gateway.service.impl.FileIngestServiceImpl;
 
 import static org.junit.Assert.*;
 

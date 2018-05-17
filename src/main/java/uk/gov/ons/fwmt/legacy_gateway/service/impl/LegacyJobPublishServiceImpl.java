@@ -4,7 +4,6 @@ import com.consiliumtechnologies.schemas.mobile._2009._03.visitstypes.Additional
 import com.consiliumtechnologies.schemas.mobile._2009._03.visitstypes.AdditionalPropertyType;
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.CreateJobRequest;
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.UpdateJobHeaderRequest;
-import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.ObjectFactory;
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.*;
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendCreateJobRequestMessage;
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendMessageRequestInfo;

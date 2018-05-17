@@ -5,8 +5,6 @@ import org.mockito.Mockito;
 import org.springframework.mock.web.MockMultipartFile;
 import uk.gov.ons.fwmt.legacy_gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.legacy_gateway.error.MediaTypeNotSupportedException;
-import uk.gov.ons.fwmt.legacy_gateway.service.impl.CSVParsingServiceImpl;
-import uk.gov.ons.fwmt.legacy_gateway.service.impl.FileIngestServiceImpl;
 
 import java.io.IOException;
 

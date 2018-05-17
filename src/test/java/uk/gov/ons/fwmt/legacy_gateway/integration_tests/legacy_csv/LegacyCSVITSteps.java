@@ -12,7 +12,7 @@ import uk.gov.ons.fwmt.legacy_gateway.repo.TMJobRepo;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMUserRepo;
 import uk.gov.ons.fwmt.legacy_gateway.service.impl.TMServiceImpl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 
 public class LegacyCSVITSteps extends SpringITBase {

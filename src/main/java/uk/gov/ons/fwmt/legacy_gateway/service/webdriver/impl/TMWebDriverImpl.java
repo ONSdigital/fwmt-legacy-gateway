@@ -1,8 +1,6 @@
 package uk.gov.ons.fwmt.legacy_gateway.service.webdriver.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,7 +12,6 @@ import uk.gov.ons.fwmt.legacy_gateway.service.webdriver.TMWebDriver;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BooleanSupplier;
 
 @Slf4j
 @Service

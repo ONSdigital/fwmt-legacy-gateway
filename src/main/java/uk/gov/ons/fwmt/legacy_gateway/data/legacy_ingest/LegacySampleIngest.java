@@ -4,7 +4,6 @@ import lombok.Data;
 import org.apache.commons.csv.CSVRecord;
 import uk.gov.ons.fwmt.legacy_gateway.data.annotation.CSVColumn;
 import uk.gov.ons.fwmt.legacy_gateway.data.annotation.JobAdditionalProperty;
-import uk.gov.ons.fwmt.legacy_gateway.error.CSVParsingException;
 
 import java.util.Calendar;
 import java.util.Date;

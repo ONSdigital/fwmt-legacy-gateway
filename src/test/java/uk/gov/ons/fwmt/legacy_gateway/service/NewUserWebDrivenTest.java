@@ -10,7 +10,6 @@ import uk.gov.ons.fwmt.legacy_gateway.service.webdriver.TMWebDriver;
 import uk.gov.ons.fwmt.legacy_gateway.service.webdriver.impl.TMWebDriverImpl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {TMWebDriver.class, TMWebDriverImpl.class})

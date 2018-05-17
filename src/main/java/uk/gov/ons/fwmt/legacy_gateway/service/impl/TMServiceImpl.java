@@ -12,9 +12,7 @@ import org.springframework.ws.soap.client.core.SoapActionCallback;
 import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 import uk.gov.ons.fwmt.legacy_gateway.service.TMService;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

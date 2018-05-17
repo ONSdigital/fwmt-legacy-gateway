@@ -1,16 +1,5 @@
 package uk.gov.ons.fwmt.legacy_gateway.utility.readers;
 
-import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.CreateJobRequest;
-import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.JobIdentityType;
-import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.JobType;
-import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.LocationType;
-import org.junit.Test;
-
-import java.time.LocalDateTime;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-
 public class LegacyJobsReaderTest {
 
 //  @Test

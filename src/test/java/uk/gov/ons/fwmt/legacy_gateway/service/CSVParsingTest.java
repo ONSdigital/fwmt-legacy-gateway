@@ -3,11 +3,10 @@ package uk.gov.ons.fwmt.legacy_gateway.service;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
-
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacySampleIngest;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacySampleSurveyType;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacyStaffIngest;
@@ -15,8 +14,14 @@ import uk.gov.ons.fwmt.legacy_gateway.service.impl.CSVParsingServiceImpl;
 import uk.gov.ons.fwmt.legacy_gateway.service.impl.LegacyJobPublishServiceImpl;
 import uk.gov.ons.fwmt.legacy_gateway.service.impl.LegacyStaffPublishServiceImpl;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 
 public class CSVParsingTest {
   private CSVParsingServiceImpl csvParsingServiceImpl;
