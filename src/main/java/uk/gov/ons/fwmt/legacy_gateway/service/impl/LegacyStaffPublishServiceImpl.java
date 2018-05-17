@@ -7,6 +7,7 @@ import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacyStaffIngest;
 import uk.gov.ons.fwmt.legacy_gateway.entity.TMUserEntity;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMUserRepo;
 import uk.gov.ons.fwmt.legacy_gateway.service.LegacyStaffPublishService;
+import uk.gov.ons.fwmt.legacy_gateway.service.TMService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,12 +20,12 @@ public class LegacyStaffPublishServiceImpl implements LegacyStaffPublishService 
   }
 
   private final TMUserRepo tmUserRepo;
-  private final TMServiceImpl tmServiceImpl;
+  private final TMService tmService;
 
   @Autowired
-  public LegacyStaffPublishServiceImpl(TMUserRepo tmUserRepo, TMServiceImpl tmServiceImpl) {
+  public LegacyStaffPublishServiceImpl(TMUserRepo tmUserRepo, TMService tmService) {
     this.tmUserRepo = tmUserRepo;
-    this.tmServiceImpl = tmServiceImpl;
+    this.tmService = tmService;
   }
 
   public void publishStaff(List<LegacyStaffIngest> staff) {

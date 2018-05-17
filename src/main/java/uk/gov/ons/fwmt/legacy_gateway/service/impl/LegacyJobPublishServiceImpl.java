@@ -13,11 +13,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacySampleIngest;
+import uk.gov.ons.fwmt.legacy_gateway.entity.TMJobEntity;
 import uk.gov.ons.fwmt.legacy_gateway.entity.TMUserEntity;
 import uk.gov.ons.fwmt.legacy_gateway.error.UnknownUserException;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMJobRepo;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMUserRepo;
 import uk.gov.ons.fwmt.legacy_gateway.service.LegacyJobPublishService;
+import uk.gov.ons.fwmt.legacy_gateway.service.TMService;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -32,7 +34,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
   private static final String JOB_WORLD = "Default";
   private static final String JOB_QUEUE = "\\OPTIMISE\\INPUT";
 
-  private final TMServiceImpl tmServiceImpl;
+  private final TMService tmService;
   private final TMJobRepo tmJobRepo;
   private final TMUserRepo tmUserRepo;
 
@@ -40,9 +42,9 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
   private final ObjectFactory factory = new ObjectFactory();
 
   @Autowired
-  public LegacyJobPublishServiceImpl(TMServiceImpl tmServiceImpl, TMJobRepo tmJobRepo, TMUserRepo tmUserRepo)
+  public LegacyJobPublishServiceImpl(TMService tmService, TMJobRepo tmJobRepo, TMUserRepo tmUserRepo)
       throws DatatypeConfigurationException {
-    this.tmServiceImpl = tmServiceImpl;
+    this.tmService = tmService;
     this.tmJobRepo = tmJobRepo;
     this.tmUserRepo = tmUserRepo;
   }
@@ -298,7 +300,12 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     message.setSendMessageRequestInfo(makeSendMessageRequestInfo(ingest.getTmJobId()));
     message.setUpdateJobHeaderRequest(request);
 
-    tmServiceImpl.send(message);
+//    tmService.send(message);
+
+    // save the job into our database
+    TMJobEntity entity = tmJobRepo.findByTmJobId(ingest.getTmJobId());
+    // TODO update fields
+    tmJobRepo.save(entity);
   }
 
   protected void newJob(LegacySampleIngest ingest) {
@@ -309,32 +316,48 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     message.setSendMessageRequestInfo(makeSendMessageRequestInfo(ingest.getTmJobId()));
     message.setCreateJobRequest(request);
 
-    tmServiceImpl.send(message);
+//    tmService.send(message);
+
+    // save the job into our database
+    TMJobEntity entity = new TMJobEntity();
+    entity.setTmJobId(ingest.getTmJobId());
+    tmJobRepo.save(entity);
   }
 
   public void publishJob(LegacySampleIngest job) {
-    String jobId = job.getTmJobId();
-    if (tmJobRepo.existsByTmJobId(jobId)) {
-      // reallocate
-      reallocateJob(job);
-    } else {
-      switch (job.getLegacySampleSurveyType()) {
-      case GFF:
-        if (job.isGffReissue()) {
-          // reissue
-          // the date was modified within LegacySampleIngest
-          // the rest of this code is identical to creating a new job
-          newJob(job);
-        } else {
+    // only send if the user is active
+    if (tmUserRepo.existsByAuthNoAndActive(job.getAuth(), true)) {
+      log.info("User was active");
+      // reallocate if we've seen this id before TODO and the authno changed
+      if (tmJobRepo.existsByTmJobId(job.getTmJobId())) {
+        log.info("Job is a reallocation");
+        // reallocate
+        reallocateJob(job);
+      } else {
+        log.info("Job is not a reallocation");
+        switch (job.getLegacySampleSurveyType()) {
+        case GFF:
+          if (job.isGffReissue()) {
+            // reissue
+            // the date was modified within LegacySampleIngest
+            // the rest of this code is identical to creating a new job
+            log.info("Job is a GFF reissue");
+            newJob(job);
+          } else {
+            // new job
+            log.info("Job is a new GFF job");
+            newJob(job);
+          }
+          break;
+        case LFS:
           // new job
+          log.info("Job is a new LFS job");
           newJob(job);
+          break;
         }
-        break;
-      case LFS:
-        // new job
-        newJob(job);
-        break;
       }
+    } else {
+      log.info("User was not active");
     }
   }
 }

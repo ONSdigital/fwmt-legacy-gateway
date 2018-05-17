@@ -11,8 +11,8 @@ import uk.gov.ons.fwmt.legacy_gateway.data.dto.StaffSummaryDTO;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacySampleSurveyType;
 import uk.gov.ons.fwmt.legacy_gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.legacy_gateway.error.MediaTypeNotSupportedException;
+import uk.gov.ons.fwmt.legacy_gateway.service.CSVParsingService;
 import uk.gov.ons.fwmt.legacy_gateway.service.FileIngestService;
-import uk.gov.ons.fwmt.legacy_gateway.service.impl.CSVParsingServiceImpl;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -32,11 +32,11 @@ public class FileIngestServiceImpl implements FileIngestService {
   public static final DateTimeFormatter TIMESTAMP_FORMAT_WINDOWS = DateTimeFormatter
       .ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
 
-  private CSVParsingServiceImpl csvParsingServiceImpl;
+  private CSVParsingService csvParsingService;
 
   @Autowired
-  public FileIngestServiceImpl(CSVParsingServiceImpl csvParsingServiceImpl) {
-    this.csvParsingServiceImpl = csvParsingServiceImpl;
+  public FileIngestServiceImpl(CSVParsingService csvParsingService) {
+    this.csvParsingService = csvParsingService;
   }
 
   /**
@@ -153,7 +153,7 @@ public class FileIngestServiceImpl implements FileIngestService {
 
     // parse csv
     // lines are sent to TM and recorded in the database
-    CSVParseResult result = csvParsingServiceImpl
+    CSVParseResult result = csvParsingService
         .parseLegacySample(new InputStreamReader(file.getInputStream()), filename.getTla());
 
     // construct reply
@@ -178,7 +178,7 @@ public class FileIngestServiceImpl implements FileIngestService {
     // parse csv
     // lines are recorded in the database
     // TODO determine where the 'result' of the staff delta goes
-    CSVParseResult result = csvParsingServiceImpl.parseLegacyStaff(new InputStreamReader(file.getInputStream()));
+    CSVParseResult result = csvParsingService.parseLegacyStaff(new InputStreamReader(file.getInputStream()));
 
     // construct reply
     StaffSummaryDTO summary = new StaffSummaryDTO(file.getOriginalFilename(), result.getParsedCount());

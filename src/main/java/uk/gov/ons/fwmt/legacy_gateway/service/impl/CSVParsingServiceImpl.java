@@ -12,6 +12,8 @@ import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacySampleIngest;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacyStaffIngest;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacySampleSurveyType;
 import uk.gov.ons.fwmt.legacy_gateway.service.CSVParsingService;
+import uk.gov.ons.fwmt.legacy_gateway.service.LegacyJobPublishService;
+import uk.gov.ons.fwmt.legacy_gateway.service.LegacyStaffPublishService;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -24,15 +26,15 @@ import java.util.function.BiFunction;
 @Service
 @Slf4j
 public class CSVParsingServiceImpl implements CSVParsingService {
-  private LegacyStaffPublishServiceImpl legacyStaffPublishServiceImpl;
-  private LegacyJobPublishServiceImpl legacyJobPublishServiceImpl;
+  private LegacyStaffPublishService legacyStaffPublishService;
+  private LegacyJobPublishService legacyJobPublishService;
 
   @Autowired
   public CSVParsingServiceImpl(
-      LegacyStaffPublishServiceImpl legacyStaffPublishServiceImpl,
-      LegacyJobPublishServiceImpl legacyJobPublishServiceImpl) {
-    this.legacyStaffPublishServiceImpl = legacyStaffPublishServiceImpl;
-    this.legacyJobPublishServiceImpl = legacyJobPublishServiceImpl;
+      LegacyStaffPublishService legacyStaffPublishService,
+      LegacyJobPublishService legacyJobPublishService) {
+    this.legacyStaffPublishService = legacyStaffPublishService;
+    this.legacyJobPublishService = legacyJobPublishService;
   }
 
   private CSVFormat getCSVFormat() {
@@ -92,7 +94,7 @@ public class CSVParsingServiceImpl implements CSVParsingService {
             LegacySampleIngest job = new LegacySampleIngest(record, legacySampleSurveyType);
             log.debug("Parsed job record " + index.toString());
             log.debug("Sending job record " + index.toString() + " to the LegacyJobPublishService");
-            legacyJobPublishServiceImpl.publishJob(job);
+            legacyJobPublishService.publishJob(job);
             log.debug("Finished sending job record " + index.toString() + " to the LegacyJobPublishService");
             return Optional.empty();
           } catch (IllegalStateException e) {
@@ -141,7 +143,7 @@ public class CSVParsingServiceImpl implements CSVParsingService {
     );
 
     log.debug("Sending " + staff.size() + " staff records to the LegacyJobPublishService");
-    legacyStaffPublishServiceImpl.publishStaff(staff);
+    legacyStaffPublishService.publishStaff(staff);
     log.debug("Finished sending staff records to the LegacyJobPublishService");
 
     log.info("Ended a legacy staff CSV parse");

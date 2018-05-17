@@ -92,7 +92,6 @@ public class TMServiceImpl extends WebServiceGatewaySupport implements TMService
       @Value("${totalmobile.password}") String password) throws Exception {
     this.messageQueueUrl = url + messageQueuePath;
     this.namespace = namespace;
-    JAXBContext context = JAXBContext.newInstance(ObjectFactory.class);
     Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
     marshaller.setContextPath(messageQueuePackage);
     this.setMarshaller(marshaller);
