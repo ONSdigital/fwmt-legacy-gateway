@@ -1,5 +1,8 @@
 package uk.gov.ons.fwmt.legacy_gateway.service.webdriver.impl;
 
+import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
+@Slf4j
 @Service
 public class TMWebDriverImpl implements TMWebDriver {
   private static int MAX_RETRIES = 1;
@@ -54,7 +58,9 @@ public class TMWebDriverImpl implements TMWebDriver {
         // we're not logged in, so it's okay to destroy the cookies
         cookies = response.cookies();
 
-        token = response.parse().selectFirst("form input[name=__RequestVerificationToken]").attr("value");
+        Document document = response.parse();
+
+        token = document.selectFirst("form input[name=__RequestVerificationToken]").attr("value");
 
         // TODO verify success
       }
@@ -114,8 +120,6 @@ public class TMWebDriverImpl implements TMWebDriver {
             .cookies(cookies)
             .method(Connection.Method.POST)
             .execute();
-
-        Document document = response.parse();
 
         // TODO verify success
 
