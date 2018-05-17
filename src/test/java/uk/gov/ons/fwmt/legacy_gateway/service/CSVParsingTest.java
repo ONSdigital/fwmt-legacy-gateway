@@ -57,7 +57,7 @@ public class CSVParsingTest {
 
     assertEquals(1, legacyStaffArgumentCaptor.getValue().size());
 
-    LegacyStaffIngest staffIngest = legacyStaffArgumentCaptor.getValue().get(0);
+//    LegacyStaffIngest staffIngest = legacyStaffArgumentCaptor.getValue().get(0);
   }
 
   @Test
@@ -132,7 +132,7 @@ public class CSVParsingTest {
 
     verify(legacyJobPublishServiceImpl).publishJob(legacySampleArgumentCaptor.capture());
 
-    LegacySampleIngest sampleIngest = legacySampleArgumentCaptor.getValue();
+//    LegacySampleIngest sampleIngest = legacySampleArgumentCaptor.getValue();
   }
 
 

@@ -9,11 +9,6 @@ import static org.junit.Assert.*;
 public class FilenameParserTest {
   private FileIngestServiceImpl fileIngestServiceImpl;
 
-  public FilenameParserTest() {
-    CSVParsingServiceImpl csvParsingServiceImplMock = Mockito.mock(CSVParsingServiceImpl.class);
-    this.fileIngestServiceImpl = new FileIngestServiceImpl(csvParsingServiceImplMock);
-  }
-
   private final String[] validSampleFileNames = {
       "sample_GFF_2018-04-24T19:09:54Z.csv",
       "sample_GFF_2018-04-24T19-09-54Z.csv",
@@ -41,6 +36,11 @@ public class FilenameParserTest {
       "staff_LFS_2018-04-24T19-31-25Z.csv",
       "staff_2018-04-24T19:31:25Z.csp",
   };
+
+  public FilenameParserTest() {
+    CSVParsingServiceImpl csvParsingServiceImplMock = Mockito.mock(CSVParsingServiceImpl.class);
+    this.fileIngestServiceImpl = new FileIngestServiceImpl(csvParsingServiceImplMock);
+  }
 
   @Test
   public void checkValidSampleFileNames() throws InvalidFileNameException {
