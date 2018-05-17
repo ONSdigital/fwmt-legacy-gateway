@@ -65,7 +65,7 @@ public class LegacyStaffPublishService {
   }
 
   private void createStaff(LegacyStaffIngest staff) {
-    TMUserEntity tmUserEntity = new TMUserEntity(staff.getAuth(), getTmUsername(staff.getEmail()), true);
+    TMUserEntity tmUserEntity = new TMUserEntity(staff.getAuth(), getTmUsername(staff.getEmail()), false, null);
     tmUserRepo.save(tmUserEntity);
   }
 
