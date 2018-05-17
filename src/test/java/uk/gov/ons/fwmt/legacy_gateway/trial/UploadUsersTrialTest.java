@@ -3,9 +3,15 @@ package uk.gov.ons.fwmt.legacy_gateway.trial;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.ons.fwmt.legacy_gateway.data.tm.UserForm;
-import uk.gov.ons.fwmt.legacy_gateway.service.NewUserWebDrivenTest;
+import uk.gov.ons.fwmt.legacy_gateway.entity.TMUserEntity;
+import uk.gov.ons.fwmt.legacy_gateway.repo.TMUserRepo;
 import uk.gov.ons.fwmt.legacy_gateway.service.webdriver.TMWebDriver;
 import uk.gov.ons.fwmt.legacy_gateway.service.webdriver.impl.TMWebDriverImpl;
 
@@ -16,9 +22,16 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class UploadUsersTrialTest {
   private TMWebDriver tmWebDriver = new TMWebDriverImpl();
+
+  @Autowired
+  private TMUserRepo tmUserRepo;
+
   @Test
+  @Ignore
   public void test() throws IOException, InterruptedException {
     File file = new File("/Users/ThomasPoot/Documents/work/fwmt-legacy-gateway/src/test/resources/sampledata/trial/10-05-18_TM_Pilot_Group_Users.csv");
     CSVParser parser = new CSVParser(new InputStreamReader(new FileInputStream(file)), CSVFormat.DEFAULT.withHeader());
@@ -34,8 +47,15 @@ public class UploadUsersTrialTest {
       form.setTelNo(record.get("ContactNumber"));
       form.setIsApproved(true);
       form.setPasswordNeverExpires(true);
-      form.setPassword("blank");
+      form.setPassword(record.get("Password"));
       System.out.println(form);
+
+      TMUserEntity entity = new TMUserEntity();
+      entity.setActive(false);
+      entity.setAuthNo(record.get("Authno"));
+      entity.setTmUsername(record.get("Username"));
+      entity.setAlternateAuthNo(null);
+      tmUserRepo.save(entity);
 
       // send the form
 //      tmWebDriver.makeNewUser(form);
