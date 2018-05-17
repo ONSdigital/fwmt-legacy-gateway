@@ -108,3 +108,13 @@ databaseChangeLog:
           relativeToChangelogFile: true
           splitStatements: false
 
+ - changeSet:
+    id: v12
+    author: Soundararajan
+    comment: Added new column to help loading users with new auth no
+    changes:
+      - sqlFile:
+          path: 12_Add_AlternateAuthNo_to_Users.sql
+          relativeToChangelogFile: true
+          splitStatements: false
+
