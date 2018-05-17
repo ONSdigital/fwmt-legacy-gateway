@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
-import uk.gov.ons.fwmt.legacy_gateway.service.TMService;
+import uk.gov.ons.fwmt.legacy_gateway.service.impl.TMServiceImpl;
 
 import javax.annotation.PostConstruct;
 import java.util.Base64;
@@ -21,7 +21,7 @@ import java.util.Base64;
 public class TMPollTask {
   private final RestTemplate rest;
   private final HttpHeaders headers;
-  private final TMService tmService;
+  private final TMServiceImpl tmServiceImpl;
   public int pollCount = 0;
   public boolean tmStatus = false;
   public HttpStatus statusCode;
@@ -34,11 +34,11 @@ public class TMPollTask {
   @Value("${totalmobile.password}")
   private String password;
 
-  @Autowired TMPollTask(TMService tmService) {
+  @Autowired TMPollTask(TMServiceImpl tmServiceImpl) {
     this.rest = new RestTemplate();
     this.headers = new HttpHeaders();
     headers.add("Content-Type", "application/json");
-    this.tmService = tmService;
+    this.tmServiceImpl = tmServiceImpl;
   }
 
   @PostConstruct
@@ -71,7 +71,7 @@ public class TMPollTask {
     errorCriteria.setParseAs(ParseAsType.STRING);
     query.getCriteria().getCriterion().add(errorCriteria);
     // Send
-    QueryMessagesResponse response = tmService.send(query);
+    QueryMessagesResponse response = tmServiceImpl.send(query);
     if (response != null) {
       return response.getMessages().getMessage().size() == 0;
     } else {

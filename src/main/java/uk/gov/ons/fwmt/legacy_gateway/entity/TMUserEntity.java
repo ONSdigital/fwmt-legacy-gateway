@@ -23,9 +23,14 @@ public class TMUserEntity {
   @Column(nullable = false)
   public boolean active;
 
-  public TMUserEntity(String authNo, String tmUsername, boolean active) {
+  // if this is set, it means that jobs designated for altAuthNo should be redirected to this user
+  @Column
+  public String alternateAuthNo;
+
+  public TMUserEntity(String authNo, String tmUsername, boolean active, String alternateAuthNo) {
     this.authNo = authNo;
     this.tmUsername = tmUsername;
     this.active = active;
+    this.alternateAuthNo = alternateAuthNo;
   }
 }

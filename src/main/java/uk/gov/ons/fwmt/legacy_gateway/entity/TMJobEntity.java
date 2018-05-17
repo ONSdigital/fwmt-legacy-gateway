@@ -20,7 +20,11 @@ public class TMJobEntity {
   @Column(nullable = false)
   private String tmJobId;
 
-  public TMJobEntity(String tmJobId) {
+  @Column(nullable = false)
+  private String lastAuthNo;
+
+  public TMJobEntity(String tmJobId, String lastAuthNo) {
     this.tmJobId = tmJobId;
+    this.lastAuthNo = lastAuthNo;
   }
 }

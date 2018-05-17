@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.ons.fwmt.legacy_gateway.integration_tests.helpers.SpringITBase;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMJobRepo;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMUserRepo;
-import uk.gov.ons.fwmt.legacy_gateway.service.TMService;
+import uk.gov.ons.fwmt.legacy_gateway.service.impl.TMServiceImpl;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
@@ -23,7 +23,7 @@ public class LegacyCSVITSteps extends SpringITBase {
   private TMUserRepo tmUserRepo;
 
   @Autowired
-  private TMService tmService;
+  private TMServiceImpl tmServiceImpl;
 
   @Given("^the database is clean$")
   public void theDatabaseIsClean() {
@@ -54,7 +54,7 @@ public class LegacyCSVITSteps extends SpringITBase {
   @Then("^TM should be sent (\\d+) new jobs$")
   public void tmShouldBeSentNewJobs(int count) throws Throwable {
     ArgumentCaptor<CreateJobRequest> argumentCaptor = ArgumentCaptor.forClass(CreateJobRequest.class);
-    verify(tmService).send(argumentCaptor.capture());
+    verify(tmServiceImpl).send(argumentCaptor.capture());
   }
 
 }

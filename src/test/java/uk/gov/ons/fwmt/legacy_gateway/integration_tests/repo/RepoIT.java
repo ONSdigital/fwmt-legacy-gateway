@@ -24,7 +24,7 @@ public class RepoIT {
   @Test
   @Transactional
   public void storeUserInDb() {
-    TMUserEntity tmUserEntity = new TMUserEntity("9999", "testuser", false);
+    TMUserEntity tmUserEntity = new TMUserEntity("9999", "testuser", false, null);
     try {
       tmUserEntity.getAuthNo();
       tmUserEntity.getTmUsername();
@@ -40,7 +40,7 @@ public class RepoIT {
   @Test
   @Transactional
   public void storeJobInDb() {
-    TMJobEntity tmJobEntity = new TMJobEntity("testjob");
+    TMJobEntity tmJobEntity = new TMJobEntity("testjob", "2222");
     try {
       tmJobEntity.getTmJobId();
       tmJobRepo.save(tmJobEntity);

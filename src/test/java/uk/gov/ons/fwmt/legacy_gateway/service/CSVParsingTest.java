@@ -10,18 +10,21 @@ import org.mockito.*;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacySampleIngest;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacySampleSurveyType;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacyStaffIngest;
+import uk.gov.ons.fwmt.legacy_gateway.service.impl.CSVParsingServiceImpl;
+import uk.gov.ons.fwmt.legacy_gateway.service.impl.LegacyJobPublishServiceImpl;
+import uk.gov.ons.fwmt.legacy_gateway.service.impl.LegacyStaffPublishServiceImpl;
 
 import java.io.*;
 import java.util.List;
 
 public class CSVParsingTest {
-  private CSVParsingService csvParsingService;
+  private CSVParsingServiceImpl csvParsingServiceImpl;
 
   @Mock
-  private LegacyJobPublishService legacyJobPublishService;
+  private LegacyJobPublishServiceImpl legacyJobPublishServiceImpl;
 
   @Mock
-  private LegacyStaffPublishService legacyStaffPublishService;
+  private LegacyStaffPublishServiceImpl legacyStaffPublishServiceImpl;
 
   @Captor
   private ArgumentCaptor<List<LegacyStaffIngest>> legacyStaffArgumentCaptor;
@@ -32,7 +35,7 @@ public class CSVParsingTest {
   @Before
   public void before() {
     MockitoAnnotations.initMocks(this);
-    this.csvParsingService = new CSVParsingService(this.legacyStaffPublishService, this.legacyJobPublishService);
+    this.csvParsingServiceImpl = new CSVParsingServiceImpl(this.legacyStaffPublishServiceImpl, this.legacyJobPublishServiceImpl);
   }
 
   @Test
@@ -40,10 +43,10 @@ public class CSVParsingTest {
     File testFile = new File("src/test/resources/sampledata/public/staffExampleAllRows.csv");
 
     try (FileInputStream testFileInputStream = new FileInputStream(testFile)) {
-      csvParsingService.parseLegacyStaff(new InputStreamReader(testFileInputStream));
+      csvParsingServiceImpl.parseLegacyStaff(new InputStreamReader(testFileInputStream));
     }
 
-    verify(legacyStaffPublishService).publishStaff(legacyStaffArgumentCaptor.capture());
+    verify(legacyStaffPublishServiceImpl).publishStaff(legacyStaffArgumentCaptor.capture());
 
     assertEquals(1, legacyStaffArgumentCaptor.getValue().size());
 
@@ -55,10 +58,10 @@ public class CSVParsingTest {
     File testFile = new File("src/test/resources/sampledata/public/sampleGFFExampleAllRows.csv");
 
     try (FileInputStream testFileInputStream = new FileInputStream(testFile)) {
-      csvParsingService.parseLegacySample(new InputStreamReader(testFileInputStream), LegacySampleSurveyType.GFF);
+      csvParsingServiceImpl.parseLegacySample(new InputStreamReader(testFileInputStream), LegacySampleSurveyType.GFF);
     }
 
-    verify(legacyJobPublishService).publishJob(legacySampleArgumentCaptor.capture());
+    verify(legacyJobPublishServiceImpl).publishJob(legacySampleArgumentCaptor.capture());
 
     LegacySampleIngest sampleIngest = legacySampleArgumentCaptor.getValue();
 
@@ -115,10 +118,10 @@ public class CSVParsingTest {
     File testFile = new File("src/test/resources/sampledata/public/sampleLFSExampleAllRows.csv");
 
     try (FileInputStream testFileInputStream = new FileInputStream(testFile)) {
-      csvParsingService.parseLegacySample(new InputStreamReader(testFileInputStream), LegacySampleSurveyType.LFS);
+      csvParsingServiceImpl.parseLegacySample(new InputStreamReader(testFileInputStream), LegacySampleSurveyType.LFS);
     }
 
-    verify(legacyJobPublishService).publishJob(legacySampleArgumentCaptor.capture());
+    verify(legacyJobPublishServiceImpl).publishJob(legacySampleArgumentCaptor.capture());
 
     LegacySampleIngest sampleIngest = legacySampleArgumentCaptor.getValue();
   }
