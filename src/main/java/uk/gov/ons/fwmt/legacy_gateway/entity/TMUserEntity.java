@@ -17,6 +17,10 @@ public class TMUserEntity {
   @Column(nullable = false)
   public String authNo;
 
+  // if this is set, it means that jobs designated for altAuthNo should be redirected to this user
+  @Column
+  public String altAuthNo;
+
   @Column
   public String tmUsername;
 

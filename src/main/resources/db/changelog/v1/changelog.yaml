@@ -98,4 +98,13 @@ databaseChangeLog:
           path: 11_Rework_Gateway.sql
           relativeToChangelogFile: true
           splitStatements: false
+ - changeSet:
+    id: v12
+    author: Thomas Poot
+    comment: Temporarily added in an alternative authno for users and a cache of the last authno seen for jobs
+    changes:
+      - sqlFile:
+          path: 12_Temp_Database_Fix.sql
+          relativeToChangelogFile: true
+          splitStatements: false
 
