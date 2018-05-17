@@ -300,6 +300,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     message.setSendMessageRequestInfo(makeSendMessageRequestInfo(ingest.getTmJobId()));
     message.setUpdateJobHeaderRequest(request);
 
+    // TODO re-enable this
 //    tmService.send(message);
 
     // save the job into our database
@@ -316,6 +317,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     message.setSendMessageRequestInfo(makeSendMessageRequestInfo(ingest.getTmJobId()));
     message.setCreateJobRequest(request);
 
+    // TODO re-enable this
 //    tmService.send(message);
 
     // save the job into our database
