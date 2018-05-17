@@ -49,14 +49,6 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     this.tmUserRepo = tmUserRepo;
   }
 
-  protected String getUsername(LegacySampleIngest ingest) {
-    TMUserEntity entity = tmUserRepo.findByAuthNo(ingest.getAuth());
-    if (entity == null) {
-      throw new UnknownUserException(ingest.getAuth());
-    }
-    return entity.getTmUsername();
-  }
-
   protected void addAdditionalProperty(CreateJobRequest request, String key, String value) {
     AdditionalPropertyType propertyType = new AdditionalPropertyType();
     propertyType.setName(key);
@@ -292,29 +284,27 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     return info;
   }
 
-  protected void reallocateJob(LegacySampleIngest ingest) {
-    String username = getUsername(ingest);
-    UpdateJobHeaderRequest request = updateJobHeaderRequestFromIngest(ingest, username);
+  protected void reallocateJob(LegacySampleIngest job, String username) {
+    UpdateJobHeaderRequest request = updateJobHeaderRequestFromIngest(job, username);
 
     SendUpdateJobHeaderRequestMessage message = new SendUpdateJobHeaderRequestMessage();
-    message.setSendMessageRequestInfo(makeSendMessageRequestInfo(ingest.getTmJobId()));
+    message.setSendMessageRequestInfo(makeSendMessageRequestInfo(job.getTmJobId()));
     message.setUpdateJobHeaderRequest(request);
 
     // TODO re-enable this
 //    tmService.send(message);
 
     // save the job into our database
-    TMJobEntity entity = tmJobRepo.findByTmJobId(ingest.getTmJobId());
-    entity.setLastAuthNo(ingest.getAuth());
+    TMJobEntity entity = tmJobRepo.findByTmJobId(job.getTmJobId());
+    entity.setLastAuthNo(job.getAuth());
     tmJobRepo.save(entity);
   }
 
-  protected void newJob(LegacySampleIngest ingest) {
-    String username = getUsername(ingest);
-    CreateJobRequest request = createJobRequestFromIngest(ingest, username);
+  protected void newJob(LegacySampleIngest job, String username) {
+    CreateJobRequest request = createJobRequestFromIngest(job, username);
 
     SendCreateJobRequestMessage message = new SendCreateJobRequestMessage();
-    message.setSendMessageRequestInfo(makeSendMessageRequestInfo(ingest.getTmJobId()));
+    message.setSendMessageRequestInfo(makeSendMessageRequestInfo(job.getTmJobId()));
     message.setCreateJobRequest(request);
 
     // TODO re-enable this
@@ -322,47 +312,60 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
 
     // save the job into our database
     TMJobEntity entity = new TMJobEntity();
-    entity.setTmJobId(ingest.getTmJobId());
-    entity.setLastAuthNo(ingest.getAuth());
+    entity.setTmJobId(job.getTmJobId());
+    entity.setLastAuthNo(job.getAuth());
     tmJobRepo.save(entity);
+  }
+
+  protected void publishJobToUser(LegacySampleIngest job, TMUserEntity user) {
+    log.info("User was active");
+    // don't do anything if we've seen this job ID and authno before
+    // if we've seen the job ID but not the authno, it's a reallocation
+    if (tmJobRepo.existsByTmJobIdAndLastAuthNo(job.getTmJobId(), user.getAuthNo())) {
+      log.info("Job has been sent previously");
+    } else if (tmJobRepo.existsByTmJobId(job.getTmJobId())) {
+      log.info("Job is a reallocation");
+      // reallocate
+      reallocateJob(job, user.getTmUsername());
+    } else {
+      log.info("Job is not a reallocation");
+      switch (job.getLegacySampleSurveyType()) {
+      case GFF:
+        if (job.isGffReissue()) {
+          // reissue
+          // the date was modified within LegacySampleIngest
+          // the rest of this code is identical to creating a new job
+          log.info("Job is a GFF reissue");
+          newJob(job, user.getTmUsername());
+        } else {
+          // new job
+          log.info("Job is a new GFF job");
+          newJob(job, user.getTmUsername());
+        }
+        break;
+      case LFS:
+        // new job
+        log.info("Job is a new LFS job");
+        newJob(job, user.getTmUsername());
+        break;
+      }
+    }
   }
 
   public void publishJob(LegacySampleIngest job) {
     // only send if the user is active
     if (tmUserRepo.existsByAuthNoAndActive(job.getAuth(), true)) {
-      log.info("User was active");
-      // reallocate if we've seen this id before TODO and the authno changed
-      if (tmJobRepo.existsByTmJobIdAndLastAuthNo(job.getTmJobId(), job.getAuth())) {
-        log.info("Job has been sent previously");
-      } else if (tmJobRepo.existsByTmJobId(job.getTmJobId())) {
-        log.info("Job is a reallocation");
-        // reallocate
-        reallocateJob(job);
-      } else {
-        log.info("Job is not a reallocation");
-        switch (job.getLegacySampleSurveyType()) {
-        case GFF:
-          if (job.isGffReissue()) {
-            // reissue
-            // the date was modified within LegacySampleIngest
-            // the rest of this code is identical to creating a new job
-            log.info("Job is a GFF reissue");
-            newJob(job);
-          } else {
-            // new job
-            log.info("Job is a new GFF job");
-            newJob(job);
-          }
-          break;
-        case LFS:
-          // new job
-          log.info("Job is a new LFS job");
-          newJob(job);
-          break;
-        }
-      }
-    } else {
+      TMUserEntity userEntity = tmUserRepo.findByAuthNo(job.getAuth());
+      publishJobToUser(job, userEntity);
+    } else if (tmUserRepo.existsByAlternateAuthNoAndActive(job.getAuth(), true)) {
+      TMUserEntity userEntity = tmUserRepo.findByAlternateAuthNo(job.getAuth());
+      publishJobToUser(job, userEntity);
+    } else if (tmUserRepo.existsByAuthNoAndActive(job.getAuth(), false) ||
+        tmUserRepo.existsByAlternateAuthNoAndActive(job.getAuth(), false)) {
       log.info("User was not active");
+    } else {
+      log.error("User was not found");
+      throw new UnknownUserException(job.getAuth());
     }
   }
 }
