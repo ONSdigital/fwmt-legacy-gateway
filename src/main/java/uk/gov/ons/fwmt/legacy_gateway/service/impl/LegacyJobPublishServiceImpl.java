@@ -33,7 +33,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
   private static final String JOB_WORLD = "Default";
   private static final String JOB_QUEUE = "\\OPTIMISE\\INPUT";
 
-//  private final TMService tmService;
+  private final TMService tmService;
   private final TMJobRepo tmJobRepo;
   private final TMUserRepo tmUserRepo;
 
@@ -43,7 +43,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
   @Autowired
   public LegacyJobPublishServiceImpl(TMService tmService, TMJobRepo tmJobRepo, TMUserRepo tmUserRepo)
       throws DatatypeConfigurationException {
-//    this.tmService = tmService;
+    this.tmService = tmService;
     this.tmJobRepo = tmJobRepo;
     this.tmUserRepo = tmUserRepo;
   }
@@ -308,8 +308,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     message.setSendMessageRequestInfo(makeSendMessageRequestInfo(job.getTmJobId()));
     message.setCreateJobRequest(request);
 
-    // TODO re-enable this
-//    tmService.send(message);
+    tmService.send(message);
 
     // save the job into our database
     TMJobEntity entity = new TMJobEntity();
