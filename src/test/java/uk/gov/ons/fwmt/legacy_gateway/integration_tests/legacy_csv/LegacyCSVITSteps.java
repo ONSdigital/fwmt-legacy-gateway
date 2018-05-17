@@ -37,7 +37,7 @@ public class LegacyCSVITSteps extends SpringITBase {
   }
 
   @When("^the CSV '([a-zA-Z0-9_-]+)' is imported from sample '([a-zA-Z0-9_-]+)' and uploaded to the '([a-zA-Z]+)' endpoint$")
-  public void theCSVSample_LFS_TZIsImportedFromSampleSampleLFSExampleAllRowsCsvAndUploadedToTheSampleEndpoint(String csvName, String originalCsvName, String endpoint) throws Throwable {
+  public void theCSVIsImportedAndUploadedToTheEndpoint(String csvName, String originalCsvName, String endpoint) throws Throwable {
     throw new PendingException();
   }
 
