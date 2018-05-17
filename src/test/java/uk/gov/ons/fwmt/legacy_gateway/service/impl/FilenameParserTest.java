@@ -1,24 +1,19 @@
-package uk.gov.ons.fwmt.legacy_gateway.service;
+package uk.gov.ons.fwmt.legacy_gateway.service.impl;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.ons.fwmt.legacy_gateway.error.InvalidFileNameException;
-import uk.gov.ons.fwmt.legacy_gateway.service.FileIngestService;
+import uk.gov.ons.fwmt.legacy_gateway.service.impl.CSVParsingServiceImpl;
+import uk.gov.ons.fwmt.legacy_gateway.service.impl.FileIngestServiceImpl;
 
 import static org.junit.Assert.*;
 
 public class FilenameParserTest {
-  private FileIngestService fileIngestService;
+  private FileIngestServiceImpl fileIngestServiceImpl;
 
   public FilenameParserTest() {
-    CSVParsingService csvParsingServiceMock = Mockito.mock(CSVParsingService.class);
-    this.fileIngestService = new FileIngestService(csvParsingServiceMock);
+    CSVParsingServiceImpl csvParsingServiceImplMock = Mockito.mock(CSVParsingServiceImpl.class);
+    this.fileIngestServiceImpl = new FileIngestServiceImpl(csvParsingServiceImplMock);
   }
 
   private final String[] validSampleFileNames = {
@@ -52,14 +47,14 @@ public class FilenameParserTest {
   @Test
   public void checkValidSampleFileNames() throws InvalidFileNameException {
     for (String filename : validSampleFileNames) {
-      assertNotNull(fileIngestService.verifyCSVFilename(filename, "sample"));
+      assertNotNull(fileIngestServiceImpl.verifyCSVFilename(filename, "sample"));
     }
   }
 
   @Test
   public void checkValidStaffFileNames() throws InvalidFileNameException {
     for (String filename : validStaffFileNames) {
-      assertNotNull(fileIngestService.verifyCSVFilename(filename, "staff"));
+      assertNotNull(fileIngestServiceImpl.verifyCSVFilename(filename, "staff"));
     }
   }
 
@@ -67,7 +62,7 @@ public class FilenameParserTest {
   public void checkInvalidSampleFileNames() {
     for (String filename : invalidSampleFileNames) {
       try {
-        assertNotNull(fileIngestService.verifyCSVFilename(filename, "sample"));
+        assertNotNull(fileIngestServiceImpl.verifyCSVFilename(filename, "sample"));
         // we should throw an InvalidFileNameException before this point
         fail("False negative - filename '" + filename + "' should be invalid");
       } catch (InvalidFileNameException e) {
@@ -81,7 +76,7 @@ public class FilenameParserTest {
   public void checkInvalidStaffFileNames() {
     for (String filename : invalidStaffFileNames) {
       try {
-        assertNotNull(fileIngestService.verifyCSVFilename(filename, "staff"));
+        assertNotNull(fileIngestServiceImpl.verifyCSVFilename(filename, "staff"));
         // we should throw an InvalidFileNameException before this point
         fail("False negative - filename '" + filename + "' should be invalid");
       } catch (InvalidFileNameException e) {
