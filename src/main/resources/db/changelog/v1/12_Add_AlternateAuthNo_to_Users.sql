@@ -1,5 +1,5 @@
 SET SCHEMA 'gateway';
 
 ALTER TABLE gateway.tm_users
-    ADD COLUMN ALTERNATE_AUTH_NO CHARACTER VARYING(255);
+    ADD COLUMN alternate_auth_no varchar(40);
 
