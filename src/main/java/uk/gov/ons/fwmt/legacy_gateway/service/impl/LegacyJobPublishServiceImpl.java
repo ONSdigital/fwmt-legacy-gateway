@@ -305,7 +305,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
 
     // save the job into our database
     TMJobEntity entity = tmJobRepo.findByTmJobId(ingest.getTmJobId());
-    // TODO update fields
+    entity.setLastAuthNo(ingest.getAuth());
     tmJobRepo.save(entity);
   }
 
@@ -323,6 +323,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     // save the job into our database
     TMJobEntity entity = new TMJobEntity();
     entity.setTmJobId(ingest.getTmJobId());
+    entity.setLastAuthNo(ingest.getAuth());
     tmJobRepo.save(entity);
   }
 
@@ -331,7 +332,9 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     if (tmUserRepo.existsByAuthNoAndActive(job.getAuth(), true)) {
       log.info("User was active");
       // reallocate if we've seen this id before TODO and the authno changed
-      if (tmJobRepo.existsByTmJobId(job.getTmJobId())) {
+      if (tmJobRepo.existsByTmJobIdAndLastAuthNo(job.getTmJobId(), job.getAuth())) {
+        log.info("Job has been sent previously");
+      } else if (tmJobRepo.existsByTmJobId(job.getTmJobId())) {
         log.info("Job is a reallocation");
         // reallocate
         reallocateJob(job);
