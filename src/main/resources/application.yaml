@@ -25,8 +25,6 @@ spring.datasource:
   password: postgres
 
 management.endpoint.health.show-details: always
-endpoints.health.sensitive: false
-management.security.enabled: false
 
 liquibase:
   url: jdbc:postgresql://localhost:5432/postgres?currentSchema=gateway
@@ -55,4 +53,11 @@ totalmobile:
   username: "..."
   password: "..."
   url: "https://ons.totalmobile.co.uk"
-  message-queue-service: "/Live/Services/TM/v20/Messaging/MessageQueueWs.asmx"
+  message-queue-path: "/Live/Services/TM/v20/Messaging/MessageQueueWs.asmx"
+  message-queue-wsdl-path: "src/main/resources/wsdl/Messaging_MessageQueueWs.wsdl"
+  message-queue-namespace: "http://schemas.consiliumtechnologies.com/wsdl/mobile/2007/07/messaging/"
+  message-queue-package: "com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging"
+  outgoing-ws-namespace: "http://schemas.consiliumtechnologies.com/services/mobile/2009/03/messaging"
+  web:
+    login-url: "/Live/WebAdmin/Login"
+    save-user-url: "/Live/WebAdmin/Administration/Users/SaveUser"

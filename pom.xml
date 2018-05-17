@@ -9,7 +9,9 @@
     <packaging>jar</packaging>
 
     <name>fwmt-legacy-gateway</name>
-    <description>The Fieldwork Management Tool Gateway for interfacing between the Social Survey legacy system and the Fieldwork Management Tool</description>
+    <description>The Fieldwork Management Tool Gateway for interfacing between the Social Survey legacy system and the
+        Fieldwork Management Tool
+    </description>
     <url>https://github.com/ONSdigital/fwmt-legacy-gateway</url>
 
     <parent>
@@ -56,7 +58,6 @@
         <java.version>1.8</java.version>
         <maven-jaxb2-plugin.version>0.13.3</maven-jaxb2-plugin.version>
         <snakeyaml.version>1.18</snakeyaml.version>
-        <skipDocker>false</skipDocker>
     </properties>
 
     <dependencies>
@@ -64,10 +65,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web-services</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -83,10 +80,6 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
@@ -97,16 +90,22 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-server -->
+        <!-- apache http, used for authentication in TMService -->
         <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-server</artifactId>
-            <version>3.8.1</version>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+        <!-- jsoup -->
         <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.11.3</version>
+        </dependency>
+        <!-- json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180130</version>
         </dependency>
         <!-- lombok -->
         <dependency>
@@ -118,6 +117,11 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
+        <!-- h2 -->
+        <!--<dependency>-->
+        <!--<groupId>com.h2database</groupId>-->
+        <!--<artifactId>h2</artifactId>-->
+        <!--</dependency>-->
         <!-- liquibase -->
         <dependency>
             <groupId>org.liquibase</groupId>
@@ -133,12 +137,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>1.5</version>
-        </dependency>
-        <!-- opencsv -->
-        <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>4.0</version>
         </dependency>
         <!-- springfox-swagger2 -->
         <dependency>
@@ -156,12 +154,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.vaadin.external.google</groupId>
+                    <artifactId>android-json</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.ws</groupId>
-            <artifactId>spring-ws-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+        <!-- cucumber -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
@@ -180,28 +180,9 @@
             <version>2.3.1</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- * IDE Related packages -->
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>15.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.10.2</version>
-        </dependency>
     </dependencies>
 
     <build>
-        <testSourceDirectory>src/integration/java</testSourceDirectory>
-
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -218,32 +199,6 @@
                             <sources>
                                 <source>${basedir}/src-generated/src</source>
                             </sources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>add-integration-test-source-as-test-sources</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>add-test-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>src/integration/java</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>add-integration-test-source-as-test-resources</id>
-                        <phase>generate-test-resources</phase>
-                        <goals>
-                            <goal>add-test-resource</goal>
-                        </goals>
-                        <configuration>
-                            <resources>
-                                <resource>
-                                    <directory>src/integration/resources</directory>
-                                </resource>
-                            </resources>
                         </configuration>
                     </execution>
                 </executions>
@@ -324,61 +279,17 @@
                 <version>3.5.3</version>
                 <executions>
                     <!--<execution>-->
-                        <!--<phase>pre-integration-test</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>update</goal>-->
-                        <!--</goals>-->
+                    <!--<phase>pre-integration-test</phase>-->
+                    <!--<goals>-->
+                    <!--<goal>update</goal>-->
+                    <!--</goals>-->
                     <!--</execution>-->
                     <!--<execution>-->
-                        <!--<phase>process-resources</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>update</goal>-->
-                        <!--</goals>-->
+                    <!--<phase>process-resources</phase>-->
+                    <!--<goals>-->
+                    <!--<goal>update</goal>-->
+                    <!--</goals>-->
                     <!--</execution>-->
-                </executions>
-            </plugin>
-            <!-- docker-maven-plugin -->
-            <!-- This plugin sets up and tears down a Postgres Docker container for integration tests in the verify fp -->
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.20.1</version>
-                <executions>
-                    <execution>
-                        <id>setup-postgres-database</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipDocker}</skip>
-                            <images>
-                                <image>
-                                    <name>postgres:9.5.4</name>
-                                    <alias>postgres-database</alias>
-                                    <run>
-                                        <ports>
-                                            <port>postgres-database.port:5432</port>
-                                        </ports>
-                                        <wait>
-                                            <log>database system is ready to accept connections</log>
-                                            <time>20000</time>
-                                        </wait>
-                                    </run>
-                                </image>
-                            </images>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>tear-down-postgres-database</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipDocker}</skip>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
             <!-- buildnumber-maven-plugin -->
