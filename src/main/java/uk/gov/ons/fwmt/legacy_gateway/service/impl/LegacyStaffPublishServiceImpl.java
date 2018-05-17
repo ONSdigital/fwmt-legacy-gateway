@@ -15,10 +15,6 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class LegacyStaffPublishServiceImpl implements LegacyStaffPublishService {
-  private static String makeTMUsername(LegacyStaffIngest staff) {
-    return staff.getEmail().split("@")[0];
-  }
-
   private final TMUserRepo tmUserRepo;
   private final TMService tmService;
 

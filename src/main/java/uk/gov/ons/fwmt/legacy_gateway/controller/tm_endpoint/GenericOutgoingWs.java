@@ -4,7 +4,6 @@ import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.Obj
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendMessageResponse;
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.WebServiceAdapterOutputRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -16,10 +15,6 @@ import javax.xml.bind.JAXBElement;
 @Endpoint
 public class GenericOutgoingWs {
   private static final String NAMESPACE_URI = "http://schemas.consiliumtechnologies.com/services/mobile/2009/03/messaging";
-
-  @Autowired
-  public GenericOutgoingWs() {
-  }
 
   private void stub(String messageType) {
     log.debug("Found message type > " + messageType);

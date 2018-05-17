@@ -58,7 +58,7 @@ public class UploadUsersTrialTest {
       tmUserRepo.save(entity);
 
       // send the form
-//      tmWebDriver.makeNewUser(form);
+      tmWebDriver.makeNewUser(form);
 
       // wait
       TimeUnit.SECONDS.sleep(1);

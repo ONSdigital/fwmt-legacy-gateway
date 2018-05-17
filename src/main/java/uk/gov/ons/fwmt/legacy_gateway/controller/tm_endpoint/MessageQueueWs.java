@@ -2,7 +2,6 @@ package uk.gov.ons.fwmt.legacy_gateway.controller.tm_endpoint;
 
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -14,10 +13,6 @@ import javax.xml.bind.JAXBElement;
 @Endpoint
 public class MessageQueueWs {
   private static final String NAMESPACE_URI = "http://schemas.consiliumtechnologies.com/services/mobile/2007/07/messaging";
-
-  @Autowired
-  public MessageQueueWs() {
-  }
 
   private void stub(String messageType) {
     log.debug("Found message type > " + messageType);

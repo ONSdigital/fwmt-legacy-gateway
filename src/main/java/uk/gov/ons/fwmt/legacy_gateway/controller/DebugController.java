@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import uk.gov.ons.fwmt.legacy_gateway.entity.TMUserEntity;
-import uk.gov.ons.fwmt.legacy_gateway.repo.TMJobRepo;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMUserRepo;
 
 /**
@@ -24,9 +23,6 @@ import uk.gov.ons.fwmt.legacy_gateway.repo.TMUserRepo;
 @Slf4j
 @Controller
 public class DebugController {
-  @Autowired
-  private TMJobRepo tmJobRepo;
-
   @Autowired
   private TMUserRepo tmUserRepo;
 

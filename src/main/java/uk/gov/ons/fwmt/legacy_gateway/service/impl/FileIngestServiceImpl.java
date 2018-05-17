@@ -99,8 +99,7 @@ public class FileIngestServiceImpl implements FileIngestService {
 
     // // Validate the TLA
     // Only for the "sample" endpoint
-    switch (filename.getEndpoint()) {
-    case "sample":
+    if (filename.getEndpoint() == "sample") {
       String tlaString = underscoreSplit[1];
       log.debug("File TLA detected as " + tlaString);
       switch (tlaString) {
@@ -113,7 +112,6 @@ public class FileIngestServiceImpl implements FileIngestService {
       default:
         throw new IllegalArgumentException("File had an unrecognized TLA of " + tlaString);
       }
-      break;
     }
 
     // // Validate the timestamp

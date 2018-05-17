@@ -1,12 +1,9 @@
 package uk.gov.ons.fwmt.legacy_gateway.utility.csvconverter;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 public class FieldPeriodTest {
-
-  private static DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
-
+//
+//  private static DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
+//
 //  @Test
 //  public void fieldPeriodToDateGFFforMonthWith31Days() {
 //    Date date = LegacyCreateJobRequestFactory.fieldPeriodToDates("807", "GFF");

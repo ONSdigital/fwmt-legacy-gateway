@@ -252,6 +252,8 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
       addAdditionalProperty(request, "waveBriefNotes5", ingest.getLfsData().getComment5BriefNotes1());
       addAdditionalProperty(request, "operationalParaData", ingest.getLfsData().getDirection());
       break;
+    default:
+      throw new IllegalArgumentException("Unknown survey type");
     }
 
     // Set other required values
