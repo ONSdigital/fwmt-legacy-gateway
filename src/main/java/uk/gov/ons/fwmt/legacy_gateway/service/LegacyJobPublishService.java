@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacySampleIngest;
+import uk.gov.ons.fwmt.legacy_gateway.entity.TMJobEntity;
 import uk.gov.ons.fwmt.legacy_gateway.entity.TMUserEntity;
 import uk.gov.ons.fwmt.legacy_gateway.error.UnknownUserException;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMJobRepo;
@@ -299,6 +300,11 @@ public class LegacyJobPublishService {
     message.setUpdateJobHeaderRequest(request);
 
     tmService.send(message);
+
+    // save the job into our database
+    TMJobEntity entity = tmJobRepo.findByTmJobId(ingest.getTmJobId());
+    // TODO update fields
+    tmJobRepo.save(entity);
   }
 
   protected void newJob(LegacySampleIngest ingest) {
@@ -310,6 +316,11 @@ public class LegacyJobPublishService {
     message.setCreateJobRequest(request);
 
     tmService.send(message);
+
+    // save the job into our database
+    TMJobEntity entity = new TMJobEntity();
+    entity.setTmJobId(ingest.getTmJobId());
+    tmJobRepo.save(entity);
   }
 
   public void publishJob(LegacySampleIngest job) {

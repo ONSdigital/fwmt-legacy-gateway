@@ -7,4 +7,5 @@ import uk.gov.ons.fwmt.legacy_gateway.entity.TMJobEntity;
 @Repository
 public interface TMJobRepo extends CrudRepository<TMJobEntity, Long> {
   boolean existsByTmJobId(String tmJobId);
+  TMJobEntity findByTmJobId(String tmJobId);
 }
