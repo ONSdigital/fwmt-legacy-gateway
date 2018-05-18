@@ -127,8 +127,8 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     addAdditionalProperty(request, "postCode", ingest.getPostcode());
     addAdditionalProperty(request, "quotaNo", ingest.getQuota());
     addAdditionalProperty(request, "addressNo", ingest.getAddressNo());
-    addAdditionalProperty(request, "geoX", ingest.getGeoX().toString());
-    addAdditionalProperty(request, "geoY", ingest.getGeoY().toString());
+    addAdditionalProperty(request, "geoX", (ingest.getGeoX() != null) ? ingest.getGeoX().toString() : "");
+    addAdditionalProperty(request, "geoY", (ingest.getGeoY() != null) ? ingest.getGeoY().toString() : "");
     addAdditionalProperty(request, "year", ingest.getYear());
     addAdditionalProperty(request, "month", ingest.getMonth());
     addAdditionalProperty(request, "contactNo", ingest.getTelNo());
@@ -292,8 +292,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     message.setSendMessageRequestInfo(makeSendMessageRequestInfo(job.getTmJobId()));
     message.setUpdateJobHeaderRequest(request);
 
-    // TODO re-enable this
-//    tmService.send(message);
+    tmService.send(message);
 
     // save the job into our database
     TMJobEntity entity = tmJobRepo.findByTmJobId(job.getTmJobId());
