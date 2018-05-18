@@ -278,14 +278,16 @@ public class LegacySampleIngest {
     }
 
     // derive the coordinates
-    if (this.osGridRef != null) {
+    if (this.osGridRef != null && this.osGridRef.length() > 0) {
       // TODO Confirm this is correct with new data map
-      String[] osGridRefSplit = this.getOsGridRef().split(",", 2);
-      if (osGridRefSplit.length != 2) {
-        throw new IllegalArgumentException("OS Grid Reference was not in the expected format");
-      }
-      this.geoX = Float.parseFloat(osGridRefSplit[0]);
-      this.geoY = Float.parseFloat(osGridRefSplit[1]);
+//      String[] osGridRefSplit = this.getOsGridRef().split(",", 2);
+//      if (osGridRefSplit.length != 2) {
+//        throw new IllegalArgumentException("OS Grid Reference was not in the expected format");
+//      }
+//      this.geoX = Float.parseFloat(osGridRefSplit[0]);
+//      this.geoY = Float.parseFloat(osGridRefSplit[1]);
+      this.geoX = null;
+      this.geoY = null;
     } else {
       this.geoX = null;
       this.geoY = null;
