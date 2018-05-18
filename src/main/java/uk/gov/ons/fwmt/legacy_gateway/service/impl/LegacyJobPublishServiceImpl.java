@@ -292,8 +292,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     message.setSendMessageRequestInfo(makeSendMessageRequestInfo(job.getTmJobId()));
     message.setUpdateJobHeaderRequest(request);
 
-    // TODO re-enable this
-//    tmService.send(message);
+    tmService.send(message);
 
     // save the job into our database
     TMJobEntity entity = tmJobRepo.findByTmJobId(job.getTmJobId());

@@ -1,5 +1,6 @@
 package uk.gov.ons.fwmt.legacy_gateway.service;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class NewUserWebDrivenTest {
   private TMWebDriver TMWebDriver;
 
   @Test
+  @Ignore
   public void test() throws IOException {
     UserForm userForm1 = new UserForm();
     userForm1.setUserName("Test");
