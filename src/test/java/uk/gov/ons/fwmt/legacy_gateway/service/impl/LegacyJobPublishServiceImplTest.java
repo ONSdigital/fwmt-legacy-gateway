@@ -48,19 +48,18 @@ public class LegacyJobPublishServiceImplTest {
     assertEquals(expectedValue,createJobRequest.getJob().getAdditionalProperties().getAdditionalProperty().get(0).getValue());
   }
 
-  @Test
-  public void createJobRequestFromIngest() {
-  }
-
-  @Test
-  public void updateJobHeaderRequestFromIngest() {
-  }
+//  @Test
+//  public void createJobRequestFromIngest() {
+//  }
+//
+//  @Test
+//  public void updateJobHeaderRequestFromIngest() {
+//  }
 
   @Test
   public void makeSendMessageRequestInfo() {
     //Given
     String expectedKey = "testKey";
-
 
     //When
     SendMessageRequestInfo result = legacyJobPublishServiceImpl.makeSendMessageRequestInfo(expectedKey);
@@ -68,22 +67,21 @@ public class LegacyJobPublishServiceImplTest {
     //Then
     assertEquals(expectedKey,result.getKey());
     assertEquals(JOB_QUEUE,result.getQueueName());
-
   }
 
-  @Test
-  public void reallocateJob() {
-  }
-
-  @Test
-  public void newJob() {
-  }
-
-  @Test
-  public void publishJobToUser() {
-  }
-
-  @Test
-  public void publishJob() {
-  }
+//  @Test
+//  public void reallocateJob() {
+//  }
+//
+//  @Test
+//  public void newJob() {
+//  }
+//
+//  @Test
+//  public void publishJobToUser() {
+//  }
+//
+//  @Test
+//  public void publishJob() {
+//  }
 }
