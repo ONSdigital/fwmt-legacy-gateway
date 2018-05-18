@@ -31,6 +31,7 @@ public class UploadUsersTrialTest {
   private TMUserRepo tmUserRepo;
 
   @Test
+  @Ignore
   public void test() throws IOException, InterruptedException {
     File file = new File("src/test/resources/sampledata/trial/TM_Staff_Export_TH.csv");
     CSVParser parser = new CSVParser(new InputStreamReader(new FileInputStream(file)), CSVFormat.DEFAULT.withHeader());
