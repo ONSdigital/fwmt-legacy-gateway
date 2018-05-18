@@ -25,7 +25,8 @@ import java.util.concurrent.TimeUnit;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UploadUsersTrialTest {
-  private TMWebDriver tmWebDriver = new TMWebDriverImpl();
+  @Autowired
+  private TMWebDriver tmWebDriver;
 
   @Autowired
   private TMUserRepo tmUserRepo;
@@ -33,7 +34,7 @@ public class UploadUsersTrialTest {
   @Test
   @Ignore
   public void test() throws IOException, InterruptedException {
-    File file = new File("src/test/resources/sampledata/trial/10-05-18_TM_Pilot_Group_Users.csv");
+    File file = new File("src/test/resources/sampledata/trial/TM_Staff_Export_TH.csv");
     CSVParser parser = new CSVParser(new InputStreamReader(new FileInputStream(file)), CSVFormat.DEFAULT.withHeader());
     List<CSVRecord> records = parser.getRecords();
     for (CSVRecord record : records) {
@@ -55,10 +56,10 @@ public class UploadUsersTrialTest {
       entity.setAuthNo(record.get("Authno"));
       entity.setTmUsername(record.get("Username"));
       entity.setAlternateAuthNo(null);
-      tmUserRepo.save(entity);
+//      tmUserRepo.save(entity);
 
       // send the form
-      tmWebDriver.makeNewUser(form);
+//      tmWebDriver.makeNewUser(form);
 
       // wait
       TimeUnit.SECONDS.sleep(1);
