@@ -62,7 +62,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     request.setJob(job);
     job.setLocation(new LocationType());
     job.setIdentity(new JobIdentityType());
-//    job.setMandatoryResource(new ResourceIdentityType());
+    // job.setMandatoryResource(new ResourceIdentityType());
     job.getLocation().setAddressDetail(new AddressDetailType());
     job.getLocation().getAddressDetail().setLines(new AddressDetailType.Lines());
     job.setContact(new ContactInfoType());
