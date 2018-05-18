@@ -31,7 +31,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
   private static final String JOB_SKILL = "Survey";
   private static final String JOB_WORK_TYPE = "SS";
   private static final String JOB_WORLD = "Default";
-  private static final String JOB_QUEUE = "\\OPTIMISE\\INPUT";
+  protected static final String JOB_QUEUE = "\\OPTIMISE\\INPUT";
 
   private final TMService tmService;
   private final TMJobRepo tmJobRepo;

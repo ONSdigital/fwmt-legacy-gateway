@@ -18,6 +18,7 @@ import uk.gov.ons.fwmt.legacy_gateway.service.LegacyStaffPublishService;
 import uk.gov.ons.fwmt.legacy_gateway.service.TMService;
 
 import static org.junit.Assert.*;
+import static uk.gov.ons.fwmt.legacy_gateway.service.impl.LegacyJobPublishServiceImpl.JOB_QUEUE;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LegacyJobPublishServiceImplTest {
@@ -59,13 +60,14 @@ public class LegacyJobPublishServiceImplTest {
   public void makeSendMessageRequestInfo() {
     //Given
     String expectedKey = "testKey";
-    SendMessageRequestInfo sendMessageRequestInfo = new SendMessageRequestInfo();
+
 
     //When
-    sendMessageRequestInfo.setKey(expectedKey);
+    SendMessageRequestInfo result = legacyJobPublishServiceImpl.makeSendMessageRequestInfo(expectedKey);
 
     //Then
-    assertEquals(expectedKey,);
+    assertEquals(expectedKey,result.getKey());
+    assertEquals(JOB_QUEUE,result.getQueueName());
 
   }
 
