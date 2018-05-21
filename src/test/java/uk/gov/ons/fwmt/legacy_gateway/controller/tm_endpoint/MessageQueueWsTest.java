@@ -3,7 +3,6 @@ package uk.gov.ons.fwmt.legacy_gateway.controller.tm_endpoint;
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.*;
 import org.junit.Test;
 
-import javax.management.Query;
 import javax.xml.bind.JAXBElement;
 
 import static org.junit.Assert.*;

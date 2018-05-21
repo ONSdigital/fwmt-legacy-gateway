@@ -1,7 +1,6 @@
 package uk.gov.ons.fwmt.legacy_gateway.service.impl;
 
 import com.consiliumtechnologies.schemas.mobile._2009._03.visitstypes.AdditionalPropertyCollectionType;
-import com.consiliumtechnologies.schemas.mobile._2009._03.visitstypes.AdditionalPropertyType;
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.CreateJobRequest;
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.JobType;
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendMessageRequestInfo;
@@ -10,11 +9,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacySampleIngest;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMJobRepo;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMUserRepo;
-import uk.gov.ons.fwmt.legacy_gateway.service.LegacyJobPublishService;
-import uk.gov.ons.fwmt.legacy_gateway.service.LegacyStaffPublishService;
 import uk.gov.ons.fwmt.legacy_gateway.service.TMService;
 
 import static org.junit.Assert.*;
