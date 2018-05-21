@@ -5,7 +5,6 @@ import com.consiliumtechnologies.schemas.mobile._2009._03.commonmessages.SubmitD
 import com.consiliumtechnologies.schemas.mobile._2009._03.visitsmessages.CompleteVisitRequest;
 import com.consiliumtechnologies.schemas.mobile._2009._03.visitsmessages.RequestVisitRequest;
 import com.consiliumtechnologies.schemas.mobile._2009._03.visitsmessages.UpdateVisitStatusRequest;
-import com.consiliumtechnologies.schemas.mobile._2009._07.formsmessages.ObjectFactory;
 import com.consiliumtechnologies.schemas.mobile._2009._07.formsmessages.SubmitFormResultRequest;
 import com.consiliumtechnologies.schemas.mobile._2009._09.compositemessages.CompositeVisitRequest;
 import org.junit.Test;
