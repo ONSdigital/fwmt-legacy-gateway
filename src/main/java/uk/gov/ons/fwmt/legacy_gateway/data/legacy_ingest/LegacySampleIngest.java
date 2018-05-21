@@ -294,7 +294,7 @@ public class LegacySampleIngest {
 
   public boolean isGffReissue() {
     return (this.getLegacySampleSurveyType() == LegacySampleSurveyType.GFF) &&
-        (Integer.parseInt(this.getStage().substring(1, 2)) > 12);
+        (Integer.parseInt(this.getStage().substring(1, 3)) > 12);
   }
 
 }
