@@ -31,7 +31,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
   private static final String JOB_SKILL = "Survey";
   private static final String JOB_WORK_TYPE = "SS";
   private static final String JOB_WORLD = "Default";
-  private static final String JOB_QUEUE = "\\OPTIMISE\\INPUT";
+  protected static final String JOB_QUEUE = "\\OPTIMISE\\INPUT";
 
   private final TMService tmService;
   private final TMJobRepo tmJobRepo;
@@ -62,7 +62,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     request.setJob(job);
     job.setLocation(new LocationType());
     job.setIdentity(new JobIdentityType());
-//    job.setMandatoryResource(new ResourceIdentityType());
+    // job.setMandatoryResource(new ResourceIdentityType());
     job.getLocation().setAddressDetail(new AddressDetailType());
     job.getLocation().getAddressDetail().setLines(new AddressDetailType.Lines());
     job.setContact(new ContactInfoType());
