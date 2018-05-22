@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.legacy_gateway.service.webdriver;
+package uk.gov.ons.fwmt.legacy_gateway.service;
 
 import uk.gov.ons.fwmt.legacy_gateway.data.tm.UserForm;
 

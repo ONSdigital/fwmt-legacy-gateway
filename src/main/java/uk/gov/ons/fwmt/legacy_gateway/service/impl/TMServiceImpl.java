@@ -21,8 +21,8 @@ import java.util.Map;
  * This service handles all of the interactions between this legacy_gateway and TotalMobile
  * This interaction largely consists of sending messages in SOAP format
  */
-@Service
 @Slf4j
+@Service
 public class TMServiceImpl extends WebServiceGatewaySupport implements TMService {
   // A lookup detailing the instances where the message name does not translate easily into a SOAP action
   // Normally, we assume that the SOAP action is equal to the class name with the word 'Response' at the end removed

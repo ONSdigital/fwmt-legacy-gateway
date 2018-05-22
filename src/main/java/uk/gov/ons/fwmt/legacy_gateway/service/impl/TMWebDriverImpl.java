@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.legacy_gateway.service.webdriver.impl;
+package uk.gov.ons.fwmt.legacy_gateway.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
@@ -7,7 +7,7 @@ import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.ons.fwmt.legacy_gateway.data.tm.UserForm;
-import uk.gov.ons.fwmt.legacy_gateway.service.webdriver.TMWebDriver;
+import uk.gov.ons.fwmt.legacy_gateway.service.TMWebDriver;
 
 import java.io.IOException;
 import java.util.List;

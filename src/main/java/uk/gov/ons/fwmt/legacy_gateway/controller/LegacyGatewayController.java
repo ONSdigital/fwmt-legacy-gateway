@@ -21,6 +21,7 @@ import uk.gov.ons.fwmt.legacy_gateway.data.dto.StaffSummaryDTO;
 import uk.gov.ons.fwmt.legacy_gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.legacy_gateway.error.MediaTypeNotSupportedException;
 import uk.gov.ons.fwmt.legacy_gateway.service.FileIngestService;
+import uk.gov.ons.fwmt.legacy_gateway.service.LegacyService;
 
 import java.io.IOException;
 
@@ -35,11 +36,11 @@ import java.io.IOException;
 @Slf4j
 @RestController
 public class LegacyGatewayController {
-  private final FileIngestService fileIngestService;
+  private final LegacyService legacyService;
 
   @Autowired
-  public LegacyGatewayController(FileIngestService fileIngestService) {
-    this.fileIngestService = fileIngestService;
+  public LegacyGatewayController(LegacyService legacyService) {
+    this.legacyService = legacyService;
   }
 
   @RequestMapping(value = "/samples", method = RequestMethod.POST, produces = "application/json")
@@ -52,7 +53,7 @@ public class LegacyGatewayController {
       RedirectAttributes redirectAttributes)
       throws IOException, InvalidFileNameException, MediaTypeNotSupportedException {
     log.info("Entered sample endpoint");
-    SampleSummaryDTO summary = fileIngestService.ingestSampleFile(file);
+    SampleSummaryDTO summary = legacyService.processSampleFile(file);
     log.info("Exited sample endpoint");
     return ResponseEntity.ok(summary);
 
@@ -68,7 +69,7 @@ public class LegacyGatewayController {
       RedirectAttributes redirectAttributes)
       throws IOException, InvalidFileNameException, MediaTypeNotSupportedException {
     log.info("Entered staff endpoint");
-    StaffSummaryDTO summary = fileIngestService.ingestStaffFile(file);
+    StaffSummaryDTO summary = legacyService.processStaffFile(file);
     log.info("Exited staff endpoint");
     return ResponseEntity.ok(summary);
   }

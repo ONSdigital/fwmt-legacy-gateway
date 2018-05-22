@@ -1,6 +1,9 @@
 package uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.apache.commons.csv.CSVRecord;
 import uk.gov.ons.fwmt.legacy_gateway.data.annotation.CSVColumn;
 import uk.gov.ons.fwmt.legacy_gateway.data.annotation.JobAdditionalProperty;
@@ -9,10 +12,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Data
+@NoArgsConstructor
 public class LegacySampleIngest {
   // TODO should this be 'TransmissionDate'?
   @CSVColumn(value = "Transmission_Date", mandatory = true)
-  private final String timestamp;
+  private String timestamp;
 
   // TODO should this be 'SERNO' for LFS?
   @CSVColumn(values = {
@@ -20,143 +24,143 @@ public class LegacySampleIngest {
       @CSVColumn.Mapping(value = "Serno", when = "LFS"),
   }, mandatory = true)
   @JobAdditionalProperty("serno")
-  private final String serNo;
+  private String serNo;
 
   @CSVColumn(value = "TLA", mandatory = true)
   @JobAdditionalProperty("TLA")
-  private final String tla;
+  private String tla;
 
   @CSVColumn(values = {
       @CSVColumn.Mapping(value = "Stage", when = "GFF"),
       @CSVColumn.Mapping(value = "FP", when = "LFS"),
   }, mandatory = true)
   @JobAdditionalProperty("week")
-  private final String stage;
+  private String stage;
 
   @CSVColumn(values = {
       @CSVColumn.Mapping(value = "Wave", when = "GFF"),
       @CSVColumn.Mapping(value = "THISWV", when = "LFS"),
   }, mandatory = true)
   @JobAdditionalProperty("wave")
-  private final String wave;
+  private String wave;
 
   @CSVColumn(values = {
       @CSVColumn.Mapping(value = "Prem1", when = "GFF"),
       @CSVColumn.Mapping(value = "PREM1", when = "LFS"),
   }, mandatory = true)
   @JobAdditionalProperty("prem1")
-  private final String addressLine1;
+  private String addressLine1;
 
   @CSVColumn(values = {
       @CSVColumn.Mapping(value = "Prem2", when = "GFF"),
       @CSVColumn.Mapping(value = "PREM2", when = "LFS"),
   })
   @JobAdditionalProperty("prem2")
-  private final String addressLine2;
+  private String addressLine2;
 
   @CSVColumn(values = {
       @CSVColumn.Mapping(value = "Prem3", when = "GFF"),
       @CSVColumn.Mapping(value = "PREM3", when = "LFS"),
   })
   @JobAdditionalProperty("prem3")
-  private final String addressLine3;
+  private String addressLine3;
 
   @CSVColumn(values = {
       @CSVColumn.Mapping(value = "Prem4", when = "GFF"),
       @CSVColumn.Mapping(value = "PREM4", when = "LFS"),
   })
   @JobAdditionalProperty("prem4")
-  private final String addressLine4;
+  private String addressLine4;
 
   @CSVColumn(values = {
       @CSVColumn.Mapping(value = "District", when = "GFF"),
       @CSVColumn.Mapping(value = "DISTRICT", when = "LFS"),
   })
   @JobAdditionalProperty("district")
-  private final String district;
+  private String district;
 
   @CSVColumn(values = {
       @CSVColumn.Mapping(value = "PostTown", when = "GFF"),
       @CSVColumn.Mapping(value = "POSTTOWN", when = "LFS"),
   })
   @JobAdditionalProperty("postTown")
-  private final String postTown;
+  private String postTown;
 
   @CSVColumn(values = {
       @CSVColumn.Mapping(value = "Postcode", when = "GFF"),
       @CSVColumn.Mapping(value = "POSTCODE", when = "LFS"),
   }, mandatory = true)
   @JobAdditionalProperty("postCode")
-  private final String postcode;
+  private String postcode;
 
   @CSVColumn(values = {
       @CSVColumn.Mapping(value = "Quota", when = "GFF"),
       @CSVColumn.Mapping(value = "QUOTA", when = "LFS"),
   })
   @JobAdditionalProperty("quotaNo")
-  private final String quota;
+  private String quota;
 
   @CSVColumn(values = {
       @CSVColumn.Mapping(value = "AddressNo", when = "GFF"),
       @CSVColumn.Mapping(value = "ADDR", when = "LFS"),
   })
   @JobAdditionalProperty("addressNo")
-  private final String addressNo;
+  private String addressNo;
 
   @CSVColumn(values = {
       @CSVColumn.Mapping(value = "OSGridRef", when = "GFF"),
       @CSVColumn.Mapping(value = "OSGRIDREF", when = "LFS"),
   })
-  private final String osGridRef;
+  private String osGridRef;
 
   @CSVColumn("Year")
   @JobAdditionalProperty("year")
-  private final String year;
+  private String year;
 
   @CSVColumn("Month")
   @JobAdditionalProperty("month")
-  private final String month;
+  private String month;
 
   @CSVColumn(values = {
       @CSVColumn.Mapping(value = "Telno", when = "GFF"),
       @CSVColumn.Mapping(value = "TELNO", when = "LFS"),
   })
   @JobAdditionalProperty("contactNo")
-  private final String telNo;
+  private String telNo;
 
   @CSVColumn("Issue_No")
-  private final String issueNo;
+  private String issueNo;
 
   @CSVColumn("Part")
-  private final String part;
+  private String part;
 
   @CSVColumn(value = "EmployeeNo", mandatory = true)
-  private final String employeeNo;
+  private String employeeNo;
 
   @CSVColumn(value = "Auth", mandatory = true)
-  private final String auth;
+  private String auth;
 
   @CSVColumn("Last_Updated")
-  private final String lastUpdated;
+  private String lastUpdated;
 
   // Data that is specific surveys
-  private final LegacySampleSurveyType legacySampleSurveyType;
-  private final LegacySampleGFFDataIngest gffData;
-  private final LegacySampleLFSDataIngest lfsData;
+  private LegacySampleSurveyType legacySampleSurveyType;
+  private LegacySampleGFFDataIngest gffData;
+  private LegacySampleLFSDataIngest lfsData;
 
   // // // Derived Fields
   // These are fields derived from the contents of the CSV, but do not map to a
   // specific column
 
-  public final String tmJobId;
+  public String tmJobId;
   public String legacyJobId;
-  public final Date dueDate;
+  public Date dueDate;
 
   @JobAdditionalProperty("geoX")
-  public final Float geoX;
+  public Float geoX;
 
   @JobAdditionalProperty("geoY")
-  public final Float geoY;
+  public Float geoY;
 
   protected static String constructTmJobId(CSVRecord record, LegacySampleSurveyType surveyType) {
     switch (surveyType) {

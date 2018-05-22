@@ -1,21 +1,21 @@
 package uk.gov.ons.fwmt.legacy_gateway.service.impl;
 
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import uk.gov.ons.fwmt.legacy_gateway.data.csv_parser.CSVParseResult;
+import uk.gov.ons.fwmt.legacy_gateway.data.csv_parser.CSVParseFinalResult;
 import uk.gov.ons.fwmt.legacy_gateway.data.dto.SampleSummaryDTO;
 import uk.gov.ons.fwmt.legacy_gateway.data.dto.StaffSummaryDTO;
+import uk.gov.ons.fwmt.legacy_gateway.data.file_ingest.FileIngest;
+import uk.gov.ons.fwmt.legacy_gateway.data.file_ingest.Filename;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacySampleSurveyType;
 import uk.gov.ons.fwmt.legacy_gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.legacy_gateway.error.MediaTypeNotSupportedException;
-import uk.gov.ons.fwmt.legacy_gateway.service.CSVParsingService;
 import uk.gov.ons.fwmt.legacy_gateway.service.FileIngestService;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -32,23 +32,6 @@ public class FileIngestServiceImpl implements FileIngestService {
   public static final DateTimeFormatter TIMESTAMP_FORMAT_WINDOWS = DateTimeFormatter
       .ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
 
-  private CSVParsingService csvParsingService;
-
-  @Autowired
-  public FileIngestServiceImpl(CSVParsingService csvParsingService) {
-    this.csvParsingService = csvParsingService;
-  }
-
-  /**
-   * This class describes a filename as seen by the FileIngesterService, split into constituent parts
-   */
-  @Data
-  private static class Filename {
-    private String endpoint;
-    private LegacySampleSurveyType tla;
-    private LocalDateTime timestamp;
-  }
-
   protected void verifyCSVFileMetadata(MultipartFile file) throws MediaTypeNotSupportedException {
     log.info("Began a file metadata check for a file with content " + file.getContentType());
 
@@ -63,8 +46,6 @@ public class FileIngestServiceImpl implements FileIngestService {
   protected Filename verifyCSVFilename(String rawFilename, String expectedEndpoint) throws InvalidFileNameException {
     log.info("Began a filename parse for " + rawFilename);
 
-    Filename filename = new Filename();
-
     // // Check extension
     String[] dotSplit = rawFilename.split("\\.");
     if (dotSplit.length != 2 || !("csv".equals(dotSplit[1]))) {
@@ -75,16 +56,16 @@ public class FileIngestServiceImpl implements FileIngestService {
     String[] underscoreSplit = dotSplit[0].split("_");
 
     // // Extract the endpoint
-    filename.setEndpoint(underscoreSplit[0]);
-    log.debug("File endpoint detected as " + filename.getEndpoint());
+    String endpoint = underscoreSplit[0];
+    log.debug("File endpoint detected as " + endpoint);
 
     // // Check the endpoint against expectations
     // Ensure that section 'B' matches our endpoint
-    if (!expectedEndpoint.equals(filename.getEndpoint())) {
-      throw new InvalidFileNameException(rawFilename, "File had an incorrect endpoint of " + filename.getEndpoint());
+    if (!expectedEndpoint.equals(endpoint)) {
+      throw new InvalidFileNameException(rawFilename, "File had an incorrect endpoint of " + endpoint);
     }
 
-    switch (filename.getEndpoint()) {
+    switch (endpoint) {
     case "staff":
       if (underscoreSplit.length != 2)
         throw new InvalidFileNameException(rawFilename, "File names for staff should contain one underscore");
@@ -94,20 +75,21 @@ public class FileIngestServiceImpl implements FileIngestService {
         throw new InvalidFileNameException(rawFilename, "File names for samples should contain two underscores");
       break;
     default:
-      throw new IllegalArgumentException("File had an unrecognized endpoint of " + filename.getEndpoint());
+      throw new IllegalArgumentException("File had an unrecognized endpoint of " + endpoint);
     }
 
     // // Validate the TLA
     // Only for the "sample" endpoint
-    if (filename.getEndpoint().equals("sample")) {
+    LegacySampleSurveyType tla = null;
+    if (endpoint.equals("sample")) {
       String tlaString = underscoreSplit[1];
       log.debug("File TLA detected as " + tlaString);
       switch (tlaString) {
       case "LFS":
-        filename.setTla(LegacySampleSurveyType.LFS);
+        tla = LegacySampleSurveyType.LFS;
         break;
       case "GFF":
-        filename.setTla(LegacySampleSurveyType.GFF);
+        tla = LegacySampleSurveyType.GFF;
         break;
       default:
         throw new IllegalArgumentException("File had an unrecognized TLA of " + tlaString);
@@ -117,15 +99,14 @@ public class FileIngestServiceImpl implements FileIngestService {
     // // Validate the timestamp
     // The timestamp is always the last part of the underscore-delimited section
     String rawTimestamp = underscoreSplit[underscoreSplit.length - 1];
+    LocalDateTime timestamp;
     log.debug("File timestamp detected as " + rawTimestamp);
     try {
-      LocalDateTime time = LocalDateTime.parse(rawTimestamp, TIMESTAMP_FORMAT_WINDOWS);
-      filename.setTimestamp(time);
+      timestamp = LocalDateTime.parse(rawTimestamp, TIMESTAMP_FORMAT_WINDOWS);
     } catch (DateTimeParseException e) {
       log.warn("Failed to parse a windows timestamp, trying a linux timestamp");
       try {
-        LocalDateTime time = LocalDateTime.parse(rawTimestamp, TIMESTAMP_FORMAT_LINUX);
-        filename.setTimestamp(time);
+        timestamp = LocalDateTime.parse(rawTimestamp, TIMESTAMP_FORMAT_LINUX);
       } catch (DateTimeParseException f) {
         log.error("Failed to parse a windows timestamp", e);
         log.error("Failed to parse a linux timestamp", f);
@@ -136,53 +117,32 @@ public class FileIngestServiceImpl implements FileIngestService {
 
     log.info("Passed a filename check");
 
-    return filename;
+    return new Filename(endpoint, tla, timestamp);
   }
 
-  public SampleSummaryDTO ingestSampleFile(MultipartFile file)
+  public FileIngest ingestSampleFile(MultipartFile file)
       throws IOException, InvalidFileNameException, MediaTypeNotSupportedException {
-    log.info("Began a sample file ingest");
-
     // check the file metadata
     verifyCSVFileMetadata(file);
 
     // check filename
     Filename filename = verifyCSVFilename(file.getOriginalFilename(), "sample");
 
-    // parse csv
-    // lines are sent to TM and recorded in the database
-    CSVParseResult result = csvParsingService
-        .parseLegacySample(new InputStreamReader(file.getInputStream()), filename.getTla());
+    Reader reader = new InputStreamReader(file.getInputStream());
 
-    // construct reply
-    SampleSummaryDTO summary = new SampleSummaryDTO(file.getOriginalFilename(), result.getParsedCount(),
-        result.getUnprocessedCSVRows());
-
-    log.info("Ended a sample file ingest");
-
-    return summary;
+    return new FileIngest(filename, reader);
   }
 
-  public StaffSummaryDTO ingestStaffFile(MultipartFile file)
+  public FileIngest ingestStaffFile(MultipartFile file)
       throws IOException, InvalidFileNameException, MediaTypeNotSupportedException {
-    log.info("Began a staff file ingest");
-
     // check the file metadata
     verifyCSVFileMetadata(file);
 
     // check filename
-    verifyCSVFilename(file.getOriginalFilename(), "staff");
+    Filename filename = verifyCSVFilename(file.getOriginalFilename(), "staff");
 
-    // parse csv
-    // lines are recorded in the database
-    // TODO determine where the 'result' of the staff delta goes
-    CSVParseResult result = csvParsingService.parseLegacyStaff(new InputStreamReader(file.getInputStream()));
+    Reader reader = new InputStreamReader(file.getInputStream());
 
-    // construct reply
-    StaffSummaryDTO summary = new StaffSummaryDTO(file.getOriginalFilename(), result.getParsedCount());
-
-    log.info("Ended a staff file ingest");
-
-    return summary;
+    return new FileIngest(filename, reader);
   }
 }

@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.legacy_gateway.service;
+package uk.gov.ons.fwmt.legacy_gateway.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

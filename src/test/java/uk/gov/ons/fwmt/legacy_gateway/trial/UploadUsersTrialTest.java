@@ -12,8 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.ons.fwmt.legacy_gateway.data.tm.UserForm;
 import uk.gov.ons.fwmt.legacy_gateway.entity.TMUserEntity;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMUserRepo;
-import uk.gov.ons.fwmt.legacy_gateway.service.webdriver.TMWebDriver;
-import uk.gov.ons.fwmt.legacy_gateway.service.webdriver.impl.TMWebDriverImpl;
+import uk.gov.ons.fwmt.legacy_gateway.service.TMWebDriver;
 
 import java.io.File;
 import java.io.FileInputStream;

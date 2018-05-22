@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.ons.fwmt.legacy_gateway.data.tm.UserForm;
-import uk.gov.ons.fwmt.legacy_gateway.service.webdriver.TMWebDriver;
-import uk.gov.ons.fwmt.legacy_gateway.service.webdriver.impl.TMWebDriverImpl;
+import uk.gov.ons.fwmt.legacy_gateway.service.impl.TMWebDriverImpl;
 
 import java.io.IOException;
 

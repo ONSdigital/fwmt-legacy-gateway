@@ -14,8 +14,7 @@ public class FileMetadataTest {
   private FileIngestServiceImpl fileIngestServiceImpl;
 
   public FileMetadataTest() {
-    CSVParsingServiceImpl csvParsingServiceImplMock = Mockito.mock(CSVParsingServiceImpl.class);
-    this.fileIngestServiceImpl = new FileIngestServiceImpl(csvParsingServiceImplMock);
+    this.fileIngestServiceImpl = new FileIngestServiceImpl();
   }
 
   @Test

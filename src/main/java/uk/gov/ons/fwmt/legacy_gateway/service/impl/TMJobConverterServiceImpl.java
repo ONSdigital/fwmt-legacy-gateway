@@ -17,8 +17,7 @@ import uk.gov.ons.fwmt.legacy_gateway.entity.TMUserEntity;
 import uk.gov.ons.fwmt.legacy_gateway.error.UnknownUserException;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMJobRepo;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMUserRepo;
-import uk.gov.ons.fwmt.legacy_gateway.service.LegacyJobPublishService;
-import uk.gov.ons.fwmt.legacy_gateway.service.TMService;
+import uk.gov.ons.fwmt.legacy_gateway.service.TMJobConverterService;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -27,13 +26,12 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
+public class TMJobConverterServiceImpl implements TMJobConverterService {
   private static final String JOB_SKILL = "Survey";
   private static final String JOB_WORK_TYPE = "SS";
   private static final String JOB_WORLD = "Default";
   private static final String JOB_QUEUE = "\\OPTIMISE\\INPUT";
 
-  private final TMService tmService;
   private final TMJobRepo tmJobRepo;
   private final TMUserRepo tmUserRepo;
 
@@ -41,9 +39,8 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
   private final ObjectFactory factory = new ObjectFactory();
 
   @Autowired
-  public LegacyJobPublishServiceImpl(TMService tmService, TMJobRepo tmJobRepo, TMUserRepo tmUserRepo)
+  public TMJobConverterServiceImpl(TMJobRepo tmJobRepo, TMUserRepo tmUserRepo)
       throws DatatypeConfigurationException {
-    this.tmService = tmService;
     this.tmJobRepo = tmJobRepo;
     this.tmUserRepo = tmUserRepo;
   }
@@ -285,6 +282,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     return info;
   }
 
+  @Deprecated
   protected void reallocateJob(LegacySampleIngest job, String username) {
     UpdateJobHeaderRequest request = updateJobHeaderRequestFromIngest(job, username);
 
@@ -301,6 +299,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     tmJobRepo.save(entity);
   }
 
+  @Deprecated
   protected void newJob(LegacySampleIngest job, String username) {
     CreateJobRequest request = createJobRequestFromIngest(job, username);
 
@@ -308,7 +307,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     message.setSendMessageRequestInfo(makeSendMessageRequestInfo(job.getTmJobId()));
     message.setCreateJobRequest(request);
 
-    tmService.send(message);
+//    tmService.send(message);
 
     // save the job into our database
     TMJobEntity entity = new TMJobEntity();
@@ -317,6 +316,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     tmJobRepo.save(entity);
   }
 
+  @Deprecated
   protected void publishJobToUser(LegacySampleIngest job, TMUserEntity user) {
     log.info("User was active");
     // don't do anything if we've seen this job ID and authno before
@@ -354,6 +354,7 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
     }
   }
 
+  @Deprecated
   public void publishJob(LegacySampleIngest job) {
     // only send if the user is active
     if (tmUserRepo.existsByAuthNoAndActive(job.getAuth(), true)) {
@@ -369,6 +370,30 @@ public class LegacyJobPublishServiceImpl implements LegacyJobPublishService {
       log.error("User was not found");
       throw new UnknownUserException(job.getAuth());
     }
+  }
+
+  public CreateJobRequest createNewJob(LegacySampleIngest ingest, String username) {
+    CreateJobRequest request = createJobRequestFromIngest(ingest, username);
+
+    SendCreateJobRequestMessage message = new SendCreateJobRequestMessage();
+    message.setSendMessageRequestInfo(makeSendMessageRequestInfo(ingest.getTmJobId()));
+    message.setCreateJobRequest(request);
+
+    return request;
+  }
+
+  public UpdateJobHeaderRequest createReallocation(LegacySampleIngest ingest, String username) {
+    UpdateJobHeaderRequest request = updateJobHeaderRequestFromIngest(ingest, username);
+
+    SendUpdateJobHeaderRequestMessage message = new SendUpdateJobHeaderRequestMessage();
+    message.setSendMessageRequestInfo(makeSendMessageRequestInfo(ingest.getTmJobId()));
+    message.setUpdateJobHeaderRequest(request);
+
+    return request;
+  }
+
+  public CreateJobRequest createReissue(LegacySampleIngest ingest, String username) {
+    return createNewJob(ingest, username);
   }
 }
 

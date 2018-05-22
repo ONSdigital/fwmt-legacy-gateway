@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
+@Deprecated
 public class UnprocessedCSVRow {
   private final int row;
   private final String message;
