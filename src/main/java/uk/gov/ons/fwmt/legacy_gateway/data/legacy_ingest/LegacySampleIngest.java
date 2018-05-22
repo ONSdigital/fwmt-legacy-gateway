@@ -8,6 +8,7 @@ import org.apache.commons.csv.CSVRecord;
 import uk.gov.ons.fwmt.legacy_gateway.data.annotation.CSVColumn;
 import uk.gov.ons.fwmt.legacy_gateway.data.annotation.JobAdditionalProperty;
 
+import javax.annotation.PostConstruct;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -214,6 +215,14 @@ public class LegacySampleIngest {
     cal.set(Calendar.AM_PM, Calendar.PM);
     cal.add(Calendar.DATE, (7 * (week)) - 1);
     return cal.getTime();
+  }
+
+  @PostConstruct
+  public void afterPropertiesSet() {
+    // TODO complete
+
+
+    }
   }
 
   public LegacySampleIngest(CSVRecord record, LegacySampleSurveyType surveyType) {

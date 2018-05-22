@@ -68,17 +68,20 @@ public class LegacyServiceImpl implements LegacyService {
       if (result.isResult()) {
         LegacySampleIngest ingest = result.getResult();
         try {
+          log.info("Auth: " + ingest.getAuth());
           if (tmUserRepo.existsByAuthNo(ingest.getAuth())) {
             String username = tmUserRepo.findByAuthNo(ingest.getAuth()).getTmUsername();
             // TODO detect reallocations
             if (true) {
               CreateJobRequest request = tmJobConverterService.createNewJob(ingest, username);
               tmService.send(request);
-              tmJobRepo.save(new TMJobEntity());
+              log.info("TM Send");
+//              tmJobRepo.save(new TMJobEntity());
             } else {
               CreateJobRequest request = tmJobConverterService.createNewJob(ingest, username);
               tmService.send(request);
-              tmJobRepo.save(new TMJobEntity());
+              log.info("TM Else");
+//              tmJobRepo.save(new TMJobEntity());
             }
 
           }

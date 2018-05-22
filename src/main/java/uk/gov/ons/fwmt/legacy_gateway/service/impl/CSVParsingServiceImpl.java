@@ -12,6 +12,7 @@ import uk.gov.ons.fwmt.legacy_gateway.data.csv_parser.CSVParseResult;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacySampleIngest;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacySampleSurveyType;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacyStaffIngest;
+import uk.gov.ons.fwmt.legacy_gateway.error.CSVParsingException;
 import uk.gov.ons.fwmt.legacy_gateway.service.CSVParsingService;
 
 import java.io.IOException;
@@ -25,7 +26,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class CSVParsingServiceImpl implements CSVParsingService {
-  private static <T> T parseFromAnnotations(CSVRecord record, Class<T> tClass)
+  private static <T> T parseFromAnnotations(CSVRecord record, String pivot, Class<T> tClass)
       throws InstantiationException, IllegalAccessException {
     T target = tClass.newInstance();
     PropertyAccessor accessor = PropertyAccessorFactory.forBeanPropertyAccess(target);
@@ -35,8 +36,24 @@ public class CSVParsingServiceImpl implements CSVParsingService {
           .findFirst();
       if (annotation.isPresent()) {
         CSVColumn csvColumn = (CSVColumn) annotation.get();
-        String value = record.get(csvColumn.value());
-        accessor.setPropertyValue(field.getName(), value);
+        String columnName;
+        if (!csvColumn.value().isEmpty()) {
+          columnName = csvColumn.value();
+        } else if (csvColumn.values().length > 0) {
+          Optional<CSVColumn.Mapping> mapping = Arrays.stream(csvColumn.values())
+              .filter(m -> m.when().equals(pivot))
+              .findFirst();
+          if (mapping.isPresent()) {
+            columnName = mapping.get().value();
+          } else {
+            throw new IllegalArgumentException("Given pivot does not occur in the CSVColumn annotation");
+          }
+        } else {
+          throw new IllegalStateException("CSVColumn lacked a 'value' or 'values' field");
+        }
+        if (record.isSet(columnName) || csvColumn.mandatory()) {
+          accessor.setPropertyValue(field.getName(), record.get(columnName));
+        }
       }
     }
     return target;
@@ -52,7 +69,7 @@ public class CSVParsingServiceImpl implements CSVParsingService {
     return new CSVIterator<LegacySampleIngest>(parser) {
       @Override
       public LegacySampleIngest ingest(CSVRecord record) throws IllegalAccessException, InstantiationException {
-        return parseFromAnnotations(record, LegacySampleIngest.class);
+        return parseFromAnnotations(record, "GFF", LegacySampleIngest.class);
       }
     };
   }
@@ -61,8 +78,8 @@ public class CSVParsingServiceImpl implements CSVParsingService {
     CSVParser parser = getCSVFormat().parse(reader);
     return new CSVIterator<LegacyStaffIngest>(parser) {
       @Override
-      public LegacyStaffIngest ingest(CSVRecord record) throws IllegalAccessException, InstantiationException  {
-        return parseFromAnnotations(record, LegacyStaffIngest.class);
+      public LegacyStaffIngest ingest(CSVRecord record) throws IllegalAccessException, InstantiationException {
+        return parseFromAnnotations(record, null, LegacyStaffIngest.class);
       }
     };
   }
@@ -92,6 +109,7 @@ public class CSVParsingServiceImpl implements CSVParsingService {
         T result = ingest(record);
         return CSVParseResult.withResult(rowNumber, result);
       } catch (Exception e) {
+        log.error("Error in CSV parser", e);
         return CSVParseResult.withError(rowNumber, e.toString());
       }
     }
