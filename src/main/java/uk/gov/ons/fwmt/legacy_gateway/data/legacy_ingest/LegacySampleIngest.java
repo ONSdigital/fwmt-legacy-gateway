@@ -222,7 +222,6 @@ public class LegacySampleIngest {
     // TODO complete
 
 
-    }
   }
 
   public LegacySampleIngest(CSVRecord record, LegacySampleSurveyType surveyType) {
