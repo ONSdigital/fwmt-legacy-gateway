@@ -53,7 +53,9 @@ public class CSVParsingServiceImpl implements CSVParsingService {
         } else {
           throw new IllegalStateException("CSVColumn lacked a 'value' or 'values' field");
         }
-        if (record.isSet(columnName) || csvColumn.mandatory()) {
+        // if it's mandatory or set, try
+        // if it's ignored, don't try
+        if ((record.isSet(columnName) || csvColumn.mandatory()) && !csvColumn.ignored()) {
           accessor.setPropertyValue(field.getName(), record.get(columnName));
         }
       }
