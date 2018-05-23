@@ -20,7 +20,6 @@ import uk.gov.ons.fwmt.legacy_gateway.data.dto.SampleSummaryDTO;
 import uk.gov.ons.fwmt.legacy_gateway.data.dto.StaffSummaryDTO;
 import uk.gov.ons.fwmt.legacy_gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.legacy_gateway.error.MediaTypeNotSupportedException;
-import uk.gov.ons.fwmt.legacy_gateway.service.FileIngestService;
 import uk.gov.ons.fwmt.legacy_gateway.service.LegacyService;
 
 import java.io.IOException;

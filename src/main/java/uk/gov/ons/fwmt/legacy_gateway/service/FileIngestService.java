@@ -1,7 +1,6 @@
 package uk.gov.ons.fwmt.legacy_gateway.service;
 
 import org.springframework.web.multipart.MultipartFile;
-import uk.gov.ons.fwmt.legacy_gateway.data.dto.StaffSummaryDTO;
 import uk.gov.ons.fwmt.legacy_gateway.data.file_ingest.FileIngest;
 import uk.gov.ons.fwmt.legacy_gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.legacy_gateway.error.MediaTypeNotSupportedException;

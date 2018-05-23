@@ -12,7 +12,6 @@ import uk.gov.ons.fwmt.legacy_gateway.data.dto.StaffSummaryDTO;
 import uk.gov.ons.fwmt.legacy_gateway.data.file_ingest.FileIngest;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacySampleIngest;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacyStaffIngest;
-import uk.gov.ons.fwmt.legacy_gateway.entity.TMJobEntity;
 import uk.gov.ons.fwmt.legacy_gateway.error.InvalidFileNameException;
 import uk.gov.ons.fwmt.legacy_gateway.error.MediaTypeNotSupportedException;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMJobRepo;

@@ -2,7 +2,6 @@ package uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.csv.CSVRecord;
 import uk.gov.ons.fwmt.legacy_gateway.data.annotation.CSVColumn;
 
 @Data

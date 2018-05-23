@@ -7,7 +7,6 @@ import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacyStaffIngest;
 import uk.gov.ons.fwmt.legacy_gateway.entity.TMUserEntity;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMUserRepo;
 import uk.gov.ons.fwmt.legacy_gateway.service.LegacyStaffPublishService;
-import uk.gov.ons.fwmt.legacy_gateway.service.TMService;
 
 import java.util.List;
 import java.util.stream.Collectors;
