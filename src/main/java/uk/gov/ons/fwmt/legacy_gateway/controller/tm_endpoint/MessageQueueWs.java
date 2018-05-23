@@ -14,6 +14,8 @@ import javax.xml.bind.JAXBElement;
 public class MessageQueueWs {
   private static final String NAMESPACE_URI = "http://schemas.consiliumtechnologies.com/services/mobile/2007/07/messaging";
 
+  private ObjectFactory objectFactory = new ObjectFactory();
+
   private void stub(String messageType) {
     log.debug("Found message type > " + messageType);
   }
@@ -23,7 +25,6 @@ public class MessageQueueWs {
   public JAXBElement<SendMessageResponse> sendMessage(@RequestPayload JAXBElement<SendMessageRequest> request) {
     stub("SendMessage");
     SendMessageResponse response = new SendMessageResponse();
-    ObjectFactory objectFactory = new ObjectFactory();
     return objectFactory.createSendMessageResponse(response);
   }
 
@@ -33,7 +34,6 @@ public class MessageQueueWs {
       @RequestPayload JAXBElement<TransformAndSendRequest> request) {
     stub("TransformAndSendMessage");
     TransformAndSendResponse response = new TransformAndSendResponse();
-    ObjectFactory objectFactory = new ObjectFactory();
     return objectFactory.createTransformAndSendResponse(response);
   }
 
@@ -42,7 +42,6 @@ public class MessageQueueWs {
   public JAXBElement<QueryMessagesResponse> query(@RequestPayload JAXBElement<QueryMessagesRequest> request) {
     stub("Query");
     QueryMessagesResponse response = new QueryMessagesResponse();
-    ObjectFactory objectFactory = new ObjectFactory();
     return objectFactory.createQueryMessagesResponse(response);
   }
 
@@ -51,7 +50,6 @@ public class MessageQueueWs {
   public JAXBElement<GetMessageResponse> get(@RequestPayload JAXBElement<GetMessageRequest> request) {
     stub("Get");
     GetMessageResponse response = new GetMessageResponse();
-    ObjectFactory objectFactory = new ObjectFactory();
     return objectFactory.createGetMessageResponse(response);
   }
 
@@ -60,7 +58,6 @@ public class MessageQueueWs {
   public JAXBElement<DeleteMessageResponse> delete(@RequestPayload JAXBElement<DeleteMessageRequest> request) {
     stub("Delete");
     DeleteMessageResponse response = new DeleteMessageResponse();
-    ObjectFactory objectFactory = new ObjectFactory();
     return objectFactory.createDeleteMessageResponse(response);
   }
 
@@ -69,7 +66,6 @@ public class MessageQueueWs {
   public JAXBElement<RetryMessageResponse> retry(@RequestPayload JAXBElement<RetryMessageRequest> request) {
     stub("Retry");
     RetryMessageResponse response = new RetryMessageResponse();
-    ObjectFactory objectFactory = new ObjectFactory();
     return objectFactory.createRetryMessageResponse(response);
   }
 
@@ -78,7 +74,6 @@ public class MessageQueueWs {
   public JAXBElement<ResetMessageResponse> reset(@RequestPayload JAXBElement<ResetMessageRequest> request) {
     stub("Reset");
     ResetMessageResponse response = new ResetMessageResponse();
-    ObjectFactory objectFactory = new ObjectFactory();
     return objectFactory.createResetMessageResponse(response);
   }
 
