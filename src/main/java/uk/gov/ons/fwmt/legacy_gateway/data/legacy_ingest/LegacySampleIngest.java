@@ -153,15 +153,16 @@ public class LegacySampleIngest {
   // These are fields derived from the contents of the CSV, but do not map to a
   // specific column
 
-  public String tmJobId;
-  public String legacyJobId;
-  public Date dueDate;
+  private String tmJobId;
+  @Deprecated
+  private String legacyJobId;
+  private Date dueDate;
 
   @JobAdditionalProperty("geoX")
-  public Float geoX;
+  private Float geoX;
 
   @JobAdditionalProperty("geoY")
-  public Float geoY;
+  private Float geoY;
 
   protected static String constructTmJobId(CSVRecord record, LegacySampleSurveyType surveyType) {
     switch (surveyType) {
@@ -217,92 +218,85 @@ public class LegacySampleIngest {
     return cal.getTime();
   }
 
-  @PostConstruct
-  public void afterPropertiesSet() {
-    // TODO complete
-
-
-  }
-
-  public LegacySampleIngest(CSVRecord record, LegacySampleSurveyType surveyType) {
-    this.timestamp = record.get("Transmission_Date");
-    this.tla = record.get("TLA");
-    this.year = (record.isSet("Year")) ? record.get("Year") : null;
-    this.month = (record.isSet("Month")) ? record.get("Month") : null;
-    this.issueNo = (record.isSet("Issue_No")) ? record.get("Issue_No") : null;
-    this.part = (record.isSet("Part")) ? record.get("Part") : null;
-    this.employeeNo = record.get("EmployeeNo");
-    this.lastUpdated = (record.isSet("Last_Updated")) ? record.get("Last_Updated") : null;
-
-    this.tmJobId = constructTmJobId(record, surveyType);
-
-    switch (surveyType) {
-    case GFF:
-      this.serNo = record.get("Serno");
-      this.auth = record.get("Auth");
-      this.stage = record.get("Stage");
-      this.wave = record.get("Wave");
-      this.addressLine1 = record.get("Prem1");
-      this.addressLine2 = (record.isSet("Prem2")) ? record.get("Prem2") : null;
-      this.addressLine3 = (record.isSet("Prem3")) ? record.get("Prem3") : null;
-      this.addressLine4 = (record.isSet("Prem4")) ? record.get("Prem4") : null;
-      this.district = (record.isSet("District")) ? record.get("District") : null;
-      this.postTown = (record.isSet("PostTown")) ? record.get("PostTown") : null;
-      this.postcode = record.get("Postcode");
-      this.quota = (record.isSet("Quota")) ? record.get("Quota") : null;
-      this.addressNo = (record.isSet("AddressNo")) ? record.get("AddressNo") : null;
-      this.osGridRef = (record.isSet("OSGridRef")) ? record.get("OSGridRef") : null;
-      this.telNo = (record.isSet("Telno")) ? record.get("Telno") : null;
-
-      this.legacySampleSurveyType = LegacySampleSurveyType.GFF;
-      this.gffData = new LegacySampleGFFDataIngest(record);
-      this.lfsData = null;
-
-      this.dueDate = convertToGFFDate(this.stage);
-
-      break;
-    case LFS:
-      this.serNo = record.get("Serno");
-      this.stage = record.get("FP");
-      this.auth = record.get("Auth");
-      this.wave = record.get("THISWV");
-      this.addressLine1 = record.get("PREM1");
-      this.addressLine2 = (record.isSet("PREM2")) ? record.get("PREM2") : null;
-      this.addressLine3 = (record.isSet("PREM3")) ? record.get("PREM3") : null;
-      this.addressLine4 = (record.isSet("PREM4")) ? record.get("PREM4") : null;
-      this.district = (record.isSet("DISTRICT")) ? record.get("DISTRICT") : null;
-      this.postTown = (record.isSet("POSTTOWN")) ? record.get("POSTTOWN") : null;
-      this.postcode = record.get("POSTCODE");
-      this.quota = (record.isSet("QUOTA")) ? record.get("QUOTA") : null;
-      this.addressNo = (record.isSet("ADDR")) ? record.get("ADDR") : null;
-      this.osGridRef = (record.isSet("OSGRIDREF")) ? record.get("OSGRIDREF") : null;
-      this.telNo = (record.isSet("TELNO")) ? record.get("TELNO") : null;
-
-      this.legacySampleSurveyType = LegacySampleSurveyType.LFS;
-      this.gffData = null;
-      this.lfsData = new LegacySampleLFSDataIngest(record);
-
-      this.dueDate = convertToLFSDate(this.stage);
-
-      break;
-    default:
-      throw new IllegalArgumentException("Unknown survey type");
-    }
-
-    // derive the coordinates
-    if (this.osGridRef != null) {
-      // TODO Confirm this is correct with new data map
-      String[] osGridRefSplit = this.getOsGridRef().split(",", 2);
-      if (osGridRefSplit.length != 2) {
-        throw new IllegalArgumentException("OS Grid Reference was not in the expected format");
-      }
-      this.geoX = Float.parseFloat(osGridRefSplit[0]);
-      this.geoY = Float.parseFloat(osGridRefSplit[1]);
-    } else {
-      this.geoX = null;
-      this.geoY = null;
-    }
-  }
+//  public LegacySampleIngest(CSVRecord record, LegacySampleSurveyType surveyType) {
+//    this.timestamp = record.get("Transmission_Date");
+//    this.tla = record.get("TLA");
+//    this.year = (record.isSet("Year")) ? record.get("Year") : null;
+//    this.month = (record.isSet("Month")) ? record.get("Month") : null;
+//    this.issueNo = (record.isSet("Issue_No")) ? record.get("Issue_No") : null;
+//    this.part = (record.isSet("Part")) ? record.get("Part") : null;
+//    this.employeeNo = record.get("EmployeeNo");
+//    this.lastUpdated = (record.isSet("Last_Updated")) ? record.get("Last_Updated") : null;
+//
+//    this.tmJobId = constructTmJobId(record, surveyType);
+//
+//    switch (surveyType) {
+//    case GFF:
+//      this.serNo = record.get("Serno");
+//      this.auth = record.get("Auth");
+//      this.stage = record.get("Stage");
+//      this.wave = record.get("Wave");
+//      this.addressLine1 = record.get("Prem1");
+//      this.addressLine2 = (record.isSet("Prem2")) ? record.get("Prem2") : null;
+//      this.addressLine3 = (record.isSet("Prem3")) ? record.get("Prem3") : null;
+//      this.addressLine4 = (record.isSet("Prem4")) ? record.get("Prem4") : null;
+//      this.district = (record.isSet("District")) ? record.get("District") : null;
+//      this.postTown = (record.isSet("PostTown")) ? record.get("PostTown") : null;
+//      this.postcode = record.get("Postcode");
+//      this.quota = (record.isSet("Quota")) ? record.get("Quota") : null;
+//      this.addressNo = (record.isSet("AddressNo")) ? record.get("AddressNo") : null;
+//      this.osGridRef = (record.isSet("OSGridRef")) ? record.get("OSGridRef") : null;
+//      this.telNo = (record.isSet("Telno")) ? record.get("Telno") : null;
+//
+//      this.legacySampleSurveyType = LegacySampleSurveyType.GFF;
+//      this.gffData = new LegacySampleGFFDataIngest(record);
+//      this.lfsData = null;
+//
+//      this.dueDate = convertToGFFDate(this.stage);
+//
+//      break;
+//    case LFS:
+//      this.serNo = record.get("Serno");
+//      this.stage = record.get("FP");
+//      this.auth = record.get("Auth");
+//      this.wave = record.get("THISWV");
+//      this.addressLine1 = record.get("PREM1");
+//      this.addressLine2 = (record.isSet("PREM2")) ? record.get("PREM2") : null;
+//      this.addressLine3 = (record.isSet("PREM3")) ? record.get("PREM3") : null;
+//      this.addressLine4 = (record.isSet("PREM4")) ? record.get("PREM4") : null;
+//      this.district = (record.isSet("DISTRICT")) ? record.get("DISTRICT") : null;
+//      this.postTown = (record.isSet("POSTTOWN")) ? record.get("POSTTOWN") : null;
+//      this.postcode = record.get("POSTCODE");
+//      this.quota = (record.isSet("QUOTA")) ? record.get("QUOTA") : null;
+//      this.addressNo = (record.isSet("ADDR")) ? record.get("ADDR") : null;
+//      this.osGridRef = (record.isSet("OSGRIDREF")) ? record.get("OSGRIDREF") : null;
+//      this.telNo = (record.isSet("TELNO")) ? record.get("TELNO") : null;
+//
+//      this.legacySampleSurveyType = LegacySampleSurveyType.LFS;
+//      this.gffData = null;
+//      this.lfsData = new LegacySampleLFSDataIngest(record);
+//
+//      this.dueDate = convertToLFSDate(this.stage);
+//
+//      break;
+//    default:
+//      throw new IllegalArgumentException("Unknown survey type");
+//    }
+//
+//    // derive the coordinates
+//    if (this.osGridRef != null) {
+//      // TODO Confirm this is correct with new data map
+//      String[] osGridRefSplit = this.getOsGridRef().split(",", 2);
+//      if (osGridRefSplit.length != 2) {
+//        throw new IllegalArgumentException("OS Grid Reference was not in the expected format");
+//      }
+//      this.geoX = Float.parseFloat(osGridRefSplit[0]);
+//      this.geoY = Float.parseFloat(osGridRefSplit[1]);
+//    } else {
+//      this.geoX = null;
+//      this.geoY = null;
+//    }
+//  }
 
   public boolean isGffReissue() {
     return (this.getLegacySampleSurveyType() == LegacySampleSurveyType.GFF) &&
