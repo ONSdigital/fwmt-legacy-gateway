@@ -29,6 +29,7 @@ public class FileIngestServiceImpl implements FileIngestService {
   public static final DateTimeFormatter TIMESTAMP_FORMAT_WINDOWS = DateTimeFormatter
       .ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
 
+  @Deprecated
   protected void verifyCSVFileMetadata(MultipartFile file) throws MediaTypeNotSupportedException {
     log.info("Began a file metadata check for a file with content " + file.getContentType());
 
@@ -119,9 +120,6 @@ public class FileIngestServiceImpl implements FileIngestService {
 
   public FileIngest ingestSampleFile(MultipartFile file)
       throws IOException, InvalidFileNameException, MediaTypeNotSupportedException {
-    // check the file metadata
-    verifyCSVFileMetadata(file);
-
     // check filename
     Filename filename = verifyCSVFilename(file.getOriginalFilename(), "sample");
 
@@ -132,9 +130,6 @@ public class FileIngestServiceImpl implements FileIngestService {
 
   public FileIngest ingestStaffFile(MultipartFile file)
       throws IOException, InvalidFileNameException, MediaTypeNotSupportedException {
-    // check the file metadata
-    verifyCSVFileMetadata(file);
-
     // check filename
     Filename filename = verifyCSVFilename(file.getOriginalFilename(), "staff");
 
