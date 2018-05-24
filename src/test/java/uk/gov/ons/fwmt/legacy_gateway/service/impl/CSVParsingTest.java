@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.legacy_gateway.service;
+package uk.gov.ons.fwmt.legacy_gateway.service.impl;
 
 import org.junit.Before;
 import org.junit.Ignore;
