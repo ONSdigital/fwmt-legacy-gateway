@@ -30,7 +30,7 @@ public class TMJobConverterServiceImpl implements TMJobConverterService {
   private static final String JOB_SKILL = "Survey";
   private static final String JOB_WORK_TYPE = "SS";
   private static final String JOB_WORLD = "Default";
-  private static final String JOB_QUEUE = "\\OPTIMISE\\INPUT";
+  protected static final String JOB_QUEUE = "\\OPTIMISE\\INPUT";
 
   private final TMJobRepo tmJobRepo;
   private final TMUserRepo tmUserRepo;
@@ -59,7 +59,7 @@ public class TMJobConverterServiceImpl implements TMJobConverterService {
     request.setJob(job);
     job.setLocation(new LocationType());
     job.setIdentity(new JobIdentityType());
-//    job.setMandatoryResource(new ResourceIdentityType());
+    // job.setMandatoryResource(new ResourceIdentityType());
     job.getLocation().setAddressDetail(new AddressDetailType());
     job.getLocation().getAddressDetail().setLines(new AddressDetailType.Lines());
     job.setContact(new ContactInfoType());
@@ -126,8 +126,8 @@ public class TMJobConverterServiceImpl implements TMJobConverterService {
     addAdditionalProperty(request, "postCode", ingest.getPostcode());
     addAdditionalProperty(request, "quotaNo", ingest.getQuota());
     addAdditionalProperty(request, "addressNo", ingest.getAddressNo());
-    addAdditionalProperty(request, "geoX", ingest.getGeoX().toString());
-    addAdditionalProperty(request, "geoY", ingest.getGeoY().toString());
+    addAdditionalProperty(request, "geoX", (ingest.getGeoX() != null) ? ingest.getGeoX().toString() : "");
+    addAdditionalProperty(request, "geoY", (ingest.getGeoY() != null) ? ingest.getGeoY().toString() : "");
     addAdditionalProperty(request, "year", ingest.getYear());
     addAdditionalProperty(request, "month", ingest.getMonth());
     addAdditionalProperty(request, "contactNo", ingest.getTelNo());
@@ -292,8 +292,7 @@ public class TMJobConverterServiceImpl implements TMJobConverterService {
     message.setSendMessageRequestInfo(makeSendMessageRequestInfo(job.getTmJobId()));
     message.setUpdateJobHeaderRequest(request);
 
-    // TODO re-enable this
-//    tmService.send(message);
+    tmService.send(message);
 
     // save the job into our database
     TMJobEntity entity = tmJobRepo.findByTmJobId(job.getTmJobId());
