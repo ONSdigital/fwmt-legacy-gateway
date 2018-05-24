@@ -292,7 +292,7 @@ public class TMJobConverterServiceImpl implements TMJobConverterService {
     message.setSendMessageRequestInfo(makeSendMessageRequestInfo(job.getTmJobId()));
     message.setUpdateJobHeaderRequest(request);
 
-    tmService.send(message);
+//    tmService.send(message);
 
     // save the job into our database
     TMJobEntity entity = tmJobRepo.findByTmJobId(job.getTmJobId());
