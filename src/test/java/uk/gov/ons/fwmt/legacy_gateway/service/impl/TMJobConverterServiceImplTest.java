@@ -11,18 +11,17 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMJobRepo;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMUserRepo;
-import uk.gov.ons.fwmt.legacy_gateway.service.TMService;
+
 
 import static org.junit.Assert.*;
-import static uk.gov.ons.fwmt.legacy_gateway.service.impl.LegacyJobPublishServiceImpl.JOB_QUEUE;
+import static uk.gov.ons.fwmt.legacy_gateway.service.impl.TMJobConverterServiceImpl.JOB_QUEUE;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LegacyJobPublishServiceImplTest {
+public class TMJobConverterServiceImplTest {
 
   @InjectMocks
-  LegacyJobPublishServiceImpl legacyJobPublishServiceImpl;
+  TMJobConverterServiceImpl tmJobConverterService;
 
-  @Mock TMService tmService;
   @Mock TMJobRepo tmJobRepo;
   @Mock TMUserRepo tmUserRepo;
 
@@ -37,7 +36,7 @@ public class LegacyJobPublishServiceImplTest {
     createJobRequest.getJob().getAdditionalProperties();
 
     //When
-    legacyJobPublishServiceImpl.addAdditionalProperty(createJobRequest, expectedKey, expectedValue);
+    tmJobConverterService.addAdditionalProperty(createJobRequest, expectedKey, expectedValue);
 
     //Then
     assertEquals(expectedKey,createJobRequest.getJob().getAdditionalProperties().getAdditionalProperty().get(0).getName());
@@ -58,7 +57,7 @@ public class LegacyJobPublishServiceImplTest {
     String expectedKey = "testKey";
 
     //When
-    SendMessageRequestInfo result = legacyJobPublishServiceImpl.makeSendMessageRequestInfo(expectedKey);
+    SendMessageRequestInfo result = tmJobConverterService.makeSendMessageRequestInfo(expectedKey);
 
     //Then
     assertEquals(expectedKey,result.getKey());
