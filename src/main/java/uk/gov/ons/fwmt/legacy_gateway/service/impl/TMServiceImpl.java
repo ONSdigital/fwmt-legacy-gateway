@@ -29,51 +29,42 @@ public class TMServiceImpl extends WebServiceGatewaySupport implements TMService
   private static final Map<Class<?>, String> messageActionMap;
 
   // A list of all classes denoting valid TM messages
-  private static Class<?>[] knownMessageNames = {
-      SendMessageRequest.class, SendMessageResponse.class,
-      TransformAndSendRequest.class, TransformAndSendResponse.class,
-      QueryMessagesRequest.class, QueryMessagesResponse.class,
-      GetMessageRequest.class, GetMessageResponse.class,
-      DeleteMessageRequest.class, DeleteMessageResponse.class,
-      RetryMessageRequest.class, RetryMessageResponse.class,
-      ResetMessageRequest.class, ResetMessageResponse.class,
-      SendCreateVisitRequestMessage.class, SendCreateVisitRequestMessageResponse.class,
-      SendForceRecallVisitRequestMessage.class, SendForceRecallVisitRequestMessageResponse.class,
-      SendAddVisitTasksRequestMessage.class, SendAddVisitTasksRequestMessageResponse.class,
-      SendUpdateVisitScheduleRequestMessage.class, SendUpdateVisitScheduleRequestMessageResponse.class,
-      SendUpdateVisitHeaderRequestMessage.class, SendUpdateVisitHeaderRequestMessageResponse.class,
-      SendCreateBulletinRequestMessage.class, SendCreateBulletinRequestMessageResponse.class,
-      SendDeleteBulletinRequestMessage.class, SendDeleteBulletinRequestMessageResponse.class,
-      SendGenerateFolioContentRequestMessage.class, SendGenerateFolioContentRequestMessageResponse.class,
-      SendAddFolioContentRequestMessage.class, SendAddFolioContentRequestMessageResponse.class,
-      SendCreateReferralRequestMessage.class, SendCreateReferralRequestMessageResponse.class,
-      SendCreatePatientRequestMessage.class, SendCreatePatientRequestMessageResponse.class,
-      SendUpdateReferralRequestMessage.class, SendUpdateReferralRequestMessageResponse.class,
-      SendCreateAppointmentRequestMessage.class, SendCreateAppointmentRequestMessageResponse.class,
-      SendDischargeReferralRequestMessage.class, SendDischargeReferralRequestMessageResponse.class,
-      SendCreateJobRequestMessage.class, SendCreateJobRequestMessageResponse.class,
-      SendDeleteJobRequestMessage.class, SendDeleteJobRequestMessageResponse.class,
-      SendAddJobTasksRequestMessage.class, SendAddJobTasksRequestMessageResponse.class,
-      SendSaveAvailabilityRequestMessage.class, SendSaveAvailabilityRequestMessageResponse.class,
-      SendUpdateJobHeaderRequestMessage.class, SendUpdateJobHeaderRequestMessageResponse.class,
-  };
+  private static Class<?>[] knownRequestTypes = {
+      SendMessageRequest.class, TransformAndSendRequest.class, QueryMessagesRequest.class, GetMessageRequest.class,
+      DeleteMessageRequest.class, RetryMessageRequest.class, ResetMessageRequest.class,
+      SendCreateVisitRequestMessage.class, SendForceRecallVisitRequestMessage.class,
+      SendAddVisitTasksRequestMessage.class, SendUpdateVisitScheduleRequestMessage.class,
+      SendUpdateVisitHeaderRequestMessage.class, SendCreateBulletinRequestMessage.class,
+      SendDeleteBulletinRequestMessage.class, SendGenerateFolioContentRequestMessage.class,
+      SendAddFolioContentRequestMessage.class, SendCreateReferralRequestMessage.class,
+      SendCreatePatientRequestMessage.class, SendUpdateReferralRequestMessage.class,
+      SendCreateAppointmentRequestMessage.class, SendDischargeReferralRequestMessage.class,
+      SendCreateJobRequestMessage.class, SendDeleteJobRequestMessage.class,
+      SendAddJobTasksRequestMessage.class, SendSaveAvailabilityRequestMessage.class,
+      SendUpdateJobHeaderRequestMessage.class};
+  private static Class<?>[] knownResponseTypes = {
+      SendMessageResponse.class, TransformAndSendResponse.class, QueryMessagesResponse.class, GetMessageResponse.class,
+      DeleteMessageResponse.class, RetryMessageResponse.class, ResetMessageResponse.class,
+      SendCreateVisitRequestMessageResponse.class, SendForceRecallVisitRequestMessageResponse.class,
+      SendAddVisitTasksRequestMessageResponse.class, SendUpdateVisitScheduleRequestMessageResponse.class,
+      SendUpdateVisitHeaderRequestMessageResponse.class, SendCreateBulletinRequestMessageResponse.class,
+      SendDeleteBulletinRequestMessageResponse.class, SendGenerateFolioContentRequestMessageResponse.class,
+      SendAddFolioContentRequestMessageResponse.class, SendCreateReferralRequestMessageResponse.class,
+      SendCreatePatientRequestMessageResponse.class, SendUpdateReferralRequestMessageResponse.class,
+      SendCreateAppointmentRequestMessageResponse.class, SendDischargeReferralRequestMessageResponse.class,
+      SendCreateJobRequestMessageResponse.class, SendDeleteJobRequestMessageResponse.class,
+      SendAddJobTasksRequestMessageResponse.class, SendSaveAvailabilityRequestMessageResponse.class,
+      SendUpdateJobHeaderRequestMessageResponse.class};
 
   static {
     messageActionMap = new HashMap<>();
     messageActionMap.put(SendMessageRequest.class, "SendMessage");
-    messageActionMap.put(SendMessageResponse.class, "SendMessage");
     messageActionMap.put(TransformAndSendRequest.class, "TransformAndSendMessage");
-    messageActionMap.put(TransformAndSendResponse.class, "TransformAndSendMessage");
     messageActionMap.put(QueryMessagesRequest.class, "Query");
-    messageActionMap.put(QueryMessagesResponse.class, "Query");
     messageActionMap.put(GetMessageRequest.class, "Get");
-    messageActionMap.put(GetMessageResponse.class, "Get");
     messageActionMap.put(DeleteMessageRequest.class, "Delete");
-    messageActionMap.put(DeleteMessageResponse.class, "Delete");
     messageActionMap.put(RetryMessageRequest.class, "Retry");
-    messageActionMap.put(RetryMessageResponse.class, "Retry");
     messageActionMap.put(ResetMessageRequest.class, "Reset");
-    messageActionMap.put(ResetMessageResponse.class, "Reset");
   }
 
   private final String messageQueueUrl;
@@ -108,7 +99,7 @@ public class TMServiceImpl extends WebServiceGatewaySupport implements TMService
    * If we do not, we use the general case of removing the word 'Response'
    */
   private String lookupSOAPAction(Class<?> cl) {
-    if (!Arrays.asList(knownMessageNames).contains(cl)) {
+    if (!Arrays.asList(knownRequestTypes).contains(cl)) {
       throw new IllegalArgumentException("Message passed that does not match any TotalMobile message");
     }
     String className = cl.getSimpleName();
@@ -147,7 +138,7 @@ public class TMServiceImpl extends WebServiceGatewaySupport implements TMService
     @SuppressWarnings("unchecked")
     O response = (O) jaxbUnwrap(getWebServiceTemplate()
         .marshalSendAndReceive(messageQueueUrl, wrapped, new SoapActionCallback(soapAction)));
-    if (!Arrays.asList(knownMessageNames).contains(response.getClass())) {
+    if (!Arrays.asList(knownResponseTypes).contains(response.getClass())) {
       log.error("Message received from TM that does not match any TotalMobile message", response);
       throw new IllegalArgumentException("Message received from TM that does not match any TotalMobile message");
     }
