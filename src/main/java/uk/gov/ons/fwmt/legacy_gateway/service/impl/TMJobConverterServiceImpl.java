@@ -38,10 +38,18 @@ public class TMJobConverterServiceImpl implements TMJobConverterService {
   private static final String JOB_SKILL = "Survey";
   private static final String JOB_WORK_TYPE = "SS";
   private static final String JOB_WORLD = "Default";
+
   private final TMJobRepo tmJobRepo;
   private final TMUserRepo tmUserRepo;
   private final DatatypeFactory datatypeFactory = DatatypeFactory.newInstance();
   private final ObjectFactory factory = new ObjectFactory();
+
+  @Autowired
+  public TMJobConverterServiceImpl(TMJobRepo tmJobRepo, TMUserRepo tmUserRepo)
+      throws DatatypeConfigurationException {
+    this.tmJobRepo = tmJobRepo;
+    this.tmUserRepo = tmUserRepo;
+  }
 
   protected static void addAdditionalProperty(CreateJobRequest request, String key, String value) {
     AdditionalPropertyType propertyType = new AdditionalPropertyType();
@@ -52,7 +60,6 @@ public class TMJobConverterServiceImpl implements TMJobConverterService {
 
   /**
    * Read the JobAdditionalProperty annotations on the class T and set additional properties on the TM request
-   *
    */
   private static <T> void setFromAdditionalPropertyAnnotations(T instance, CreateJobRequest request) {
     Class<?> tClass = instance.getClass();
@@ -72,13 +79,6 @@ public class TMJobConverterServiceImpl implements TMJobConverterService {
         }
       }
     }
-  }
-
-  @Autowired
-  public TMJobConverterServiceImpl(TMJobRepo tmJobRepo, TMUserRepo tmUserRepo)
-      throws DatatypeConfigurationException {
-    this.tmJobRepo = tmJobRepo;
-    this.tmUserRepo = tmUserRepo;
   }
 
   protected CreateJobRequest createJobRequestFromIngest(LegacySampleIngest ingest, String username) {
