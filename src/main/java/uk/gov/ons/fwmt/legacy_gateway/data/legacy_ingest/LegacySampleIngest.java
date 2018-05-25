@@ -119,7 +119,7 @@ public class LegacySampleIngest {
 
   @CSVColumn(values = {
       @CSVColumn.Mapping(value = "Telno", when = "GFF"),
-      @CSVColumn.Mapping(value = "TELNO", when = "LFS"),
+      @CSVColumn.Mapping(value = "TELENO", when = "LFS"),
   })
   @JobAdditionalProperty("contactNo")
   private String telNo;

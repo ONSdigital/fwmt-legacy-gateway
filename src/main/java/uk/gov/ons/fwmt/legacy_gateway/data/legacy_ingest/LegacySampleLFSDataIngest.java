@@ -10,7 +10,7 @@ public class LegacySampleLFSDataIngest {
   @CSVColumn(value = "Quota_No", ignored = true)
   private String quotaNo;
 
-  @CSVColumn("RefDate")
+  @CSVColumn("REFDATE")
   private String refDate;
 
   @CSVColumn("LSTHO")
