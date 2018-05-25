@@ -9,14 +9,14 @@ public class InvalidFileNameException extends FWMTCommonException {
   }
 
   public InvalidFileNameException(String name) {
-    super(makeMessage(name, null));
+    super(ExceptionCode.INVALID_FILE_NAME, makeMessage(name, null));
   }
 
   public InvalidFileNameException(String name, String reason) {
-    super(makeMessage(name, reason));
+    super(ExceptionCode.INVALID_FILE_NAME, makeMessage(name, reason));
   }
 
   public InvalidFileNameException(String name, String reason, Exception cause) {
-    super(makeMessage(name, reason), cause);
+    super(ExceptionCode.INVALID_FILE_NAME, makeMessage(name, reason), cause);
   }
 }

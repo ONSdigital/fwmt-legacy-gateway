@@ -35,7 +35,7 @@ public class FileIngestServiceImpl implements FileIngestService {
 
     // // // Check metadata
     if (!"text/csv".equals(file.getContentType())) {
-      throw new MediaTypeNotSupportedException(file.getContentType(), "text/csv");
+      throw new MediaTypeNotSupportedException("text/csv", file.getContentType());
     }
 
     log.info("Passed a file metadata check");

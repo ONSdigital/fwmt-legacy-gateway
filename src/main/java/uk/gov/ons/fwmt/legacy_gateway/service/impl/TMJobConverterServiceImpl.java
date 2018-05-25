@@ -254,7 +254,7 @@ public class TMJobConverterServiceImpl implements TMJobConverterService {
   }
 
   @Deprecated
-  public void publishJob(LegacySampleIngest job) {
+  public void publishJob(LegacySampleIngest job) throws UnknownUserException {
     // only send if the user is active
     if (tmUserRepo.existsByAuthNoAndActive(job.getAuth(), true)) {
       TMUserEntity userEntity = tmUserRepo.findByAuthNo(job.getAuth());

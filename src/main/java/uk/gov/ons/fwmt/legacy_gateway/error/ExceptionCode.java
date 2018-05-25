@@ -1,0 +1,14 @@
+package uk.gov.ons.fwmt.legacy_gateway.error;
+
+public enum ExceptionCode {
+  UNKNOWN,
+  INVALID_FILE_NAME,
+  INVALID_MEDIA_TYPE,
+  UNKNOWN_JOB_ID,
+  UNKNOWN_USER_ID,
+  CSV_MISSING_COLUMN,
+  CSV_INVALID_FIELD,
+  TM_UNAUTHENTICATED,
+  TM_INACCESSIBLE,
+
+}
