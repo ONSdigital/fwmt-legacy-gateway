@@ -3,9 +3,11 @@ package uk.gov.ons.fwmt.legacy_gateway.service.impl;
 import com.consiliumtechnologies.schemas.mobile._2009._03.visitstypes.AdditionalPropertyCollectionType;
 import com.consiliumtechnologies.schemas.mobile._2009._03.visitstypes.AdditionalPropertyType;
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.CreateJobRequest;
+import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.DeleteJobRequest;
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.UpdateJobHeaderRequest;
 import com.consiliumtechnologies.schemas.mobile._2015._05.optimisetypes.*;
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendCreateJobRequestMessage;
+import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendDeleteJobRequestMessage;
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendMessageRequestInfo;
 import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendUpdateJobHeaderRequestMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -297,6 +299,12 @@ public class TMJobConverterServiceImpl implements TMJobConverterService {
 
   public CreateJobRequest createReissue(LegacySampleIngest ingest, String username) {
     return createJob(ingest, username);
+  }
+
+  public DeleteJobRequest deleteJob(String tmJobId) {
+    DeleteJobRequest request = new DeleteJobRequest();
+    request.getIdentity().setReference(tmJobId);
+    return request;
   }
 }
 
