@@ -14,11 +14,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.ons.fwmt.legacy_gateway.data.legacy_ingest.LegacySampleIngest;
+import uk.gov.ons.fwmt.legacy_gateway.data.tm.UserForm;
 import uk.gov.ons.fwmt.legacy_gateway.repo.TMUserRepo;
 import uk.gov.ons.fwmt.legacy_gateway.service.TMJobConverterService;
 import uk.gov.ons.fwmt.legacy_gateway.service.TMService;
+import uk.gov.ons.fwmt.legacy_gateway.service.TMWebDriver;
+
+import java.io.IOException;
 
 /**
  * A class for manually triggering various debugging actions
@@ -31,26 +36,37 @@ import uk.gov.ons.fwmt.legacy_gateway.service.TMService;
 @Slf4j
 @RestController
 @Profile({"dev", "test"})
+@RequestMapping("/debug")
 public class DebugController {
   private TMUserRepo tmUserRepo;
 
   private TMJobConverterService tmJobConverterService;
   private TMService tmService;
+  private TMWebDriver tmWebDriver;
 
   @Autowired
   public DebugController(
       TMUserRepo tmUserRepo,
       TMJobConverterService tmJobConverterService,
-      TMService tmService) {
-
+      TMService tmService,
+      TMWebDriver tmWebDriver) {
+    this.tmUserRepo = tmUserRepo;
+    this.tmJobConverterService = tmJobConverterService;
+    this.tmService = tmService;
+    this.tmWebDriver = tmWebDriver;
   }
 
-  @PostMapping("/debug/clearUsers")
+  @PostMapping
   public void clearUsers() {
     tmUserRepo.deleteAll();
   }
 
-  @PostMapping("/debug/newJob")
+  @PostMapping
+  public void newUser(UserForm form) throws IOException {
+    tmWebDriver.makeNewUser(form);
+  }
+
+  @PostMapping
   public ResponseEntity<SendMessageResponse> newJob(LegacySampleIngest ingest) {
     String username = tmUserRepo.findByAuthNo(ingest.getAuth()).getTmUsername();
     CreateJobRequest request = tmJobConverterService.createJob(ingest, username);
@@ -60,7 +76,7 @@ public class DebugController {
     return new ResponseEntity<>(response.getSendMessageResponse(), new HttpHeaders(), HttpStatus.OK);
   }
 
-  @PostMapping("/debug/reallocateJob")
+  @PostMapping
   public ResponseEntity<SendMessageResponse> reallocateJob(String jobId, String targetAuthNo) {
     String username = tmUserRepo.findByAuthNo(targetAuthNo).getTmUsername();
     UpdateJobHeaderRequest request = tmJobConverterService.updateJob(jobId, username);
