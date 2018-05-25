@@ -10,12 +10,12 @@ public class CSVParsingException extends FWMTCommonException {
   @Getter private final List<String> rows;
 
   public CSVParsingException(String message, List<String> rows) {
-    super(ExceptionCode.CSV_INVALID_FIELD, message);
+    super(ExceptionCode.CSV_OTHER, message);
     this.rows = rows;
   }
 
   public CSVParsingException(String message, List<String> rows, Throwable cause) {
-    super(ExceptionCode.CSV_INVALID_FIELD, message, cause);
+    super(ExceptionCode.CSV_OTHER, message, cause);
     this.rows = rows;
   }
 }
