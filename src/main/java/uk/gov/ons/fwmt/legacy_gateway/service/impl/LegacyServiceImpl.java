@@ -66,7 +66,7 @@ public class LegacyServiceImpl implements LegacyService {
         return Optional.of(new UnprocessedCSVRow(row, "Job has been sent previously"));
       } else if (tmJobRepo.existsByTmJobId(ingest.getTmJobId())) {
         log.info("Job is a reallocation");
-        UpdateJobHeaderRequest request = tmJobConverterService.createReallocation(ingest, username);
+        UpdateJobHeaderRequest request = tmJobConverterService.updateJob(ingest, username);
         // TODO add error handling
         tmService.send(request);
       } else {
@@ -84,7 +84,7 @@ public class LegacyServiceImpl implements LegacyService {
           } else {
             log.info("Job is a new GFF job");
             // send the job to TM
-            CreateJobRequest request = tmJobConverterService.createNewJob(ingest, username);
+            CreateJobRequest request = tmJobConverterService.createJob(ingest, username);
             tmService.send(request);
             // save the job in the database
             tmJobRepo.save(new TMJobEntity(ingest.getTmJobId(), username));
@@ -93,7 +93,7 @@ public class LegacyServiceImpl implements LegacyService {
         case LFS:
           log.info("Job is a new LFS job");
           // send the job to TM
-          CreateJobRequest request = tmJobConverterService.createNewJob(ingest, username);
+          CreateJobRequest request = tmJobConverterService.createJob(ingest, username);
           tmService.send(request);
           // save the job in the database
           tmJobRepo.save(new TMJobEntity(ingest.getTmJobId(), username));

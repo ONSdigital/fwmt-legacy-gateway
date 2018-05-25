@@ -163,14 +163,14 @@ public class TMJobConverterServiceImpl implements TMJobConverterService {
     return request;
   }
 
-  protected UpdateJobHeaderRequest updateJobHeaderRequestFromIngest(LegacySampleIngest ingest, String username) {
+  protected UpdateJobHeaderRequest makeUpdateJobHeaderRequest(String tmJobId, String username) {
     UpdateJobHeaderRequest request = new UpdateJobHeaderRequest();
     request.setJobHeader(new JobHeaderType());
     request.getJobHeader().setAllocatedTo(new ResourceIdentityType());
     request.getJobHeader().setJobIdentity(new JobIdentityType());
 
     request.getJobHeader().getAllocatedTo().setUsername(username);
-    request.getJobHeader().getJobIdentity().setReference(ingest.getTmJobId());
+    request.getJobHeader().getJobIdentity().setReference(tmJobId);
 
     return request;
   }
@@ -184,7 +184,7 @@ public class TMJobConverterServiceImpl implements TMJobConverterService {
 
   @Deprecated
   protected void reallocateJob(LegacySampleIngest job, String username) {
-    UpdateJobHeaderRequest request = updateJobHeaderRequestFromIngest(job, username);
+    UpdateJobHeaderRequest request = makeUpdateJobHeaderRequest(job.getTmJobId(), username);
 
     SendUpdateJobHeaderRequestMessage message = new SendUpdateJobHeaderRequestMessage();
     message.setSendMessageRequestInfo(makeSendMessageRequestInfo(job.getTmJobId()));
@@ -271,7 +271,7 @@ public class TMJobConverterServiceImpl implements TMJobConverterService {
     }
   }
 
-  public CreateJobRequest createNewJob(LegacySampleIngest ingest, String username) {
+  public CreateJobRequest createJob(LegacySampleIngest ingest, String username) {
     CreateJobRequest request = createJobRequestFromIngest(ingest, username);
 
     SendCreateJobRequestMessage message = new SendCreateJobRequestMessage();
@@ -281,18 +281,22 @@ public class TMJobConverterServiceImpl implements TMJobConverterService {
     return request;
   }
 
-  public UpdateJobHeaderRequest createReallocation(LegacySampleIngest ingest, String username) {
-    UpdateJobHeaderRequest request = updateJobHeaderRequestFromIngest(ingest, username);
+  public UpdateJobHeaderRequest updateJob(String tmJobId, String username) {
+    UpdateJobHeaderRequest request = makeUpdateJobHeaderRequest(tmJobId, username);
 
     SendUpdateJobHeaderRequestMessage message = new SendUpdateJobHeaderRequestMessage();
-    message.setSendMessageRequestInfo(makeSendMessageRequestInfo(ingest.getTmJobId()));
+    message.setSendMessageRequestInfo(makeSendMessageRequestInfo(tmJobId));
     message.setUpdateJobHeaderRequest(request);
 
     return request;
   }
 
+  public UpdateJobHeaderRequest updateJob(LegacySampleIngest ingest, String username) {
+    return updateJob(ingest.getTmJobId(), username);
+  }
+
   public CreateJobRequest createReissue(LegacySampleIngest ingest, String username) {
-    return createNewJob(ingest, username);
+    return createJob(ingest, username);
   }
 }
 
