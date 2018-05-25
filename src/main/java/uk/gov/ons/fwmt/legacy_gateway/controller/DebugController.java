@@ -62,7 +62,7 @@ public class DebugController {
   }
 
   @PostMapping
-  public void newUser(UserForm form) throws IOException {
+  public void newTMUser(UserForm form) throws IOException {
     tmWebDriver.makeNewUser(form);
   }
 
