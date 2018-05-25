@@ -4,7 +4,7 @@ import lombok.Getter;
 
 import java.util.List;
 
-public class CSVParsingException extends Exception {
+public class CSVParsingException extends FWMTCommonException {
   static final long serialVersionUID = 0L;
 
   @Getter private final List<String> rows;

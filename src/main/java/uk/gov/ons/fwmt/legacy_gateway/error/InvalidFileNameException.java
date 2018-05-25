@@ -1,6 +1,6 @@
 package uk.gov.ons.fwmt.legacy_gateway.error;
 
-public class InvalidFileNameException extends Exception {
+public class InvalidFileNameException extends FWMTCommonException {
   static final long serialVersionUID = 0L;
 
   private static String makeMessage(String name, String reason) {
