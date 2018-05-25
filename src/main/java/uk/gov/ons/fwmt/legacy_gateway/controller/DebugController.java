@@ -69,9 +69,7 @@ public class DebugController {
   @PostMapping
   public ResponseEntity<SendMessageResponse> newJob(LegacySampleIngest ingest) {
     String username = tmUserRepo.findByAuthNo(ingest.getAuth()).getTmUsername();
-    CreateJobRequest request = tmJobConverterService.createJob(ingest, username);
-    SendCreateJobRequestMessage message = new SendCreateJobRequestMessage();
-    message.setCreateJobRequest(request);
+    SendCreateJobRequestMessage message = tmJobConverterService.createJob(ingest, username);
     SendCreateJobRequestMessageResponse response = tmService.send(message);
     return new ResponseEntity<>(response.getSendMessageResponse(), new HttpHeaders(), HttpStatus.OK);
   }
@@ -79,9 +77,7 @@ public class DebugController {
   @PostMapping
   public ResponseEntity<SendMessageResponse> reallocateJob(String jobId, String targetAuthNo) {
     String username = tmUserRepo.findByAuthNo(targetAuthNo).getTmUsername();
-    UpdateJobHeaderRequest request = tmJobConverterService.updateJob(jobId, username);
-    SendUpdateJobHeaderRequestMessage message = new SendUpdateJobHeaderRequestMessage();
-    message.setUpdateJobHeaderRequest(request);
+    SendUpdateJobHeaderRequestMessage message = tmJobConverterService.updateJob(jobId, username);
     SendUpdateJobHeaderRequestMessageResponse response = tmService.send(message);
     return new ResponseEntity<>(response.getSendMessageResponse(), new HttpHeaders(), HttpStatus.OK);
   }

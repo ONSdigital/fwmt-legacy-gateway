@@ -273,38 +273,43 @@ public class TMJobConverterServiceImpl implements TMJobConverterService {
     }
   }
 
-  public CreateJobRequest createJob(LegacySampleIngest ingest, String username) {
+  public SendCreateJobRequestMessage createJob(LegacySampleIngest ingest, String username) {
     CreateJobRequest request = createJobRequestFromIngest(ingest, username);
 
     SendCreateJobRequestMessage message = new SendCreateJobRequestMessage();
     message.setSendMessageRequestInfo(makeSendMessageRequestInfo(ingest.getTmJobId()));
     message.setCreateJobRequest(request);
 
-    return request;
+    return message;
   }
 
-  public UpdateJobHeaderRequest updateJob(String tmJobId, String username) {
+  public SendUpdateJobHeaderRequestMessage updateJob(String tmJobId, String username) {
     UpdateJobHeaderRequest request = makeUpdateJobHeaderRequest(tmJobId, username);
 
     SendUpdateJobHeaderRequestMessage message = new SendUpdateJobHeaderRequestMessage();
     message.setSendMessageRequestInfo(makeSendMessageRequestInfo(tmJobId));
     message.setUpdateJobHeaderRequest(request);
 
-    return request;
+    return message;
   }
 
-  public UpdateJobHeaderRequest updateJob(LegacySampleIngest ingest, String username) {
+  public SendUpdateJobHeaderRequestMessage updateJob(LegacySampleIngest ingest, String username) {
     return updateJob(ingest.getTmJobId(), username);
   }
 
-  public CreateJobRequest createReissue(LegacySampleIngest ingest, String username) {
+  public SendCreateJobRequestMessage createReissue(LegacySampleIngest ingest, String username) {
     return createJob(ingest, username);
   }
 
-  public DeleteJobRequest deleteJob(String tmJobId) {
+  public SendDeleteJobRequestMessage deleteJob(String tmJobId) {
     DeleteJobRequest request = new DeleteJobRequest();
     request.getIdentity().setReference(tmJobId);
-    return request;
+
+    SendDeleteJobRequestMessage message = new SendDeleteJobRequestMessage();
+    message.setSendMessageRequestInfo(makeSendMessageRequestInfo(tmJobId));
+    message.setDeleteJobRequest(request);
+
+    return message;
   }
 }
 

@@ -1,7 +1,7 @@
 package uk.gov.ons.fwmt.legacy_gateway.service.impl;
 
-import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.CreateJobRequest;
-import com.consiliumtechnologies.schemas.mobile._2015._05.optimisemessages.UpdateJobHeaderRequest;
+import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendCreateJobRequestMessage;
+import com.consiliumtechnologies.schemas.services.mobile._2009._03.messaging.SendUpdateJobHeaderRequestMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,7 +66,7 @@ public class LegacyServiceImpl implements LegacyService {
         return Optional.of(new UnprocessedCSVRow(row, "Job has been sent previously"));
       } else if (tmJobRepo.existsByTmJobId(ingest.getTmJobId())) {
         log.info("Job is a reallocation");
-        UpdateJobHeaderRequest request = tmJobConverterService.updateJob(ingest, username);
+        SendUpdateJobHeaderRequestMessage request = tmJobConverterService.updateJob(ingest, username);
         // TODO add error handling
         tmService.send(request);
       } else {
@@ -75,7 +75,7 @@ public class LegacyServiceImpl implements LegacyService {
           if (ingest.isGffReissue()) {
             log.info("Job is a GFF reissue");
             // send the job to TM
-            CreateJobRequest request = tmJobConverterService.createReissue(ingest, username);
+            SendCreateJobRequestMessage request = tmJobConverterService.createReissue(ingest, username);
             tmService.send(request);
             // update the last auth no in the database
             TMJobEntity jobEntity = tmJobRepo.findByTmJobId(ingest.getTmJobId());
@@ -84,7 +84,7 @@ public class LegacyServiceImpl implements LegacyService {
           } else {
             log.info("Job is a new GFF job");
             // send the job to TM
-            CreateJobRequest request = tmJobConverterService.createJob(ingest, username);
+            SendCreateJobRequestMessage request = tmJobConverterService.createJob(ingest, username);
             tmService.send(request);
             // save the job in the database
             tmJobRepo.save(new TMJobEntity(ingest.getTmJobId(), username));
@@ -93,7 +93,7 @@ public class LegacyServiceImpl implements LegacyService {
         case LFS:
           log.info("Job is a new LFS job");
           // send the job to TM
-          CreateJobRequest request = tmJobConverterService.createJob(ingest, username);
+          SendCreateJobRequestMessage request = tmJobConverterService.createJob(ingest, username);
           tmService.send(request);
           // save the job in the database
           tmJobRepo.save(new TMJobEntity(ingest.getTmJobId(), username));
