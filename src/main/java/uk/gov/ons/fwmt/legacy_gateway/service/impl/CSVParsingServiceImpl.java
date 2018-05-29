@@ -16,7 +16,13 @@ import java.io.IOException;
 import java.io.Reader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -25,9 +31,9 @@ public class CSVParsingServiceImpl implements CSVParsingService {
    * Read the CSVColumn annotations on the class T and set Java bean properties from the columns of a CSV record
    *
    * @param instance An instance of the class that will be mutated
-   * @param record A row of a CSV file
-   * @param pivot A string used to determine which field name should be used, in events where there are many options
-   * @param <T> A class with fields annotated with CSVColumn
+   * @param record   A row of a CSV file
+   * @param pivot    A string used to determine which field name should be used, in events where there are many options
+   * @param <T>      A class with fields annotated with CSVColumn
    */
   private static <T> void setFromCSVColumnAnnotations(T instance, CSVRecord record, String pivot) {
     Class<?> tClass = instance.getClass();
@@ -82,8 +88,8 @@ public class CSVParsingServiceImpl implements CSVParsingService {
     }
   }
 
-  protected static Date convertToGFFDate(String stage) {
-    int year = Integer.parseInt(stage.substring(0, 1));
+  protected static LocalDateTime convertToGFFDate(String stage) {
+    int year = 2010 + Integer.parseInt(stage.substring(0, 1));
     int month = Integer.parseInt(stage.substring(1, 3));
     // if we are reissuing (month above 12), we minus 20 to get a normal month
     if (month > 12) {
@@ -93,31 +99,30 @@ public class CSVParsingServiceImpl implements CSVParsingService {
       // normalize the month in case we reached 13
       month = ((month - 1) % 12) + 1;
     }
-    assert month > 0 && month < 13;
-    Calendar cal = Calendar.getInstance();
-    cal.set(2010 + year, month - 1, 1);
-    cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DATE));
-    cal.set(Calendar.HOUR, 11);
-    cal.set(Calendar.MINUTE, 59);
-    cal.set(Calendar.SECOND, 59);
-    cal.set(Calendar.AM_PM, Calendar.PM);
-    return cal.getTime();
+    assert month >= 1 && month < 12;
+    LocalDate initial = LocalDate.of(year, month, 1);
+    LocalDate endOfMonth = initial.withDayOfMonth(initial.lengthOfMonth());
+    return endOfMonth.atTime(23, 59, 59);
   }
 
   // technically, 'stage' here is the field period 'fp'
   // TODO double check to ensure that this is correct
-  protected static Date convertToLFSDate(String stage) {
-    int year = Integer.parseInt(stage.substring(0, 1));
+  protected static LocalDateTime convertToLFSDate(String stage) {
+    int year = 2010 + Integer.parseInt(stage.substring(0, 1));
     int quarter = Integer.parseInt(stage.substring(1, 2));
     int week = stage.toLowerCase().charAt(2) - 'a' + 3;
-    Calendar cal = Calendar.getInstance();
-    cal.set(2010 + year, 1 + (3 * (quarter - 1)) - 1, 1);
-    cal.set(Calendar.HOUR, 11);
-    cal.set(Calendar.MINUTE, 59);
-    cal.set(Calendar.SECOND, 59);
-    cal.set(Calendar.AM_PM, Calendar.PM);
-    cal.add(Calendar.DATE, (7 * (week)) - 1);
-    return cal.getTime();
+    int month = 1 + (3 * (quarter - 1)) - 1;
+    int day = (7 * week) - 1;
+    LocalDate initial = LocalDate.of(year, month, day);
+    LocalDate endOfMonth = initial.withDayOfMonth(initial.lengthOfMonth());
+    return endOfMonth.atTime(23, 59, 59);
+  }
+
+  protected static Date toDate(LocalDateTime localDateTime) {
+    return Date.from(
+        localDateTime
+            .atZone(ZoneId.systemDefault())
+            .toInstant());
   }
 
   private static CSVFormat getCSVFormat() {
@@ -137,7 +142,7 @@ public class CSVParsingServiceImpl implements CSVParsingService {
           // set normal fields
           setFromCSVColumnAnnotations(instance, record, "LFS");
           // set derived due date
-          instance.setDueDate(convertToLFSDate(instance.getStage()));
+          instance.setDueDate(toDate(convertToLFSDate(instance.getStage())));
           // set survey type and extra data
           instance.setLegacySampleSurveyType(LegacySampleSurveyType.LFS);
           instance.setGffData(null);
@@ -148,7 +153,7 @@ public class CSVParsingServiceImpl implements CSVParsingService {
           // set normal fields
           setFromCSVColumnAnnotations(instance, record, "GFF");
           // set derived due date
-          instance.setDueDate(convertToGFFDate(instance.getStage()));
+          instance.setDueDate(toDate(convertToGFFDate(instance.getStage())));
           // set survey type and extra data
           instance.setLegacySampleSurveyType(LegacySampleSurveyType.GFF);
           instance.setGffData(new LegacySampleGFFDataIngest());
