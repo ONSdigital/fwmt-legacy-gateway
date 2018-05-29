@@ -144,7 +144,7 @@ public class FileIngestServiceImpl implements FileIngestService {
     log.info("Began a sample file ingest");
 
     // check the file metadata
-    verifyCSVFileMetadata(file);
+//    verifyCSVFileMetadata(file);
 
     // check filename
     Filename filename = verifyCSVFilename(file.getOriginalFilename(), "sample");
@@ -168,7 +168,7 @@ public class FileIngestServiceImpl implements FileIngestService {
     log.info("Began a staff file ingest");
 
     // check the file metadata
-    verifyCSVFileMetadata(file);
+//    verifyCSVFileMetadata(file);
 
     // check filename
     verifyCSVFilename(file.getOriginalFilename(), "staff");
